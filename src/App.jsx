@@ -11,7 +11,7 @@ import LoginPage from './pages/LoginPage';
 import PlanosPage from './pages/PlanosPage';
 import ProtectedRoute from './components/ProtectedRoute'; // Nosso "segurança"
 
-// A linha mais importante para o visual:
+// Importa o arquivo de estilo principal
 import './App.css';
 
 function App() {
@@ -19,10 +19,8 @@ function App() {
 
   // Função para fazer logout
   const handleLogout = () => {
-    // Remove o token de autenticação do armazenamento do navegador
     localStorage.removeItem('authToken');
     alert('Você saiu da sua conta.');
-    // Redireciona o usuário para a página de login
     navigate('/login');
   };
 
@@ -31,8 +29,8 @@ function App() {
       <header className="App-header">
         <nav className="App-nav">
           <Link to="/" className="logo-link">
-  <img src="/logo-medsync.png" alt="Logo da MedSync" className="logo-image" />
-</Link>
+            <img src="/logo-medsync.png" alt="Logo da MedSync" className="logo-image" />
+          </Link>
           <div className="nav-links">
             <Link to="/casos">Casos Clínicos</Link>
             <Link to="/dashboard">Meu Painel</Link>
@@ -48,7 +46,7 @@ function App() {
         <Routes>
           {/* --- Rotas Públicas (acessíveis por todos) --- */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} /> {/* A ROTA DE LOGIN ESTÁ AQUI, NO LUGAR CERTO */}
           <Route path="/cadastro" element={<CadastroPage />} />
           <Route path="/assinatura" element={<PlanosPage />} />
 
@@ -88,3 +86,4 @@ function App() {
 }
 
 export default App;
+

@@ -34,13 +34,13 @@ const DashboardPage = () => {
         ? (progresso.reduce((acc, p) => acc + p.pontuacao, 0) / totalCasos).toFixed(0)
         : 0;
 
-    if (isLoading) return <div className="page-container">Carregando seu progresso...</div>;
+    if (isLoading) return <div className="page-container">A carregar o seu progresso...</div>;
 
     return (
         <div className="page-container">
             <div className="dashboard-header">
               <h1>Bem-vindo(a) de volta!</h1>
-              <p>Continue seu progresso e se torne um profissional ainda mais preparado.</p>
+              <p>Continue o seu progresso e torne-se um profissional ainda mais preparado.</p>
             </div>
             
             <div className="dashboard-grid">
@@ -89,7 +89,7 @@ const DashboardPage = () => {
                 <div className="dashboard-card">
                     <h3>Recomendações para Você</h3>
                     <ul className="recommendation-list">
-                        <li><a href="#">Revisar: Manejo de IAM com supra de ST</a></li>
+                        <li><a href="#">Rever: Manejo de IAM com supra de ST</a></li>
                         <li><a href="#">Praticar: Caso de embolia pulmonar</a></li>
                         <li><a href="#">Explorar: Introdução à Nefrologia</a></li>
                     </ul>
@@ -100,3 +100,4 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
+

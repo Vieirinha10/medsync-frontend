@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
-// Importação das páginas e componentes
+// Importação de todas as nossas páginas e componentes
 import HomePage from './pages/HomePage';
 import CasosListPage from './pages/CasosListPage';
 import SimulacaoCaso from './pages/SimulacaoCaso';
@@ -9,13 +9,15 @@ import DashboardPage from './pages/DashboardPage';
 import CadastroPage from './pages/CadastroPage';
 import LoginPage from './pages/LoginPage';
 import PlanosPage from './pages/PlanosPage';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/ProtectedRoute'; // Nosso "segurança"
 
+// Importa o arquivo de estilo principal
 import './App.css';
 
 function App() {
   const navigate = useNavigate();
 
+  // Função para fazer logout
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     alert('Você saiu da sua conta.');
@@ -24,14 +26,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* Componente de Fundo de Vídeo */}
-      <div className="video-background">
-        <video autoPlay loop muted playsInline>
-          <source src="/background-video.mp4" type="video/mp4" />
-          Seu navegador não suporta vídeos em HTML5.
-        </video>
-      </div>
-
       <header className="App-header">
         <nav className="App-nav">
           <Link to="/" className="logo-link">
@@ -50,13 +44,37 @@ function App() {
 
       <main className="App-main">
         <Routes>
+          {/* --- Rotas Públicas (acessíveis por todos) --- */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} /> {/* A ROTA DE LOGIN ESTÁ AQUI, NO LUGAR CERTO */}
           <Route path="/cadastro" element={<CadastroPage />} />
           <Route path="/assinatura" element={<PlanosPage />} />
-          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-          <Route path="/casos" element={<ProtectedRoute><CasosListPage /></ProtectedRoute>} />
-          <Route path="/casos/:casoId" element={<ProtectedRoute><SimulacaoCaso /></ProtectedRoute>} />
+
+          {/* --- Rotas Protegidas (apenas para usuários logados) --- */}
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/casos" 
+            element={
+              <ProtectedRoute>
+                <CasosListPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/casos/:casoId" 
+            element={
+              <ProtectedRoute>
+                <SimulacaoCaso />
+              </ProtectedRoute>
+            } 
+          />
         </Routes>
       </main>
 
@@ -68,3 +86,4 @@ function App() {
 }
 
 export default App;
+

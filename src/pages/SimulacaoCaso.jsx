@@ -17,11 +17,8 @@ const SimulacaoCaso = () => {
     const [conduta, setConduta] = useState('');
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken'); // Pega o "crachá"
-
+        const token = localStorage.getItem('authToken');
         fetch(`${API_URL}/casos-clinicos/${casoId}`, {
-            // AQUI ESTÁ A CORREÇÃO:
-            // Adicionamos o cabeçalho de autorização para "mostrar o crachá"
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -50,7 +47,7 @@ const SimulacaoCaso = () => {
         if (!caso || !caso.exames_disponiveis) return;
         const results = caso.exames_disponiveis.filter(ex => selectedExams[ex.id]);
         setExamResults(results);
-        alert(`${results.length} resultado(s) de exame foram libertados!`);
+        alert(`${results.length} resultado(s) de exame foram liberados!`);
     };
 
     const handleSubmit = async () => {
@@ -118,7 +115,18 @@ const SimulacaoCaso = () => {
 
                 {activeTab === 'exames' && (
                     <div className="tab-content">
-                        <h4>Selecione os exames que deseja solicitar:</h4>
+                        {/* --- INÍCIO DA MUDANÇA --- */}
+                        <div className="tab-title-container">
+                            <h4>Selecione os exames que deseja solicitar:</h4>
+                            <div className="tooltip-container">
+                                <span className="info-icon">ⓘ</span>
+                                <div className="tooltip-text">
+                                    Lembre-se de solicitar apenas os exames necessários. A solicitação de exames que não estejam relacionados ao raciocínio clínico e ao posterior diagnóstico serão levados em consideração na sua pontuação final.
+                                </div>
+                            </div>
+                        </div>
+                        {/* --- FIM DA MUDANÇA --- */}
+
                         <div className="exam-list">
                             {caso.exames_disponiveis.map(exam => (
                                 <label key={exam.id}>
@@ -152,3 +160,4 @@ const SimulacaoCaso = () => {
 };
 
 export default SimulacaoCaso;
+

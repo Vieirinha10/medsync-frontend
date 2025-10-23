@@ -158,3 +158,52 @@ body {
 .tooltip-text::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--dark-blue) transparent transparent transparent; }
 .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
 
+
+/* =========================================
+  UPGRADE: Estilos da Caixa de Texto (Hipótese/Conduta)
+  =========================================
+*/
+
+/* Estilo para as caixas de texto nas abas de Simulação de Caso.
+  Isso garante que a fonte seja 'Poppins' (herdada), as bordas sejam suaves
+  e o visual seja limpo e profissional, alinhado com o restante do site.
+*/
+.transcription-box {
+  width: 100%; /* Ocupa a largura total do container pai */
+  padding: 16px; /* Espaçamento interno confortável */
+  margin-top: 8px; /* Espaço entre o <h4> e a caixa */
+  
+  /* Fonte */
+  font-family: inherit; /* Usa a fonte principal do site (Poppins) */
+  font-size: 1rem; /* Tamanho de fonte padrão */
+  line-height: 1.6; /* Espaçamento entre linhas para legibilidade */
+  color: var(--text-color); /* Cor de texto padrão */
+
+  /* Borda e Delimitação */
+  border: 1px solid #ccd6e0; /* Borda sutil (cinza-azulado claro) */
+  border-radius: 8px; /* Bordas arredondadas, como os cards */
+  background-color: var(--light-gray); /* Fundo levemente acinzentado */
+  
+  /* Sombra interna sutil para profundidade */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04) inset;
+
+  /* Comportamento */
+  resize: vertical; /* Permite ao usuário redimensionar apenas verticalmente */
+  min-height: 150px; /* Altura mínima */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box; /* Garante que padding e borda não estourem a largura */
+}
+
+/* Efeito de foco para destacar a caixa durante a digitação */
+.transcription-box:focus,
+.transcription-box:focus-visible {
+  outline: none;
+  border-color: var(--primary-blue); /* Cor primária do site */
+  box-shadow: 0 0 0 3px rgba(77, 182, 247, 0.2); /* Sombra de foco sutil */
+}
+
+/* Estilo do Placeholder */
+.transcription-box::placeholder {
+  color: #99a1ab;
+  font-style: italic;
+}

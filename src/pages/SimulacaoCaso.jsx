@@ -142,14 +142,28 @@ const SimulacaoCaso = () => {
                 {activeTab === 'hipotese' && (
                     <div className="tab-content">
                         <h4>Descreva a sua hipótese principal e os diagnósticos diferenciais:</h4>
-                        <textarea value={hipotese} onChange={(e) => setHipotese(e.target.value)} rows="10"></textarea>
+                        {/* ATUALIZAÇÃO: Classe e placeholder adicionados */}
+                        <textarea 
+                            value={hipotese} 
+                            onChange={(e) => setHipotese(e.target.value)} 
+                            rows="10"
+                            className="transcription-box" /* <--- CLASSE ADICIONADA */
+                            placeholder="Digite sua hipótese diagnóstica..."
+                        />
                     </div>
                 )}
                 
                 {activeTab === 'conduta' && (
                     <div className="tab-content">
                         <h4>Descreva a conduta inicial para este paciente:</h4>
-                        <textarea value={conduta} onChange={(e) => setConduta(e.target.value)} rows="10"></textarea>
+                        {/* ATUALIZAÇÃO: Classe e placeholder adicionados */}
+                        <textarea 
+                            value={conduta} 
+                            onChange={(e) => setConduta(e.target.value)} 
+                            rows="10"
+                            className="transcription-box" /* <--- CLASSE ADICIONADA */
+                            placeholder="Digite a conduta proposta..."
+                        />
                     </div>
                 )}
 
@@ -160,4 +174,3 @@ const SimulacaoCaso = () => {
 };
 
 export default SimulacaoCaso;
-

@@ -9,10 +9,14 @@ import DashboardPage from './pages/DashboardPage';
 import CadastroPage from './pages/CadastroPage';
 import LoginPage from './pages/LoginPage';
 import PlanosPage from './pages/PlanosPage';
-import ProtectedRoute from './components/ProtectedRoute'; // Nosso "segurança"
+import DesafiosPage from './pages/DesafiosPage'; // 1. Importar a nova página
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Importa o arquivo de estilo principal
 import './App.css';
+
+// Instale os ícones: npm install react-icons
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 function App() {
   const navigate = useNavigate();
@@ -33,6 +37,7 @@ function App() {
           </Link>
           <div className="nav-links">
             <Link to="/casos">Casos Clínicos</Link>
+            <Link to="/desafios">Desafios</Link> {/* 2. Adicionar link no menu */}
             <Link to="/dashboard">Meu Painel</Link>
             <Link to="/assinatura">Planos</Link>
             <Link to="/login">Entrar</Link>
@@ -44,37 +49,17 @@ function App() {
 
       <main className="App-main">
         <Routes>
-          {/* --- Rotas Públicas (acessíveis por todos) --- */}
+          {/* --- Rotas Públicas --- */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} /> {/* A ROTA DE LOGIN ESTÁ AQUI, NO LUGAR CERTO */}
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/cadastro" element={<CadastroPage />} />
           <Route path="/assinatura" element={<PlanosPage />} />
 
-          {/* --- Rotas Protegidas (apenas para usuários logados) --- */}
-          <Route 
-            path="/dashboard" 
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/casos" 
-            element={
-              <ProtectedRoute>
-                <CasosListPage />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/casos/:casoId" 
-            element={
-              <ProtectedRoute>
-                <SimulacaoCaso />
-              </ProtectedRoute>
-            } 
-          />
+          {/* --- Rotas Protegidas --- */}
+          <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/casos" element={<ProtectedRoute><CasosListPage /></ProtectedRoute>} />
+          <Route path="/casos/:casoId" element={<ProtectedRoute><SimulacaoCaso /></ProtectedRoute>} />
+          <Route path="/desafios" element={<ProtectedRoute><DesafiosPage /></ProtectedRoute>} /> {/* 3. Adicionar a nova rota */}
         </Routes>
       </main>
 
@@ -86,4 +71,3 @@ function App() {
 }
 
 export default App;
-

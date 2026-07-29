@@ -12,7 +12,6 @@ const AUTH_TOKEN_KEY = 'authToken';
 export class ApiError extends Error {
   constructor(message, status) {
     super(message);
-    this.name = 'ApiError';
     this.status = status;
   }
 }
@@ -26,6 +25,25 @@ export const setAuthToken = (token) => {
 export const clearAuthToken = () => {
   localStorage.removeItem(AUTH_TOKEN_KEY);
 };
+
+function getErrorMessage(detail) {
+  if (typeof detail === 'string') {
+    return detail;
+  }
+
+  if (Array.isArray(detail)) {
+    const messages = detail
+      .map((item) => item?.msg)
+      .filter(Boolean)
+      .join(' ');
+
+    if (messages) {
+      return messages;
+    }
+  }
+
+  return 'Não foi possível concluir a solicitação.';
+}
 
 async function request(path, { auth = true, body, headers, ...options } = {}) {
   const token = getAuthToken();
@@ -50,7 +68,7 @@ async function request(path, { auth = true, body, headers, ...options } = {}) {
     }
 
     throw new ApiError(
-      data?.detail || 'Não foi possível concluir a solicitação.',
+      getErrorMessage(data?.detail),
       response.status,
     );
   }

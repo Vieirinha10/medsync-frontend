@@ -1,39 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+import { Link, useNavigate } from 'react-router-dom';
+import { api, ApiError } from '../services/api';
 
 const CasosListPage = () => {
     const [casos, setCasos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken'); // Pega o "crachá"
-
-        fetch(`${API_URL}/casos-clinicos/`, {
-            // AQUI ESTÁ A CORREÇÃO:
-            // Adicionamos o cabeçalho de autorização para "mostrar o crachá"
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                // Se o servidor responder com um erro (ex: 401 Não Autorizado), nós o capturamos.
-                throw new Error('Falha ao buscar os casos. Verifique se você está logado.');
-            }
-            return response.json();
-        })
+        api.getCases()
         .then(data => {
             setCasos(data);
             setIsLoading(false);
         })
         .catch(error => {
+            if (error instanceof ApiError && error.status === 401) {
+                navigate('/login', { replace: true });
+                return;
+            }
             setError(error.message);
             setIsLoading(false);
         });
-    }, []); // O array vazio [] garante que esta ação só rode uma vez
+    }, [navigate]);
 
     if (isLoading) return <div className="page-container">A carregar os casos clínicos...</div>;
     if (error) return <div className="page-container">Erro ao carregar os casos: {error}</div>;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 // Importação de todas as nossas páginas e componentes
@@ -11,20 +10,17 @@ import LoginPage from './pages/LoginPage';
 import PlanosPage from './pages/PlanosPage';
 import DesafiosPage from './pages/DesafiosPage'; // 1. Importar a nova página
 import ProtectedRoute from './components/ProtectedRoute';
+import { clearAuthToken, getAuthToken } from './services/api';
 
 // Importa o arquivo de estilo principal
 import './App.css';
 
-// Instale os ícones: npm install react-icons
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-
 function App() {
   const navigate = useNavigate();
+  const isAuthenticated = Boolean(getAuthToken());
 
-  // Função para fazer logout
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    alert('Você saiu da sua conta.');
+    clearAuthToken();
     navigate('/login');
   };
 
@@ -40,9 +36,14 @@ function App() {
             <Link to="/desafios">Desafios</Link> {/* 2. Adicionar link no menu */}
             <Link to="/dashboard">Meu Painel</Link>
             <Link to="/assinatura">Planos</Link>
-            <Link to="/login">Entrar</Link>
-            <button onClick={handleLogout} className="logout-button">Sair</button>
-            <Link to="/cadastro" className="login-button">Cadastre-se Grátis</Link>
+            {isAuthenticated ? (
+              <button onClick={handleLogout} className="logout-button">Sair</button>
+            ) : (
+              <>
+                <Link to="/login">Entrar</Link>
+                <Link to="/cadastro" className="login-button">Cadastre-se Grátis</Link>
+              </>
+            )}
           </div>
         </nav>
       </header>

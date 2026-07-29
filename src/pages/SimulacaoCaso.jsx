@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+import { api, ApiError } from '../services/api';
 
 const SimulacaoCaso = () => {
     const { casoId } = useParams();
@@ -9,6 +8,8 @@ const SimulacaoCaso = () => {
 
     const [caso, setCaso] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [activeTab, setActiveTab] = useState('exames');
     
     const [selectedExams, setSelectedExams] = useState({});
@@ -17,27 +18,20 @@ const SimulacaoCaso = () => {
     const [conduta, setConduta] = useState('');
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        fetch(`${API_URL}/casos-clinicos/${casoId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-        .then(res => {
-            if (!res.ok) {
-                throw new Error('Falha ao carregar o caso clínico.');
-            }
-            return res.json();
-        })
+        api.getCase(casoId)
         .then(data => {
             setCaso(data);
             setIsLoading(false);
         })
         .catch(error => {
-            console.error("Erro ao carregar o caso:", error);
+            if (error instanceof ApiError && error.status === 401) {
+                navigate('/login', { replace: true });
+                return;
+            }
+            setError(error.message);
             setIsLoading(false);
         });
-    }, [casoId]);
+    }, [casoId, navigate]);
 
     const handleExamSelection = (examId) => {
         setSelectedExams(prev => ({ ...prev, [examId]: !prev[examId] }));
@@ -51,36 +45,34 @@ const SimulacaoCaso = () => {
     };
 
     const handleSubmit = async () => {
-        const token = localStorage.getItem('authToken');
         const respostas_usuario = {
             exames_solicitados: Object.keys(selectedExams).filter(id => selectedExams[id]),
             hipotese_diagnostica: hipotese,
             conduta_proposta: conduta
         };
-        
+
+        setIsSubmitting(true);
         try {
-            await fetch(`${API_URL}/progresso/registrar`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    id_caso: parseInt(casoId),
-                    respostas_usuario: respostas_usuario,
-                    pontuacao: 85 // Pontuação de exemplo
-                })
+            await api.saveProgress({
+                id_caso: Number(casoId),
+                respostas_usuario,
+                pontuacao: 85,
             });
-            alert("Respostas submetidas com sucesso!");
-            navigate('/dashboard'); 
+            navigate('/dashboard');
         } catch (error) {
-            console.error("Erro ao submeter progresso:", error);
-            alert("Erro ao submeter as respostas.");
+            if (error instanceof ApiError && error.status === 401) {
+                navigate('/login', { replace: true });
+                return;
+            }
+            setError(error.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     if (isLoading) return <div className="page-container">A carregar o caso clínico...</div>;
-    if (!caso) return <div className="page-container">Não foi possível carregar o caso. Verifique a sua conexão.</div>;
+    if (error) return <div className="page-container">Erro: {error}</div>;
+    if (!caso) return <div className="page-container">Não foi possível carregar o caso.</div>;
 
     return (
         <div className="simulation-container page-container">
@@ -167,7 +159,9 @@ const SimulacaoCaso = () => {
                     </div>
                 )}
 
-                <button onClick={handleSubmit} className="btn-submit">Finalizar e Submeter Respostas</button>
+                <button onClick={handleSubmit} className="btn-submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Enviando...' : 'Finalizar e Submeter Respostas'}
+                </button>
             </div>
         </div>
     );

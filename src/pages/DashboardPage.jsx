@@ -1,32 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+import { Link, useNavigate } from 'react-router-dom';
+import { api, ApiError } from '../services/api';
 
 const DashboardPage = () => {
     const [progresso, setProgresso] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken'); // Pega o "crachá"
-
-        fetch(`${API_URL}/progresso/meu`, {
-            // AQUI ESTÁ A CORREÇÃO:
-            // Adicionamos o cabeçalho de autorização para "mostrar o crachá"
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => response.json())
+        api.getProgress()
             .then(data => {
                 setProgresso(data);
                 setIsLoading(false);
             })
             .catch(error => {
-                console.error("Erro ao buscar progresso:", error);
+                if (error instanceof ApiError && error.status === 401) {
+                    navigate('/login', { replace: true });
+                    return;
+                }
+                setError(error.message);
                 setIsLoading(false);
             });
-    }, []);
+    }, [navigate]);
     
     // Calcula algumas estatísticas simples
     const totalCasos = progresso.length;
@@ -35,6 +31,7 @@ const DashboardPage = () => {
         : 0;
 
     if (isLoading) return <div className="page-container">A carregar o seu progresso...</div>;
+    if (error) return <div className="page-container">Erro ao carregar o progresso: {error}</div>;
 
     return (
         <div className="page-container">
@@ -100,4 +97,3 @@ const DashboardPage = () => {
 };
 
 export default DashboardPage;
-

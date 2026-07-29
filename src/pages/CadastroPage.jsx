@@ -1,37 +1,30 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-
-// Define a URL da API, usando a variável de ambiente ou o endereço local como padrão
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+import { api } from '../services/api';
 
 const CadastroPage = () => {
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const handleCadastro = async (event) => {
         event.preventDefault();
         setError(null);
+        setIsSubmitting(true);
 
         try {
-            const response = await fetch(`${API_URL}/usuarios/registrar`, { // Usa a variável API_URL
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome, email, password }),
+            await api.registerUser({ nome, email, password });
+            navigate('/login', {
+                replace: true,
+                state: { message: 'Cadastro realizado. Entre com sua nova conta.' },
             });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || 'Falha ao cadastrar.');
-            }
-
-            alert('Cadastro realizado com sucesso! Você será redirecionado para o login.');
-            navigate('/login');
-
         } catch (err) {
             setError(err.message);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -50,10 +43,12 @@ const CadastroPage = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="password_reg">Senha</label>
-                    <input type="password" id="password_reg" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <input type="password" id="password_reg" value={password} onChange={(e) => setPassword(e.target.value)} minLength="8" maxLength="72" required />
                 </div>
                 {error && <p className="error-message">{error}</p>}
-                <button type="submit" className="btn-submit">Criar minha conta</button>
+                <button type="submit" className="btn-submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Criando conta...' : 'Criar minha conta'}
+                </button>
                 <div className="auth-link">
                     <span>Já tem uma conta? <Link to="/login">Faça login</Link></span>
                 </div>

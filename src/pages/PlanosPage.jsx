@@ -24,7 +24,7 @@ const PlanosPage = () => {
 
           <div className="plan-card premium">
             <h3>Premium</h3>
-            <div className="price">R$9<small>,90/mês</small></div>
+            <div className="price">R$19<small>,90/mês</small></div>
             <ul>
               <li>✔️ Casos Clínicos Ilimitados</li>
               <li>✔️ Quizzes Ilimitados</li>

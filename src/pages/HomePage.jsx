@@ -2,91 +2,192 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {
+    FiActivity,
+    FiArrowRight,
+    FiBarChart2,
+    FiBookOpen,
+    FiCheck,
+    FiCheckCircle,
+    FiClock,
+    FiCompass,
+    FiFileText,
+    FiLayers,
+    FiTarget,
+    FiUsers,
+} from 'react-icons/fi';
 
 const HomePage = () => {
     return (
         <div className="home-container">
-            {/* Seção Principal (Hero Section) */}
-            <section className="hero-section">
-                <h1>Raciocínio Clínico que Salva Vidas. Treine com Inteligência Artificial.</h1>
-                <p className="subtitle">
-                    Junte-se a milhares de estudantes e residentes que estão se preparando para a realidade da prática médica com casos clínicos interativos e feedback em tempo real.
-                </p>
-                <Link to="/cadastro" className="cta-button">Comece a Treinar de Graça</Link>
+            <section className="home-hero">
+                <div className="hero-copy">
+                    <span className="eyebrow">
+                        <FiActivity aria-hidden="true" />
+                        Simulação clínica para estudantes de medicina
+                    </span>
+                    <h1>
+                        Do caso à conduta:
+                        <span> treine seu raciocínio clínico.</span>
+                    </h1>
+                    <p className="subtitle">
+                        Pratique decisões médicas em casos interativos, solicite exames,
+                        construa hipóteses e acompanhe sua evolução em um só lugar.
+                    </p>
+                    <div className="hero-actions">
+                        <Link to="/cadastro" className="cta-button">
+                            Começar gratuitamente
+                            <FiArrowRight aria-hidden="true" />
+                        </Link>
+                        <Link to="/casos" className="secondary-link">
+                            Explorar casos
+                        </Link>
+                    </div>
+                    <div className="hero-proof" aria-label="Destaques da plataforma">
+                        <span><FiCheckCircle /> 40 casos disponíveis</span>
+                        <span><FiCheckCircle /> Progresso individual</span>
+                    </div>
+                </div>
+
+                <div className="clinical-preview" aria-label="Prévia de um caso clínico">
+                    <div className="preview-topbar">
+                        <span />
+                        <span />
+                        <span />
+                        <small>Simulação em andamento</small>
+                    </div>
+                    <div className="preview-patient">
+                        <div className="patient-icon"><FiActivity /></div>
+                        <div>
+                            <span className="preview-label">CASO 01 · CARDIOLOGIA</span>
+                            <h2>Dor torácica em adulto jovem</h2>
+                        </div>
+                    </div>
+                    <div className="patient-data">
+                        <span><strong>32</strong> anos</span>
+                        <span><strong>7</strong> dias</span>
+                        <span><strong>15</strong> min</span>
+                    </div>
+                    <div className="clinical-step">
+                        <span className="step-icon"><FiFileText /></span>
+                        <div>
+                            <strong>História clínica analisada</strong>
+                            <small>Agora selecione os exames necessários.</small>
+                        </div>
+                        <FiCheckCircle className="step-status" />
+                    </div>
+                    <div className="clinical-decision">
+                        <div>
+                            <span>Próxima decisão</span>
+                            <strong>Solicitar exames</strong>
+                        </div>
+                        <button type="button" aria-label="Avançar na demonstração">
+                            <FiArrowRight />
+                        </button>
+                    </div>
+                </div>
             </section>
 
-            {/* Seção de Funcionalidades */}
             <section className="features-section">
-                <h2>Uma plataforma completa para o seu aprendizado</h2>
+                <div className="section-heading">
+                    <span className="eyebrow">APRENDIZADO ATIVO</span>
+                    <h2>Mais prática, menos estudo passivo</h2>
+                    <p>Uma jornada organizada para transformar conteúdo em decisão clínica.</p>
+                </div>
                 <div className="features-grid">
                     <div className="feature-card">
-                        <h3>🧠 Simulador de Casos com IA</h3>
-                        <p>Enfrente desafios clinicos realistas e receba feedback instantáneo sobre seu diagnóstico e conduta.</p>
+                        <span className="feature-icon"><FiActivity /></span>
+                        <h3>Casos interativos</h3>
+                        <p>Enfrente situações clínicas estruturadas e avance tomando decisões.</p>
                     </div>
                     <div className="feature-card">
-                        <h3>🩸 Banco de Questões</h3>
-                        <p>Teste seus conhecimentos com milhares de questões e quizzes interativos por especialidade.</p>
+                        <span className="feature-icon"><FiTarget /></span>
+                        <h3>Raciocínio por etapas</h3>
+                        <p>Solicite exames, organize hipóteses e proponha uma conduta inicial.</p>
                     </div>
                     <div className="feature-card">
-                        <h3>🎓 Aprendizado Guiado</h3>
-                        <p>Siga trilhas de estudo personalizadas que a nossa IA adapta com base no seu desempenho.</p>
+                        <span className="feature-icon"><FiBarChart2 /></span>
+                        <h3>Evolução visível</h3>
+                        <p>Acompanhe casos concluídos e seu histórico de desempenho no painel.</p>
                     </div>
                     <div className="feature-card">
-                        <h3>🧑‍🏫 Conteúdo de Mentores</h3>
-                        <p>Aprenda com resumos e casos clínicos criados por médicos e residentes experientes</p>
+                        <span className="feature-icon"><FiLayers /></span>
+                        <h3>Várias especialidades</h3>
+                        <p>Pratique cardiologia, neurologia, cirurgia, urgência e muito mais.</p>
                     </div>
                 </div>
             </section>
 
-            {/* Seção de Como Funciona */}
             <section className="how-it-works-section">
-                <h2>Comece a evoluir em 3 passos</h2>
+                <div className="section-heading">
+                    <span className="eyebrow">COMO FUNCIONA</span>
+                    <h2>Uma consulta simulada, passo a passo</h2>
+                </div>
                 <div className="steps-container">
                     <div className="step">
-                        <div className="step-number">1</div>
-                        <h3>Escolha um Caso</h3>
-                        <p>Navegue por especialidades e selecione um dos nossos desafios clinicos realistas.</p>
+                        <div className="step-number"><FiCompass /></div>
+                        <span>01</span>
+                        <h3>Escolha o caso</h3>
+                        <p>Filtre por especialidade e dificuldade para iniciar seu treino.</p>
                     </div>
                     <div className="step">
-                        <div className="step-number">2</div>
-                        <h3>Interaja e Decida</h3>
-                        <p>Solicite exames, formule hipóteses e defina a melhor conduta para o seu paciente virtual</p>
+                        <div className="step-number"><FiBookOpen /></div>
+                        <span>02</span>
+                        <h3>Analise e decida</h3>
+                        <p>Leia o caso, solicite exames e registre seu raciocínio clínico.</p>
                     </div>
                     <div className="step">
-                        <div className="step-number">3</div>
-                        <h3>Evolua com Feedback</h3>
-                        <p>Receba uma análise completa do seu raciocinio e aprenda com explicações detalhadas da IA</p>
+                        <div className="step-number"><FiBarChart2 /></div>
+                        <span>03</span>
+                        <h3>Acompanhe a evolução</h3>
+                        <p>Conclua o desafio e consulte seu progresso no painel pessoal.</p>
                     </div>
                 </div>
             </section>
 
-            {/* Seção de Planos */}
             <section className="plans-section">
-                <h2>Escolha o plano ideal para você</h2>
+                <div className="section-heading">
+                    <span className="eyebrow">PLANOS</span>
+                    <h2>Comece hoje. Evolua no seu ritmo.</h2>
+                    <p>Experimente gratuitamente e avance para o Premium quando quiser.</p>
+                </div>
                 <div className="plans-container">
                     <div className="plan-card">
+                        <span className="plan-kicker">Para começar</span>
                         <h3>Gratuito</h3>
                         <div className="price">R$0</div>
                         <ul>
-                            <li>✔️ 5 Casos Clinicos/mês</li>
-                            <li>✔️ 50 Questões de Quiz</li>
-                            <li>✔️ Feedback Básico da IA</li>
-                            <li>❌ Conteúdo de Mentores</li>
+                            <li><FiCheck /> 5 casos clínicos por mês</li>
+                            <li><FiCheck /> Acesso ao painel pessoal</li>
+                            <li><FiCheck /> Histórico de desempenho</li>
                         </ul>
-                        <Link to="/cadastro" className="plan-button">Começar Agora</Link>
+                        <Link to="/cadastro" className="plan-button">Criar conta grátis</Link>
                     </div>
                     <div className="plan-card premium">
+                        <span className="popular-badge">Mais completo</span>
+                        <span className="plan-kicker">Para ir além</span>
                         <h3>Premium</h3>
                         <div className="price">R$9,90<small>/mês</small></div>
                         <ul>
-                            <li>✔️ Casos Ilimitados</li>
-                            <li>✔️ Quizzes Ilimitados</li>
-                            <li>✔️ IA com Análise Avançada</li>
-                            <li>✔️ Conteúdo de Mentores</li>
+                            <li><FiCheck /> Casos clínicos ilimitados</li>
+                            <li><FiCheck /> Todas as especialidades</li>
+                            <li><FiCheck /> Análises avançadas</li>
                         </ul>
-                        <Link to="/assinatura" className="plan-button">Assinar Premium</Link>
+                        <Link to="/assinatura" className="plan-button">Conhecer o Premium</Link>
                     </div>
                 </div>
+            </section>
+
+            <section className="final-cta">
+                <div>
+                    <span className="eyebrow"><FiUsers /> PARA QUEM VIVE A MEDICINA</span>
+                    <h2>Seu próximo caso começa agora.</h2>
+                    <p>Crie sua conta gratuita e transforme revisão em prática clínica.</p>
+                </div>
+                <Link to="/cadastro" className="cta-button">
+                    Começar agora
+                    <FiArrowRight />
+                </Link>
             </section>
         </div>
     );

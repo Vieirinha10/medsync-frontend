@@ -94,4 +94,11 @@ export const api = {
       method: 'POST',
       body: progress,
     }),
+  finalizeSimulation: (caseId, submission) =>
+    request(`/simulacoes/${caseId}/finalizar`, {
+      method: 'POST',
+      body: submission,
+    }),
+  getSimulationResult: (progressId) =>
+    request(`/simulacoes/resultados/${progressId}`),
 };

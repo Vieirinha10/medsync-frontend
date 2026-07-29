@@ -17,6 +17,7 @@ import CadastroPage from './pages/CadastroPage';
 import LoginPage from './pages/LoginPage';
 import PlanosPage from './pages/PlanosPage';
 import DesafiosPage from './pages/DesafiosPage'; // 1. Importar a nova página
+import ResultadoSimulacaoPage from './pages/ResultadoSimulacaoPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import { clearAuthToken, getAuthToken } from './services/api';
 
@@ -24,6 +25,7 @@ import { clearAuthToken, getAuthToken } from './services/api';
 import './App.css';
 import './styles/refresh.css';
 import './styles/vibrance.css';
+import './styles/simulation-v2.css';
 
 function App() {
   const navigate = useNavigate();
@@ -94,6 +96,7 @@ function App() {
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
           <Route path="/casos" element={<ProtectedRoute><CasosListPage /></ProtectedRoute>} />
           <Route path="/casos/:casoId" element={<ProtectedRoute><SimulacaoCaso /></ProtectedRoute>} />
+          <Route path="/resultados/:progressoId" element={<ProtectedRoute><ResultadoSimulacaoPage /></ProtectedRoute>} />
           <Route path="/desafios" element={<ProtectedRoute><DesafiosPage /></ProtectedRoute>} /> {/* 3. Adicionar a nova rota */}
         </Routes>
       </main>

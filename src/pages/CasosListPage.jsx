@@ -45,7 +45,12 @@ const CasosListPage = () => {
                     <Link to={`/casos/${caso.id}`} key={caso.id} className="caso-card">
                         {caso.nivel_dificuldade === 'Difícil' && <div className="premium-tag">Premium</div>}
                         <div className="card-content">
-                            <span className="specialty">{caso.especialidade}</span>
+                            <div className="case-card-kickers">
+                                <span className="specialty">{caso.especialidade}</span>
+                                {caso.avaliacao_2_disponivel && (
+                                    <span className="agent-feedback-tag">Feedback por agente</span>
+                                )}
+                            </div>
                             <h3>{caso.titulo}</h3>
                             <div className="card-footer">
                                 <span>Dificuldade: {caso.nivel_dificuldade}</span>

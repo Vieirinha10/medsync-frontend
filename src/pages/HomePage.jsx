@@ -167,7 +167,7 @@ const HomePage = () => {
                         <span className="popular-badge">Mais completo</span>
                         <span className="plan-kicker">Para ir além</span>
                         <h3>Premium</h3>
-                        <div className="price">R$9,90<small>/mês</small></div>
+                        <div className="price">R$19,90<small>/mês</small></div>
                         <ul>
                             <li><FiCheck /> Casos clínicos ilimitados</li>
                             <li><FiCheck /> Todas as especialidades</li>

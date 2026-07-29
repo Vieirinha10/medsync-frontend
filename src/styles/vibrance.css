@@ -1,0 +1,421 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&display=swap');
+
+:root {
+  --primary-blue: #078df2;
+  --primary-blue-dark: #036bc0;
+  --primary-blue-soft: #e5f5ff;
+  --electric-blue: #0077ff;
+  --cyan: #16c8f4;
+  --violet: #7457f5;
+  --coral: #ff6b6b;
+  --mint: #20bf8f;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+.price,
+.step-number,
+.nav-links {
+  font-family: 'Sora', sans-serif;
+}
+
+.App {
+  background:
+    radial-gradient(circle at 8% 8%, rgba(0, 119, 255, 0.11), transparent 24rem),
+    radial-gradient(circle at 92% 34%, rgba(22, 200, 244, 0.08), transparent 21rem),
+    #f6f9fb;
+}
+
+.nav-links .login-button {
+  background: linear-gradient(120deg, var(--dark-blue), var(--electric-blue));
+  background-size: 180% 180%;
+  box-shadow: 0 10px 24px rgba(0, 119, 255, 0.22);
+  animation: blueFlow 6s ease infinite;
+}
+
+.home-hero::before {
+  background: radial-gradient(circle, rgba(0, 119, 255, 0.22), transparent 66%);
+  animation: orbDrift 9s ease-in-out infinite;
+}
+
+.home-hero::after {
+  position: absolute;
+  top: 44px;
+  left: 42%;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(22, 200, 244, 0.2), transparent 68%);
+  content: '';
+  filter: blur(4px);
+  pointer-events: none;
+  animation: orbFloat 7s ease-in-out infinite reverse;
+}
+
+.hero-copy {
+  animation: revealUp 0.75s ease-out both;
+}
+
+.hero-copy h1 {
+  text-wrap: balance;
+}
+
+.hero-copy h1 span {
+  background: linear-gradient(
+    90deg,
+    var(--electric-blue),
+    var(--cyan),
+    var(--violet),
+    var(--electric-blue)
+  );
+  background-size: 260% auto;
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: blueFlow 6s linear infinite;
+}
+
+.cta-button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    120deg,
+    var(--electric-blue),
+    var(--cyan),
+    var(--primary-blue-dark)
+  );
+  background-size: 220% 220%;
+  animation: blueFlow 5s ease infinite;
+}
+
+.cta-button::after {
+  position: absolute;
+  top: -70%;
+  left: -35%;
+  width: 32%;
+  height: 240%;
+  background: rgba(255, 255, 255, 0.32);
+  content: '';
+  transform: rotate(22deg);
+  transition: left 0.55s ease;
+}
+
+.cta-button:hover::after {
+  left: 115%;
+}
+
+.hero-proof svg {
+  color: var(--mint);
+}
+
+.clinical-preview {
+  box-shadow:
+    0 34px 90px rgba(0, 119, 255, 0.18),
+    0 0 0 1px rgba(22, 200, 244, 0.08);
+  animation: floatCard 6s ease-in-out infinite;
+}
+
+.preview-topbar > span:first-child {
+  background: var(--electric-blue);
+}
+
+.preview-topbar > span:nth-child(2) {
+  background: var(--cyan);
+}
+
+.preview-topbar > span:nth-child(3) {
+  background: var(--violet);
+}
+
+.patient-icon {
+  background: linear-gradient(145deg, #e5f5ff, #dffcff);
+  box-shadow: 0 9px 24px rgba(0, 119, 255, 0.13);
+  animation: iconPulse 3.5s ease-in-out infinite;
+}
+
+.clinical-decision {
+  background: linear-gradient(120deg, var(--dark-blue), #104f79, var(--electric-blue));
+  background-size: 220% 220%;
+  animation: blueFlow 7s ease infinite;
+}
+
+.features-section {
+  background:
+    linear-gradient(180deg, rgba(239, 250, 255, 0.72), white 24%),
+    white;
+}
+
+.feature-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.feature-card::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--electric-blue), var(--cyan));
+  content: '';
+}
+
+.feature-card:nth-child(2)::before {
+  background: linear-gradient(90deg, var(--violet), #b15cff);
+}
+
+.feature-card:nth-child(3)::before {
+  background: linear-gradient(90deg, var(--coral), #ffad5b);
+}
+
+.feature-card:nth-child(4)::before {
+  background: linear-gradient(90deg, var(--mint), var(--cyan));
+}
+
+.feature-card:hover {
+  border-color: #a8d9ee;
+  box-shadow: 0 20px 44px rgba(0, 119, 255, 0.12);
+  transform: translateY(-7px);
+}
+
+.feature-icon {
+  transition: transform 0.25s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: rotate(-5deg) scale(1.08);
+}
+
+.feature-card:nth-child(2) .feature-icon {
+  background: #f0ecff;
+  color: var(--violet);
+}
+
+.feature-card:nth-child(3) .feature-icon {
+  background: #fff0ed;
+  color: var(--coral);
+}
+
+.feature-card:nth-child(4) .feature-icon {
+  background: #e8faf4;
+  color: var(--mint);
+}
+
+.how-it-works-section {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 85% 25%, rgba(0, 119, 255, 0.3), transparent 26rem),
+    radial-gradient(circle at 15% 90%, rgba(22, 200, 244, 0.16), transparent 24rem),
+    var(--navy);
+}
+
+.step {
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.step:hover {
+  border-color: rgba(105, 199, 244, 0.42);
+  background: rgba(0, 119, 255, 0.11);
+  transform: translateY(-5px);
+}
+
+.step-number {
+  box-shadow: 0 0 28px rgba(22, 200, 244, 0.08);
+}
+
+.plan-card.premium {
+  border-color: var(--electric-blue);
+  background:
+    radial-gradient(circle at 100% 0, rgba(22, 200, 244, 0.2), transparent 13rem),
+    linear-gradient(180deg, #fff, #f0f9ff);
+  box-shadow: 0 22px 58px rgba(0, 119, 255, 0.13);
+}
+
+.popular-badge {
+  background: linear-gradient(110deg, var(--electric-blue), var(--violet));
+  color: white;
+}
+
+.final-cta {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    120deg,
+    var(--dark-blue),
+    var(--electric-blue),
+    #0b526d,
+    var(--violet)
+  );
+  background-size: 300% 300%;
+  box-shadow: 0 24px 64px rgba(0, 119, 255, 0.22);
+  animation: blueFlow 10s ease infinite;
+}
+
+.final-cta::after {
+  position: absolute;
+  top: -90px;
+  right: -70px;
+  width: 240px;
+  height: 240px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 34px rgba(255, 255, 255, 0.04),
+    0 0 0 72px rgba(255, 255, 255, 0.025);
+  content: '';
+  animation: orbFloat 8s ease-in-out infinite;
+}
+
+.final-cta .cta-button {
+  position: relative;
+  z-index: 1;
+}
+
+.auth-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-container::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--electric-blue), var(--cyan), var(--violet));
+  background-size: 200% auto;
+  content: '';
+  animation: blueFlow 5s linear infinite;
+}
+
+.btn-submit {
+  background: linear-gradient(
+    120deg,
+    var(--electric-blue),
+    var(--cyan),
+    var(--primary-blue-dark)
+  );
+  background-size: 220% 220%;
+  animation: blueFlow 5s ease infinite;
+}
+
+.dashboard-card,
+.info-panel,
+.action-panel,
+.challenge-card {
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+.dashboard-card:hover,
+.info-panel:hover,
+.action-panel:hover {
+  border-color: #abd9ec;
+  box-shadow: 0 18px 42px rgba(0, 119, 255, 0.1);
+}
+
+@keyframes blueFlow {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes floatCard {
+  0%,
+  100% {
+    transform: rotate(1.2deg) translateY(0);
+  }
+  50% {
+    transform: rotate(0.4deg) translateY(-10px);
+  }
+}
+
+@keyframes floatCardStraight {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes orbDrift {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate3d(-34px, -18px, 0) scale(1.08);
+  }
+}
+
+@keyframes orbFloat {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(14px) scale(1.05);
+  }
+}
+
+@keyframes iconPulse {
+  0%,
+  100% {
+    box-shadow: 0 9px 24px rgba(0, 119, 255, 0.13);
+  }
+  50% {
+    box-shadow: 0 12px 34px rgba(22, 200, 244, 0.28);
+  }
+}
+
+@media (max-width: 980px) {
+  .clinical-preview {
+    animation-name: floatCardStraight;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

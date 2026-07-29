@@ -23,6 +23,7 @@ import { clearAuthToken, getAuthToken } from './services/api';
 // Importa o arquivo de estilo principal
 import './App.css';
 import './styles/refresh.css';
+import './styles/vibrance.css';
 
 function App() {
   const navigate = useNavigate();

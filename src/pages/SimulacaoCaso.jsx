@@ -9,7 +9,9 @@ const SimulacaoCaso = () => {
     const [caso, setCaso] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [submissionError, setSubmissionError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [statusMessage, setStatusMessage] = useState('');
     const [activeTab, setActiveTab] = useState('exames');
     
     const [selectedExams, setSelectedExams] = useState({});
@@ -41,7 +43,11 @@ const SimulacaoCaso = () => {
         if (!caso || !caso.exames_disponiveis) return;
         const results = caso.exames_disponiveis.filter(ex => selectedExams[ex.id]);
         setExamResults(results);
-        alert(`${results.length} resultado(s) de exame foram liberados!`);
+        setStatusMessage(
+            results.length > 0
+                ? `${results.length} resultado(s) de exame foram liberados.`
+                : 'Selecione ao menos um exame para liberar resultados.'
+        );
     };
 
     const handleSubmit = async () => {
@@ -51,8 +57,23 @@ const SimulacaoCaso = () => {
             conduta_proposta: conduta
         };
 
+        if (!hipotese.trim() || !conduta.trim()) {
+            setSubmissionError('Preencha a hipótese diagnóstica e a conduta antes de finalizar.');
+            return;
+        }
+
+        setSubmissionError(null);
+        setStatusMessage('');
         setIsSubmitting(true);
         try {
+            if (caso.avaliacao_2_disponivel) {
+                const result = await api.finalizeSimulation(Number(casoId), respostas_usuario);
+                navigate(`/resultados/${result.progresso_id}`, {
+                    state: { result },
+                });
+                return;
+            }
+
             await api.saveProgress({
                 id_caso: Number(casoId),
                 respostas_usuario,
@@ -64,7 +85,7 @@ const SimulacaoCaso = () => {
                 navigate('/login', { replace: true });
                 return;
             }
-            setError(error.message);
+            setSubmissionError(error.message);
         } finally {
             setIsSubmitting(false);
         }
@@ -77,6 +98,15 @@ const SimulacaoCaso = () => {
     return (
         <div className="simulation-container page-container">
             <div className="info-panel">
+                <div className="simulation-case-heading">
+                    <div>
+                        <span className="simulation-kicker">{caso.especialidade}</span>
+                        <h1>{caso.titulo}</h1>
+                    </div>
+                    {caso.avaliacao_2_disponivel && (
+                        <span className="agent-feedback-tag">Simulação 2.0</span>
+                    )}
+                </div>
                 <div className="case-section">
                     <h3>História Clínica</h3>
                     <p>{caso.historia_clinica}</p>
@@ -128,6 +158,9 @@ const SimulacaoCaso = () => {
                             ))}
                         </div>
                         <button onClick={handleShowResults} className="btn-secondary">Ver Resultados</button>
+                        {statusMessage && (
+                            <p className="simulation-status" role="status">{statusMessage}</p>
+                        )}
                     </div>
                 )}
 
@@ -159,9 +192,22 @@ const SimulacaoCaso = () => {
                     </div>
                 )}
 
+                {submissionError && (
+                    <p className="simulation-error" role="alert">{submissionError}</p>
+                )}
                 <button onClick={handleSubmit} className="btn-submit" disabled={isSubmitting}>
-                    {isSubmitting ? 'Enviando...' : 'Finalizar e Submeter Respostas'}
+                    {isSubmitting
+                        ? 'Agente avaliando seu raciocínio...'
+                        : caso.avaliacao_2_disponivel
+                            ? 'Finalizar e receber feedback'
+                            : 'Finalizar e salvar respostas'}
                 </button>
+                {caso.avaliacao_2_disponivel && (
+                    <p className="evaluation-note">
+                        O agente compara exames, hipótese e conduta com o gabarito
+                        clínico revisado deste caso.
+                    </p>
+                )}
             </div>
         </div>
     );

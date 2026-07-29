@@ -1,6 +1,11 @@
-const API_URL = (
-  import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000'
-).replace(/\/+$/, '');
+const DEFAULT_API_URL = import.meta.env.DEV
+  ? 'http://127.0.0.1:8000'
+  : 'https://medsync-api-bk15.onrender.com';
+
+const API_URL = (import.meta.env.VITE_API_URL || DEFAULT_API_URL).replace(
+  /\/+$/,
+  '',
+);
 
 const AUTH_TOKEN_KEY = 'authToken';
 

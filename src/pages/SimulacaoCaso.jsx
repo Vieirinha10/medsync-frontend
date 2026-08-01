@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api, ApiError } from '../services/api';
+import ClinicalEvaluationLoader from '../components/ClinicalEvaluationLoader';
 
 const SimulacaoCaso = () => {
     const { casoId } = useParams();
@@ -94,6 +95,9 @@ const SimulacaoCaso = () => {
     if (isLoading) return <div className="page-container">A carregar o caso clínico...</div>;
     if (error) return <div className="page-container">Erro: {error}</div>;
     if (!caso) return <div className="page-container">Não foi possível carregar o caso.</div>;
+    if (isSubmitting) {
+        return <ClinicalEvaluationLoader caseTitle={caso.titulo} />;
+    }
 
     return (
         <div className="simulation-container page-container">

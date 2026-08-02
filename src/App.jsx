@@ -32,6 +32,7 @@ import './styles/challenges.css';
 import './styles/dashboard.css';
 import './styles/footer.css';
 import './styles/institutional.css';
+import './styles/pricing.css';
 
 function App() {
   const navigate = useNavigate();

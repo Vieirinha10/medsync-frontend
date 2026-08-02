@@ -26,6 +26,7 @@ import './App.css';
 import './styles/refresh.css';
 import './styles/vibrance.css';
 import './styles/simulation-v2.css';
+import './styles/challenges.css';
 
 function App() {
   const navigate = useNavigate();

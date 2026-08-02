@@ -315,8 +315,7 @@ h3,
 
 .dashboard-card,
 .info-panel,
-.action-panel,
-.challenge-card {
+.action-panel {
   transition:
     border-color 0.25s ease,
     box-shadow 0.25s ease,

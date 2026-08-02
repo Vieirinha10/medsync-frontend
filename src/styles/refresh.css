@@ -869,8 +869,7 @@ a {
 
 .dashboard-card,
 .info-panel,
-.action-panel,
-.challenge-card {
+.action-panel {
   border: 1px solid var(--border);
   border-radius: 20px;
   box-shadow: var(--shadow-sm);

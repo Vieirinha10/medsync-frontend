@@ -18,6 +18,8 @@ import LoginPage from './pages/LoginPage';
 import PlanosPage from './pages/PlanosPage';
 import DesafiosPage from './pages/DesafiosPage'; // 1. Importar a nova página
 import ResultadoSimulacaoPage from './pages/ResultadoSimulacaoPage';
+import { InstitutionalPage, LegalPage } from './pages/InstitutionalPage';
+import SiteFooter from './components/SiteFooter';
 import ProtectedRoute from './components/ProtectedRoute';
 import { clearAuthToken, getAuthToken } from './services/api';
 
@@ -28,6 +30,8 @@ import './styles/vibrance.css';
 import './styles/simulation-v2.css';
 import './styles/challenges.css';
 import './styles/dashboard.css';
+import './styles/footer.css';
+import './styles/institutional.css';
 
 function App() {
   const navigate = useNavigate();
@@ -37,6 +41,7 @@ function App() {
 
   useEffect(() => {
     setIsMenuOpen(false);
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [location.pathname]);
 
   const handleLogout = () => {
@@ -93,6 +98,11 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/cadastro" element={<CadastroPage />} />
           <Route path="/assinatura" element={<PlanosPage />} />
+          <Route path="/sobre" element={<InstitutionalPage page="sobre" />} />
+          <Route path="/diferenciais" element={<InstitutionalPage page="diferenciais" />} />
+          <Route path="/embaixadores" element={<InstitutionalPage page="embaixadores" />} />
+          <Route path="/termos" element={<LegalPage page="termos" />} />
+          <Route path="/privacidade" element={<LegalPage page="privacidade" />} />
 
           {/* --- Rotas Protegidas --- */}
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
@@ -103,15 +113,7 @@ function App() {
         </Routes>
       </main>
 
-      <footer className="App-footer">
-        <div className="footer-content">
-          <div>
-            <strong>MEDSYNC</strong>
-            <p>Prática clínica guiada para quem aprende medicina.</p>
-          </div>
-          <p>&copy; 2026 MEDSYNC. Todos os direitos reservados.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

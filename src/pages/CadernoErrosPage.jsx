@@ -8,6 +8,7 @@ import {
   FiChevronDown,
   FiChevronUp,
   FiClipboard,
+  FiClock,
   FiFilter,
   FiImage,
   FiRefreshCw,
@@ -33,6 +34,9 @@ const formatDate = (value) => new Intl.DateTimeFormat('pt-BR', {
   month: 'short',
   year: 'numeric',
 }).format(new Date(value));
+
+const isDue = (entry) => entry.proxima_revisao_em
+  && new Date(entry.proxima_revisao_em) <= new Date();
 
 const ErrorMetric = ({ icon, label, value, helper, tone }) => {
   const MetricIcon = icon;
@@ -82,6 +86,7 @@ const CadernoErrosPage = () => {
   const reviewingCount = entries.filter((entry) => entry.status === 'revisando').length;
   const masteredCount = entries.filter((entry) => entry.status === 'dominado').length;
   const repeatedCount = entries.filter((entry) => entry.quantidade_erros > 1).length;
+  const dueCount = entries.filter(isDue).length;
 
   const updateStatus = async (entryId, status) => {
     setUpdatingId(entryId);
@@ -123,6 +128,10 @@ const CadernoErrosPage = () => {
           <span className="error-notebook-kicker"><FiBookOpen /> APRENDIZADO PERSONALIZADO</span>
           <h1>Seu Caderno de Erros</h1>
           <p>Transforme cada dificuldade em um plano de revisão. Seus erros em desafios e casos clínicos aparecem automaticamente aqui.</p>
+          <div className="error-notebook-hero-actions">
+            <Link to="/revisoes"><FiClock /> Revisar agora {dueCount > 0 && <span>{dueCount}</span>}</Link>
+            <small>O MedSync escolhe o melhor momento para cada conteúdo.</small>
+          </div>
         </div>
         <div className="error-notebook-hero-progress" aria-label={`${masteredCount} conteúdos dominados`}>
           <strong>{entries.length ? Math.round((masteredCount / entries.length) * 100) : 0}%</strong>
@@ -206,6 +215,11 @@ const CadernoErrosPage = () => {
                 <div className="study-error-history">
                   <span><FiRepeat /> {entry.quantidade_erros === 1 ? '1 ocorrência' : `${entry.quantidade_erros} ocorrências`}</span>
                   <span>Último registro: {formatDate(entry.visto_ultimo_em)}</span>
+                  {entry.proxima_revisao_em && (
+                    <span className={isDue(entry) ? 'is-due' : ''}>
+                      <FiClock /> {isDue(entry) ? 'Revisão disponível' : `Próxima: ${formatDate(entry.proxima_revisao_em)}`}
+                    </span>
+                  )}
                 </div>
 
                 <button type="button" className="study-error-expand" onClick={() => setExpandedId(isExpanded ? null : entry.id)} aria-expanded={isExpanded}>

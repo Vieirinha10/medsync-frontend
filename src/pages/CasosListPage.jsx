@@ -1,5 +1,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import {
+    FiActivity,
+    FiArrowRight,
+    FiBarChart2,
+    FiCheckCircle,
+    FiStar,
+} from 'react-icons/fi';
 import { api, ApiError } from '../services/api';
 
 const CasosListPage = () => {
@@ -52,7 +59,7 @@ const CasosListPage = () => {
     if (error) return <div className="page-container">Erro ao carregar os casos: {error}</div>;
 
     return (
-        <div className="page-container">
+        <div className="page-container clinical-cases-page">
             <div className="page-header">
                 <h1>Explore os Nossos Casos Clínicos</h1>
                 <p>Selecione um caso abaixo para iniciar a simulação e testar os seus conhecimentos.</p>
@@ -89,27 +96,47 @@ const CasosListPage = () => {
             </p>
             
             <div className="casos-grid">
-                {filteredCases.map(caso => (
-                    <Link to={`/casos/${caso.id}`} key={caso.id} className="caso-card">
-                        {caso.nivel_dificuldade === 'Difícil' && <div className="premium-tag">Premium</div>}
+                {filteredCases.map(caso => {
+                    const isPremium = caso.nivel_dificuldade === 'Difícil';
+                    const difficultyClass = caso.nivel_dificuldade
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .toLocaleLowerCase('pt-BR');
+                    return (
+                    <Link
+                        to={`/casos/${caso.id}`}
+                        key={caso.id}
+                        className={`caso-card clinical-case-card${isPremium ? ' is-premium' : ''}`}
+                    >
+                        <span className="clinical-card-orbit" aria-hidden="true" />
                         <div className="card-content">
+                            <div className="clinical-card-topline">
+                                <span className="clinical-case-number">CASO {String(caso.id).padStart(2, '0')}</span>
+                                {isPremium && <span className="premium-tag"><FiStar /> Premium</span>}
+                            </div>
                             <div className="case-card-kickers">
-                                <span className="specialty">{caso.especialidade}</span>
+                                <span className="specialty"><FiActivity /> {caso.especialidade}</span>
                                 {caso.avaliacao_2_disponivel && (
-                                    <span className="agent-feedback-tag">Feedback estruturado</span>
+                                    <span className="agent-feedback-tag"><FiCheckCircle /> Feedback estruturado</span>
                                 )}
                                 {!caso.avaliacao_2_disponivel && (
                                     <span className="review-status-tag">Rubrica em revisão</span>
                                 )}
                             </div>
                             <h3>{caso.titulo}</h3>
+                            <p className="clinical-card-invitation">Analise o cenário, solicite exames e defina a melhor conduta.</p>
                             <div className="card-footer">
-                                <span>Dificuldade: {caso.nivel_dificuldade}</span>
-                                <span>Tempo: 15 min</span>
+                                <span className={`clinical-difficulty difficulty-${difficultyClass}`}>
+                                    <FiBarChart2 />
+                                    <span>Dificuldade</span>
+                                    <strong>{caso.nivel_dificuldade}</strong>
+                                </span>
+                                <span className="clinical-card-start">Iniciar caso <FiArrowRight /></span>
                             </div>
                         </div>
                     </Link>
-                ))}
+                    );
+                })}
             </div>
             {filteredCases.length === 0 && (
                 <div className="case-empty-state">

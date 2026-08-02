@@ -35,6 +35,7 @@ import './styles/footer.css';
 import './styles/institutional.css';
 import './styles/pricing.css';
 import './styles/admin-academic.css';
+import './styles/atmosphere.css';
 
 function App() {
   const navigate = useNavigate();

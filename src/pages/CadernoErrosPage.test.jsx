@@ -30,6 +30,12 @@ const entry = {
   visto_primeiro_em: '2026-08-01T12:00:00Z',
   visto_ultimo_em: '2026-08-02T12:00:00Z',
   dominado_em: null,
+  revisoes_realizadas: 0,
+  sequencia_acertos: 0,
+  intervalo_dias: 0,
+  fator_facilidade: 2.5,
+  ultima_revisao_em: null,
+  proxima_revisao_em: '2026-08-02T10:00:00Z',
 };
 
 describe('CadernoErrosPage', () => {
@@ -46,6 +52,7 @@ describe('CadernoErrosPage', () => {
 
     expect(await screen.findByRole('heading', { name: 'Pneumotórax hipertensivo à esquerda' })).toBeInTheDocument();
     expect(screen.getByText('2 ocorrências')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Revisar agora/ })).toHaveAttribute('href', '/revisoes');
 
     fireEvent.click(screen.getByRole('button', { name: 'Revisar este conteúdo' }));
     expect(screen.getByText('Pneumonia lobar')).toBeInTheDocument();

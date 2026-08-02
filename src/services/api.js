@@ -122,6 +122,12 @@ export const api = {
   getSimulationResult: (progressId) =>
     request(`/simulacoes/resultados/${progressId}`),
   getStudyErrors: () => request('/caderno-erros/meu'),
+  getDueReviews: () => request('/caderno-erros/revisoes-hoje'),
+  submitSpacedReview: (errorId, rating) =>
+    request(`/caderno-erros/${errorId}/revisar`, {
+      method: 'POST',
+      body: { avaliacao: rating },
+    }),
   recordVisualChallengeAttempt: (attempt) =>
     request('/caderno-erros/desafios', { method: 'POST', body: attempt }),
   updateStudyErrorStatus: (errorId, status) =>

@@ -1,0 +1,172 @@
+.admin-academic-page {
+  --admin-ink: #102f46;
+  --admin-muted: #637d90;
+  max-width: 1240px;
+  padding-top: 38px;
+  padding-bottom: 80px;
+}
+
+.admin-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 18px;
+  color: #0878f9;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.admin-academic-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+  padding: clamp(28px, 5vw, 48px);
+  border: 1px solid rgb(8 120 249 / 13%);
+  border-radius: 28px;
+  background: radial-gradient(circle at 90% 0%, rgb(0 188 213 / 18%), transparent 32%), linear-gradient(135deg, #f1f9ff, #fff 62%, #effcfc);
+  box-shadow: 0 24px 70px rgb(16 83 130 / 9%);
+}
+
+.admin-academic-hero > div > span,
+.admin-data-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #0878f9;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+}
+
+.admin-academic-hero h1 {
+  margin: 10px 0;
+  color: var(--admin-ink);
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  letter-spacing: -0.05em;
+}
+
+.admin-academic-hero p {
+  max-width: 700px;
+  margin: 0;
+  color: var(--admin-muted);
+  line-height: 1.65;
+}
+
+.admin-data-badge {
+  flex: 0 0 auto;
+  padding: 10px 13px;
+  border: 1px solid #c8ebdd;
+  border-radius: 999px;
+  background: #effbf6;
+  color: #16805d;
+  letter-spacing: 0;
+}
+
+.admin-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 22px 0;
+}
+
+.admin-summary-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid #e1edf4;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 12px 35px rgb(25 78 116 / 7%);
+}
+
+.admin-summary-card > span {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #0878f9, #00bcd5);
+  color: #fff;
+  font-size: 1.2rem;
+  place-items: center;
+}
+
+.admin-summary-card div { display: grid; gap: 2px; }
+.admin-summary-card small { color: var(--admin-muted); font-weight: 700; }
+.admin-summary-card strong { color: var(--admin-ink); font-family: 'Sora', sans-serif; font-size: 1.8rem; }
+.admin-summary-card p { margin: 0; color: #7990a0; font-size: 0.78rem; }
+
+.admin-analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.admin-analytics-panel {
+  padding: clamp(24px, 4vw, 34px);
+  border: 1px solid #e0ebf2;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 18px 50px rgb(25 78 116 / 7%);
+}
+
+.admin-panel-heading span { color: #0878f9; font-size: 0.7rem; font-weight: 850; letter-spacing: 0.13em; }
+.admin-panel-heading h2 { margin: 7px 0; color: var(--admin-ink); font-family: 'Sora', sans-serif; font-size: 1.45rem; }
+.admin-panel-heading p { margin: 0; color: var(--admin-muted); font-size: 0.9rem; line-height: 1.55; }
+
+.admin-period-chart { display: grid; gap: 13px; margin-top: 28px; }
+.admin-period-row { display: grid; grid-template-columns: 34px 1fr 58px; align-items: center; gap: 11px; }
+.admin-period-row > strong { color: #31536b; font-size: 0.85rem; }
+.admin-period-row > div { overflow: hidden; height: 10px; border-radius: 999px; background: #edf3f7; }
+.admin-period-row > div span { display: block; height: 100%; min-width: 6px; border-radius: inherit; background: linear-gradient(90deg, #0878f9, #00bcd5); }
+.admin-period-row p { display: flex; justify-content: space-between; gap: 4px; margin: 0; color: var(--admin-muted); font-size: 0.7rem; }
+.admin-period-row p b { color: var(--admin-ink); font-size: 0.85rem; }
+
+.admin-faculty-list { display: grid; gap: 10px; margin-top: 24px; }
+.admin-faculty-list article { display: grid; grid-template-columns: 35px 1fr auto; align-items: center; gap: 12px; padding: 14px; border-radius: 15px; background: #f7fafc; }
+.admin-faculty-list article > span { color: #00a7bd; font-family: 'Sora', sans-serif; font-size: 0.72rem; font-weight: 850; }
+.admin-faculty-list article div { display: grid; gap: 3px; min-width: 0; }
+.admin-faculty-list strong { overflow: hidden; color: var(--admin-ink); font-size: 0.87rem; text-overflow: ellipsis; white-space: nowrap; }
+.admin-faculty-list small { color: var(--admin-muted); font-size: 0.72rem; }
+.admin-faculty-list article > b { display: grid; width: 34px; height: 34px; border-radius: 11px; background: #e7f4ff; color: #0878f9; font-size: 0.84rem; place-items: center; }
+
+.admin-empty-state,
+.admin-academic-state,
+.admin-academic-error {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  min-height: 280px;
+  color: var(--admin-muted, #637d90);
+  text-align: center;
+}
+
+.admin-academic-state { min-height: 60vh; font-weight: 800; }
+.admin-academic-state svg { color: #0878f9; font-size: 2rem; animation: dashboard-spin 1s linear infinite; }
+.admin-academic-error { min-height: 60vh; }
+.admin-academic-error > svg { color: #dc5164; font-size: 2.2rem; }
+.admin-academic-error h1, .admin-academic-error p { margin: 0; }
+.admin-academic-error div { display: flex; gap: 10px; }
+.admin-academic-error a, .admin-academic-error button { display: inline-flex; align-items: center; gap: 7px; padding: 11px 15px; border: 0; border-radius: 11px; background: #0878f9; color: #fff; cursor: pointer; font: inherit; font-weight: 800; text-decoration: none; }
+.admin-academic-error a { background: #eaf4fc; color: #0878f9; }
+.admin-empty-state { min-height: 220px; }
+.admin-empty-state svg { color: #99b3c4; font-size: 1.7rem; }
+.admin-empty-state p, .admin-empty-state strong { margin: 0; }
+
+.admin-privacy-footnote { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 22px 0 0; color: #748b9b; font-size: 0.78rem; text-align: center; }
+
+@media (max-width: 850px) {
+  .admin-academic-hero { align-items: flex-start; flex-direction: column; }
+  .admin-summary-grid, .admin-analytics-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 520px) {
+  .admin-academic-page { padding-top: 24px; }
+  .admin-academic-hero { padding: 25px 21px; border-radius: 22px; }
+  .admin-summary-card { padding: 18px; }
+  .admin-analytics-panel { padding: 22px 18px; }
+  .admin-data-badge { white-space: normal; }
+}

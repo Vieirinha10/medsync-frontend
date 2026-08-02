@@ -11,6 +11,7 @@ import {
   FiCheckCircle,
   FiClock,
   FiRefreshCw,
+  FiShield,
   FiTarget,
   FiTrash2,
   FiTrendingUp,
@@ -324,6 +325,7 @@ const DashboardPage = () => {
         <div className="quick-action-links">
           <Link to="/casos"><FiBookOpen /><span><strong>Casos clínicos</strong><small>Raciocínio completo</small></span><FiArrowRight /></Link>
           <Link to="/desafios"><FiZap /><span><strong>Desafios visuais</strong><small>Diagnóstico rápido</small></span><FiArrowRight /></Link>
+          {user?.is_admin ? <Link to="/admin/academico"><FiShield /><span><strong>Painel acadêmico</strong><small>Dados agregados</small></span><FiArrowRight /></Link> : null}
         </div>
       </section>
 

@@ -18,6 +18,7 @@ import LoginPage from './pages/LoginPage';
 import PlanosPage from './pages/PlanosPage';
 import DesafiosPage from './pages/DesafiosPage'; // 1. Importar a nova página
 import ResultadoSimulacaoPage from './pages/ResultadoSimulacaoPage';
+import AdminAcademicPage from './pages/AdminAcademicPage';
 import { InstitutionalPage, LegalPage } from './pages/InstitutionalPage';
 import SiteFooter from './components/SiteFooter';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -33,6 +34,7 @@ import './styles/dashboard.css';
 import './styles/footer.css';
 import './styles/institutional.css';
 import './styles/pricing.css';
+import './styles/admin-academic.css';
 
 function App() {
   const navigate = useNavigate();
@@ -111,6 +113,7 @@ function App() {
           <Route path="/casos/:casoId" element={<ProtectedRoute><SimulacaoCaso /></ProtectedRoute>} />
           <Route path="/resultados/:progressoId" element={<ProtectedRoute><ResultadoSimulacaoPage /></ProtectedRoute>} />
           <Route path="/desafios" element={<ProtectedRoute><DesafiosPage /></ProtectedRoute>} /> {/* 3. Adicionar a nova rota */}
+          <Route path="/admin/academico" element={<ProtectedRoute><AdminAcademicPage /></ProtectedRoute>} />
         </Routes>
       </main>
 

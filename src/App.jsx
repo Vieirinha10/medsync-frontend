@@ -19,6 +19,7 @@ import PlanosPage from './pages/PlanosPage';
 import DesafiosPage from './pages/DesafiosPage'; // 1. Importar a nova página
 import ResultadoSimulacaoPage from './pages/ResultadoSimulacaoPage';
 import AdminAcademicPage from './pages/AdminAcademicPage';
+import CadernoErrosPage from './pages/CadernoErrosPage';
 import { InstitutionalPage, LegalPage } from './pages/InstitutionalPage';
 import SiteFooter from './components/SiteFooter';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -36,6 +37,7 @@ import './styles/institutional.css';
 import './styles/pricing.css';
 import './styles/admin-academic.css';
 import './styles/atmosphere.css';
+import './styles/error-notebook.css';
 
 function App() {
   const navigate = useNavigate();
@@ -76,6 +78,7 @@ function App() {
           <div className={`nav-links ${isMenuOpen ? 'is-open' : ''}`}>
             <Link to="/casos">Casos clínicos</Link>
             <Link to="/desafios">Desafios</Link>
+            <Link to="/caderno-erros">Caderno de erros</Link>
             <Link to="/dashboard">Meu painel</Link>
             <Link to="/assinatura">Planos</Link>
             {isAuthenticated ? (
@@ -114,6 +117,7 @@ function App() {
           <Route path="/casos/:casoId" element={<ProtectedRoute><SimulacaoCaso /></ProtectedRoute>} />
           <Route path="/resultados/:progressoId" element={<ProtectedRoute><ResultadoSimulacaoPage /></ProtectedRoute>} />
           <Route path="/desafios" element={<ProtectedRoute><DesafiosPage /></ProtectedRoute>} /> {/* 3. Adicionar a nova rota */}
+          <Route path="/caderno-erros" element={<ProtectedRoute><CadernoErrosPage /></ProtectedRoute>} />
           <Route path="/admin/academico" element={<ProtectedRoute><AdminAcademicPage /></ProtectedRoute>} />
         </Routes>
       </main>

@@ -121,4 +121,14 @@ export const api = {
     }),
   getSimulationResult: (progressId) =>
     request(`/simulacoes/resultados/${progressId}`),
+  getStudyErrors: () => request('/caderno-erros/meu'),
+  recordVisualChallengeAttempt: (attempt) =>
+    request('/caderno-erros/desafios', { method: 'POST', body: attempt }),
+  updateStudyErrorStatus: (errorId, status) =>
+    request(`/caderno-erros/${errorId}/status`, {
+      method: 'PATCH',
+      body: { status },
+    }),
+  deleteStudyError: (errorId) =>
+    request(`/caderno-erros/${errorId}`, { method: 'DELETE' }),
 };

@@ -104,6 +104,7 @@ export const api = {
       body: credentials,
     }),
   getCurrentUser: () => request('/usuarios/me'),
+  getAcademicAnalytics: () => request('/admin/analytics/academico'),
   getCases: () => request('/casos-clinicos/'),
   getCase: (caseId) => request(`/casos-clinicos/${caseId}`),
   getProgress: () => request('/progresso/meu'),

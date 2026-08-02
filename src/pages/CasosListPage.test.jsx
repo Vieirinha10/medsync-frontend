@@ -36,6 +36,9 @@ describe('CasosListPage', () => {
 
     expect(await screen.findByText('Tromboembolismo pulmonar')).toBeInTheDocument();
     expect(screen.getByText('Rubrica em revisão')).toBeInTheDocument();
+    expect(screen.getByText('Premium')).toBeInTheDocument();
+    expect(screen.getByText('Difícil', { selector: '.clinical-difficulty strong' })).toBeInTheDocument();
+    expect(screen.queryByText(/Tempo:/)).not.toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText('Buscar casos'), {
       target: { value: 'Ramsay' },

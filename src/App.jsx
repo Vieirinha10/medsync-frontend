@@ -42,6 +42,7 @@ import './styles/atmosphere.css';
 import './styles/error-notebook.css';
 import './styles/learning-paths.css';
 import './styles/spaced-review.css';
+import './styles/clinical-cards.css';
 
 function App() {
   const navigate = useNavigate();

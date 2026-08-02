@@ -107,6 +107,7 @@ export const api = {
   getCases: () => request('/casos-clinicos/'),
   getCase: (caseId) => request(`/casos-clinicos/${caseId}`),
   getProgress: () => request('/progresso/meu'),
+  resetProgress: () => request('/progresso/meu', { method: 'DELETE' }),
   saveProgress: (progress) =>
     request('/progresso/registrar', {
       method: 'POST',

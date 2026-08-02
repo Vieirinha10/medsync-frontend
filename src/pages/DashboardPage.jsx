@@ -218,6 +218,8 @@ const DashboardPage = () => {
         <div className="dashboard-user-details">
           <span><FiUser /> {user?.nome}</span>
           <span>{user?.email}</span>
+          {user?.periodo_curso ? <span><FiBookOpen /> {user.periodo_curso}º período</span> : null}
+          {user?.faculdade ? <span>{user.faculdade}</span> : null}
           <span><FiCalendar /> Membro desde {formatDate(user?.created_at, { month: 'long' })}</span>
         </div>
       </header>

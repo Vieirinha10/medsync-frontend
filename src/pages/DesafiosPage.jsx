@@ -13,6 +13,7 @@ import {
   FiZap,
 } from 'react-icons/fi';
 import { visualChallenges } from '../data/visualChallenges';
+import { api } from '../services/api';
 
 const OPTION_LABELS = ['A', 'B', 'C', 'D'];
 const FAVORITES_STORAGE_KEY = 'medsync:visual-challenge-favorites';
@@ -35,6 +36,7 @@ const DesafiosPage = () => {
   const [difficultyFilter, setDifficultyFilter] = useState(ALL_DIFFICULTIES);
   const [categoryFilter, setCategoryFilter] = useState(ALL_CATEGORIES);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [notebookMessage, setNotebookMessage] = useState('');
   const touchStartX = useRef(null);
 
   const categories = useMemo(
@@ -124,6 +126,32 @@ const DesafiosPage = () => {
       ...current,
       [currentChallenge.id]: optionId,
     }));
+
+    const selectedOption = currentChallenge.options.find((option) => option.id === optionId);
+    const correctOption = currentChallenge.options.find(
+      (option) => option.id === currentChallenge.correctOptionId,
+    );
+    setNotebookMessage('');
+    void api.recordVisualChallengeAttempt({
+      desafio_id: currentChallenge.id,
+      titulo: currentChallenge.correctDiagnosis,
+      especialidade: currentChallenge.category,
+      dificuldade: currentChallenge.difficulty,
+      pergunta: currentChallenge.question,
+      resposta_usuario: selectedOption?.label || optionId,
+      resposta_correta: correctOption?.label || currentChallenge.correctDiagnosis,
+      explicacao: currentChallenge.explanation,
+      imagem: currentChallenge.imageSrc,
+    }).then((entry) => {
+      if (optionId !== currentChallenge.correctOptionId && entry) {
+        setNotebookMessage('Erro salvo automaticamente no seu Caderno de Erros.');
+      }
+      if (optionId === currentChallenge.correctOptionId && entry?.status === 'dominado') {
+        setNotebookMessage('Ótimo! Este conteúdo foi marcado como dominado no seu caderno.');
+      }
+    }).catch(() => {
+      // A correção do desafio continua disponível mesmo se a sincronização falhar.
+    });
   };
 
   const toggleFavorite = (challengeId) => {
@@ -336,6 +364,8 @@ const DesafiosPage = () => {
                   <p className="visual-challenge-instruction">
                     Selecione apenas uma alternativa. A resposta não poderá ser alterada.
                   </p>
+
+                  <p className="visual-notebook-message" aria-live="polite">{notebookMessage}</p>
 
                   <div className="visual-options" role="group" aria-label="Alternativas diagnósticas">
                     {currentChallenge.options.map((option, index) => {

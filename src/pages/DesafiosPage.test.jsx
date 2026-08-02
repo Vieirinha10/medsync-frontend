@@ -1,10 +1,14 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import DesafiosPage from './DesafiosPage';
+import { api } from '../services/api';
 
 describe('DesafiosPage', () => {
   beforeEach(() => window.localStorage.clear());
-  afterEach(() => cleanup());
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
 
   it('corrige a alternativa, explica o diagnóstico e preserva a resposta ao voltar', () => {
     render(<DesafiosPage />);
@@ -49,5 +53,22 @@ describe('DesafiosPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Somente favoritos/ }));
     expect(screen.getByRole('heading', { name: 'Nenhum desafio encontrado' })).toBeInTheDocument();
+  });
+
+  it('salva automaticamente uma resposta incorreta no Caderno de Erros', async () => {
+    const recordAttempt = vi.spyOn(api, 'recordVisualChallengeAttempt').mockResolvedValue({
+      id: 1,
+      status: 'pendente',
+    });
+    render(<DesafiosPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: /^A\s*Pneumonia lobar$/ }));
+
+    await waitFor(() => expect(recordAttempt).toHaveBeenCalledWith(expect.objectContaining({
+      desafio_id: 'pneumotorax-hipertensivo',
+      resposta_usuario: 'Pneumonia lobar',
+      resposta_correta: 'Pneumotórax hipertensivo à esquerda',
+    })));
+    expect(screen.getByText(/Erro salvo automaticamente/)).toBeInTheDocument();
   });
 });

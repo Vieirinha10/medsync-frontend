@@ -131,4 +131,10 @@ export const api = {
     }),
   deleteStudyError: (errorId) =>
     request(`/caderno-erros/${errorId}`, { method: 'DELETE' }),
+  getLearningPaths: () => request('/trilhas'),
+  completeLearningPathActivity: (pathId, activityId, score) =>
+    request(`/trilhas/${pathId}/atividades/${activityId}/concluir`, {
+      method: 'POST',
+      body: { pontuacao: score },
+    }),
 };

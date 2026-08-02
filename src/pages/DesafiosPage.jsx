@@ -43,6 +43,7 @@ const loadFavorites = () => {
 };
 
 const DesafiosPage = () => {
+  const [challenges, setChallenges] = useState(visualChallenges);
   const [currentIndex, setCurrentIndex] = useState(getInitialChallengeIndex);
   const [answers, setAnswers] = useState({});
   const [favorites, setFavorites] = useState(loadFavorites);
@@ -54,24 +55,24 @@ const DesafiosPage = () => {
   const trailContext = useMemo(getTrailContext, []);
 
   const categories = useMemo(
-    () => [...new Set(visualChallenges.map((challenge) => challenge.category))].sort(),
-    [],
+    () => [...new Set(challenges.map((challenge) => challenge.category))].sort(),
+    [challenges],
   );
   const difficulties = useMemo(
-    () => [...new Set(visualChallenges.map((challenge) => challenge.difficulty))],
-    [],
+    () => [...new Set(challenges.map((challenge) => challenge.difficulty))],
+    [challenges],
   );
   const favoriteChallenges = useMemo(
-    () => visualChallenges.filter((challenge) => favorites.includes(challenge.id)),
-    [favorites],
+    () => challenges.filter((challenge) => favorites.includes(challenge.id)),
+    [challenges, favorites],
   );
   const filteredChallenges = useMemo(
-    () => visualChallenges.filter((challenge) => (
+    () => challenges.filter((challenge) => (
       (difficultyFilter === ALL_DIFFICULTIES || challenge.difficulty === difficultyFilter)
       && (categoryFilter === ALL_CATEGORIES || challenge.category === categoryFilter)
       && (!favoritesOnly || favorites.includes(challenge.id))
     )),
-    [categoryFilter, difficultyFilter, favorites, favoritesOnly],
+    [categoryFilter, challenges, difficultyFilter, favorites, favoritesOnly],
   );
 
   const currentChallenge = filteredChallenges[currentIndex] ?? null;
@@ -79,7 +80,7 @@ const DesafiosPage = () => {
   const isAnswered = Boolean(selectedOptionId);
   const answeredCount = Object.keys(answers).length;
   const visibleAnsweredCount = filteredChallenges.filter((challenge) => answers[challenge.id]).length;
-  const correctCount = visualChallenges.filter(
+  const correctCount = challenges.filter(
     (challenge) => answers[challenge.id] === challenge.correctOptionId,
   ).length;
   const visibleCorrectCount = filteredChallenges.filter(
@@ -103,6 +104,30 @@ const DesafiosPage = () => {
   useEffect(() => {
     window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
   }, [favorites]);
+
+  useEffect(() => {
+    if (!api.getDynamicChallenges) return;
+    void api.getDynamicChallenges().then((items) => {
+      const dynamic = items.map((item) => ({
+        id: item.id,
+        category: item.especialidade,
+        difficulty: item.dificuldade,
+        modality: item.modalidade,
+        imageSrc: item.imagem_url,
+        imageAlt: item.imagem_alt,
+        question: item.pergunta,
+        options: item.alternativas.map((label, index) => ({ id: `option-${index + 1}`, label })),
+        correctOptionId: `option-${item.alternativa_correta + 1}`,
+        correctDiagnosis: item.diagnostico_correto,
+        explanation: item.explicacao,
+        keyFindings: item.achados_chave,
+        source: { credit: item.fonte_credito, license: item.fonte_licenca, url: item.fonte_url },
+      }));
+      setChallenges([...dynamic, ...visualChallenges.filter(
+        (builtIn) => !dynamic.some((item) => item.id === builtIn.id),
+      )]);
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     setCurrentIndex((index) => Math.min(index, Math.max(filteredChallenges.length - 1, 0)));
@@ -253,7 +278,7 @@ const DesafiosPage = () => {
         <aside className="visual-filter-island" aria-label="Filtros dos desafios">
           <div className="visual-filter-heading">
             <span><FiFilter aria-hidden="true" /></span>
-            <div><strong>Filtrar desafios</strong><small>{filteredChallenges.length} de {visualChallenges.length} disponíveis</small></div>
+            <div><strong>Filtrar desafios</strong><small>{filteredChallenges.length} de {challenges.length} disponíveis</small></div>
           </div>
 
           <div className="visual-filter-group">

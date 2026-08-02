@@ -25,6 +25,7 @@ import RevisoesPage from './pages/RevisoesPage';
 import { InstitutionalPage, LegalPage } from './pages/InstitutionalPage';
 import SiteFooter from './components/SiteFooter';
 import ProtectedRoute from './components/ProtectedRoute';
+import AnnouncementBanner from './components/AnnouncementBanner';
 import { clearAuthToken, getAuthToken } from './services/api';
 
 // Importa o arquivo de estilo principal
@@ -43,6 +44,7 @@ import './styles/error-notebook.css';
 import './styles/learning-paths.css';
 import './styles/spaced-review.css';
 import './styles/clinical-cards.css';
+import './styles/admin-operations.css';
 
 function App() {
   const navigate = useNavigate();
@@ -105,6 +107,8 @@ function App() {
         </nav>
       </header>
 
+      <AnnouncementBanner />
+
       <main className="App-main">
         <Routes>
           {/* --- Rotas Públicas --- */}
@@ -129,6 +133,7 @@ function App() {
           <Route path="/trilhas/:trilhaId" element={<ProtectedRoute><TrilhasPage /></ProtectedRoute>} />
           <Route path="/revisoes" element={<ProtectedRoute><RevisoesPage /></ProtectedRoute>} />
           <Route path="/admin/academico" element={<ProtectedRoute><AdminAcademicPage /></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute><AdminAcademicPage /></ProtectedRoute>} />
         </Routes>
       </main>
 

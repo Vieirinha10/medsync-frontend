@@ -1,0 +1,287 @@
+/* Camada visual global: mais cor e movimento sem alterar a estrutura das páginas. */
+
+:root {
+  --medsync-sky: #eef8ff;
+  --medsync-ice: #f2fcfc;
+  --medsync-lilac: #f6f2ff;
+  --medsync-warm: #fff7ed;
+  --medsync-color-shadow: 0 18px 50px rgb(22 113 175 / 10%);
+}
+
+::selection {
+  background: rgb(22 200 244 / 25%);
+  color: #073b60;
+}
+
+body {
+  background: #edf7fc;
+  scrollbar-color: #7dcce8 #edf7fc;
+}
+
+.App {
+  background:
+    radial-gradient(circle at 4% 11%, rgb(0 119 255 / 15%), transparent 25rem),
+    radial-gradient(circle at 96% 24%, rgb(22 200 244 / 14%), transparent 27rem),
+    radial-gradient(circle at 19% 70%, rgb(116 87 245 / 8%), transparent 24rem),
+    radial-gradient(circle at 87% 88%, rgb(32 191 143 / 9%), transparent 25rem),
+    linear-gradient(145deg, #f7fbff, #eef9fc 50%, #f8f5ff);
+  background-size: 115% 115%, 120% 120%, 110% 110%, 115% 115%, auto;
+  animation: medsyncAmbientShift 24s ease-in-out infinite alternate;
+}
+
+.App-header {
+  border-bottom-color: rgb(64 166 219 / 20%);
+  background:
+    linear-gradient(100deg, rgb(255 255 255 / 94%), rgb(238 249 255 / 92%) 55%, rgb(245 242 255 / 91%));
+  box-shadow: 0 8px 30px rgb(32 119 173 / 8%);
+}
+
+.App-main {
+  background:
+    linear-gradient(90deg, transparent, rgb(255 255 255 / 20%) 48%, transparent);
+}
+
+.page-container {
+  animation: medsyncPageReveal 480ms ease-out both;
+}
+
+.nav-links a:not(.login-button),
+.nav-links .logout-button {
+  transition: color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.nav-links a:not(.login-button):hover,
+.nav-links .logout-button:hover {
+  background: linear-gradient(135deg, #e3f5ff, #edf8ff 60%, #f1eeff);
+  box-shadow: 0 8px 20px rgb(8 120 249 / 10%);
+  transform: translateY(-1px);
+}
+
+.nav-links .login-button,
+.cta-button,
+.btn-submit,
+.clinical-submit,
+.pricing-primary-action,
+.pricing-plan-button.is-primary,
+.dashboard-primary-link,
+.primary-result-action {
+  background-size: 220% 220%;
+  box-shadow: 0 14px 30px rgb(0 126 225 / 21%);
+  animation: medsyncGradientFlow 7s ease infinite;
+}
+
+.auth-container,
+.toolbar,
+.visual-filter-island,
+.dashboard-user-details,
+.dashboard-metric-card,
+.dashboard-panel,
+.admin-summary-card,
+.admin-analytics-panel,
+.institutional-highlights article,
+.institutional-content > section,
+.legal-document,
+.pricing-comparison,
+.pricing-faq-list details,
+.simulation-layout .action-panel,
+.clinical-info-card,
+.decision-panel,
+.result-panel,
+.score-breakdown-card,
+.visual-progress-card,
+.visual-challenge-card {
+  border-color: rgb(56 154 211 / 17%);
+  background:
+    radial-gradient(circle at 100% 0, rgb(22 200 244 / 7%), transparent 11rem),
+    linear-gradient(145deg, rgb(255 255 255 / 97%), rgb(242 249 255 / 94%));
+  box-shadow: var(--medsync-color-shadow);
+}
+
+.auth-container,
+.visual-filter-island,
+.dashboard-panel,
+.admin-analytics-panel,
+.institutional-content > section,
+.simulation-layout .action-panel,
+.decision-panel,
+.result-panel {
+  backdrop-filter: blur(14px);
+}
+
+.feature-card,
+.caso-card,
+.plan-card,
+.dashboard-metric-card,
+.admin-summary-card,
+.institutional-highlights article,
+.visual-challenge-card,
+.exam-option-card,
+.score-breakdown-card {
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease, background 220ms ease;
+}
+
+.feature-card:hover,
+.caso-card:hover,
+.plan-card:hover,
+.dashboard-metric-card:hover,
+.admin-summary-card:hover,
+.institutional-highlights article:hover,
+.visual-challenge-card:hover,
+.exam-option-card:hover,
+.score-breakdown-card:hover {
+  border-color: rgb(0 151 220 / 29%);
+  box-shadow: 0 22px 54px rgb(0 123 205 / 15%);
+  transform: translateY(-4px);
+}
+
+.caso-card {
+  background:
+    radial-gradient(circle at 100% 0, rgb(22 200 244 / 11%), transparent 9rem),
+    linear-gradient(145deg, #fff, #f1f9ff);
+}
+
+.caso-card:nth-child(3n + 2) {
+  background:
+    radial-gradient(circle at 100% 0, rgb(116 87 245 / 9%), transparent 9rem),
+    linear-gradient(145deg, #fff, #f7f4ff);
+}
+
+.caso-card:nth-child(3n) {
+  background:
+    radial-gradient(circle at 100% 0, rgb(32 191 143 / 9%), transparent 9rem),
+    linear-gradient(145deg, #fff, #f1fbf7);
+}
+
+.dashboard-metric-card.blue,
+.admin-summary-card:nth-child(1) {
+  background: linear-gradient(145deg, #fff, #edf6ff);
+}
+
+.dashboard-metric-card.cyan,
+.admin-summary-card:nth-child(2) {
+  background: linear-gradient(145deg, #fff, #ecfbfc);
+}
+
+.dashboard-metric-card.violet,
+.admin-summary-card:nth-child(3) {
+  background: linear-gradient(145deg, #fff, #f4f0ff);
+}
+
+.dashboard-metric-card.green {
+  background: linear-gradient(145deg, #fff, #edf9f4);
+}
+
+.user-dashboard-hero,
+.admin-academic-hero,
+.institutional-hero,
+.legal-hero,
+.simulation-hero,
+.result-hero {
+  background-size: 125% 125%;
+  box-shadow: 0 28px 74px rgb(0 112 185 / 13%);
+  animation: medsyncHeroGlow 15s ease-in-out infinite alternate;
+}
+
+.visual-score,
+.visual-favorite-stat,
+.dashboard-toast,
+.admin-data-badge,
+.agent-feedback-tag,
+.review-status-tag,
+.pricing-guarantee {
+  box-shadow: 0 10px 26px rgb(0 124 195 / 9%);
+}
+
+.metric-icon,
+.admin-summary-card > span,
+.panel-icon,
+.institutional-hero-icon,
+.visual-filter-heading > span {
+  box-shadow: 0 12px 28px rgb(0 126 219 / 20%);
+  transition: box-shadow 220ms ease, transform 220ms ease;
+}
+
+.dashboard-metric-card:hover .metric-icon,
+.admin-summary-card:hover > span,
+.clinical-info-card:hover .panel-icon,
+.institutional-hero:hover .institutional-hero-icon,
+.visual-filter-island:hover .visual-filter-heading > span {
+  box-shadow: 0 15px 34px rgb(0 149 220 / 29%);
+  transform: rotate(-3deg) scale(1.05);
+}
+
+.form-group input,
+.form-group select,
+.toolbar input,
+.toolbar select,
+.clinical-editor .transcription-box {
+  border-color: rgb(70 150 196 / 22%);
+  background: linear-gradient(135deg, #fbfdff, #eff8ff);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.toolbar input:focus,
+.toolbar select:focus,
+.clinical-editor .transcription-box:focus {
+  border-color: #16aee0;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgb(22 200 244 / 15%), 0 10px 28px rgb(0 119 255 / 8%);
+}
+
+.clinical-step.active,
+.exam-option-card.selected {
+  background: linear-gradient(135deg, #fff, #e9f7ff);
+  box-shadow: 0 12px 30px rgb(0 126 219 / 12%);
+}
+
+.visual-difficulty-options button.is-active,
+.visual-favorites-filter.is-active {
+  box-shadow: 0 9px 22px rgb(0 119 255 / 15%);
+}
+
+.site-footer {
+  background:
+    radial-gradient(circle at 12% 0, rgb(22 200 244 / 18%), transparent 23rem),
+    radial-gradient(circle at 88% 100%, rgb(116 87 245 / 15%), transparent 22rem),
+    linear-gradient(145deg, #071f31, #0b344d 58%, #10294d);
+}
+
+@keyframes medsyncAmbientShift {
+  0% { background-position: 0% 0%, 100% 10%, 5% 80%, 100% 100%, 0 0; }
+  100% { background-position: 8% 4%, 91% 18%, 14% 73%, 92% 92%, 0 0; }
+}
+
+@keyframes medsyncGradientFlow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes medsyncPageReveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes medsyncHeroGlow {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+
+@media (max-width: 760px) {
+  .App {
+    background-size: 170% 170%, 175% 175%, 160% 160%, 170% 170%, auto;
+  }
+
+  .feature-card:hover,
+  .caso-card:hover,
+  .plan-card:hover,
+  .dashboard-metric-card:hover,
+  .admin-summary-card:hover,
+  .institutional-highlights article:hover,
+  .visual-challenge-card:hover,
+  .exam-option-card:hover,
+  .score-breakdown-card:hover {
+    transform: translateY(-2px);
+  }
+}

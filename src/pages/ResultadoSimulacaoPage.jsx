@@ -58,6 +58,27 @@ const ResultadoSimulacaoPage = () => {
       });
   }, [navigate, progressoId, result]);
 
+  useEffect(() => {
+    if (!result) return;
+    const params = new URLSearchParams(window.location.search);
+    const pathId = params.get('trilha');
+    const activityId = params.get('atividade');
+    if (!pathId || !activityId) return;
+
+    const storageKey = `medsync:trail-result:${progressoId}:${pathId}:${activityId}`;
+    if (window.sessionStorage.getItem(storageKey)) return;
+    window.sessionStorage.setItem(storageKey, 'syncing');
+    void api.completeLearningPathActivity(
+      pathId,
+      activityId,
+      result.pontuacao_total,
+    ).then(() => {
+      window.sessionStorage.setItem(storageKey, 'completed');
+    }).catch(() => {
+      window.sessionStorage.removeItem(storageKey);
+    });
+  }, [progressoId, result]);
+
   if (isLoading) {
     return <div className="page-container result-state">Carregando sua avaliação...</div>;
   }

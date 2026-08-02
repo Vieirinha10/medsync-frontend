@@ -20,6 +20,19 @@ const FAVORITES_STORAGE_KEY = 'medsync:visual-challenge-favorites';
 const ALL_DIFFICULTIES = 'Todas';
 const ALL_CATEGORIES = 'Todas';
 
+const getTrailContext = () => {
+  const params = new URLSearchParams(window.location.search);
+  const pathId = params.get('trilha');
+  const activityId = params.get('atividade');
+  return pathId && activityId ? { pathId, activityId } : null;
+};
+
+const getInitialChallengeIndex = () => {
+  const challengeId = new URLSearchParams(window.location.search).get('desafio');
+  const index = visualChallenges.findIndex((challenge) => challenge.id === challengeId);
+  return index >= 0 ? index : 0;
+};
+
 const loadFavorites = () => {
   try {
     const savedFavorites = JSON.parse(window.localStorage.getItem(FAVORITES_STORAGE_KEY));
@@ -30,7 +43,7 @@ const loadFavorites = () => {
 };
 
 const DesafiosPage = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(getInitialChallengeIndex);
   const [answers, setAnswers] = useState({});
   const [favorites, setFavorites] = useState(loadFavorites);
   const [difficultyFilter, setDifficultyFilter] = useState(ALL_DIFFICULTIES);
@@ -38,6 +51,7 @@ const DesafiosPage = () => {
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [notebookMessage, setNotebookMessage] = useState('');
   const touchStartX = useRef(null);
+  const trailContext = useMemo(getTrailContext, []);
 
   const categories = useMemo(
     () => [...new Set(visualChallenges.map((challenge) => challenge.category))].sort(),
@@ -152,6 +166,23 @@ const DesafiosPage = () => {
     }).catch(() => {
       // A correção do desafio continua disponível mesmo se a sincronização falhar.
     });
+
+    if (trailContext) {
+      const score = optionId === currentChallenge.correctOptionId ? 100 : 0;
+      void api.completeLearningPathActivity(
+        trailContext.pathId,
+        trailContext.activityId,
+        score,
+      ).then(() => {
+        setNotebookMessage((message) => (
+          message
+            ? `${message} Progresso da trilha atualizado.`
+            : 'Atividade concluída e progresso da trilha atualizado.'
+        ));
+      }).catch(() => {
+        // O desafio permanece funcional se o progresso da trilha não sincronizar.
+      });
+    }
   };
 
   const toggleFavorite = (challengeId) => {

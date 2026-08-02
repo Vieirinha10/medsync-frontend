@@ -8,6 +8,7 @@ describe('DesafiosPage', () => {
   afterEach(() => {
     cleanup();
     vi.restoreAllMocks();
+    window.history.pushState({}, '', '/desafios');
   });
 
   it('corrige a alternativa, explica o diagnóstico e preserva a resposta ao voltar', () => {
@@ -70,5 +71,26 @@ describe('DesafiosPage', () => {
       resposta_correta: 'Pneumotórax hipertensivo à esquerda',
     })));
     expect(screen.getByText(/Erro salvo automaticamente/)).toBeInTheDocument();
+  });
+
+  it('abre o desafio indicado e registra a conclusão da atividade da trilha', async () => {
+    window.history.pushState(
+      {},
+      '',
+      '/desafios?desafio=fibrilacao-atrial&trilha=cardiopulmonar-na-pratica&atividade=cardiopulmonar-fa',
+    );
+    vi.spyOn(api, 'recordVisualChallengeAttempt').mockResolvedValue(null);
+    const completeActivity = vi.spyOn(api, 'completeLearningPathActivity').mockResolvedValue({});
+
+    render(<DesafiosPage />);
+    expect(screen.getByText('Qual ritmo está representado neste eletrocardiograma?')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: /^C\s*Fibrilação atrial$/ }));
+    await waitFor(() => expect(completeActivity).toHaveBeenCalledWith(
+      'cardiopulmonar-na-pratica',
+      'cardiopulmonar-fa',
+      100,
+    ));
+    expect(screen.getByText(/progresso da trilha atualizado/i)).toBeInTheDocument();
   });
 });

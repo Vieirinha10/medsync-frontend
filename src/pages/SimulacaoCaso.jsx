@@ -118,7 +118,17 @@ const SimulacaoCaso = () => {
         setIsSubmitting(true);
         try {
             const result = await api.finalizeSimulation(Number(casoId), respostasUsuario);
-            navigate(`/resultados/${result.progresso_id}`, { state: { result } });
+            const currentParams = new URLSearchParams(window.location.search);
+            const resultParams = new URLSearchParams();
+            if (currentParams.get('trilha') && currentParams.get('atividade')) {
+                resultParams.set('trilha', currentParams.get('trilha'));
+                resultParams.set('atividade', currentParams.get('atividade'));
+            }
+            const resultSearch = resultParams.toString();
+            navigate(
+                `/resultados/${result.progresso_id}${resultSearch ? `?${resultSearch}` : ''}`,
+                { state: { result } },
+            );
         } catch (requestError) {
             if (requestError instanceof ApiError && requestError.status === 401) {
                 navigate('/login', { replace: true });

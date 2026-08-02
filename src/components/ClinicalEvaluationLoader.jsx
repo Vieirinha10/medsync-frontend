@@ -50,7 +50,7 @@ const ClinicalEvaluationLoader = ({ caseTitle }) => {
         <span className="evaluation-loader-kicker">ANÁLISE CLÍNICA EM ANDAMENTO</span>
         <h1>Construindo seu feedback</h1>
         <p className="evaluation-loader-description">
-          O agente clínico está comparando suas decisões com a rubrica revisada
+          O avaliador clínico está comparando suas decisões com a rubrica revisada
           {caseTitle ? ` de “${caseTitle}”` : ' deste caso'}.
         </p>
 

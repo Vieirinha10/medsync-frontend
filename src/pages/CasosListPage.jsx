@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api, ApiError } from '../services/api';
 
@@ -6,6 +6,9 @@ const CasosListPage = () => {
     const [casos, setCasos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [specialty, setSpecialty] = useState('');
+    const [difficulty, setDifficulty] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,6 +27,27 @@ const CasosListPage = () => {
         });
     }, [navigate]);
 
+    const specialties = useMemo(
+        () => [...new Set(casos.map(caso => caso.especialidade))].sort(),
+        [casos]
+    );
+    const difficulties = useMemo(
+        () => [...new Set(casos.map(caso => caso.nivel_dificuldade))].sort(),
+        [casos]
+    );
+    const filteredCases = useMemo(() => {
+        const normalizedSearch = searchTerm.trim().toLocaleLowerCase('pt-BR');
+        return casos.filter(caso => {
+            const matchesSearch = !normalizedSearch
+                || `${caso.titulo} ${caso.especialidade}`
+                    .toLocaleLowerCase('pt-BR')
+                    .includes(normalizedSearch);
+            return matchesSearch
+                && (!specialty || caso.especialidade === specialty)
+                && (!difficulty || caso.nivel_dificuldade === difficulty);
+        });
+    }, [casos, difficulty, searchTerm, specialty]);
+
     if (isLoading) return <div className="page-container">A carregar os casos clínicos...</div>;
     if (error) return <div className="page-container">Erro ao carregar os casos: {error}</div>;
 
@@ -35,20 +59,47 @@ const CasosListPage = () => {
             </div>
             
             <div className="toolbar">
-                <input type="search" placeholder="Buscar por palavra-chave..." />
-                <select><option>Todas as Especialidades</option></select>
-                <select><option>Todas as Dificuldades</option></select>
+                <input
+                    type="search"
+                    placeholder="Buscar por título ou especialidade..."
+                    aria-label="Buscar casos"
+                    value={searchTerm}
+                    onChange={event => setSearchTerm(event.target.value)}
+                />
+                <select
+                    aria-label="Filtrar por especialidade"
+                    value={specialty}
+                    onChange={event => setSpecialty(event.target.value)}
+                >
+                    <option value="">Todas as Especialidades</option>
+                    {specialties.map(item => <option key={item} value={item}>{item}</option>)}
+                </select>
+                <select
+                    aria-label="Filtrar por dificuldade"
+                    value={difficulty}
+                    onChange={event => setDifficulty(event.target.value)}
+                >
+                    <option value="">Todas as Dificuldades</option>
+                    {difficulties.map(item => <option key={item} value={item}>{item}</option>)}
+                </select>
             </div>
+
+            <p className="case-results-summary" role="status">
+                {filteredCases.length} de {casos.length} casos encontrados
+            </p>
             
             <div className="casos-grid">
-                {casos.map(caso => (
+                {filteredCases.map(caso => (
                     <Link to={`/casos/${caso.id}`} key={caso.id} className="caso-card">
                         {caso.nivel_dificuldade === 'Difícil' && <div className="premium-tag">Premium</div>}
                         <div className="card-content">
                             <div className="case-card-kickers">
                                 <span className="specialty">{caso.especialidade}</span>
                                 {caso.avaliacao_2_disponivel && (
-                                    <span className="agent-feedback-tag">Feedback por agente</span>
+                                    <span className="agent-feedback-tag">Feedback estruturado</span>
+                                )}
+                                {!caso.avaliacao_2_disponivel && (
+                                    <span className="review-status-tag">Rubrica em revisão</span>
                                 )}
                             </div>
                             <h3>{caso.titulo}</h3>
@@ -60,6 +111,12 @@ const CasosListPage = () => {
                     </Link>
                 ))}
             </div>
+            {filteredCases.length === 0 && (
+                <div className="case-empty-state">
+                    <h2>Nenhum caso encontrado</h2>
+                    <p>Tente remover algum filtro ou buscar por outro termo.</p>
+                </div>
+            )}
         </div>
     );
 };

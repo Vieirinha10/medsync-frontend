@@ -63,24 +63,21 @@ const SimulacaoCaso = () => {
             return;
         }
 
+        if (!caso.avaliacao_2_disponivel) {
+            setSubmissionError(
+                'Este caso ainda está em revisão clínica e não pode receber uma pontuação segura.'
+            );
+            return;
+        }
+
         setSubmissionError(null);
         setStatusMessage('');
         setIsSubmitting(true);
         try {
-            if (caso.avaliacao_2_disponivel) {
-                const result = await api.finalizeSimulation(Number(casoId), respostas_usuario);
-                navigate(`/resultados/${result.progresso_id}`, {
-                    state: { result },
-                });
-                return;
-            }
-
-            await api.saveProgress({
-                id_caso: Number(casoId),
-                respostas_usuario,
-                pontuacao: 85,
+            const result = await api.finalizeSimulation(Number(casoId), respostas_usuario);
+            navigate(`/resultados/${result.progresso_id}`, {
+                state: { result },
             });
-            navigate('/dashboard');
         } catch (error) {
             if (error instanceof ApiError && error.status === 401) {
                 navigate('/login', { replace: true });
@@ -199,17 +196,27 @@ const SimulacaoCaso = () => {
                 {submissionError && (
                     <p className="simulation-error" role="alert">{submissionError}</p>
                 )}
-                <button onClick={handleSubmit} className="btn-submit" disabled={isSubmitting}>
+                <button
+                    onClick={handleSubmit}
+                    className={`btn-submit ${!caso.avaliacao_2_disponivel ? 'is-unavailable' : ''}`}
+                    disabled={isSubmitting || !caso.avaliacao_2_disponivel}
+                >
                     {isSubmitting
-                        ? 'Agente avaliando seu raciocínio...'
+                        ? 'Avaliador analisando seu raciocínio...'
                         : caso.avaliacao_2_disponivel
                             ? 'Finalizar e receber feedback'
-                            : 'Finalizar e salvar respostas'}
+                            : 'Avaliação em revisão clínica'}
                 </button>
                 {caso.avaliacao_2_disponivel && (
                     <p className="evaluation-note">
-                        O agente compara exames, hipótese e conduta com o gabarito
+                        O avaliador por regras compara exames, hipótese e conduta com o gabarito
                         clínico revisado deste caso.
+                    </p>
+                )}
+                {!caso.avaliacao_2_disponivel && (
+                    <p className="evaluation-note evaluation-note-pending">
+                        Você pode explorar o caso, mas a finalização será liberada somente
+                        depois da revisão da rubrica clínica. Nenhuma nota fictícia será gerada.
                     </p>
                 )}
             </div>

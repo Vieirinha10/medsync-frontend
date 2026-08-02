@@ -73,7 +73,7 @@ const ResultadoSimulacaoPage = () => {
 
   const sourceLabel = result.fonte_feedback === 'openai'
     ? 'Feedback aprimorado por IA'
-    : 'Feedback do agente clínico';
+    : 'Avaliação estruturada pela rubrica clínica';
 
   return (
     <div className="page-container simulation-result-page">
@@ -107,7 +107,7 @@ const ResultadoSimulacaoPage = () => {
           <div className="result-panel-title">
             <FiTarget />
             <div>
-              <span>Análise do agente</span>
+              <span>Análise da rubrica</span>
               <h2>O que você fez bem</h2>
             </div>
           </div>

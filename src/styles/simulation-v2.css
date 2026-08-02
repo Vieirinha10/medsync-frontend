@@ -5,6 +5,11 @@
   gap: 12px;
 }
 
+.casos-grid .caso-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 280px;
+}
+
 .case-card-kickers .specialty {
   margin-bottom: 0;
 }
@@ -22,6 +27,40 @@
   font-weight: 800;
   letter-spacing: 0.02em;
   white-space: nowrap;
+}
+
+.review-status-tag {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 10px;
+  border: 1px solid rgba(96, 121, 140, 0.2);
+  border-radius: 999px;
+  background: rgba(96, 121, 140, 0.08);
+  color: #60798c;
+  font-size: 0.7rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.case-results-summary {
+  margin: -8px 0 20px;
+  color: #60798c;
+  font-size: 0.84rem;
+}
+
+.case-empty-state {
+  padding: 42px 24px;
+  border: 1px dashed rgba(0, 119, 255, 0.24);
+  border-radius: 20px;
+  background: rgba(0, 119, 255, 0.04);
+  color: #60798c;
+  text-align: center;
+}
+
+.case-empty-state h2 {
+  margin: 0 0 8px;
+  color: #173f5b;
+  font-family: 'Sora', sans-serif;
 }
 
 .simulation-case-heading {
@@ -58,6 +97,12 @@
   line-height: 1.5;
 }
 
+.evaluation-note-pending {
+  padding: 12px 14px;
+  background: rgba(255, 174, 0, 0.09);
+  color: #7b5b13;
+}
+
 .simulation-status {
   padding: 10px 12px;
   background: rgba(34, 197, 142, 0.1);
@@ -80,6 +125,11 @@
   cursor: wait;
   opacity: 0.72;
   transform: none;
+}
+
+.btn-submit.is-unavailable:disabled {
+  cursor: not-allowed;
+  filter: saturate(0.35);
 }
 
 .clinical-evaluation-loader {

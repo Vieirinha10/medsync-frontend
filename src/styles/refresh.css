@@ -816,16 +816,58 @@ a {
   box-shadow: var(--shadow-md);
 }
 
+.registration-container {
+  max-width: 620px;
+}
+
 .auth-container h1 {
   font-size: 2rem;
   letter-spacing: -0.035em;
 }
 
-.form-group input {
+.form-group input,
+.form-group select {
+  width: 100%;
   min-height: 50px;
+  padding: 0 14px;
   border-color: var(--border);
+  border-style: solid;
+  border-width: 1px;
   border-radius: 11px;
   background: #f8fbfc;
+  color: var(--dark-blue);
+  font: inherit;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgb(77 182 247 / 18%);
+  outline: none;
+}
+
+.academic-fields {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.7fr) minmax(220px, 1.3fr);
+  gap: 16px;
+}
+
+.registration-privacy-note {
+  margin: -2px 0 20px !important;
+  padding: 12px 14px;
+  border: 1px solid #dcebf7;
+  border-radius: 11px;
+  background: #f5faff;
+  color: var(--muted) !important;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  text-align: left !important;
+}
+
+.registration-privacy-note a {
+  color: var(--primary-blue-dark);
+  font-weight: 700;
 }
 
 .btn-submit {
@@ -1058,6 +1100,11 @@ a {
     width: calc(100% - 32px);
     margin-top: 38px;
     padding: 30px 24px;
+  }
+
+  .academic-fields {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .footer-content {

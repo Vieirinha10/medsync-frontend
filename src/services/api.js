@@ -105,6 +105,37 @@ export const api = {
     }),
   getCurrentUser: () => request('/usuarios/me'),
   getAcademicAnalytics: () => request('/admin/analytics/academico'),
+  getAdminOverview: () => request('/admin/overview'),
+  getAdminCases: () => request('/admin/casos'),
+  saveAdminCase: (caseId, payload) => request(
+    caseId ? `/admin/casos/${caseId}` : '/admin/casos',
+    { method: caseId ? 'PUT' : 'POST', body: payload },
+  ),
+  getAdminChallenges: () => request('/admin/desafios'),
+  saveAdminChallenge: (challengeId, payload) => request(
+    challengeId ? `/admin/desafios/${challengeId}` : '/admin/desafios',
+    { method: challengeId ? 'PUT' : 'POST', body: payload },
+  ),
+  getAdminAnnouncements: () => request('/admin/avisos'),
+  saveAdminAnnouncement: (announcementId, payload) => request(
+    announcementId ? `/admin/avisos/${announcementId}` : '/admin/avisos',
+    { method: announcementId ? 'PUT' : 'POST', body: payload },
+  ),
+  getDynamicChallenges: () => request('/desafios-visuais'),
+  getAnnouncements: () => request('/avisos'),
+  downloadAnonymizedReport: async () => {
+    const response = await fetch(`${API_URL}/admin/relatorios/anonimizado.csv`, {
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+    });
+    if (!response.ok) throw new ApiError('Não foi possível exportar o relatório.', response.status);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'medsync-relatorio-anonimizado.csv';
+    anchor.click();
+    window.URL.revokeObjectURL(url);
+  },
   getCases: () => request('/casos-clinicos/'),
   getCase: (caseId) => request(`/casos-clinicos/${caseId}`),
   getProgress: () => request('/progresso/meu'),

@@ -97,7 +97,7 @@ const CasosListPage = () => {
             
             <div className="casos-grid">
                 {filteredCases.map(caso => {
-                    const isPremium = caso.nivel_dificuldade === 'Difícil';
+                    const isPremium = caso.premium ?? caso.nivel_dificuldade === 'Difícil';
                     const difficultyClass = caso.nivel_dificuldade
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '')

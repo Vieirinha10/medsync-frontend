@@ -50,6 +50,21 @@ const emptyAnnouncement = {
   titulo: '', mensagem: '', tom: 'informativo', link_texto: '', link_url: '', ativo: true,
 };
 
+const emptyAdminData = {
+  overview: {
+    total_usuarios: 0, ativos_7_dias: 0, ativos_30_dias: 0, novos_30_dias: 0,
+    taxa_conclusao: 0, retencao_7_dias: 0, casos_publicados: 0,
+    desafios_publicados: 0, avisos_ativos: 0, conteudos_populares: [], atividade_diaria: [],
+  },
+  academic: {
+    total_usuarios: 0, perfis_academicos_preenchidos: 0, cobertura_percentual: 0,
+    novos_ultimos_30_dias: 0, periodos: [], faculdades: [],
+  },
+  cases: [],
+  challenges: [],
+  announcements: [],
+};
+
 const listFromText = (value) => value.split(',').map((item) => item.trim()).filter(Boolean);
 
 const AdminAcademicPage = () => {
@@ -70,21 +85,38 @@ const AdminAcademicPage = () => {
   const load = useCallback(async () => {
     setIsLoading(true);
     setError('');
-    try {
-      const [overview, academic, cases, challenges, announcements] = await Promise.all([
-        api.getAdminOverview(), api.getAcademicAnalytics(), api.getAdminCases(),
-        api.getAdminChallenges(), api.getAdminAnnouncements(),
-      ]);
-      setData({ overview, academic, cases, challenges, announcements });
-    } catch (requestError) {
-      if (requestError instanceof ApiError && requestError.status === 401) {
-        navigate('/login', { replace: true });
-        return;
+    const nextData = structuredClone(emptyAdminData);
+    const failures = [];
+    const requests = [
+      ['overview', 'visão geral', api.getAdminOverview],
+      ['academic', 'dados dos usuários', api.getAcademicAnalytics],
+      ['cases', 'casos clínicos', api.getAdminCases],
+      ['challenges', 'desafios', api.getAdminChallenges],
+      ['announcements', 'avisos', api.getAdminAnnouncements],
+    ];
+
+    for (const [key, label, request] of requests) {
+      try {
+        nextData[key] = await request();
+      } catch (requestError) {
+        if (requestError instanceof ApiError && requestError.status === 401) {
+          navigate('/login', { replace: true });
+          return;
+        }
+        if (requestError instanceof ApiError && requestError.status === 403) {
+          setError(requestError.message);
+          setIsLoading(false);
+          return;
+        }
+        failures.push(label);
       }
-      setError(requestError.message);
-    } finally {
-      setIsLoading(false);
     }
+
+    setData(nextData);
+    if (failures.length) {
+      setError(`Algumas informações não puderam ser carregadas: ${failures.join(', ')}. As demais ferramentas continuam disponíveis.`);
+    }
+    setIsLoading(false);
   }, [navigate]);
 
   useEffect(() => { load(); }, [load]);

@@ -58,4 +58,17 @@ describe('AdminAcademicPage', () => {
     expect(screen.getByText('UFMA')).toBeInTheDocument();
     expect(screen.queryByText(/@/)).not.toBeInTheDocument();
   });
+
+  it('mantém o centro disponível quando uma consulta isolada falha', async () => {
+    api.getAdminOverview.mockRejectedValueOnce(new Error('Falha temporária'));
+
+    render(<MemoryRouter><AdminAcademicPage /></MemoryRouter>);
+
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'Administração MedSync' })).toBeInTheDocument());
+    expect(screen.getByText(/Algumas informações não puderam ser carregadas: visão geral/)).toBeInTheDocument();
+
+    const caseTabs = screen.getAllByRole('button', { name: /Casos clínicos/ });
+    fireEvent.click(caseTabs.at(-1));
+    expect(screen.getByText('Tromboembolismo pulmonar')).toBeInTheDocument();
+  });
 });

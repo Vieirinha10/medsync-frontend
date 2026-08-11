@@ -13,6 +13,7 @@ import {
   FiUsers,
   FiZap,
 } from 'react-icons/fi';
+import { enhancedLegalPages } from '../content/legalContent';
 
 const companyName = 'MEDSYNC TECNOLOGIA EM SAUDE INOVA SIMPLES I.S. - ME';
 const companyCnpj = '63.108.735/0001-53';
@@ -165,7 +166,7 @@ const InstitutionalPage = ({ page }) => {
 };
 
 const LegalPage = ({ page }) => {
-  const content = legalPages[page];
+  const content = enhancedLegalPages[page] || legalPages[page];
   return (
     <div className="legal-page page-container">
       <header className="legal-hero">
@@ -174,6 +175,12 @@ const LegalPage = ({ page }) => {
         <p>{content.intro}</p>
         <small>{content.updatedAt}</small>
       </header>
+      {content.summary && (
+        <section className="legal-summary" aria-label="Resumo do documento">
+          <strong>Em linguagem direta</strong>
+          <BulletList items={content.summary} />
+        </section>
+      )}
       <div className="legal-layout">
         <aside>
           <strong>Nesta página</strong>
@@ -183,6 +190,7 @@ const LegalPage = ({ page }) => {
           {content.sections.map((section, index) => (
             <section id={`secao-${index + 1}`} key={section.title}>
               <h2>{section.title}</h2>
+              {section.notice && <p className="legal-notice"><FiShield aria-hidden="true" /> <span>{section.notice}</span></p>}
               {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
               {section.items && <BulletList items={section.items} />}
             </section>

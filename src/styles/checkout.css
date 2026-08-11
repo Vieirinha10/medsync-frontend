@@ -182,3 +182,9 @@
   .transparent-plan-top { grid-template-columns: auto 1fr; }
   .transparent-plan-top b { grid-column: 1/-1; justify-self: start; }
 }
+.checkout-legal-acceptance {
+  padding: 13px 14px;
+  border: 1px solid rgba(31, 127, 210, 0.16);
+  border-radius: 12px;
+  background: rgba(237, 248, 255, 0.75);
+}

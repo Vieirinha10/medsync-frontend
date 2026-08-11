@@ -15,6 +15,13 @@ import {
   FiTrendingUp,
   FiZap,
 } from 'react-icons/fi';
+import {
+  FREE_PLAN,
+  MONTHLY_RECURRING_PLAN,
+  PREMIUM_ANNUAL_SAVINGS,
+  PREMIUM_BILLING_OPTIONS,
+  QUARTERLY_VS_ONE_TIME_SAVINGS,
+} from '../config/pricing';
 
 const freeBenefits = [
   'Acesso aos casos clínicos selecionados',
@@ -84,6 +91,12 @@ const audiences = [
   },
 ];
 
+const billingIcons = {
+  avulso: FiClock,
+  recorrente: FiRefreshCw,
+  trimestral: FiLayers,
+};
+
 const PlanosPage = () => {
   return (
     <div className="pricing-page">
@@ -112,24 +125,23 @@ const PlanosPage = () => {
           </div>
           <div className="pricing-hero-proof" aria-label="Destaques do plano">
             <span><FiCheckCircle aria-hidden="true" /> Comece sem pagar</span>
-            <span><FiCheckCircle aria-hidden="true" /> Sem cobrança agora</span>
+            <span><FiCheckCircle aria-hidden="true" /> Escolha entre Pix ou cartão</span>
           </div>
         </div>
 
         <div className="pricing-hero-offer" aria-label="Resumo do plano Premium">
           <div className="pricing-offer-topline">
             <span>PREMIUM</span>
-            <strong>Em preparação</strong>
+            <strong>{MONTHLY_RECURRING_PLAN.badge}</strong>
           </div>
-          <div className="pricing-offer-price">
-            <small>R$</small>
-            <strong>19</strong>
-            <div><b>,90</b><span>/mês</span></div>
+          <div className="pricing-offer-price is-complete">
+            <strong>{MONTHLY_RECURRING_PLAN.price}</strong>
+            <div><b>por mês</b><span>no cartão recorrente</span></div>
           </div>
-          <p>Menos de R$ 0,67 por dia para manter seu treinamento clínico em movimento.</p>
+          <p>Cerca de R$ 0,80 por dia e {PREMIUM_ANNUAL_SAVINGS} de economia anual em relação ao mensal avulso.</p>
           <div className="pricing-offer-feature">
             <FiZap aria-hidden="true" />
-            <span><strong>Mais liberdade para praticar</strong>Casos, desafios e evolução em um só lugar.</span>
+            <span><strong>Praticidade sem perder flexibilidade</strong>Renovação automática e cancelamento quando quiser.</span>
           </div>
         </div>
       </section>
@@ -154,20 +166,20 @@ const PlanosPage = () => {
       <section className="pricing-plans" id="comparar-planos" aria-labelledby="pricing-plans-title">
         <div className="pricing-section-heading is-centered">
           <span>ESCOLHA COMO COMEÇAR</span>
-          <h2 id="pricing-plans-title">Seu próximo passo no MedSync</h2>
-          <p>Você pode criar sua conta gratuita agora. A assinatura Premium será liberada em uma próxima etapa.</p>
+          <h2 id="pricing-plans-title">Um Premium, três formas de pagar</h2>
+          <p>Os benefícios são os mesmos em todas as opções Premium. Escolha a condição que combina melhor com a sua rotina.</p>
         </div>
 
-        <div className="pricing-plan-grid">
+        <div className="pricing-plan-grid pricing-plan-grid-expanded">
           <article className="pricing-plan-card">
             <div className="pricing-plan-heading">
               <span className="pricing-plan-icon"><FiBookOpen aria-hidden="true" /></span>
               <div>
                 <small>PARA CONHECER</small>
-                <h3>Gratuito</h3>
+                <h3>{FREE_PLAN.name}</h3>
               </div>
             </div>
-            <div className="pricing-plan-price"><strong>R$ 0</strong><span>para começar</span></div>
+            <div className="pricing-plan-price"><strong>{FREE_PLAN.price}</strong><span>{FREE_PLAN.billingLabel}</span></div>
             <p className="pricing-plan-description">Explore a metodologia e dê os primeiros passos no seu treinamento clínico.</p>
             <ul>
               {freeBenefits.map((benefit) => (
@@ -181,33 +193,54 @@ const PlanosPage = () => {
             <small className="pricing-plan-note">Crie sua conta em poucos passos.</small>
           </article>
 
-          <article className="pricing-plan-card is-premium">
-            <span className="pricing-popular-badge"><FiStar aria-hidden="true" /> MELHOR EXPERIÊNCIA</span>
-            <div className="pricing-plan-heading">
-              <span className="pricing-plan-icon"><FiZap aria-hidden="true" /></span>
-              <div>
-                <small>PARA EVOLUIR</small>
-                <h3>Premium</h3>
-              </div>
-            </div>
-            <div className="pricing-plan-price"><strong>R$ 19,90</strong><span>por mês</span></div>
-            <p className="pricing-plan-description">Mais conteúdo, profundidade e autonomia para quem quer praticar com consistência.</p>
-            <ul>
-              {premiumBenefits.map((benefit) => (
-                <li key={benefit}><FiCheck aria-hidden="true" />{benefit}</li>
-              ))}
-            </ul>
-            <Link to="/cadastro" className="pricing-plan-button is-primary">
-              Criar conta e acompanhar o lançamento
-              <FiArrowRight aria-hidden="true" />
-            </Link>
-            <small className="pricing-plan-note">Nenhuma cobrança é realizada agora.</small>
-          </article>
+          {PREMIUM_BILLING_OPTIONS.map((plan) => {
+            const BillingIcon = billingIcons[plan.id];
+            return (
+              <article
+                className={`pricing-plan-card is-premium is-${plan.id}${plan.featured ? ' is-featured' : ''}${plan.bestValue ? ' is-best-value' : ''}`}
+                key={plan.id}
+              >
+                <span className="pricing-popular-badge"><FiStar aria-hidden="true" /> {plan.badge}</span>
+                <div className="pricing-plan-heading">
+                  <span className="pricing-plan-icon"><BillingIcon aria-hidden="true" /></span>
+                  <div>
+                    <small>PREMIUM · {plan.paymentMethod.toUpperCase()}</small>
+                    <h3>{plan.name}</h3>
+                  </div>
+                </div>
+                <div className="pricing-plan-price"><strong>{plan.price}</strong><span>{plan.billingLabel}</span></div>
+                <p className="pricing-plan-description">{plan.description}</p>
+                <ul>
+                  {plan.highlights.map((highlight) => (
+                    <li key={highlight}><FiCheck aria-hidden="true" />{highlight}</li>
+                  ))}
+                  <li><FiCheck aria-hidden="true" />Todos os benefícios Premium</li>
+                </ul>
+                <Link to="/cadastro" className="pricing-plan-button is-primary">
+                  Criar conta e acompanhar o lançamento
+                  <FiArrowRight aria-hidden="true" />
+                </Link>
+                <small className="pricing-plan-note">Nenhuma cobrança é realizada agora.</small>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="pricing-premium-benefits">
+          <div>
+            <span><FiZap aria-hidden="true" /></span>
+            <div><small>INCLUÍDO EM TODAS AS OPÇÕES</small><h3>Experiência Premium completa</h3></div>
+          </div>
+          <ul>
+            {premiumBenefits.map((benefit) => (
+              <li key={benefit}><FiCheckCircle aria-hidden="true" />{benefit}</li>
+            ))}
+          </ul>
         </div>
 
         <div className="pricing-launch-note">
           <FiClock aria-hidden="true" />
-          <p><strong>Premium em preparação.</strong> Os benefícios apresentados representam a proposta de lançamento e poderão ser refinados antes da abertura das assinaturas.</p>
+          <p><strong>Valores definidos; pagamentos em preparação.</strong> A nova tabela comercial já está apresentada na plataforma, mas o checkout ainda não realiza cobranças.</p>
         </div>
       </section>
 
@@ -236,7 +269,7 @@ const PlanosPage = () => {
             </tbody>
           </table>
         </div>
-        <p className="pricing-comparison-caption">Comparação baseada na proposta prevista para o lançamento do Premium.</p>
+        <p className="pricing-comparison-caption">Todos os formatos de pagamento liberam os mesmos benefícios Premium.</p>
       </section>
 
       <section className="pricing-audience" aria-labelledby="pricing-audience-title">
@@ -266,8 +299,16 @@ const PlanosPage = () => {
             <p>Ainda não. A estrutura de assinatura está sendo preparada. Você pode criar sua conta gratuita agora e acompanhar as novidades do MedSync.</p>
           </details>
           <details>
-            <summary>Qual será o valor do plano?</summary>
-            <p>A proposta atual é de R$ 19,90 por mês. As condições finais serão apresentadas com transparência antes de qualquer contratação.</p>
+            <summary>Quais são os valores e as formas de pagamento?</summary>
+            <p>O mensal avulso custa R$ 25,90 via Pix e libera 30 dias sem renovação automática. O mensal recorrente custa R$ 23,90 no cartão. O trimestral custa R$ 65,90 no cartão, com parcelamento em até 3x.</p>
+          </details>
+          <details>
+            <summary>Os benefícios mudam conforme a forma de pagamento?</summary>
+            <p>Não. As três opções pagas liberam a mesma experiência Premium. O que muda é a duração, a forma de cobrança e a economia oferecida.</p>
+          </details>
+          <details>
+            <summary>Qual opção oferece a maior economia?</summary>
+            <p>O trimestral tem o menor valor mensal equivalente, R$ 21,97, e economiza {QUARTERLY_VS_ONE_TIME_SAVINGS} em comparação a três pagamentos mensais avulsos.</p>
           </details>
           <details>
             <summary>O que acontece depois que resolvo um caso?</summary>
@@ -288,7 +329,7 @@ const PlanosPage = () => {
         <div>
           <span><FiBarChart2 aria-hidden="true" /> COMECE PELO GRATUITO</span>
           <h2>Seu raciocínio clínico evolui a cada decisão.</h2>
-          <p>Crie sua conta, conheça os casos e prepare-se para aproveitar toda a experiência Premium quando ela for lançada.</p>
+          <p>Crie sua conta, conheça os casos e escolha com calma a modalidade Premium ideal quando os pagamentos forem liberados.</p>
         </div>
         <Link to="/cadastro">
           Criar minha conta grátis

@@ -15,6 +15,7 @@ import {
   FiUsers,
   FiZap,
 } from 'react-icons/fi';
+import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../config/pricing';
 
 const HomePage = () => (
   <div className="home-container home-solid">
@@ -199,8 +200,8 @@ const HomePage = () => (
       <div className="solid-plan-grid">
         <article className="solid-plan-card is-free">
           <span>PARA CONHECER</span>
-          <h3>Gratuito</h3>
-          <div className="solid-price">R$ 0</div>
+          <h3>{FREE_PLAN.name}</h3>
+          <div className="solid-price">{FREE_PLAN.price}</div>
           <p>Uma porta de entrada para experimentar a prática clínica interativa.</p>
           <ul>
             <li><FiCheck /> 5 casos clínicos por mês</li>
@@ -210,18 +211,23 @@ const HomePage = () => (
           <Link to="/cadastro">Criar conta grátis <FiArrowRight /></Link>
         </article>
 
-        <article className="solid-plan-card is-premium">
-          <span>ACESSO MAIS COMPLETO</span>
-          <h3>Premium</h3>
-          <div className="solid-price">R$ 19,90 <small>/ mês</small></div>
-          <p>Mais liberdade para transformar constância em evolução clínica.</p>
-          <ul>
-            <li><FiCheck /> Casos clínicos ilimitados</li>
-            <li><FiCheck /> Todas as especialidades</li>
-            <li><FiCheck /> Recursos avançados de estudo</li>
-          </ul>
-          <Link to="/assinatura">Conhecer o Premium <FiArrowRight /></Link>
-        </article>
+        {PREMIUM_BILLING_OPTIONS.map((plan) => (
+          <article
+            className={`solid-plan-card is-premium-option is-${plan.id}${plan.featured ? ' is-featured' : ''}${plan.bestValue ? ' is-best-value' : ''}`}
+            key={plan.id}
+          >
+            <span>{plan.badge}</span>
+            <h3>{plan.name}</h3>
+            <div className="solid-price">{plan.price} <small>{plan.billingLabel}</small></div>
+            <p>{plan.description}</p>
+            <ul>
+              {plan.highlights.map((highlight) => (
+                <li key={highlight}><FiCheck /> {highlight}</li>
+              ))}
+            </ul>
+            <Link to="/assinatura">Ver esta opção <FiArrowRight /></Link>
+          </article>
+        ))}
       </div>
     </section>
 

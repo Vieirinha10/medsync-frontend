@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { FiActivity, FiCheck } from 'react-icons/fi';
+import { FiCheck } from 'react-icons/fi';
+import NexoMascot from './NexoMascot';
 
 const ANALYSIS_STAGES = [
   'Organizando os dados clínicos',
@@ -38,19 +39,17 @@ const ClinicalEvaluationLoader = ({ caseTitle }) => {
       </div>
 
       <div className="evaluation-loader-card">
-        <div className="evaluation-loader-visual" aria-hidden="true">
-          <span className="evaluation-orbit evaluation-orbit-outer" />
-          <span className="evaluation-orbit evaluation-orbit-inner" />
-          <span className="evaluation-pulse" />
-          <span className="evaluation-icon">
-            <FiActivity />
-          </span>
-        </div>
+        <NexoMascot
+          state="working"
+          size="large"
+          className="evaluation-loader-nexo"
+          message="Estou acompanhando a Synapse na análise do seu raciocínio."
+        />
 
         <span className="evaluation-loader-kicker">ANÁLISE CLÍNICA EM ANDAMENTO</span>
         <h1>Construindo seu feedback</h1>
         <p className="evaluation-loader-description">
-          O avaliador clínico está comparando suas decisões com a rubrica revisada
+          A Synapse está comparando suas decisões com a rubrica revisada
           {caseTitle ? ` de “${caseTitle}”` : ' deste caso'}.
         </p>
 

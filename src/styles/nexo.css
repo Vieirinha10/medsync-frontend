@@ -1,0 +1,62 @@
+.nexo-mascot {
+  position: relative;
+  display: inline-grid;
+  align-items: center;
+  justify-items: center;
+  isolation: isolate;
+}
+
+.nexo-mascot__halo {
+  position: absolute;
+  z-index: -1;
+  width: 82%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 201, 224, 0.24), rgba(0, 119, 255, 0.08) 52%, transparent 72%);
+  filter: blur(5px);
+  animation: nexo-halo 2.8s ease-in-out infinite;
+}
+
+.nexo-mascot__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 22px rgba(16, 87, 143, 0.16));
+}
+
+.nexo-mascot--small { width: 92px; }
+.nexo-mascot--medium { width: 146px; }
+.nexo-mascot--large { width: clamp(150px, 20vw, 220px); }
+
+.nexo-mascot__message {
+  display: grid;
+  gap: 2px;
+  width: max-content;
+  max-width: 260px;
+  margin-top: -4px;
+  padding: 10px 14px;
+  border: 1px solid rgba(0, 119, 255, 0.13);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 12px 30px rgba(16, 87, 143, 0.1);
+  color: #587186;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.nexo-mascot__message strong {
+  color: #0878c4;
+  font-family: 'Sora', sans-serif;
+  font-size: 0.72rem;
+}
+
+@keyframes nexo-halo {
+  0%, 100% { opacity: 0.68; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nexo-mascot__halo { animation: none; }
+}

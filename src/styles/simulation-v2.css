@@ -1072,6 +1072,15 @@
   backdrop-filter: blur(18px);
 }
 
+.evaluation-loader-nexo {
+  margin: -14px auto 20px;
+}
+
+.evaluation-loader-nexo .nexo-mascot__message {
+  max-width: 300px;
+  text-align: center;
+}
+
 .evaluation-loader-visual {
   position: relative;
   display: grid;
@@ -1343,6 +1352,17 @@
 
 .result-heading {
   max-width: 720px;
+}
+
+.result-hero-companion {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.result-hero-companion .nexo-mascot__message {
+  max-width: 220px;
 }
 
 .result-heading h1 {
@@ -1677,6 +1697,18 @@
   text-align: center;
 }
 
+.result-state-with-nexo {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+}
+
+.result-state-with-nexo h1,
+.result-state-with-nexo p {
+  margin: 0;
+}
+
 @media (max-width: 820px) {
   .case-card-kickers,
   .study-recommendations {
@@ -1687,6 +1719,10 @@
   .result-hero {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .result-hero-companion {
+    align-self: center;
   }
 
   .total-score {
@@ -1746,6 +1782,10 @@
   .evaluation-loader-visual {
     width: 112px;
     height: 112px;
+  }
+
+  .evaluation-loader-nexo {
+    width: 160px;
   }
 
   .evaluation-stage-list {

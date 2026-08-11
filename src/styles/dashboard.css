@@ -198,6 +198,157 @@
   color: #b52d41;
 }
 
+.dashboard-membership {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 1.15rem;
+  margin: 1.25rem 0;
+  padding: 1.2rem 1.35rem;
+  overflow: hidden;
+  border: 1px solid rgba(15, 91, 165, 0.14);
+  border-radius: 22px;
+  background: linear-gradient(115deg, #f5faff 0%, #edf7ff 68%, #e4f3ff 100%);
+  box-shadow: 0 18px 42px rgba(20, 88, 151, 0.1);
+}
+
+.dashboard-membership::after {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  top: -105px;
+  right: -65px;
+  border-radius: 50%;
+  background: rgba(22, 143, 227, 0.12);
+  content: '';
+  pointer-events: none;
+}
+
+.dashboard-membership.is-premium {
+  color: #fff;
+  border-color: rgba(100, 255, 190, 0.38);
+  background: linear-gradient(118deg, #073b71 0%, #087ac4 54%, #0a9bd2 100%);
+  box-shadow: 0 22px 48px rgba(6, 93, 159, 0.24);
+}
+
+.dashboard-membership.is-premium::after {
+  background: radial-gradient(circle, rgba(121, 255, 187, 0.38), rgba(121, 255, 187, 0));
+}
+
+.dashboard-membership-icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 52px;
+  height: 52px;
+  border-radius: 17px;
+  color: #0874c5;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(7, 75, 132, 0.15);
+  place-items: center;
+}
+
+.dashboard-membership-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.is-premium .dashboard-membership-icon {
+  color: #053d70;
+  background: #7dffba;
+  animation: dashboard-premium-pulse 2.8s ease-in-out infinite;
+}
+
+.dashboard-membership-copy,
+.dashboard-membership-status,
+.dashboard-membership-action {
+  position: relative;
+  z-index: 1;
+}
+
+.dashboard-membership-copy span {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: #0874c5;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.is-premium .dashboard-membership-copy span {
+  color: #7dffba;
+}
+
+.dashboard-membership-copy h2 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+}
+
+.dashboard-membership-copy p {
+  margin: 0.3rem 0 0;
+  color: #58738b;
+  font-size: 0.9rem;
+}
+
+.is-premium .dashboard-membership-copy p {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.dashboard-membership-status {
+  display: grid;
+  gap: 0.18rem;
+  min-width: 155px;
+}
+
+.dashboard-membership-status strong {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #0a5e9d;
+}
+
+.is-premium .dashboard-membership-status strong {
+  color: #7dffba;
+}
+
+.dashboard-membership-status span,
+.dashboard-membership-status small {
+  font-size: 0.78rem;
+}
+
+.is-premium .dashboard-membership-status span,
+.is-premium .dashboard-membership-status small {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dashboard-membership-action {
+  display: inline-flex;
+  position: relative;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.72rem 0.95rem;
+  border-radius: 12px;
+  color: #0874c5;
+  background: #fff;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.dashboard-membership-action:hover {
+  box-shadow: 0 10px 22px rgba(4, 52, 91, 0.18);
+  transform: translateY(-2px);
+}
+
+.is-premium .dashboard-membership-action {
+  color: #063f73;
+  background: #7dffba;
+}
+
 .dashboard-metrics {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -861,7 +1012,25 @@
   from { opacity: 0; transform: translateY(12px) scale(0.98); }
 }
 
+@keyframes dashboard-premium-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 10px 24px rgba(7, 75, 132, 0.18); }
+  50% { transform: scale(1.06); box-shadow: 0 10px 30px rgba(125, 255, 186, 0.36); }
+}
+
 @media (max-width: 1040px) {
+  .dashboard-membership {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .dashboard-membership-status,
+  .dashboard-membership-action {
+    grid-column: 2;
+  }
+
+  .dashboard-membership-action {
+    justify-self: start;
+  }
+
   .user-dashboard-hero {
     align-items: stretch;
     flex-direction: column;
@@ -902,6 +1071,20 @@
 }
 
 @media (max-width: 620px) {
+  .dashboard-membership {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-membership-icon,
+  .dashboard-membership-status,
+  .dashboard-membership-action {
+    grid-column: 1;
+  }
+
+  .dashboard-membership-action {
+    width: 100%;
+  }
+
   .user-dashboard-page {
     padding-top: 20px;
   }

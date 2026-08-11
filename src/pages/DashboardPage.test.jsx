@@ -82,4 +82,20 @@ describe('DashboardPage', () => {
     expect(await screen.findByText(/Suas estatísticas foram redefinidas/)).toBeInTheDocument();
     expect(screen.getByText('Seu gráfico começa com o primeiro caso')).toBeInTheDocument();
   });
+
+  it('mostra o plano Premium ativo e sua validade', async () => {
+    api.getCurrentUser.mockResolvedValue({
+      ...user,
+      premium_ativo: true,
+      premium_plano: 'avulso',
+      premium_valido_ate: '2026-09-10T12:00:00Z',
+    });
+
+    render(<MemoryRouter><DashboardPage /></MemoryRouter>);
+
+    expect(await screen.findByText('Seu acesso Premium está ativo')).toBeInTheDocument();
+    expect(screen.getByText('Premium ativo')).toBeInTheDocument();
+    expect(screen.getByText('Mensal avulso')).toBeInTheDocument();
+    expect(screen.getByText(/Válido até 10 de set. de 2026/)).toBeInTheDocument();
+  });
 });

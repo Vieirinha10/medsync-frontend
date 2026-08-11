@@ -12,6 +12,7 @@ import {
   FiClock,
   FiRefreshCw,
   FiShield,
+  FiStar,
   FiTarget,
   FiTrash2,
   FiTrendingUp,
@@ -38,6 +39,12 @@ const getInitials = (name = '') => name
   .map((part) => part[0])
   .join('')
   .toUpperCase();
+
+const premiumPlanLabels = {
+  avulso: 'Mensal avulso',
+  recorrente: 'Mensal recorrente',
+  trimestral: 'Trimestral',
+};
 
 const calculateStreak = (progress) => {
   const dayKeys = [...new Set(progress
@@ -232,6 +239,41 @@ const DashboardPage = () => {
         </div>
       )}
       {error && <p className="dashboard-inline-error" role="alert">{error}</p>}
+
+      <section
+        className={`dashboard-membership ${user?.premium_ativo ? 'is-premium' : 'is-free'}`}
+        aria-label="Status da assinatura"
+      >
+        <div className="dashboard-membership-icon" aria-hidden="true">
+          {user?.premium_ativo ? <FiStar /> : <FiShield />}
+        </div>
+        <div className="dashboard-membership-copy">
+          <span>{user?.premium_ativo ? 'MEDSYNC PREMIUM' : 'PLANO ATUAL'}</span>
+          <h2>{user?.premium_ativo ? 'Seu acesso Premium está ativo' : 'Você está no plano gratuito'}</h2>
+          <p>
+            {user?.premium_ativo
+              ? 'Todos os recursos Premium estão liberados para sua jornada clínica.'
+              : 'Evolua seus estudos com acesso completo aos recursos Premium.'}
+          </p>
+        </div>
+        <div className="dashboard-membership-status">
+          {user?.premium_ativo ? (
+            <>
+              <strong><FiCheckCircle /> Premium ativo</strong>
+              <span>{premiumPlanLabels[user.premium_plano] || 'Plano Premium'}</span>
+              <small>Válido até {formatDate(user.premium_valido_ate)}</small>
+            </>
+          ) : (
+            <>
+              <strong>Gratuito</strong>
+              <span>Recursos essenciais</span>
+            </>
+          )}
+        </div>
+        <Link to="/assinatura" className="dashboard-membership-action">
+          {user?.premium_ativo ? 'Ver meu plano' : 'Conhecer o Premium'} <FiArrowRight />
+        </Link>
+      </section>
 
       <section className="dashboard-metrics" aria-label="Resumo do desempenho">
         <MetricCard icon={FiBookOpen} label="Casos concluídos" value={dashboard.uniqueCases} helper={`${dashboard.totalAttempts} tentativa(s)`} tone="blue" />

@@ -38,6 +38,7 @@ const CheckoutPage = () => {
   const [payment, setPayment] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [acceptedPurchase, setAcceptedPurchase] = useState(false);
   const plan = useMemo(
     () => PREMIUM_BILLING_OPTIONS.find((option) => option.id === planId),
     [planId],
@@ -73,6 +74,7 @@ const CheckoutPage = () => {
   const setField = (field, value) => setForm((current) => ({ ...current, [field]: value }));
 
   const validate = () => {
+    if (!acceptedPurchase) return 'Confirme as condições da compra, os Termos de Uso e a Política de Privacidade.';
     if (![11, 14].includes(onlyDigits(form.cpfCnpj).length)) return 'Informe um CPF ou CNPJ válido.';
     if (![10, 11].includes(onlyDigits(form.telefone).length)) return 'Informe um telefone com DDD.';
     if (onlyDigits(form.cep).length !== 8) return 'Informe um CEP válido.';
@@ -236,7 +238,11 @@ const CheckoutPage = () => {
                 <button className="transparent-submit" type="submit" disabled={isSubmitting}>
                   {isSubmitting ? <><FiLoader className="checkout-spinner" /> Processando com segurança...</> : <>{isPix ? 'Gerar QR Code Pix' : `Pagar ${plan.price}`} <FiLock /></>}
                 </button>
-                <small className="checkout-terms">Ao finalizar, você concorda com os <Link to="/termos">Termos de Uso</Link> e a <Link to="/privacidade">Política de Privacidade</Link>.</small>
+                <label className="checkout-legal-acceptance">
+                  <input type="checkbox" checked={acceptedPurchase} onChange={(event) => setAcceptedPurchase(event.target.checked)} required />
+                  <span>Confirmo o plano, valor e forma de pagamento e aceito os <Link to="/termos" target="_blank">Termos de Uso</Link> e a <Link to="/privacidade" target="_blank">Política de Privacidade</Link>.</span>
+                </label>
+                <small className="checkout-terms">Contratação online: direito de arrependimento em até 7 dias corridos, conforme a legislação aplicável. Assinaturas recorrentes podem ser canceladas antes da próxima cobrança.</small>
                 <div className="transparent-card-security"><FiShield /><p><strong>Dados protegidos em trânsito.</strong> O MedSync não armazena número do cartão nem CVV.</p></div>
               </form>
             )}

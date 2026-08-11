@@ -26,6 +26,8 @@ describe('CheckoutPage', () => {
     expect(screen.getByText('Pix à vista')).toBeInTheDocument();
     expect(screen.getAllByText('R$ 25,90')).toHaveLength(2);
     expect(screen.getByRole('button', { name: /Gerar QR Code Pix/ })).toBeInTheDocument();
+    expect(screen.getByRole('checkbox', { name: /Confirmo o plano/ })).toBeRequired();
+    expect(screen.getByText(/direito de arrependimento em até 7 dias/)).toBeInTheDocument();
     expect(screen.queryByText(/Continuar para pagamento/)).not.toBeInTheDocument();
   });
 

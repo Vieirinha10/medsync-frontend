@@ -870,6 +870,39 @@ a {
   font-weight: 700;
 }
 
+.registration-legal-acceptance,
+.checkout-legal-acceptance {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.registration-legal-acceptance {
+  margin: 2px 0 12px;
+  padding: 13px 14px;
+  border: 1px solid #dcebf7;
+  border-radius: 11px;
+  background: #f8fcff;
+}
+
+.registration-legal-acceptance input,
+.checkout-legal-acceptance input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--primary-blue);
+}
+
+.registration-legal-acceptance a,
+.checkout-legal-acceptance a {
+  color: var(--primary-blue-dark);
+  font-weight: 750;
+}
+
 .btn-submit {
   min-height: 50px;
   border-radius: 12px;

@@ -10,6 +10,7 @@ const CadastroPage = () => {
     const [periodoCurso, setPeriodoCurso] = useState('');
     const [faculdade, setFaculdade] = useState('');
     const [password, setPassword] = useState('');
+    const [acceptedLegal, setAcceptedLegal] = useState(false);
     const [error, setError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
@@ -26,6 +27,7 @@ const CadastroPage = () => {
                 periodo_curso: Number(periodoCurso),
                 faculdade,
                 password,
+                aceite_termos: acceptedLegal,
             });
             navigate('/login', {
                 replace: true,
@@ -70,9 +72,11 @@ const CadastroPage = () => {
                     <label htmlFor="password_reg">Senha</label>
                     <input type="password" id="password_reg" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} minLength="8" maxLength="72" required />
                 </div>
-                <p className="registration-privacy-note">
-                    Seus dados acadêmicos ajudam o MedSync a entender sua comunidade e melhorar suas ações educacionais. Saiba mais na <Link to="/privacidade">Política de Privacidade</Link>.
-                </p>
+                <label className="registration-legal-acceptance">
+                    <input type="checkbox" checked={acceptedLegal} onChange={(event) => setAcceptedLegal(event.target.checked)} required />
+                    <span>Li e aceito os <Link to="/termos" target="_blank">Termos de Uso</Link> e a <Link to="/privacidade" target="_blank">Política de Privacidade</Link>, versão de 11/08/2026.</span>
+                </label>
+                <p className="registration-privacy-note">Seus dados acadêmicos ajudam o MedSync a entender sua comunidade e melhorar ações educacionais, preferencialmente com informações agregadas ou anonimizadas.</p>
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit" className="btn-submit" disabled={isSubmitting}>
                     {isSubmitting ? 'Criando conta...' : 'Criar minha conta'}

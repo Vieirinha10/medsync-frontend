@@ -30,6 +30,7 @@ describe('CadastroPage', () => {
     fireEvent.change(screen.getByLabelText('Período do curso'), { target: { value: '6' } });
     fireEvent.change(screen.getByLabelText('Faculdade'), { target: { value: 'UFMA' } });
     fireEvent.change(screen.getByLabelText('Senha'), { target: { value: 'senha-segura' } });
+    fireEvent.click(screen.getByRole('checkbox', { name: /Li e aceito/ }));
     fireEvent.click(screen.getByRole('button', { name: 'Criar minha conta' }));
 
     await waitFor(() => expect(api.registerUser).toHaveBeenCalledWith({
@@ -38,6 +39,7 @@ describe('CadastroPage', () => {
       periodo_curso: 6,
       faculdade: 'UFMA',
       password: 'senha-segura',
+      aceite_termos: true,
     }));
     expect(navigate).toHaveBeenCalledWith('/login', expect.objectContaining({ replace: true }));
   });

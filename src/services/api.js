@@ -122,6 +122,10 @@ export const api = {
     { method: announcementId ? 'PUT' : 'POST', body: payload },
   ),
   getDynamicChallenges: () => request('/desafios-visuais'),
+  answerVisualChallenge: (challengeId, optionId) => request(
+    `/desafios-visuais/${challengeId}/responder`,
+    { method: 'POST', body: { alternativa_id: optionId } },
+  ),
   getAnnouncements: () => request('/avisos'),
   downloadAnonymizedReport: async () => {
     const response = await fetch(`${API_URL}/admin/relatorios/anonimizado.csv`, {

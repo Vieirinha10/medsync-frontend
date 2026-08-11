@@ -117,6 +117,14 @@ const ResultadoSimulacaoPage = () => {
         </div>
       </header>
 
+      {result.diagnostico_referencia && (
+        <section className="result-diagnosis-reveal" aria-label="Diagnóstico de referência">
+          <span>DIAGNÓSTICO DE REFERÊNCIA</span>
+          <h2>{result.diagnostico_referencia}</h2>
+          <p>Compare o diagnóstico final com a hipótese enviada durante a simulação.</p>
+        </section>
+      )}
+
       <section className="score-breakdown" aria-label="Detalhamento da pontuação">
         <ScoreCard label="Exames" value={result.pontuacao.exames} total={40} />
         <ScoreCard label="Hipótese" value={result.pontuacao.hipotese} total={30} />

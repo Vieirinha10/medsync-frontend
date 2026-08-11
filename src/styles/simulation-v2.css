@@ -1779,3 +1779,40 @@
     animation: none;
   }
 }
+.result-diagnosis-reveal {
+  padding: 22px 26px;
+  margin: 0 0 22px;
+  border: 1px solid rgba(0, 121, 216, 0.18);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(0, 119, 255, 0.09), rgba(0, 205, 231, 0.12));
+  box-shadow: 0 15px 38px rgba(14, 91, 145, 0.09);
+  animation: result-diagnosis-enter 360ms ease both;
+}
+
+.result-diagnosis-reveal span {
+  color: #0878c4;
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+}
+
+.result-diagnosis-reveal h2 {
+  margin: 7px 0 4px;
+  color: #123d58;
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.result-diagnosis-reveal p {
+  margin: 0;
+  color: #60798c;
+}
+
+@keyframes result-diagnosis-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result-diagnosis-reveal { animation: none; }
+}

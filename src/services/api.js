@@ -108,6 +108,10 @@ export const api = {
     method: 'POST',
     body: { plano_id: planId },
   }),
+  createTransparentPayment: (payload) => request('/pagamentos/transparente', {
+    method: 'POST',
+    body: payload,
+  }),
   getPaymentStatus: (orderId) => request(`/pagamentos/pedidos/${orderId}`),
   getAcademicAnalytics: () => request('/admin/analytics/academico'),
   getAdminOverview: () => request('/admin/overview'),

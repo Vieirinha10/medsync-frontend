@@ -1,0 +1,571 @@
+/* Identidade visual compartilhada entre Casos Clinicos e Desafios */
+.visual-challenges-page {
+  position: relative;
+}
+
+.visual-challenges-page::before {
+  position: absolute;
+  z-index: -1;
+  top: 12px;
+  left: 50%;
+  width: min(920px, 86vw);
+  height: 330px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(25, 170, 240, 0.13), transparent 68%);
+  content: '';
+  filter: blur(8px);
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.visual-challenges-kicker {
+  padding: 7px 11px;
+  border: 1px solid rgba(0, 126, 222, 0.14);
+  border-radius: 999px;
+  background: rgba(236, 248, 255, 0.86);
+}
+
+.visual-header-stats > div {
+  box-shadow: 0 12px 32px rgba(14, 103, 167, 0.09);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.visual-header-stats > div:hover {
+  box-shadow: 0 17px 38px rgba(14, 103, 167, 0.14);
+  transform: translateY(-3px);
+}
+
+.visual-challenges-workspace {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+
+/* Barra de filtros minimalista */
+.visual-filter-island {
+  position: relative;
+  top: auto;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px 22px;
+  align-items: center;
+  max-height: none;
+  padding: 13px 15px;
+  overflow: visible;
+  border: 1px solid rgba(6, 104, 185, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 14px 38px rgba(20, 88, 138, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.visual-filter-heading {
+  gap: 9px;
+  padding: 0;
+  border: 0;
+}
+
+.visual-filter-heading > span {
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  box-shadow: 0 8px 18px rgba(8, 120, 249, 0.18);
+}
+
+.visual-filter-heading strong {
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.visual-filter-heading small {
+  font-size: 0.59rem;
+}
+
+.visual-filter-controls {
+  display: flex;
+  gap: 9px;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.visual-filter-group {
+  gap: 5px;
+  margin: 0;
+}
+
+.visual-filter-group > span {
+  padding-left: 4px;
+  font-size: 0.52rem;
+}
+
+.visual-difficulty-options {
+  flex-wrap: nowrap;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid #e0ebf1;
+  border-radius: 12px;
+  background: #f3f8fb;
+}
+
+.visual-difficulty-options button {
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  font-size: 0.61rem;
+}
+
+.visual-difficulty-options button:hover,
+.visual-difficulty-options button.is-active {
+  border-color: transparent;
+  background: white;
+  box-shadow: 0 4px 12px rgba(27, 93, 137, 0.11);
+  color: #0878c4;
+}
+
+.visual-category-filter {
+  flex: 0 1 190px;
+}
+
+.visual-category-filter select {
+  min-height: 38px;
+  padding: 8px 31px 8px 11px;
+  border-radius: 11px;
+  background-color: #f8fbfd;
+  font-size: 0.66rem;
+}
+
+.visual-favorites-filter {
+  display: flex;
+  grid-template-columns: none;
+  gap: 7px;
+  width: auto;
+  min-height: 38px;
+  padding: 6px 11px;
+  margin: 0;
+  border-radius: 11px;
+  white-space: nowrap;
+}
+
+.visual-favorites-filter > svg {
+  width: auto;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 1rem;
+}
+
+.visual-favorites-filter strong {
+  font-size: 0.65rem;
+}
+
+.visual-favorites-filter small {
+  font-size: 0.53rem;
+}
+
+.visual-clear-filters {
+  min-height: 38px;
+  padding: 8px 10px;
+  margin: 0;
+  border: 1px solid #e1eaf0;
+  border-radius: 11px;
+  background: white;
+}
+
+.visual-saved-challenges {
+  display: none;
+  grid-column: 1 / -1;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px 4px 0;
+  margin: 0;
+  border-top: 1px solid #e9f0f4;
+}
+
+.visual-saved-challenges.has-items {
+  display: grid;
+}
+
+.visual-saved-list {
+  display: flex;
+  gap: 7px;
+  margin: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.visual-saved-list button {
+  flex: 0 0 min(220px, 64vw);
+  padding: 5px 7px;
+}
+
+.visual-saved-challenges > p {
+  margin: 0;
+}
+
+/* Card principal com o mesmo acabamento azul dos casos clinicos */
+.visual-progress-card {
+  padding: 10px 15px;
+  margin-bottom: 14px;
+  border-color: rgba(8, 113, 198, 0.11);
+  border-radius: 13px;
+  box-shadow: 0 8px 24px rgba(14, 91, 145, 0.06);
+}
+
+.visual-progress-copy {
+  margin-bottom: 6px;
+  font-size: 0.68rem;
+}
+
+.visual-challenge-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(340px, 0.92fr) minmax(420px, 1.08fr);
+  min-height: 580px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 28px;
+  background: linear-gradient(145deg, #0759bf 0%, #087fd5 50%, #0c9bd8 100%);
+  box-shadow: 0 28px 68px rgba(8, 96, 171, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  isolation: isolate;
+}
+
+.visual-challenge-card::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.1), transparent 32%),
+    radial-gradient(circle at 88% 8%, rgba(101, 220, 255, 0.3), transparent 25%),
+    radial-gradient(circle at 72% 110%, rgba(0, 63, 160, 0.26), transparent 39%);
+  content: '';
+  pointer-events: none;
+}
+
+.visual-card-orbit {
+  position: absolute;
+  z-index: -1;
+  right: -30px;
+  bottom: -72px;
+  width: 250px;
+  height: 250px;
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  animation: visual-orbit-spin 22s linear infinite;
+  pointer-events: none;
+}
+
+.visual-card-orbit::after {
+  position: absolute;
+  inset: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: inherit;
+  content: '';
+}
+
+.visual-challenge-media {
+  min-height: 100%;
+  margin: 12px 0 12px 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 21px;
+  background: radial-gradient(circle at 50% 48%, #1e4359, #061824 74%);
+  box-shadow: 0 18px 38px rgba(1, 37, 74, 0.28);
+}
+
+.visual-challenge-media::after {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(10, 121, 210, 0.1), transparent 25%, transparent 72%, rgba(1, 26, 48, 0.24));
+  content: '';
+  pointer-events: none;
+}
+
+.visual-challenge-image {
+  height: 100%;
+  min-height: 100%;
+  transition: transform 600ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.visual-challenge-card:hover .visual-challenge-image {
+  transform: scale(1.018);
+}
+
+.visual-favorite-button,
+.visual-card-arrow,
+.visual-image-badges {
+  z-index: 3;
+}
+
+.visual-favorite-button {
+  top: 16px;
+  right: 16px;
+  background: rgba(2, 30, 49, 0.7);
+}
+
+.visual-favorite-button:hover {
+  background: #f4b82d;
+  color: #503400;
+}
+
+.visual-image-badges {
+  top: 16px;
+  left: 16px;
+}
+
+.visual-image-badges span {
+  background: rgba(2, 30, 49, 0.7);
+}
+
+.visual-card-arrow {
+  width: 43px;
+  height: 43px;
+}
+
+.visual-card-arrow.is-previous {
+  left: 16px;
+}
+
+.visual-card-arrow.is-next {
+  right: 16px;
+}
+
+.visual-challenge-body {
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  padding: clamp(28px, 4vw, 48px);
+  color: white;
+}
+
+.visual-challenge-eyebrow {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+}
+
+.visual-challenge-meta {
+  align-items: center;
+}
+
+.visual-challenge-meta span,
+.visual-challenge-meta strong {
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.62rem;
+  backdrop-filter: blur(8px);
+}
+
+.visual-challenge-body h2 {
+  margin-top: 17px;
+  color: white;
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  letter-spacing: -0.025em;
+}
+
+.visual-challenge-instruction {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.visual-notebook-message {
+  color: #fff4b8;
+}
+
+.visual-options {
+  gap: 10px;
+}
+
+.visual-option {
+  min-height: 62px;
+  border-color: rgba(255, 255, 255, 0.19);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 8px 20px rgba(0, 59, 119, 0.09);
+  color: #214a66;
+}
+
+.visual-option:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: white;
+  box-shadow: 0 13px 26px rgba(0, 45, 97, 0.18);
+  transform: translateY(-3px);
+}
+
+.visual-option-letter {
+  background: #e4f3fc;
+  color: #0874bd;
+}
+
+.visual-answer {
+  border-color: rgba(255, 255, 255, 0.42);
+  background: rgba(246, 255, 251, 0.95);
+  box-shadow: 0 15px 32px rgba(0, 49, 95, 0.14);
+}
+
+.visual-answer.is-incorrect {
+  border-color: rgba(255, 255, 255, 0.42);
+  background: rgba(255, 248, 249, 0.96);
+}
+
+.visual-answer > p {
+  color: #3f6278;
+}
+
+.visual-challenge-pagination button {
+  transition: transform 170ms ease, box-shadow 170ms ease, background 170ms ease;
+}
+
+.visual-challenge-pagination button:hover {
+  box-shadow: 0 6px 16px rgba(8, 105, 178, 0.16);
+  transform: translateY(-2px);
+}
+
+@keyframes visual-orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1040px) {
+  .visual-filter-island {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-filter-controls {
+    justify-content: flex-start;
+  }
+
+  .visual-challenge-card {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-challenge-media {
+    min-height: 440px;
+    margin: 12px 12px 0;
+  }
+
+  .visual-challenge-image {
+    height: min(54vw, 520px);
+    min-height: 440px;
+  }
+}
+
+@media (max-width: 760px) {
+  .visual-filter-island {
+    display: grid;
+    padding: 13px;
+    border-radius: 16px;
+  }
+
+  .visual-filter-controls {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+
+  .visual-filter-controls .visual-filter-group:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .visual-difficulty-options {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .visual-difficulty-options button {
+    padding-inline: 5px;
+  }
+
+  .visual-category-filter {
+    min-width: 0;
+  }
+
+  .visual-favorites-filter small {
+    display: none;
+  }
+
+  .visual-clear-filters {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+
+  .visual-saved-challenges.has-items {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-challenge-card {
+    min-height: 0;
+    border-radius: 22px;
+  }
+
+  .visual-challenge-media {
+    min-height: 330px;
+    margin: 8px 8px 0;
+    border-radius: 17px;
+  }
+
+  .visual-challenge-image {
+    height: 52vh;
+    min-height: 330px;
+    max-height: 460px;
+  }
+
+  .visual-challenge-body {
+    padding: 26px 20px 28px;
+  }
+
+  .visual-challenge-meta {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .visual-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 430px) {
+  .visual-filter-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .visual-favorites-filter,
+  .visual-clear-filters {
+    grid-column: auto;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .visual-difficulty-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .visual-image-badges {
+    right: 15px;
+  }
+
+  .visual-image-badges span:last-child {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .visual-card-orbit {
+    animation: none;
+  }
+
+  .visual-challenge-image,
+  .visual-header-stats > div,
+  .visual-option,
+  .visual-challenge-pagination button {
+    transition: none;
+  }
+}

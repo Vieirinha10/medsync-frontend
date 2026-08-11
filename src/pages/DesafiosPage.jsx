@@ -275,57 +275,61 @@ const DesafiosPage = () => {
       </header>
 
       <div className="visual-challenges-workspace">
-        <aside className="visual-filter-island" aria-label="Filtros dos desafios">
+        <section className="visual-filter-island" aria-label="Filtros dos desafios">
           <div className="visual-filter-heading">
             <span><FiFilter aria-hidden="true" /></span>
-            <div><strong>Filtrar desafios</strong><small>{filteredChallenges.length} de {challenges.length} disponíveis</small></div>
+            <div><strong>Encontre seu próximo desafio</strong><small>{filteredChallenges.length} de {challenges.length} disponíveis</small></div>
           </div>
 
-          <div className="visual-filter-group">
-            <span>DIFICULDADE</span>
-            <div className="visual-difficulty-options">
-              {[ALL_DIFFICULTIES, ...difficulties].map((difficulty) => (
-                <button
-                  type="button"
-                  key={difficulty}
-                  className={difficultyFilter === difficulty ? 'is-active' : ''}
-                  onClick={() => { setDifficultyFilter(difficulty); setCurrentIndex(0); }}
-                  aria-pressed={difficultyFilter === difficulty}
-                >
-                  {difficulty}
-                </button>
-              ))}
+          <div className="visual-filter-controls">
+            <div className="visual-filter-group">
+              <span>DIFICULDADE</span>
+              <div className="visual-difficulty-options">
+                {[ALL_DIFFICULTIES, ...difficulties].map((difficulty) => (
+                  <button
+                    type="button"
+                    key={difficulty}
+                    className={difficultyFilter === difficulty ? 'is-active' : ''}
+                    onClick={() => { setDifficultyFilter(difficulty); setCurrentIndex(0); }}
+                    aria-pressed={difficultyFilter === difficulty}
+                  >
+                    {difficulty}
+                  </button>
+                ))}
+              </div>
             </div>
+
+            <label className="visual-filter-group visual-category-filter">
+              <span>ESPECIALIDADE</span>
+              <select
+                aria-label="CONTEÚDO OU ESPECIALIDADE"
+                value={categoryFilter}
+                onChange={(event) => { setCategoryFilter(event.target.value); setCurrentIndex(0); }}
+              >
+                <option value={ALL_CATEGORIES}>Todas as áreas</option>
+                {categories.map((category) => <option value={category} key={category}>{category}</option>)}
+              </select>
+            </label>
+
+            <button
+              type="button"
+              className={`visual-favorites-filter ${favoritesOnly ? 'is-active' : ''}`}
+              onClick={() => { setFavoritesOnly((current) => !current); setCurrentIndex(0); }}
+              aria-label={`Somente favoritos (${favorites.length} salvos)`}
+              aria-pressed={favoritesOnly}
+            >
+              <FiStar aria-hidden="true" />
+              <span><strong>Favoritos</strong><small>{favorites.length} salvos</small></span>
+            </button>
+
+            {hasActiveFilters && (
+              <button type="button" className="visual-clear-filters" onClick={clearFilters}>
+                <FiRefreshCw aria-hidden="true" /> Limpar
+              </button>
+            )}
           </div>
 
-          <label className="visual-filter-group visual-category-filter">
-            <span>CONTEÚDO OU ESPECIALIDADE</span>
-            <select
-              value={categoryFilter}
-              onChange={(event) => { setCategoryFilter(event.target.value); setCurrentIndex(0); }}
-            >
-              <option value={ALL_CATEGORIES}>Todas as áreas</option>
-              {categories.map((category) => <option value={category} key={category}>{category}</option>)}
-            </select>
-          </label>
-
-          <button
-            type="button"
-            className={`visual-favorites-filter ${favoritesOnly ? 'is-active' : ''}`}
-            onClick={() => { setFavoritesOnly((current) => !current); setCurrentIndex(0); }}
-            aria-pressed={favoritesOnly}
-          >
-            <FiStar aria-hidden="true" />
-            <span><strong>Somente favoritos</strong><small>{favorites.length} salvos para revisar</small></span>
-          </button>
-
-          {hasActiveFilters && (
-            <button type="button" className="visual-clear-filters" onClick={clearFilters}>
-              <FiRefreshCw aria-hidden="true" /> Limpar filtros
-            </button>
-          )}
-
-          <div className="visual-saved-challenges">
+          <div className={`visual-saved-challenges ${favoriteChallenges.length ? 'has-items' : ''}`}>
             <div className="visual-saved-heading">
               <span><FiStar aria-hidden="true" /> FAVORITADOS</span>
               <strong>{favorites.length}</strong>
@@ -344,7 +348,7 @@ const DesafiosPage = () => {
               <p>Use a estrela dos cards para montar sua lista de revisão.</p>
             )}
           </div>
-        </aside>
+        </section>
 
         <section className="visual-challenges-content" aria-label="Desafios disponíveis">
           <section className="visual-progress-card" aria-label="Progresso dos desafios filtrados">
@@ -360,6 +364,7 @@ const DesafiosPage = () => {
           {currentChallenge ? (
             <>
               <article className="visual-challenge-card" key={currentChallenge.id}>
+                <span className="visual-card-orbit" aria-hidden="true" />
                 <div
                   className="visual-challenge-media"
                   onTouchStart={handleTouchStart}
@@ -411,6 +416,9 @@ const DesafiosPage = () => {
                 </div>
 
                 <div className="visual-challenge-body">
+                  <span className="visual-challenge-eyebrow">
+                    DESAFIO {String(currentIndex + 1).padStart(2, '0')}
+                  </span>
                   <div className="visual-challenge-meta">
                     <span>{currentChallenge.category}</span>
                     <strong>Desafio {currentIndex + 1} de {filteredChallenges.length}</strong>

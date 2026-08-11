@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FiActivity, FiCheck } from 'react-icons/fi';
+import { FiCheck } from 'react-icons/fi';
 
 const ANALYSIS_STAGES = [
   'Organizando os dados clínicos',
@@ -42,12 +42,12 @@ const ClinicalEvaluationLoader = ({ caseTitle }) => {
           <span className="evaluation-orbit evaluation-orbit-outer" />
           <span className="evaluation-orbit evaluation-orbit-inner" />
           <span className="evaluation-pulse" />
-          <span className="evaluation-icon">
-            <FiActivity />
+          <span className="evaluation-icon evaluation-nexo-icon">
+            <img src="/images/nexo.webp" alt="" />
           </span>
         </div>
 
-        <span className="evaluation-loader-kicker">ANÁLISE CLÍNICA EM ANDAMENTO</span>
+        <span className="evaluation-loader-kicker">NEXO · ANÁLISE CLÍNICA EM ANDAMENTO</span>
         <h1>Construindo seu feedback</h1>
         <p className="evaluation-loader-description">
           O avaliador clínico está comparando suas decisões com a rubrica revisada

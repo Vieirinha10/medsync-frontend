@@ -50,6 +50,13 @@ const HomePage = () => {
                 </div>
 
                 <div className="clinical-preview" aria-label="Prévia de um caso clínico">
+                    <div className="home-nexo-callout">
+                        <img src="/images/nexo.webp" alt="NEXO, mascote do MedSync" />
+                        <div>
+                            <span>NEXO · GUIA DE ESTUDOS</span>
+                            <strong>Você decide. Eu conecto o próximo passo.</strong>
+                        </div>
+                    </div>
                     <div className="preview-topbar">
                         <span />
                         <span />

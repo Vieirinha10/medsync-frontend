@@ -18,6 +18,7 @@ import CadastroPage from './pages/CadastroPage';
 import LoginPage from './pages/LoginPage';
 import PlanosPage from './pages/PlanosPage';
 import PagamentoRetornoPage from './pages/PagamentoRetornoPage';
+import CheckoutPage from './pages/CheckoutPage';
 import DesafiosPage from './pages/DesafiosPage'; // 1. Importar a nova página
 import ResultadoSimulacaoPage from './pages/ResultadoSimulacaoPage';
 import AdminAcademicPage from './pages/AdminAcademicPage';
@@ -50,6 +51,7 @@ import './styles/admin-operations.css';
 import './styles/challenge-cards.css';
 import './styles/home-solid.css';
 import './styles/platform-solid.css';
+import './styles/checkout.css';
 
 function App() {
   const navigate = useNavigate();
@@ -122,6 +124,7 @@ function App() {
           <Route path="/cadastro" element={<CadastroPage />} />
           <Route path="/assinatura" element={<PlanosPage />} />
           <Route path="/pagamento/retorno" element={<ProtectedRoute><PagamentoRetornoPage /></ProtectedRoute>} />
+          <Route path="/checkout/:planId" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
           <Route path="/sobre" element={<InstitutionalPage page="sobre" />} />
           <Route path="/diferenciais" element={<InstitutionalPage page="diferenciais" />} />
           <Route path="/embaixadores" element={<InstitutionalPage page="embaixadores" />} />

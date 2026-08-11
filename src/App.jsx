@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   Link,
+  NavLink,
   useLocation,
   useNavigate,
 } from 'react-router-dom';
@@ -47,6 +48,7 @@ import './styles/clinical-cards.css';
 import './styles/admin-operations.css';
 import './styles/challenge-cards.css';
 import './styles/home-solid.css';
+import './styles/platform-solid.css';
 
 function App() {
   const navigate = useNavigate();
@@ -85,13 +87,13 @@ function App() {
           </button>
 
           <div className={`nav-links ${isMenuOpen ? 'is-open' : ''}`}>
-            <Link to="/casos">Casos clínicos</Link>
-            <Link to="/desafios">Desafios</Link>
-            <Link to="/trilhas">Trilhas</Link>
-            <Link to="/revisoes">Revisões</Link>
-            <Link to="/caderno-erros">Caderno de erros</Link>
-            <Link to="/dashboard">Meu painel</Link>
-            <Link to="/assinatura">Planos</Link>
+            <NavLink to="/casos">Casos clínicos</NavLink>
+            <NavLink to="/desafios">Desafios</NavLink>
+            <NavLink to="/trilhas">Trilhas</NavLink>
+            <NavLink to="/revisoes">Revisões</NavLink>
+            <NavLink to="/caderno-erros">Caderno de erros</NavLink>
+            <NavLink to="/dashboard">Meu painel</NavLink>
+            <NavLink to="/assinatura">Planos</NavLink>
             {isAuthenticated ? (
               <button onClick={handleLogout} className="logout-button">
                 <FiLogOut aria-hidden="true" />

@@ -1,0 +1,1521 @@
+/*
+ * MedSync — sistema visual da plataforma
+ * A página inicial define a marca; esta camada leva o mesmo vocabulário
+ * (navy, ciano, violeta e lima neon) para as áreas funcionais.
+ */
+
+:root {
+  --med-ink: #061d2d;
+  --med-navy: #04273d;
+  --med-navy-deep: #031a2a;
+  --med-navy-soft: #073a58;
+  --med-blue: #087fe0;
+  --med-cyan: #22c7ec;
+  --med-violet: #7659ed;
+  --med-lime: #a7f34b;
+  --med-lime-soft: #d7ff83;
+  --med-paper: #f4f8fa;
+  --med-surface: rgba(255, 255, 255, 0.94);
+  --med-line: rgba(12, 90, 133, 0.14);
+  --med-muted: #657f90;
+  --med-shadow-sm: 0 13px 34px rgba(4, 39, 61, 0.075);
+  --med-shadow-md: 0 24px 65px rgba(4, 39, 61, 0.12);
+  --med-shadow-dark: 0 30px 80px rgba(1, 26, 43, 0.23);
+  --med-radius-sm: 14px;
+  --med-radius-md: 22px;
+  --med-radius-lg: 30px;
+}
+
+html {
+  background: var(--med-paper);
+}
+
+body {
+  color: var(--med-ink);
+  background: var(--med-paper);
+}
+
+::selection {
+  color: var(--med-navy-deep);
+  background: rgba(167, 243, 75, 0.72);
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid rgba(34, 199, 236, 0.34);
+  outline-offset: 3px;
+}
+
+.App {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background:
+    radial-gradient(circle at 2% 14%, rgba(34, 199, 236, 0.11), transparent 29rem),
+    radial-gradient(circle at 98% 42%, rgba(118, 89, 237, 0.075), transparent 31rem),
+    linear-gradient(180deg, #f7fbfd 0%, var(--med-paper) 48%, #f2f7f9 100%);
+}
+
+.App::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  opacity: 0.28;
+  background-image:
+    linear-gradient(rgba(7, 58, 88, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(7, 58, 88, 0.03) 1px, transparent 1px);
+  background-size: 76px 76px;
+  content: '';
+  mask-image: linear-gradient(to bottom, #000, transparent 72%);
+  pointer-events: none;
+}
+
+.App-main {
+  position: relative;
+}
+
+.page-container {
+  position: relative;
+}
+
+.page-container:not(.simulation-message):not(.dashboard-state):not(.review-loading) {
+  animation: med-page-enter 560ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* Navegação principal */
+.App-header {
+  z-index: 1000;
+  padding: 0 24px;
+  border-bottom: 1px solid rgba(19, 92, 130, 0.12);
+  background: rgba(250, 253, 254, 0.9);
+  box-shadow: 0 10px 35px rgba(4, 39, 61, 0.055);
+  backdrop-filter: blur(20px) saturate(145%);
+}
+
+.App-nav {
+  max-width: 1320px;
+  height: 78px;
+}
+
+.logo-link {
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.logo-link:hover {
+  filter: saturate(1.12);
+  transform: translateY(-1px);
+}
+
+.nav-links {
+  gap: 2px;
+}
+
+.nav-links a,
+.nav-links .logout-button {
+  position: relative;
+  padding: 9px 10px;
+  color: #365466;
+  font-size: clamp(0.72rem, 1vw, 0.86rem);
+  font-weight: 760;
+  transition: color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.nav-links a:not(.login-button)::after {
+  position: absolute;
+  right: 50%;
+  bottom: 2px;
+  left: 50%;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--med-cyan), var(--med-lime));
+  content: '';
+  transition: right 190ms ease, left 190ms ease;
+}
+
+.nav-links a:not(.login-button):hover,
+.nav-links a:not(.login-button).active,
+.nav-links .logout-button:hover {
+  color: var(--med-navy);
+  background: rgba(8, 127, 224, 0.065);
+}
+
+.nav-links a:not(.login-button):hover::after,
+.nav-links a:not(.login-button).active::after {
+  right: 13px;
+  left: 13px;
+}
+
+.nav-links a:not(.login-button).active {
+  font-weight: 850;
+}
+
+.nav-links .login-button {
+  margin-left: 6px;
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, var(--med-lime), var(--med-lime-soft), var(--med-lime));
+  background-size: 200% auto;
+  box-shadow: 0 10px 25px rgba(117, 212, 60, 0.2);
+  animation: med-button-flow 6s linear infinite;
+}
+
+.nav-links .login-button:hover {
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, #b8ff5d, #e4ff9e, #b8ff5d);
+  background-size: 200% auto;
+  box-shadow: 0 14px 30px rgba(117, 212, 60, 0.28);
+  transform: translateY(-2px);
+}
+
+.nav-toggle {
+  border-color: rgba(7, 68, 103, 0.14);
+  color: var(--med-navy);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 20px rgba(4, 39, 61, 0.08);
+}
+
+/* Avisos da plataforma */
+.platform-announcement {
+  position: relative;
+  max-width: 1320px;
+  overflow: hidden;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-color: rgba(34, 199, 236, 0.18);
+  color: #dff8ff;
+  background:
+    linear-gradient(100deg, rgba(34, 199, 236, 0.075), transparent 60%),
+    var(--med-navy);
+  box-shadow: 0 12px 30px rgba(4, 39, 61, 0.12);
+}
+
+.platform-announcement::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(var(--med-cyan), var(--med-lime));
+  content: '';
+}
+
+.platform-announcement span {
+  color: rgba(218, 241, 250, 0.7);
+}
+
+.platform-announcement > svg,
+.platform-announcement a {
+  color: var(--med-lime);
+}
+
+.platform-announcement.tone-sucesso {
+  border-color: rgba(167, 243, 75, 0.25);
+  color: #ecffd7;
+  background: linear-gradient(110deg, rgba(167, 243, 75, 0.1), transparent 55%), var(--med-navy);
+}
+
+.platform-announcement.tone-atencao,
+.platform-announcement.tone-urgente {
+  background-color: var(--med-navy);
+}
+
+/* Heróis: uma assinatura visual comum em todas as áreas */
+:is(
+  .user-dashboard-hero,
+  .learning-paths-hero,
+  .learning-path-detail-hero,
+  .error-notebook-hero,
+  .admin-operations-hero,
+  .pricing-hero,
+  .institutional-hero,
+  .legal-hero,
+  .simulation-hero,
+  .result-hero,
+  .visual-challenges-header,
+  .review-header,
+  .clinical-cases-page .page-header
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(76, 202, 239, 0.16);
+  background:
+    radial-gradient(circle at 91% 5%, rgba(34, 199, 236, 0.25), transparent 28%),
+    radial-gradient(circle at 18% 112%, rgba(118, 89, 237, 0.2), transparent 33%),
+    linear-gradient(128deg, var(--med-navy-deep), var(--med-navy) 58%, #075078);
+  box-shadow: var(--med-shadow-dark);
+}
+
+:is(
+  .user-dashboard-hero,
+  .learning-paths-hero,
+  .learning-path-detail-hero,
+  .error-notebook-hero,
+  .admin-operations-hero,
+  .pricing-hero,
+  .institutional-hero,
+  .legal-hero,
+  .simulation-hero,
+  .result-hero,
+  .visual-challenges-header,
+  .review-header,
+  .clinical-cases-page .page-header
+)::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: 0.22;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+  content: '';
+  mask-image: linear-gradient(90deg, #000, transparent 75%);
+  pointer-events: none;
+}
+
+:is(
+  .user-dashboard-hero,
+  .learning-paths-hero,
+  .learning-path-detail-hero,
+  .error-notebook-hero,
+  .admin-operations-hero,
+  .institutional-hero,
+  .legal-hero,
+  .simulation-hero,
+  .result-hero,
+  .visual-challenges-header,
+  .review-header,
+  .clinical-cases-page .page-header
+)::after {
+  position: absolute;
+  z-index: -1;
+  right: -84px;
+  bottom: -118px;
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(167, 243, 75, 0.2);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 38px rgba(34, 199, 236, 0.045),
+    0 0 0 82px rgba(118, 89, 237, 0.025);
+  content: '';
+  pointer-events: none;
+  animation: med-orbit-breathe 7s ease-in-out infinite;
+}
+
+:is(
+  .user-dashboard-hero,
+  .learning-paths-hero,
+  .learning-path-detail-hero,
+  .error-notebook-hero,
+  .admin-operations-hero,
+  .institutional-hero,
+  .legal-hero,
+  .simulation-hero,
+  .result-hero,
+  .visual-challenges-header,
+  .review-header,
+  .clinical-cases-page .page-header
+) :is(h1, h2) {
+  color: #fff;
+  text-wrap: balance;
+}
+
+:is(
+  .user-dashboard-hero,
+  .learning-paths-hero,
+  .learning-path-detail-hero,
+  .error-notebook-hero,
+  .admin-operations-hero,
+  .institutional-hero,
+  .legal-hero,
+  .simulation-hero,
+  .result-hero,
+  .visual-challenges-header,
+  .review-header,
+  .clinical-cases-page .page-header
+) p {
+  color: rgba(220, 241, 250, 0.76);
+}
+
+:is(
+  .dashboard-kicker,
+  .learning-paths-kicker,
+  .learning-path-detail-kicker,
+  .error-notebook-kicker,
+  .visual-challenges-kicker,
+  .simulation-kicker,
+  .pricing-eyebrow,
+  .institutional-kicker,
+  .admin-operations-hero > div:first-child > span,
+  .review-header > div > span
+) {
+  color: var(--med-lime);
+}
+
+/* Catálogo de casos: moldura, filtros e estados somente.
+ * PROTEÇÃO: os cards clínicos e todos os seus elementos internos ficam intocados.
+ */
+.clinical-cases-page {
+  max-width: 1280px;
+  padding-top: clamp(28px, 5vw, 58px);
+}
+
+.clinical-cases-page .page-header {
+  margin-bottom: 18px;
+  padding: clamp(34px, 5vw, 58px);
+  border-radius: var(--med-radius-lg);
+}
+
+.clinical-cases-page .page-header h1 {
+  max-width: 770px;
+  margin-bottom: 12px;
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(2.15rem, 4.7vw, 4rem);
+  line-height: 1.02;
+}
+
+.clinical-cases-page .page-header p {
+  max-width: 680px;
+  line-height: 1.65;
+}
+
+.clinical-cases-page .toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(180px, 0.42fr) minmax(180px, 0.42fr);
+  gap: 10px;
+  padding: 11px;
+  border: 1px solid var(--med-line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--med-shadow-sm);
+  backdrop-filter: blur(14px);
+}
+
+.clinical-cases-page .toolbar :is(input, select) {
+  min-height: 49px;
+  border: 1px solid rgba(12, 90, 133, 0.13);
+  border-radius: 12px;
+  color: var(--med-ink);
+  background: #f6fafc;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.clinical-cases-page .toolbar :is(input, select):focus {
+  border-color: rgba(34, 199, 236, 0.75);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(34, 199, 236, 0.12);
+  outline: none;
+}
+
+.case-results-summary {
+  margin: 14px 4px 20px;
+  color: var(--med-muted);
+  font-weight: 720;
+}
+
+.case-empty-state {
+  border-color: rgba(34, 199, 236, 0.28);
+  background: linear-gradient(135deg, rgba(34, 199, 236, 0.08), rgba(167, 243, 75, 0.08));
+}
+
+/* Superfícies compartilhadas */
+:is(
+  .dashboard-metric-card,
+  .dashboard-panel,
+  .learning-path-summary article,
+  .learning-path-card,
+  .learning-paths-how,
+  .learning-path-objectives,
+  .learning-module,
+  .error-metric,
+  .error-notebook-filters,
+  .study-error-card,
+  .review-progress,
+  .review-card,
+  .review-complete,
+  .simulation-layout .info-panel,
+  .simulation-layout .action-panel,
+  .result-panel,
+  .score-breakdown-card,
+  .reasoning-card,
+  .visual-filter-island,
+  .visual-progress-card,
+  .pricing-plan-card,
+  .pricing-comparison,
+  .pricing-faq,
+  .institutional-content,
+  .institutional-highlights article,
+  .legal-document,
+  .admin-kpi,
+  .admin-operations-panel,
+  .admin-editor,
+  .admin-content-list,
+  .admin-toolkit,
+  .admin-summary-card,
+  .admin-analytics-panel
+) {
+  border-color: var(--med-line);
+  background-color: var(--med-surface);
+  box-shadow: var(--med-shadow-sm);
+}
+
+:is(
+  .dashboard-metric-card,
+  .dashboard-panel,
+  .learning-path-summary article,
+  .learning-path-card,
+  .error-metric,
+  .study-error-card,
+  .review-ratings button,
+  .pricing-plan-card,
+  .institutional-highlights article,
+  .admin-kpi,
+  .admin-content-list article
+) {
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+
+:is(
+  .dashboard-metric-card,
+  .learning-path-summary article,
+  .learning-path-card,
+  .error-metric,
+  .study-error-card,
+  .review-ratings button,
+  .pricing-plan-card,
+  .institutional-highlights article,
+  .admin-kpi,
+  .admin-content-list article
+):hover {
+  border-color: rgba(34, 199, 236, 0.3);
+  box-shadow: 0 20px 48px rgba(4, 39, 61, 0.12);
+  transform: translateY(-4px);
+}
+
+/* Autenticação */
+.auth-container {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: clamp(42px, 7vw, 76px);
+  padding: clamp(30px, 5vw, 48px);
+  border: 1px solid var(--med-line);
+  border-radius: 28px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(244, 250, 252, 0.96));
+  box-shadow: var(--med-shadow-md);
+}
+
+.auth-container::before {
+  position: absolute;
+  z-index: -1;
+  top: -140px;
+  right: -110px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 199, 236, 0.22), transparent 68%);
+  content: '';
+}
+
+.auth-container::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--med-cyan), var(--med-blue), var(--med-violet), var(--med-lime));
+  content: '';
+}
+
+.auth-container h1 {
+  color: var(--med-navy);
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(1.9rem, 4vw, 2.55rem);
+}
+
+.auth-container > p,
+.auth-link {
+  color: var(--med-muted);
+}
+
+.form-group label {
+  color: #35566b;
+  font-weight: 790;
+}
+
+.form-group :is(input, select),
+.admin-field :is(input, textarea, select),
+.admin-exam-editor :is(input, textarea),
+.admin-options-editor input,
+.error-notebook-filters select {
+  border-color: rgba(12, 90, 133, 0.14);
+  color: var(--med-ink);
+  background: #f7fafc;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.form-group :is(input, select):focus,
+.admin-field :is(input, textarea, select):focus,
+.admin-exam-editor :is(input, textarea):focus,
+.admin-options-editor input:focus,
+.error-notebook-filters select:focus {
+  border-color: var(--med-cyan);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(34, 199, 236, 0.12);
+  outline: none;
+}
+
+.btn-submit {
+  position: relative;
+  overflow: hidden;
+  min-height: 52px;
+  border: 0;
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, var(--med-lime), var(--med-lime-soft), var(--med-lime));
+  background-size: 200% auto;
+  box-shadow: 0 13px 28px rgba(117, 212, 60, 0.2);
+  font-weight: 850;
+  animation: med-button-flow 6s linear infinite;
+}
+
+.btn-submit:hover:not(:disabled) {
+  box-shadow: 0 17px 36px rgba(117, 212, 60, 0.28);
+  transform: translateY(-2px);
+}
+
+.registration-privacy-note {
+  border-color: rgba(34, 199, 236, 0.19);
+  background: linear-gradient(120deg, rgba(34, 199, 236, 0.07), rgba(167, 243, 75, 0.07));
+}
+
+.auth-link a,
+.registration-privacy-note a {
+  color: var(--med-blue);
+  font-weight: 820;
+}
+
+/* Meu painel */
+.user-dashboard-page {
+  --dashboard-ink: var(--med-ink);
+  --dashboard-muted: var(--med-muted);
+  --dashboard-blue: var(--med-blue);
+  --dashboard-cyan: var(--med-cyan);
+}
+
+.user-dashboard-hero {
+  min-height: 250px;
+}
+
+.dashboard-avatar {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--med-navy-deep);
+  background: linear-gradient(145deg, var(--med-lime), #d9ff8b);
+  box-shadow: 0 16px 34px rgba(132, 224, 64, 0.22);
+}
+
+.dashboard-profile h1 {
+  color: #fff;
+}
+
+.dashboard-profile p {
+  color: rgba(220, 241, 250, 0.73);
+}
+
+.dashboard-user-details {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: 0 18px 42px rgba(0, 12, 22, 0.18);
+}
+
+.dashboard-user-details span {
+  color: rgba(226, 245, 252, 0.8);
+}
+
+.dashboard-user-details svg {
+  color: var(--med-lime);
+}
+
+.dashboard-metrics {
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.dashboard-metric-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-metric-card::after {
+  position: absolute;
+  right: -30px;
+  bottom: -42px;
+  width: 92px;
+  height: 92px;
+  border: 1px solid rgba(34, 199, 236, 0.12);
+  border-radius: 50%;
+  content: '';
+}
+
+.dashboard-metric-card.green .metric-icon,
+.dashboard-metric-card.cyan .metric-icon {
+  color: var(--med-navy-deep);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+}
+
+.dashboard-panel-title > span,
+.admin-editor-heading > span,
+.admin-kpi > span,
+.admin-summary-card > span {
+  background: linear-gradient(135deg, var(--med-blue), var(--med-cyan));
+}
+
+.specialty-track,
+.review-progress-track,
+.simulation-progress-track,
+.visual-progress-track,
+.learning-path-progress,
+.admin-period-row > div {
+  overflow: hidden;
+  background: #e6edf1;
+}
+
+.specialty-track span,
+.review-progress-track span,
+.simulation-progress-track span,
+.visual-progress-track span,
+.admin-period-row > div span {
+  background: linear-gradient(90deg, var(--med-blue), var(--med-cyan) 55%, var(--med-lime));
+  box-shadow: 0 0 18px rgba(34, 199, 236, 0.22);
+}
+
+.dashboard-primary-link,
+.quick-action-links a:first-child {
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, var(--med-lime), var(--med-lime-soft));
+  box-shadow: 0 12px 28px rgba(117, 212, 60, 0.16);
+}
+
+.achievement-card.unlocked > span,
+.achievement-check {
+  color: var(--med-navy-deep);
+  background: var(--med-lime);
+}
+
+/* Trilhas de aprendizagem */
+.learning-paths-page,
+.learning-path-detail {
+  --path-brand-blue: var(--med-blue);
+}
+
+.learning-paths-hero {
+  min-height: 320px;
+}
+
+.learning-paths-hero h1,
+.learning-path-detail h1 {
+  color: #fff;
+}
+
+.learning-paths-hero p,
+.learning-path-detail-copy p {
+  color: rgba(220, 241, 250, 0.75);
+}
+
+.learning-paths-hero-art::before {
+  border-color: rgba(167, 243, 75, 0.2);
+}
+
+.learning-paths-hero-art span:nth-child(1) {
+  color: var(--med-navy-deep);
+  background: linear-gradient(145deg, var(--med-lime), var(--med-cyan));
+}
+
+.learning-paths-hero-art span:nth-child(2) {
+  background: linear-gradient(145deg, var(--med-violet), #9b82ff);
+}
+
+.learning-paths-hero-art span:nth-child(3) {
+  color: var(--med-navy-deep);
+  background: linear-gradient(145deg, var(--med-cyan), var(--med-lime));
+}
+
+.learning-path-summary article {
+  position: relative;
+  overflow: hidden;
+}
+
+.learning-path-summary article::after {
+  position: absolute;
+  right: -26px;
+  bottom: -31px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(34, 199, 236, 0.055);
+  content: '';
+}
+
+.learning-path-card {
+  background: linear-gradient(150deg, #fff 0%, #fff 72%, color-mix(in srgb, var(--path-soft) 72%, #fff));
+}
+
+.learning-path-progress span {
+  background: linear-gradient(90deg, var(--path-color), var(--med-cyan), var(--med-lime));
+}
+
+.learning-path-open,
+.learning-path-detail-progress > a,
+.learning-activity > a {
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.learning-path-open:hover,
+.learning-path-detail-progress > a:hover,
+.learning-activity > a:hover {
+  box-shadow: 0 12px 26px color-mix(in srgb, var(--path-color) 18%, transparent);
+  filter: saturate(1.08);
+  transform: translateY(-2px);
+}
+
+.learning-path-detail-meta span,
+.learning-path-detail-progress {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(228, 245, 251, 0.8);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.learning-path-detail-progress > span {
+  color: rgba(228, 245, 251, 0.7);
+}
+
+.learning-path-ring {
+  background: conic-gradient(var(--med-lime) var(--path-progress), rgba(255, 255, 255, 0.13) 0);
+}
+
+.learning-path-ring::before {
+  background: var(--med-navy);
+}
+
+.learning-path-ring strong {
+  color: var(--med-lime);
+}
+
+/* Caderno de erros */
+.error-notebook-hero-progress {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: 0 18px 42px rgba(0, 13, 23, 0.2);
+}
+
+.error-notebook-hero-progress strong {
+  color: var(--med-lime);
+}
+
+.error-notebook-hero-progress span,
+.error-notebook-hero-actions small {
+  color: rgba(226, 245, 252, 0.72);
+}
+
+.error-notebook-hero-actions a {
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, var(--med-lime), var(--med-lime-soft));
+  box-shadow: 0 12px 28px rgba(117, 212, 60, 0.19);
+}
+
+.error-notebook-hero-actions a span {
+  color: var(--med-navy-deep);
+}
+
+.error-notebook-filters {
+  top: 96px;
+  backdrop-filter: blur(16px);
+}
+
+.error-filter-heading > svg {
+  color: var(--med-navy-deep);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+}
+
+.study-error-card {
+  overflow: hidden;
+}
+
+.study-error-card.status-resolvido {
+  border-color: rgba(167, 243, 75, 0.45);
+}
+
+.study-error-actions button.is-active {
+  color: var(--med-navy-deep);
+  border-color: transparent;
+  background: var(--med-lime);
+}
+
+/* Revisão espaçada */
+.review-session-stat {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: 0 18px 42px rgba(0, 13, 23, 0.18);
+}
+
+.review-session-stat strong {
+  color: var(--med-lime);
+}
+
+.review-session-stat span {
+  color: rgba(226, 245, 252, 0.72);
+}
+
+.review-card-meta span:first-child,
+.review-question small {
+  color: var(--med-blue);
+}
+
+.review-recall {
+  color: var(--med-blue);
+  background: linear-gradient(120deg, rgba(34, 199, 236, 0.08), rgba(118, 89, 237, 0.08));
+}
+
+.review-recall button,
+.review-complete a:not(.secondary) {
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, var(--med-lime), var(--med-lime-soft));
+  box-shadow: 0 10px 24px rgba(117, 212, 60, 0.18);
+}
+
+.review-ratings button:hover {
+  border-color: rgba(34, 199, 236, 0.35);
+}
+
+.review-complete {
+  background:
+    radial-gradient(circle at 50% 15%, rgba(167, 243, 75, 0.15), transparent 31%),
+    linear-gradient(145deg, #fff, #f4fafc);
+}
+
+.review-complete-icon {
+  color: var(--med-navy-deep);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+}
+
+/* Simulação clínica */
+.simulation-workspace {
+  --simulation-blue: var(--med-blue);
+  --simulation-cyan: var(--med-cyan);
+  --simulation-ink: var(--med-ink);
+  --simulation-muted: var(--med-muted);
+}
+
+.simulation-hero h1,
+.result-heading h1 {
+  color: #fff;
+}
+
+.simulation-hero p,
+.result-heading p {
+  color: rgba(220, 241, 250, 0.74);
+}
+
+.simulation-progress-card,
+.total-score {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: 0 18px 42px rgba(0, 13, 23, 0.18);
+}
+
+.simulation-progress-card strong,
+.total-score strong {
+  color: var(--med-lime);
+}
+
+.simulation-progress-card > span,
+.total-score span {
+  color: rgba(226, 245, 252, 0.7);
+}
+
+.simulation-layout .info-panel,
+.simulation-layout .action-panel {
+  box-shadow: var(--med-shadow-md);
+}
+
+.panel-icon {
+  color: var(--med-navy-deep);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+  box-shadow: 0 11px 25px rgba(34, 199, 236, 0.2);
+}
+
+.panel-eyebrow,
+.content-kicker {
+  color: var(--med-blue);
+}
+
+.clinical-info-card {
+  border-color: rgba(12, 90, 133, 0.11);
+  background: linear-gradient(145deg, #fbfdfe, #f5fafc);
+}
+
+.clinical-info-card:hover {
+  border-color: rgba(34, 199, 236, 0.28);
+}
+
+.clinical-step.active .step-icon,
+.exam-option-card.selected .exam-checkbox {
+  color: var(--med-navy-deep);
+  background: var(--med-lime);
+}
+
+.clinical-step.active .step-copy strong,
+.exam-option-card.selected .exam-option-name {
+  color: var(--med-navy);
+}
+
+.exam-option-card.selected {
+  border-color: rgba(167, 243, 75, 0.72);
+  background: rgba(167, 243, 75, 0.08);
+  box-shadow: 0 11px 26px rgba(105, 184, 45, 0.1);
+}
+
+.results-button,
+.step-navigation-button.next,
+.clinical-submit,
+.primary-result-action {
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, var(--med-lime), var(--med-lime-soft), var(--med-lime));
+  background-size: 200% auto;
+  box-shadow: 0 12px 28px rgba(117, 212, 60, 0.19);
+  animation: med-button-flow 6s linear infinite;
+}
+
+.step-navigation-button.back,
+.secondary-result-action {
+  color: var(--med-navy);
+  border-color: rgba(7, 58, 88, 0.14);
+  background: #f2f7f9;
+}
+
+.transcription-box:focus {
+  border-color: var(--med-cyan);
+  box-shadow: 0 0 0 4px rgba(34, 199, 236, 0.11);
+}
+
+/* Resultado da simulação */
+.simulation-result-page {
+  max-width: 1280px;
+}
+
+.result-diagnosis-reveal {
+  border-color: rgba(167, 243, 75, 0.35);
+  background: linear-gradient(120deg, rgba(167, 243, 75, 0.1), rgba(34, 199, 236, 0.08));
+}
+
+.score-progress span {
+  background: linear-gradient(90deg, var(--med-blue), var(--med-cyan), var(--med-lime));
+}
+
+.result-panel-title > span,
+.score-breakdown-card > span {
+  color: var(--med-navy-deep);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+}
+
+.reasoning-card.safety {
+  border-color: rgba(167, 243, 75, 0.35);
+  background: rgba(167, 243, 75, 0.075);
+}
+
+.study-chips span {
+  color: var(--med-navy);
+  border-color: rgba(34, 199, 236, 0.18);
+  background: rgba(34, 199, 236, 0.08);
+}
+
+/* Desafios visuais */
+.visual-challenges-page {
+  max-width: 1380px;
+}
+
+.visual-challenges-header {
+  min-height: 260px;
+}
+
+.visual-header-stats > div,
+.visual-score,
+.visual-favorite-stat {
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.075);
+  box-shadow: 0 18px 42px rgba(0, 13, 23, 0.18);
+}
+
+.visual-header-stats strong,
+.visual-favorite-stat > svg {
+  color: var(--med-lime);
+}
+
+.visual-header-stats small,
+.visual-header-stats span {
+  color: rgba(226, 245, 252, 0.72);
+}
+
+.visual-filter-island {
+  border-radius: 22px;
+  backdrop-filter: blur(16px);
+}
+
+.visual-filter-heading > span {
+  color: var(--med-navy-deep);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+}
+
+.visual-difficulty-options button.is-active,
+.visual-favorites-filter.is-active {
+  color: var(--med-navy-deep);
+  border-color: transparent;
+  background: var(--med-lime);
+  box-shadow: 0 9px 20px rgba(117, 212, 60, 0.17);
+}
+
+.visual-favorite-button.is-active {
+  color: var(--med-navy-deep);
+  border-color: rgba(167, 243, 75, 0.72);
+  background: var(--med-lime);
+  box-shadow: 0 10px 26px rgba(99, 181, 43, 0.24);
+}
+
+.visual-challenge-card {
+  border-color: rgba(34, 199, 236, 0.24);
+  background:
+    radial-gradient(circle at 96% 100%, rgba(167, 243, 75, 0.1), transparent 24%),
+    linear-gradient(132deg, var(--med-navy-deep), #075c8c 52%, var(--med-blue));
+  box-shadow: var(--med-shadow-dark);
+}
+
+.visual-option {
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.visual-option:hover:not(:disabled) {
+  border-color: var(--med-lime);
+  box-shadow: 0 10px 24px rgba(1, 26, 43, 0.2);
+  transform: translateY(-2px);
+}
+
+.visual-continue-button,
+.visual-session-summary button {
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, var(--med-lime), var(--med-lime-soft));
+  box-shadow: 0 12px 28px rgba(117, 212, 60, 0.18);
+}
+
+.visual-challenge-pagination button.is-active {
+  color: var(--med-navy-deep);
+  border-color: var(--med-lime);
+  background: var(--med-lime);
+}
+
+/* Planos */
+.pricing-page {
+  --pricing-blue: var(--med-blue);
+  --pricing-cyan: var(--med-cyan);
+  --pricing-navy: var(--med-navy);
+  --pricing-ink: var(--med-ink);
+  --pricing-muted: var(--med-muted);
+}
+
+.pricing-hero h1 span {
+  color: transparent;
+  background: linear-gradient(100deg, var(--med-cyan), var(--med-violet), var(--med-lime), var(--med-cyan));
+  background-size: 240% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: med-fluid-text 6s linear infinite;
+}
+
+.pricing-primary-action,
+.pricing-plan-button.is-primary,
+.pricing-final-cta > a {
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, var(--med-lime), var(--med-lime-soft), var(--med-lime));
+  background-size: 200% auto;
+  box-shadow: 0 13px 29px rgba(117, 212, 60, 0.2);
+  animation: med-button-flow 6s linear infinite;
+}
+
+.pricing-hero-proof svg,
+.pricing-offer-topline > strong {
+  color: var(--med-lime);
+}
+
+.pricing-hero-offer {
+  border-color: rgba(167, 243, 75, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pricing-plan-card.is-premium {
+  border-color: rgba(167, 243, 75, 0.52);
+  box-shadow: 0 26px 66px rgba(67, 129, 25, 0.13);
+}
+
+.pricing-plan-card.is-premium::before {
+  background: linear-gradient(90deg, var(--med-cyan), var(--med-lime));
+}
+
+.pricing-popular-badge {
+  color: var(--med-navy-deep);
+  background: var(--med-lime);
+}
+
+.pricing-value-grid article > span,
+.pricing-plan-icon {
+  color: var(--med-navy-deep);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+}
+
+.pricing-final-cta {
+  color: #fff;
+  background:
+    radial-gradient(circle at 94% 5%, rgba(167, 243, 75, 0.16), transparent 28%),
+    linear-gradient(125deg, var(--med-navy-deep), var(--med-navy-soft));
+  box-shadow: var(--med-shadow-dark);
+}
+
+/* Institucional e documentos legais */
+.institutional-page,
+.legal-page {
+  max-width: 1180px;
+}
+
+.institutional-hero,
+.legal-hero {
+  border-radius: var(--med-radius-lg);
+}
+
+.institutional-hero-icon {
+  color: var(--med-navy-deep);
+  border-color: rgba(167, 243, 75, 0.4);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+  box-shadow: 0 15px 36px rgba(34, 199, 236, 0.2);
+}
+
+.institutional-highlights article {
+  position: relative;
+  overflow: hidden;
+}
+
+.institutional-highlights article::after {
+  position: absolute;
+  right: -25px;
+  bottom: -35px;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: rgba(167, 243, 75, 0.075);
+  content: '';
+}
+
+.institutional-content h2,
+.legal-document h2 {
+  color: var(--med-navy);
+}
+
+.institutional-cta {
+  border-color: rgba(34, 199, 236, 0.18);
+  background: linear-gradient(125deg, rgba(34, 199, 236, 0.09), rgba(167, 243, 75, 0.09));
+}
+
+.institutional-cta a {
+  color: var(--med-navy-deep);
+  background: var(--med-lime);
+}
+
+/* Centro administrativo */
+.admin-operations-page {
+  --admin-ink: var(--med-ink);
+  --admin-muted: var(--med-muted);
+}
+
+.admin-operations-hero {
+  min-height: 260px;
+}
+
+.admin-operations-hero h1 {
+  color: #fff;
+}
+
+.admin-operations-hero p {
+  color: rgba(220, 241, 250, 0.74);
+}
+
+.admin-health,
+.admin-data-badge {
+  border-color: rgba(167, 243, 75, 0.28);
+  color: var(--med-lime);
+  background: rgba(167, 243, 75, 0.08);
+}
+
+.admin-health small {
+  color: rgba(226, 245, 252, 0.65);
+}
+
+.admin-tabs {
+  border-color: var(--med-line);
+  background: rgba(255, 255, 255, 0.91);
+  box-shadow: var(--med-shadow-sm);
+}
+
+.admin-tabs button.is-active,
+.admin-save-button,
+.admin-toolkit button {
+  color: var(--med-navy-deep);
+  background: linear-gradient(115deg, var(--med-lime), var(--med-lime-soft));
+  box-shadow: 0 10px 24px rgba(117, 212, 60, 0.17);
+}
+
+.admin-kpi.green > span,
+.admin-kpi.cyan > span {
+  color: var(--med-navy-deep);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+}
+
+.admin-activity-chart span {
+  background: linear-gradient(var(--med-lime), var(--med-cyan), var(--med-blue));
+}
+
+.admin-content-ranking b,
+.admin-content-icon,
+.admin-options-editor label > span {
+  color: var(--med-navy-deep);
+  background: rgba(167, 243, 75, 0.3);
+}
+
+.admin-toolkit {
+  background: linear-gradient(120deg, rgba(34, 199, 236, 0.07), rgba(167, 243, 75, 0.08));
+}
+
+.admin-switch input:checked + span {
+  background: var(--med-lime);
+}
+
+.admin-switch input:checked + span::after {
+  background: var(--med-navy);
+}
+
+.admin-content-list article > button,
+.admin-subsection > div:first-child button,
+.admin-back-link {
+  color: var(--med-blue);
+}
+
+/* Rodapé */
+.site-footer {
+  border-top-color: rgba(167, 243, 75, 0.2);
+  background:
+    radial-gradient(circle at 14% -30%, rgba(34, 199, 236, 0.15), transparent 34%),
+    var(--med-navy-deep);
+}
+
+.site-footer::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--med-cyan), var(--med-violet), var(--med-lime));
+  content: '';
+}
+
+.footer-brand-symbol {
+  color: var(--med-navy-deep);
+  border-color: rgba(167, 243, 75, 0.25);
+  background: linear-gradient(135deg, var(--med-lime), var(--med-cyan));
+  box-shadow: 0 10px 28px rgba(34, 199, 236, 0.18);
+}
+
+.footer-socials > a:hover {
+  border-color: rgba(167, 243, 75, 0.34);
+  color: var(--med-lime);
+  background: rgba(167, 243, 75, 0.07);
+}
+
+.footer-link-group a:hover,
+.footer-made-with svg {
+  color: var(--med-lime);
+}
+
+/* Movimento compartilhado */
+@keyframes med-page-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes med-fluid-text {
+  to { background-position: 240% center; }
+}
+
+@keyframes med-button-flow {
+  to { background-position: 200% center; }
+}
+
+@keyframes med-orbit-breathe {
+  0%, 100% { opacity: 0.72; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+@media (max-width: 1180px) {
+  .nav-links a,
+  .nav-links .logout-button {
+    padding-inline: 8px;
+    font-size: 0.72rem;
+  }
+
+  .App-nav {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 1020px) {
+  .clinical-cases-page .toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .clinical-cases-page .toolbar input {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 860px) {
+  .App-header {
+    padding-inline: 16px;
+  }
+
+  .nav-links.is-open {
+    top: 66px;
+    right: 0;
+    left: 0;
+    gap: 5px;
+    padding: 14px;
+    border: 1px solid rgba(34, 199, 236, 0.15);
+    border-radius: 20px;
+    background: rgba(3, 26, 42, 0.98);
+    box-shadow: 0 24px 64px rgba(1, 20, 34, 0.32);
+    backdrop-filter: blur(20px);
+  }
+
+  .nav-links.is-open a,
+  .nav-links.is-open .logout-button {
+    width: 100%;
+    justify-content: flex-start;
+    color: rgba(235, 248, 252, 0.84);
+  }
+
+  .nav-links.is-open a:not(.login-button):hover,
+  .nav-links.is-open a:not(.login-button).active,
+  .nav-links.is-open .logout-button:hover {
+    color: #fff;
+    background: rgba(34, 199, 236, 0.1);
+  }
+
+  .nav-links.is-open .login-button {
+    justify-content: center;
+    margin: 5px 0 0;
+    color: var(--med-navy-deep);
+  }
+
+  :is(
+    .user-dashboard-hero,
+    .learning-paths-hero,
+    .learning-path-detail-hero,
+    .error-notebook-hero,
+    .admin-operations-hero,
+    .institutional-hero,
+    .legal-hero,
+    .simulation-hero,
+    .result-hero,
+    .visual-challenges-header,
+    .review-header,
+    .clinical-cases-page .page-header
+  )::after {
+    right: -155px;
+  }
+}
+
+@media (max-width: 680px) {
+  .page-container {
+    width: calc(100% - 24px);
+  }
+
+  .clinical-cases-page .page-header {
+    padding: 30px 24px;
+    border-radius: 24px;
+  }
+
+  .clinical-cases-page .toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .clinical-cases-page .toolbar input {
+    grid-column: auto;
+  }
+
+  :is(
+    .user-dashboard-hero,
+    .learning-paths-hero,
+    .learning-path-detail-hero,
+    .error-notebook-hero,
+    .admin-operations-hero,
+    .institutional-hero,
+    .legal-hero,
+    .simulation-hero,
+    .result-hero,
+    .visual-challenges-header,
+    .review-header
+  ) {
+    border-radius: 24px;
+  }
+
+  .auth-container {
+    border-radius: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-container,
+  .nav-links .login-button,
+  .btn-submit,
+  .pricing-primary-action,
+  .pricing-plan-button.is-primary,
+  .pricing-final-cta > a,
+  .results-button,
+  .step-navigation-button.next,
+  .clinical-submit,
+  .primary-result-action,
+  :is(
+    .user-dashboard-hero,
+    .learning-paths-hero,
+    .learning-path-detail-hero,
+    .error-notebook-hero,
+    .admin-operations-hero,
+    .institutional-hero,
+    .legal-hero,
+    .simulation-hero,
+    .result-hero,
+    .visual-challenges-header,
+    .review-header,
+    .clinical-cases-page .page-header
+  )::after {
+    animation: none;
+  }
+
+  :is(
+    .dashboard-metric-card,
+    .learning-path-summary article,
+    .learning-path-card,
+    .error-metric,
+    .study-error-card,
+    .review-ratings button,
+    .pricing-plan-card,
+    .institutional-highlights article,
+    .admin-kpi,
+    .admin-content-list article
+  ):hover {
+    transform: none;
+  }
+}

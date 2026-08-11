@@ -104,6 +104,11 @@ export const api = {
       body: credentials,
     }),
   getCurrentUser: () => request('/usuarios/me'),
+  createPaymentCheckout: (planId) => request('/pagamentos/checkout', {
+    method: 'POST',
+    body: { plano_id: planId },
+  }),
+  getPaymentStatus: (orderId) => request(`/pagamentos/pedidos/${orderId}`),
   getAcademicAnalytics: () => request('/admin/analytics/academico'),
   getAdminOverview: () => request('/admin/overview'),
   getAdminCases: () => request('/admin/casos'),

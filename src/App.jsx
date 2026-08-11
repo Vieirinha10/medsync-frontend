@@ -17,6 +17,7 @@ import DashboardPage from './pages/DashboardPage';
 import CadastroPage from './pages/CadastroPage';
 import LoginPage from './pages/LoginPage';
 import PlanosPage from './pages/PlanosPage';
+import PagamentoRetornoPage from './pages/PagamentoRetornoPage';
 import DesafiosPage from './pages/DesafiosPage'; // 1. Importar a nova página
 import ResultadoSimulacaoPage from './pages/ResultadoSimulacaoPage';
 import AdminAcademicPage from './pages/AdminAcademicPage';
@@ -120,6 +121,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/cadastro" element={<CadastroPage />} />
           <Route path="/assinatura" element={<PlanosPage />} />
+          <Route path="/pagamento/retorno" element={<ProtectedRoute><PagamentoRetornoPage /></ProtectedRoute>} />
           <Route path="/sobre" element={<InstitutionalPage page="sobre" />} />
           <Route path="/diferenciais" element={<InstitutionalPage page="diferenciais" />} />
           <Route path="/embaixadores" element={<InstitutionalPage page="embaixadores" />} />

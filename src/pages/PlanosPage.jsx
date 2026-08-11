@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   FiActivity,
@@ -9,7 +9,6 @@ import {
   FiCheckCircle,
   FiClock,
   FiLayers,
-  FiLoader,
   FiRefreshCw,
   FiStar,
   FiTarget,
@@ -23,7 +22,7 @@ import {
   PREMIUM_BILLING_OPTIONS,
   QUARTERLY_VS_ONE_TIME_SAVINGS,
 } from '../config/pricing';
-import { api, getAuthToken } from '../services/api';
+import { getAuthToken } from '../services/api';
 
 const freeBenefits = [
   'Acesso aos casos clínicos selecionados',
@@ -101,24 +100,13 @@ const billingIcons = {
 
 const PlanosPage = () => {
   const navigate = useNavigate();
-  const [checkoutPlan, setCheckoutPlan] = useState(null);
-  const [checkoutError, setCheckoutError] = useState('');
 
-  const startCheckout = async (planId) => {
+  const startCheckout = (planId) => {
     if (!getAuthToken()) {
-      navigate('/login', { state: { from: { pathname: '/assinatura' } } });
+      navigate('/login', { state: { from: { pathname: `/checkout/${planId}` } } });
       return;
     }
-
-    setCheckoutPlan(planId);
-    setCheckoutError('');
-    try {
-      const checkout = await api.createPaymentCheckout(planId);
-      window.location.assign(checkout.checkout_url);
-    } catch (error) {
-      setCheckoutError(error.message);
-      setCheckoutPlan(null);
-    }
+    navigate(`/checkout/${planId}`);
   };
 
   return (
@@ -242,27 +230,15 @@ const PlanosPage = () => {
                 <button
                   type="button"
                   className="pricing-plan-button is-primary"
-                  disabled={Boolean(checkoutPlan)}
                   onClick={() => startCheckout(plan.id)}
                 >
-                  {checkoutPlan === plan.id ? (
-                    <><FiLoader className="pricing-button-spinner" aria-hidden="true" /> Abrindo checkout seguro</>
-                  ) : (
-                    <>Escolher {plan.name}<FiArrowRight aria-hidden="true" /></>
-                  )}
+                  <>Escolher {plan.name}<FiArrowRight aria-hidden="true" /></>
                 </button>
                 <small className="pricing-plan-note">Pagamento seguro processado pela Asaas.</small>
               </article>
             );
           })}
         </div>
-
-        {checkoutError && (
-          <div className="pricing-checkout-error" role="alert">
-            <strong>Não foi possível abrir o checkout.</strong>
-            <span>{checkoutError}</span>
-          </div>
-        )}
 
         <div className="pricing-premium-benefits">
           <div>

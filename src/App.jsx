@@ -46,7 +46,6 @@ import './styles/spaced-review.css';
 import './styles/clinical-cards.css';
 import './styles/admin-operations.css';
 import './styles/challenge-cards.css';
-import './styles/nexo.css';
 
 function App() {
   const navigate = useNavigate();

@@ -8,7 +8,6 @@ import {
   FiTarget,
 } from 'react-icons/fi';
 import { ApiError, api } from '../services/api';
-import NexoMascot from '../components/NexoMascot';
 
 const ScoreCard = ({ label, value, total }) => (
   <div className="score-breakdown-card">
@@ -81,25 +80,11 @@ const ResultadoSimulacaoPage = () => {
   }, [progressoId, result]);
 
   if (isLoading) {
-    return (
-      <div className="page-container result-state result-state-with-nexo">
-        <NexoMascot
-          state="reviewing"
-          size="large"
-          message="Estou buscando a avaliação que a Synapse preparou para você."
-        />
-        <p>Carregando sua avaliação...</p>
-      </div>
-    );
+    return <div className="page-container result-state">Carregando sua avaliação...</div>;
   }
   if (error || !result) {
     return (
-      <div className="page-container result-state result-state-with-nexo">
-        <NexoMascot
-          state="encouraging"
-          size="large"
-          message="Não consegui abrir o resultado agora, mas podemos tentar novamente."
-        />
+      <div className="page-container result-state">
         <h1>Não foi possível carregar o resultado</h1>
         <p>{error}</p>
         <Link to="/casos">Voltar aos casos</Link>
@@ -110,20 +95,6 @@ const ResultadoSimulacaoPage = () => {
   const sourceLabel = result.fonte_feedback === 'openai'
     ? 'Feedback aprimorado por IA'
     : 'Avaliação estruturada pela rubrica clínica';
-  const nexoResult = result.pontuacao_total >= 80
-    ? {
-      state: 'celebrating',
-      message: 'Excelente evolução! Seu raciocínio clínico está ficando cada vez mais preciso.',
-    }
-    : result.pontuacao_total >= 60
-      ? {
-        state: 'reviewing',
-        message: 'Bom caminho! Vamos revisar os pontos que podem elevar sua próxima pontuação.',
-      }
-      : {
-        state: 'encouraging',
-        message: 'Cada tentativa fortalece seu raciocínio. Revise os pontos abaixo e tente novamente.',
-      };
 
   return (
     <div className="page-container simulation-result-page">
@@ -134,21 +105,14 @@ const ResultadoSimulacaoPage = () => {
           <p>{result.feedback.resumo}</p>
           <span className="feedback-source">{sourceLabel}</span>
         </div>
-        <div className="result-hero-companion">
-          <NexoMascot
-            state={nexoResult.state}
-            size="medium"
-            message={nexoResult.message}
-          />
-          <div
-            className="total-score"
-            style={{ '--score': `${result.pontuacao_total * 3.6}deg` }}
-            aria-label={`Pontuação total: ${result.pontuacao_total} de 100`}
-          >
-            <div>
-              <strong>{result.pontuacao_total}</strong>
-              <span>de 100</span>
-            </div>
+        <div
+          className="total-score"
+          style={{ '--score': `${result.pontuacao_total * 3.6}deg` }}
+          aria-label={`Pontuação total: ${result.pontuacao_total} de 100`}
+        >
+          <div>
+            <strong>{result.pontuacao_total}</strong>
+            <span>de 100</span>
           </div>
         </div>
       </header>

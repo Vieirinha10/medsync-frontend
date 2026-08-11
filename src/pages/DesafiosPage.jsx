@@ -19,6 +19,18 @@ const OPTION_LABELS = ['A', 'B', 'C', 'D'];
 const FAVORITES_STORAGE_KEY = 'medsync:visual-challenge-favorites';
 const ALL_DIFFICULTIES = 'Todas';
 const ALL_CATEGORIES = 'Todas';
+const LEGACY_CHALLENGE_IDS = {
+  'pneumotorax-hipertensivo': 'desafio-visual-001',
+  'fibrilacao-atrial': 'desafio-visual-002',
+  'hematoma-epidural': 'desafio-visual-003',
+  'psoriase-em-placas': 'desafio-visual-004',
+  'retinopatia-diabetica': 'desafio-visual-005',
+  'anemia-falciforme': 'desafio-visual-006',
+  'pneumonia-lobar': 'desafio-visual-007',
+  'apendicite-aguda': 'desafio-visual-008',
+  'calculo-ureteral': 'desafio-visual-009',
+  'melanoma-cutaneo': 'desafio-visual-010',
+};
 
 const getTrailContext = () => {
   const params = new URLSearchParams(window.location.search);
@@ -28,7 +40,8 @@ const getTrailContext = () => {
 };
 
 const getInitialChallengeIndex = () => {
-  const challengeId = new URLSearchParams(window.location.search).get('desafio');
+  const requestedId = new URLSearchParams(window.location.search).get('desafio');
+  const challengeId = LEGACY_CHALLENGE_IDS[requestedId] || requestedId;
   const index = visualChallenges.findIndex((challenge) => challenge.id === challengeId);
   return index >= 0 ? index : 0;
 };
@@ -36,7 +49,9 @@ const getInitialChallengeIndex = () => {
 const loadFavorites = () => {
   try {
     const savedFavorites = JSON.parse(window.localStorage.getItem(FAVORITES_STORAGE_KEY));
-    return Array.isArray(savedFavorites) ? savedFavorites : [];
+    return Array.isArray(savedFavorites)
+      ? [...new Set(savedFavorites.map((id) => LEGACY_CHALLENGE_IDS[id] || id))]
+      : [];
   } catch {
     return [];
   }
@@ -51,6 +66,7 @@ const DesafiosPage = () => {
   const [categoryFilter, setCategoryFilter] = useState(ALL_CATEGORIES);
   const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [notebookMessage, setNotebookMessage] = useState('');
+  const [answeringId, setAnsweringId] = useState(null);
   const touchStartX = useRef(null);
   const trailContext = useMemo(getTrailContext, []);
 
@@ -76,15 +92,16 @@ const DesafiosPage = () => {
   );
 
   const currentChallenge = filteredChallenges[currentIndex] ?? null;
-  const selectedOptionId = currentChallenge ? answers[currentChallenge.id] : undefined;
-  const isAnswered = Boolean(selectedOptionId);
+  const currentAnswer = currentChallenge ? answers[currentChallenge.id] : undefined;
+  const selectedOptionId = currentAnswer?.selectedOptionId;
+  const isAnswered = Boolean(currentAnswer);
   const answeredCount = Object.keys(answers).length;
   const visibleAnsweredCount = filteredChallenges.filter((challenge) => answers[challenge.id]).length;
   const correctCount = challenges.filter(
-    (challenge) => answers[challenge.id] === challenge.correctOptionId,
+    (challenge) => answers[challenge.id]?.correta,
   ).length;
   const visibleCorrectCount = filteredChallenges.filter(
-    (challenge) => answers[challenge.id] === challenge.correctOptionId,
+    (challenge) => answers[challenge.id]?.correta,
   ).length;
   const progress = filteredChallenges.length
     ? (visibleAnsweredCount / filteredChallenges.length) * 100
@@ -116,12 +133,10 @@ const DesafiosPage = () => {
         imageSrc: item.imagem_url,
         imageAlt: item.imagem_alt,
         question: item.pergunta,
-        options: item.alternativas.map((label, index) => ({ id: `option-${index + 1}`, label })),
-        correctOptionId: `option-${item.alternativa_correta + 1}`,
-        correctDiagnosis: item.diagnostico_correto,
-        explanation: item.explicacao,
-        keyFindings: item.achados_chave,
-        source: { credit: item.fonte_credito, license: item.fonte_licenca, url: item.fonte_url },
+        options: item.alternativas.map((option, index) => ({
+          id: option.id || `option-${index + 1}`,
+          label: option.texto || option.label || String(option),
+        })),
       }));
       setChallenges([...dynamic, ...visualChallenges.filter(
         (builtIn) => !dynamic.some((item) => item.id === builtIn.id),
@@ -159,33 +174,43 @@ const DesafiosPage = () => {
       });
   }, [currentIndex, filteredChallenges]);
 
-  const handleAnswer = (optionId) => {
+  const handleAnswer = async (optionId) => {
     if (isAnswered || !currentChallenge) return;
-    setAnswers((current) => ({
-      ...current,
-      [currentChallenge.id]: optionId,
-    }));
-
     const selectedOption = currentChallenge.options.find((option) => option.id === optionId);
-    const correctOption = currentChallenge.options.find(
-      (option) => option.id === currentChallenge.correctOptionId,
-    );
     setNotebookMessage('');
+    setAnsweringId(currentChallenge.id);
+
+    let correction;
+    try {
+      correction = await api.answerVisualChallenge(currentChallenge.id, optionId);
+    } catch {
+      setNotebookMessage('Não foi possível corrigir agora. Tente novamente em instantes.');
+      setAnsweringId(null);
+      return;
+    }
+
+    const answer = { selectedOptionId: optionId, ...correction };
+    setAnswers((current) => ({ ...current, [currentChallenge.id]: answer }));
+    setAnsweringId(null);
+    const correctOption = currentChallenge.options.find(
+      (option) => option.id === correction.alternativa_correta_id,
+    );
+
     void api.recordVisualChallengeAttempt({
       desafio_id: currentChallenge.id,
-      titulo: currentChallenge.correctDiagnosis,
+      titulo: correction.diagnostico_correto,
       especialidade: currentChallenge.category,
       dificuldade: currentChallenge.difficulty,
       pergunta: currentChallenge.question,
       resposta_usuario: selectedOption?.label || optionId,
-      resposta_correta: correctOption?.label || currentChallenge.correctDiagnosis,
-      explicacao: currentChallenge.explanation,
+      resposta_correta: correctOption?.label || correction.diagnostico_correto,
+      explicacao: correction.explicacao,
       imagem: currentChallenge.imageSrc,
     }).then((entry) => {
-      if (optionId !== currentChallenge.correctOptionId && entry) {
+      if (!correction.correta && entry) {
         setNotebookMessage('Erro salvo automaticamente no seu Caderno de Erros.');
       }
-      if (optionId === currentChallenge.correctOptionId && entry?.status === 'dominado') {
+      if (correction.correta && entry?.status === 'dominado') {
         setNotebookMessage('Ótimo! Este conteúdo foi marcado como dominado no seu caderno.');
       }
     }).catch(() => {
@@ -193,7 +218,7 @@ const DesafiosPage = () => {
     });
 
     if (trailContext) {
-      const score = optionId === currentChallenge.correctOptionId ? 100 : 0;
+      const score = correction.correta ? 100 : 0;
       void api.completeLearningPathActivity(
         trailContext.pathId,
         trailContext.activityId,
@@ -223,6 +248,12 @@ const DesafiosPage = () => {
     setDifficultyFilter(ALL_DIFFICULTIES);
     setCategoryFilter(ALL_CATEGORIES);
     setFavoritesOnly(true);
+    setAnswers((current) => {
+      const next = { ...current };
+      delete next[challengeId];
+      return next;
+    });
+    setNotebookMessage('');
     setCurrentIndex(Math.max(favoriteIndex, 0));
   };
 
@@ -336,10 +367,13 @@ const DesafiosPage = () => {
             </div>
             {favoriteChallenges.length ? (
               <div className="visual-saved-list">
-                {favoriteChallenges.map((challenge) => (
+                {favoriteChallenges.map((challenge, index) => (
                   <button type="button" key={challenge.id} onClick={() => openFavorite(challenge.id)}>
                     <img src={challenge.imageSrc} alt="" />
-                    <span><strong>{challenge.correctDiagnosis}</strong><small>{challenge.category} · {challenge.difficulty}</small></span>
+                    <span>
+                      <strong>Desafio visual #{String(index + 1).padStart(2, '0')}</strong>
+                      <small>{challenge.modality} · {challenge.category} · {challenge.difficulty}</small>
+                    </span>
                     <FiArrowRight aria-hidden="true" />
                   </button>
                 ))}
@@ -382,8 +416,8 @@ const DesafiosPage = () => {
                     className={`visual-favorite-button ${favorites.includes(currentChallenge.id) ? 'is-active' : ''}`}
                     onClick={() => toggleFavorite(currentChallenge.id)}
                     aria-label={favorites.includes(currentChallenge.id)
-                      ? `Remover ${currentChallenge.correctDiagnosis} dos favoritos`
-                      : `Favoritar ${currentChallenge.correctDiagnosis}`}
+                      ? `Remover desafio ${currentIndex + 1} dos favoritos`
+                      : `Salvar desafio ${currentIndex + 1} para estudar depois`}
                     aria-pressed={favorites.includes(currentChallenge.id)}
                   >
                     <FiStar aria-hidden="true" />
@@ -434,7 +468,7 @@ const DesafiosPage = () => {
                   <div className="visual-options" role="group" aria-label="Alternativas diagnósticas">
                     {currentChallenge.options.map((option, index) => {
                       const isSelected = option.id === selectedOptionId;
-                      const isCorrect = option.id === currentChallenge.correctOptionId;
+                      const isCorrect = option.id === currentAnswer?.alternativa_correta_id;
                       const optionState = isAnswered
                         ? isCorrect
                           ? 'is-correct'
@@ -449,7 +483,7 @@ const DesafiosPage = () => {
                           key={option.id}
                           className={`visual-option ${optionState}`}
                           onClick={() => handleAnswer(option.id)}
-                          disabled={isAnswered}
+                          disabled={isAnswered || answeringId === currentChallenge.id}
                           aria-pressed={isSelected}
                         >
                           <span className="visual-option-letter">{OPTION_LABELS[index]}</span>
@@ -463,42 +497,44 @@ const DesafiosPage = () => {
 
                   {isAnswered && (
                     <section
-                      className={`visual-answer ${selectedOptionId === currentChallenge.correctOptionId ? 'is-correct' : 'is-incorrect'}`}
+                      className={`visual-answer ${currentAnswer.correta ? 'is-correct' : 'is-incorrect'}`}
                       role="status"
                       aria-live="polite"
                     >
                       <div className="visual-answer-heading">
-                        {selectedOptionId === currentChallenge.correctOptionId
+                        {currentAnswer.correta
                           ? <FiCheckCircle />
                           : <FiX />}
                         <div>
                           <span>
-                            {selectedOptionId === currentChallenge.correctOptionId
+                            {currentAnswer.correta
                               ? 'Diagnóstico correto'
                               : 'Ainda não. Observe os achados-chave'}
                           </span>
-                          <h3>{currentChallenge.correctDiagnosis}</h3>
+                          <h3>{currentAnswer.diagnostico_correto}</h3>
                         </div>
                       </div>
 
-                      <p>{currentChallenge.explanation}</p>
+                      <p>{currentAnswer.explicacao}</p>
                       <div className="visual-findings">
                         <strong>O que observar na imagem:</strong>
                         <ul>
-                          {currentChallenge.keyFindings.map((finding) => (
+                          {currentAnswer.achados_chave.map((finding) => (
                             <li key={finding}>{finding}</li>
                           ))}
                         </ul>
                       </div>
 
-                      <a
-                        href={currentChallenge.source.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="visual-image-source"
-                      >
-                        Imagem: {currentChallenge.source.credit} · {currentChallenge.source.license}
-                      </a>
+                      {currentAnswer.fonte_url && (
+                        <a
+                          href={currentAnswer.fonte_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="visual-image-source"
+                        >
+                          Imagem: {currentAnswer.fonte_credito} · {currentAnswer.fonte_licenca}
+                        </a>
+                      )}
 
                       {currentIndex < filteredChallenges.length - 1 && (
                         <button type="button" className="visual-continue-button" onClick={goToNext}>
@@ -514,7 +550,7 @@ const DesafiosPage = () => {
                 {filteredChallenges.map((challenge, index) => {
                   const answer = answers[challenge.id];
                   const answerState = answer
-                    ? answer === challenge.correctOptionId ? 'is-correct' : 'is-incorrect'
+                    ? answer.correta ? 'is-correct' : 'is-incorrect'
                     : '';
                   return (
                     <button
@@ -522,7 +558,7 @@ const DesafiosPage = () => {
                       key={challenge.id}
                       onClick={() => setCurrentIndex(index)}
                       className={`${index === currentIndex ? 'is-active' : ''} ${answerState}`}
-                      aria-label={`Ir para o desafio ${index + 1}: ${challenge.correctDiagnosis}`}
+                      aria-label={`Ir para o desafio ${index + 1}`}
                       aria-current={index === currentIndex ? 'step' : undefined}
                     >
                       {index + 1}

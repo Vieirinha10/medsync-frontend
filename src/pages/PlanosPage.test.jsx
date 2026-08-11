@@ -21,11 +21,11 @@ describe('PlanosPage', () => {
     expect(screen.getByRole('heading', { name: 'Veja o que muda com o Premium' })).toBeInTheDocument();
   });
 
-  it('informa com transparência que a assinatura ainda não está ativa', () => {
+  it('informa que o checkout é protegido pela Asaas', () => {
     render(<MemoryRouter><PlanosPage /></MemoryRouter>);
 
-    expect(screen.getByText(/Valores definidos; pagamentos em preparação/)).toBeInTheDocument();
-    expect(screen.getAllByText('Nenhuma cobrança é realizada agora.')).toHaveLength(3);
+    expect(screen.getByText(/Checkout protegido pela Asaas/)).toBeInTheDocument();
+    expect(screen.getAllByText('Pagamento seguro processado pela Asaas.')).toHaveLength(3);
     expect(screen.getByText(/A Synapse continua em desenvolvimento/)).toBeInTheDocument();
   });
 
@@ -33,6 +33,7 @@ describe('PlanosPage', () => {
     render(<MemoryRouter><PlanosPage /></MemoryRouter>);
 
     const registrationLinks = screen.getAllByRole('link').filter((link) => link.getAttribute('href') === '/cadastro');
-    expect(registrationLinks).toHaveLength(6);
+    expect(registrationLinks).toHaveLength(3);
+    expect(screen.getByRole('button', { name: /Escolher Mensal avulso/ })).toBeInTheDocument();
   });
 });

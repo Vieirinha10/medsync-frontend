@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   FiActivity,
   FiArrowRight,
@@ -9,6 +9,7 @@ import {
   FiCheckCircle,
   FiClock,
   FiLayers,
+  FiLoader,
   FiRefreshCw,
   FiStar,
   FiTarget,
@@ -22,6 +23,7 @@ import {
   PREMIUM_BILLING_OPTIONS,
   QUARTERLY_VS_ONE_TIME_SAVINGS,
 } from '../config/pricing';
+import { api, getAuthToken } from '../services/api';
 
 const freeBenefits = [
   'Acesso aos casos clínicos selecionados',
@@ -98,6 +100,27 @@ const billingIcons = {
 };
 
 const PlanosPage = () => {
+  const navigate = useNavigate();
+  const [checkoutPlan, setCheckoutPlan] = useState(null);
+  const [checkoutError, setCheckoutError] = useState('');
+
+  const startCheckout = async (planId) => {
+    if (!getAuthToken()) {
+      navigate('/login', { state: { from: { pathname: '/assinatura' } } });
+      return;
+    }
+
+    setCheckoutPlan(planId);
+    setCheckoutError('');
+    try {
+      const checkout = await api.createPaymentCheckout(planId);
+      window.location.assign(checkout.checkout_url);
+    } catch (error) {
+      setCheckoutError(error.message);
+      setCheckoutPlan(null);
+    }
+  };
+
   return (
     <div className="pricing-page">
       <section className="pricing-hero">
@@ -216,15 +239,30 @@ const PlanosPage = () => {
                   ))}
                   <li><FiCheck aria-hidden="true" />Todos os benefícios Premium</li>
                 </ul>
-                <Link to="/cadastro" className="pricing-plan-button is-primary">
-                  Criar conta e acompanhar o lançamento
-                  <FiArrowRight aria-hidden="true" />
-                </Link>
-                <small className="pricing-plan-note">Nenhuma cobrança é realizada agora.</small>
+                <button
+                  type="button"
+                  className="pricing-plan-button is-primary"
+                  disabled={Boolean(checkoutPlan)}
+                  onClick={() => startCheckout(plan.id)}
+                >
+                  {checkoutPlan === plan.id ? (
+                    <><FiLoader className="pricing-button-spinner" aria-hidden="true" /> Abrindo checkout seguro</>
+                  ) : (
+                    <>Escolher {plan.name}<FiArrowRight aria-hidden="true" /></>
+                  )}
+                </button>
+                <small className="pricing-plan-note">Pagamento seguro processado pela Asaas.</small>
               </article>
             );
           })}
         </div>
+
+        {checkoutError && (
+          <div className="pricing-checkout-error" role="alert">
+            <strong>Não foi possível abrir o checkout.</strong>
+            <span>{checkoutError}</span>
+          </div>
+        )}
 
         <div className="pricing-premium-benefits">
           <div>
@@ -240,7 +278,7 @@ const PlanosPage = () => {
 
         <div className="pricing-launch-note">
           <FiClock aria-hidden="true" />
-          <p><strong>Valores definidos; pagamentos em preparação.</strong> A nova tabela comercial já está apresentada na plataforma, mas o checkout ainda não realiza cobranças.</p>
+          <p><strong>Checkout protegido pela Asaas.</strong> A confirmação do acesso Premium acontece automaticamente após a validação do pagamento.</p>
         </div>
       </section>
 
@@ -295,8 +333,8 @@ const PlanosPage = () => {
         </div>
         <div className="pricing-faq-list">
           <details>
-            <summary>Já posso assinar o Premium?</summary>
-            <p>Ainda não. A estrutura de assinatura está sendo preparada. Você pode criar sua conta gratuita agora e acompanhar as novidades do MedSync.</p>
+            <summary>Como faço para assinar o Premium?</summary>
+            <p>Entre na sua conta, escolha uma das três modalidades e conclua o pagamento no checkout seguro da Asaas. O MedSync libera o acesso após a confirmação financeira.</p>
           </details>
           <details>
             <summary>Quais são os valores e as formas de pagamento?</summary>
@@ -329,7 +367,7 @@ const PlanosPage = () => {
         <div>
           <span><FiBarChart2 aria-hidden="true" /> COMECE PELO GRATUITO</span>
           <h2>Seu raciocínio clínico evolui a cada decisão.</h2>
-          <p>Crie sua conta, conheça os casos e escolha com calma a modalidade Premium ideal quando os pagamentos forem liberados.</p>
+          <p>Crie sua conta, conheça os casos e escolha a modalidade Premium ideal para a sua rotina.</p>
         </div>
         <Link to="/cadastro">
           Criar minha conta grátis

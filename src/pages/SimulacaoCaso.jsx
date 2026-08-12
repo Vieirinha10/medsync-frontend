@@ -3,51 +3,57 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
     FiActivity,
     FiAlertCircle,
+    FiArrowLeft,
+    FiArrowRight,
     FiCheck,
     FiCheckCircle,
-    FiChevronLeft,
-    FiChevronRight,
     FiClipboard,
     FiEdit3,
     FiFileText,
+    FiHeart,
     FiTarget,
+    FiThermometer,
+    FiUser,
+    FiWind,
 } from 'react-icons/fi';
 import ClinicalEvaluationLoader from '../components/ClinicalEvaluationLoader';
 import { api, ApiError } from '../services/api';
 
 const workflowSteps = [
-    { id: 'exames', label: 'Exames', description: 'Selecione com critério', icon: FiClipboard },
-    { id: 'hipotese', label: 'Hipótese', description: 'Organize o raciocínio', icon: FiTarget },
-    { id: 'conduta', label: 'Conduta', description: 'Defina o cuidado inicial', icon: FiActivity },
+    { id: 'apresentacao', label: 'Caso clínico', short: 'Conheça o paciente', icon: FiUser },
+    { id: 'exames', label: 'Exames', short: 'Investigue com critério', icon: FiClipboard },
+    { id: 'hipotese', label: 'Hipótese', short: 'Sintetize o diagnóstico', icon: FiTarget },
+    { id: 'conduta', label: 'Conduta', short: 'Defina o cuidado', icon: FiActivity },
 ];
 
-const editorGuides = {
-    hipotese: ['Hipótese principal', 'Diagnósticos diferenciais', 'Achados que sustentam sua decisão'],
-    conduta: ['Medidas imediatas', 'Tratamento proposto', 'Monitorização e reavaliação'],
+const vitalIcons = {
+    pa: FiHeart,
+    fc: FiActivity,
+    fr: FiWind,
+    spo2: FiWind,
+    temperatura: FiThermometer,
 };
 
 const SimulacaoCaso = () => {
     const { casoId } = useParams();
     const navigate = useNavigate();
-
     const [caso, setCaso] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [submissionError, setSubmissionError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [statusMessage, setStatusMessage] = useState('');
-    const [activeTab, setActiveTab] = useState('exames');
+    const [activeStep, setActiveStep] = useState(0);
+    const [maxReachedStep, setMaxReachedStep] = useState(0);
     const [selectedExams, setSelectedExams] = useState({});
     const [examResults, setExamResults] = useState([]);
+    const [resultsReleased, setResultsReleased] = useState(false);
     const [hipotese, setHipotese] = useState('');
     const [conduta, setConduta] = useState('');
 
     useEffect(() => {
         api.getCase(casoId)
-            .then((data) => {
-                setCaso(data);
-                setIsLoading(false);
-            })
+            .then((data) => { setCaso(data); setIsLoading(false); })
             .catch((requestError) => {
                 if (requestError instanceof ApiError && requestError.status === 401) {
                     navigate('/login', { replace: true });
@@ -63,61 +69,72 @@ const SimulacaoCaso = () => {
         [selectedExams],
     );
 
-    const stepStatus = {
-        exames: selectedExamCount > 0,
-        hipotese: Boolean(hipotese.trim()),
-        conduta: Boolean(conduta.trim()),
+    const completedSteps = [
+        activeStep > 0,
+        resultsReleased,
+        Boolean(hipotese.trim()),
+        Boolean(conduta.trim()),
+    ].filter(Boolean).length;
+
+    const goToStep = (index) => {
+        if (index < 0 || index > maxReachedStep || index >= workflowSteps.length) return;
+        setSubmissionError(null);
+        setActiveStep(index);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-    const completedSteps = Object.values(stepStatus).filter(Boolean).length;
-    const activeStepIndex = workflowSteps.findIndex((step) => step.id === activeTab);
+
+    const advance = () => {
+        if (activeStep === 1 && !resultsReleased) {
+            setSubmissionError('Solicite ao menos um exame e libere o resultado antes de avançar.');
+            return;
+        }
+        if (activeStep === 2 && !hipotese.trim()) {
+            setSubmissionError('Registre sua hipótese diagnóstica antes de avançar.');
+            return;
+        }
+        const next = Math.min(activeStep + 1, workflowSteps.length - 1);
+        setSubmissionError(null);
+        setMaxReachedStep((current) => Math.max(current, next));
+        setActiveStep(next);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     const handleExamSelection = (examId) => {
         setSelectedExams((previous) => ({ ...previous, [examId]: !previous[examId] }));
+        setResultsReleased(false);
+        setExamResults([]);
         setStatusMessage('');
     };
 
     const handleShowResults = () => {
-        if (!caso?.exames_disponiveis) return;
+        if (!selectedExamCount) {
+            setStatusMessage('Selecione ao menos um exame antes de solicitar.');
+            return;
+        }
         const results = caso.exames_disponiveis.filter((exam) => selectedExams[exam.id]);
         setExamResults(results);
-        setStatusMessage(
-            results.length > 0
-                ? `${results.length} resultado(s) de exame foram liberados.`
-                : 'Selecione ao menos um exame para liberar resultados.',
-        );
-    };
-
-    const moveToStep = (direction) => {
-        const nextIndex = activeStepIndex + direction;
-        if (nextIndex >= 0 && nextIndex < workflowSteps.length) {
-            setActiveTab(workflowSteps[nextIndex].id);
-        }
+        setResultsReleased(true);
+        setStatusMessage(`${results.length} resultado(s) incorporado(s) ao prontuário.`);
     };
 
     const handleSubmit = async () => {
-        const respostasUsuario = {
-            exames_solicitados: Object.keys(selectedExams).filter((id) => selectedExams[id]),
-            hipotese_diagnostica: hipotese,
-            conduta_proposta: conduta,
-        };
-
         if (!hipotese.trim() || !conduta.trim()) {
             setSubmissionError('Preencha a hipótese diagnóstica e a conduta antes de finalizar.');
             return;
         }
-
         if (!caso.avaliacao_2_disponivel) {
-            setSubmissionError(
-                'Este caso ainda está em revisão clínica e não pode receber uma pontuação segura.',
-            );
+            setSubmissionError('Este caso ainda está em revisão clínica e não pode receber uma pontuação segura.');
             return;
         }
 
         setSubmissionError(null);
-        setStatusMessage('');
         setIsSubmitting(true);
         try {
-            const result = await api.finalizeSimulation(Number(casoId), respostasUsuario);
+            const result = await api.finalizeSimulation(Number(casoId), {
+                exames_solicitados: Object.keys(selectedExams).filter((id) => selectedExams[id]),
+                hipotese_diagnostica: hipotese,
+                conduta_proposta: conduta,
+            });
             const currentParams = new URLSearchParams(window.location.search);
             const resultParams = new URLSearchParams();
             if (currentParams.get('trilha') && currentParams.get('atividade')) {
@@ -125,10 +142,7 @@ const SimulacaoCaso = () => {
                 resultParams.set('atividade', currentParams.get('atividade'));
             }
             const resultSearch = resultParams.toString();
-            navigate(
-                `/resultados/${result.progresso_id}${resultSearch ? `?${resultSearch}` : ''}`,
-                { state: { result } },
-            );
+            navigate(`/resultados/${result.progresso_id}${resultSearch ? `?${resultSearch}` : ''}`, { state: { result } });
         } catch (requestError) {
             if (requestError instanceof ApiError && requestError.status === 401) {
                 navigate('/login', { replace: true });
@@ -140,255 +154,246 @@ const SimulacaoCaso = () => {
         }
     };
 
-    if (isLoading) return <div className="page-container simulation-message">A carregar o caso clínico...</div>;
+    if (isLoading) return <div className="page-container simulation-message">Preparando o prontuário...</div>;
     if (error) return <div className="page-container simulation-message">Erro: {error}</div>;
     if (!caso) return <div className="page-container simulation-message">Não foi possível carregar o caso.</div>;
     if (isSubmitting) return <ClinicalEvaluationLoader caseTitle={caso.titulo} />;
 
+    const step = workflowSteps[activeStep];
+
     return (
-        <div className="simulation-workspace page-container">
-            <header className="simulation-hero">
-                <div>
-                    <div className="simulation-hero-meta">
-                        <span className="simulation-kicker">{caso.especialidade}</span>
-                        {caso.avaliacao_2_disponivel && (
-                            <span className="agent-feedback-tag"><FiActivity aria-hidden="true" /> Simulação 2.0</span>
-                        )}
-                    </div>
+        <div className="clinical-journey page-container">
+            <header className="journey-header">
+                <button type="button" className="journey-exit" onClick={() => navigate('/casos')}><FiArrowLeft /> Casos clínicos</button>
+                <div className="journey-header-copy">
+                    <div><span>{caso.especialidade}</span><small>SIMULAÇÃO CLÍNICA GUIADA</small></div>
                     <h1>{caso.titulo}</h1>
-                    <p>Analise o caso, escolha os exames com critério e registre seu raciocínio clínico.</p>
                 </div>
-                <div className="simulation-progress-card" aria-label={`${completedSteps} de 3 etapas preenchidas`}>
-                    <strong>{completedSteps}/3</strong>
-                    <span>etapas preenchidas</span>
-                    <div className="simulation-progress-track" aria-hidden="true">
-                        <span style={{ width: `${(completedSteps / workflowSteps.length) * 100}%` }} />
-                    </div>
+                <div className="journey-progress" aria-label={`Etapa ${activeStep + 1} de 4`}>
+                    <strong>{String(activeStep + 1).padStart(2, '0')}</strong><span>/ 04</span>
                 </div>
             </header>
 
-            <div className="simulation-container simulation-layout">
-                <section className="info-panel clinical-case-panel" aria-label="Informações do caso clínico">
-                    <div className="panel-heading">
-                        <span className="panel-icon"><FiFileText aria-hidden="true" /></span>
-                        <div>
-                            <span className="panel-eyebrow">Prontuário do paciente</span>
-                            <h2>Dados clínicos</h2>
-                        </div>
-                    </div>
-
-                    <article className="case-section clinical-info-card">
-                        <div className="case-section-title">
-                            <span>01</span>
-                            <h3>História clínica</h3>
-                        </div>
-                        <p>{caso.historia_clinica}</p>
-                    </article>
-
-                    <article className="case-section clinical-info-card">
-                        <div className="case-section-title">
-                            <span>02</span>
-                            <h3>Exame físico</h3>
-                        </div>
-                        <p>{caso.exame_fisico}</p>
-                    </article>
-
-                    <article className={`case-section clinical-info-card exam-results-card ${examResults.length ? 'has-results' : ''}`}>
-                        <div className="case-section-title">
-                            <span>03</span>
-                            <div>
-                                <h3>Resultados liberados</h3>
-                                <small>{examResults.length} exame(s) disponível(is)</small>
-                            </div>
-                        </div>
-                        {examResults.length > 0 ? (
-                            <ul className="exam-results-list">
-                                {examResults.map((result) => (
-                                    <li key={result.id}>
-                                        <FiCheckCircle aria-hidden="true" />
-                                        <div><strong>{result.nome}</strong><p>{result.resultado}</p></div>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <div className="results-empty-state">
-                                <FiClipboard aria-hidden="true" />
-                                <p>Os resultados aparecerão aqui após você selecionar e solicitar os exames.</p>
-                            </div>
-                        )}
-                    </article>
-                </section>
-
-                <section className="action-panel decision-panel" aria-label="Painel de decisões clínicas">
-                    <div className="decision-panel-header">
-                        <div>
-                            <span className="panel-eyebrow">Sua tomada de decisão</span>
-                            <h2>Construa o raciocínio</h2>
-                        </div>
-                        <span className="active-step-count">Etapa {activeStepIndex + 1} de 3</span>
-                    </div>
-
-                    <div className="clinical-stepper" role="tablist" aria-label="Etapas da simulação">
-                        {workflowSteps.map((step, index) => {
-                            const StepIcon = step.icon;
-                            const isActive = activeTab === step.id;
-                            return (
-                                <button
-                                    key={step.id}
-                                    type="button"
-                                    role="tab"
-                                    aria-selected={isActive}
-                                    aria-controls={`simulation-panel-${step.id}`}
-                                    onClick={() => setActiveTab(step.id)}
-                                    className={`clinical-step ${isActive ? 'active' : ''} ${stepStatus[step.id] ? 'complete' : ''}`}
-                                >
-                                    <span className="step-icon">
-                                        {stepStatus[step.id] ? <FiCheck aria-hidden="true" /> : <StepIcon aria-hidden="true" />}
-                                    </span>
-                                    <span className="step-copy"><strong>{step.label}</strong><small>{step.description}</small></span>
-                                    {index < workflowSteps.length - 1 && <span className="step-connector" aria-hidden="true" />}
-                                </button>
-                            );
-                        })}
-                    </div>
-
-                    <div className="decision-content-shell">
-                        {activeTab === 'exames' && (
-                            <div className="tab-content clinical-tab-content" id="simulation-panel-exames" role="tabpanel">
-                                <div className="decision-content-heading">
-                                    <div>
-                                        <span className="content-kicker">Investigação diagnóstica</span>
-                                        <h3>Quais exames são realmente necessários?</h3>
-                                        <p>Selecione apenas o que pode mudar sua hipótese ou conduta.</p>
-                                    </div>
-                                    <span className="selection-counter">{selectedExamCount} selecionado(s)</span>
-                                </div>
-
-                                <div className="clinical-tip">
-                                    <FiAlertCircle aria-hidden="true" />
-                                    <p>Exames de baixo valor também entram na avaliação final. Priorize custo-benefício e segurança.</p>
-                                </div>
-
-                                <div className="exam-grid">
-                                    {caso.exames_disponiveis.map((exam) => {
-                                        const isSelected = Boolean(selectedExams[exam.id]);
-                                        return (
-                                            <label key={exam.id} className={`exam-option-card ${isSelected ? 'selected' : ''}`}>
-                                                <input
-                                                    type="checkbox"
-                                                    checked={isSelected}
-                                                    onChange={() => handleExamSelection(exam.id)}
-                                                />
-                                                <span className="exam-checkbox" aria-hidden="true">{isSelected && <FiCheck />}</span>
-                                                <span className="exam-option-name">{exam.nome}</span>
-                                            </label>
-                                        );
-                                    })}
-                                </div>
-
-                                <button type="button" onClick={handleShowResults} className="results-button">
-                                    <FiClipboard aria-hidden="true" />
-                                    Liberar resultados dos exames
-                                    <span>{selectedExamCount}</span>
-                                </button>
-                                {statusMessage && <p className="simulation-status" role="status">{statusMessage}</p>}
-                            </div>
-                        )}
-
-                        {activeTab === 'hipotese' && (
-                            <ClinicalTextEditor
-                                id="hipotese"
-                                kicker="Síntese diagnóstica"
-                                title="Qual é a sua principal hipótese?"
-                                description="Organize a hipótese principal, os diferenciais relevantes e os dados que apoiam sua escolha."
-                                value={hipotese}
-                                onChange={setHipotese}
-                                placeholder="Ex.: Minha principal hipótese é... Os principais diagnósticos diferenciais são..."
-                                guideItems={editorGuides.hipotese}
-                            />
-                        )}
-
-                        {activeTab === 'conduta' && (
-                            <ClinicalTextEditor
-                                id="conduta"
-                                kicker="Plano terapêutico"
-                                title="Qual será sua conduta inicial?"
-                                description="Descreva prioridades, tratamento, monitorização e o momento da reavaliação."
-                                value={conduta}
-                                onChange={setConduta}
-                                placeholder="Ex.: Inicialmente, estabilizaria o paciente e adotaria as seguintes medidas..."
-                                guideItems={editorGuides.conduta}
-                            />
-                        )}
-                    </div>
-
-                    <div className="decision-navigation">
+            <nav className="journey-stepper" aria-label="Etapas da simulação">
+                {workflowSteps.map((item, index) => {
+                    const Icon = item.icon;
+                    const complete = index < activeStep || (index === 3 && Boolean(conduta.trim()));
+                    return (
                         <button
+                            key={item.id}
                             type="button"
-                            className="step-navigation-button back"
-                            onClick={() => moveToStep(-1)}
-                            disabled={activeStepIndex === 0}
+                            onClick={() => goToStep(index)}
+                            disabled={index > maxReachedStep}
+                            className={`${index === activeStep ? 'is-active' : ''} ${complete ? 'is-complete' : ''}`}
+                            aria-current={index === activeStep ? 'step' : undefined}
                         >
-                            <FiChevronLeft aria-hidden="true" /> Voltar
+                            <span>{complete ? <FiCheck /> : <Icon />}</span>
+                            <div><strong>{item.label}</strong><small>{item.short}</small></div>
+                            {index < workflowSteps.length - 1 && <i aria-hidden="true" />}
                         </button>
-                        {activeStepIndex < workflowSteps.length - 1 ? (
-                            <button type="button" className="step-navigation-button next" onClick={() => moveToStep(1)}>
-                                Próxima etapa <FiChevronRight aria-hidden="true" />
-                            </button>
-                        ) : (
-                            <button
-                                type="button"
-                                onClick={handleSubmit}
-                                className={`btn-submit clinical-submit ${!caso.avaliacao_2_disponivel ? 'is-unavailable' : ''}`}
-                                disabled={isSubmitting || !caso.avaliacao_2_disponivel}
-                            >
-                                <FiCheckCircle aria-hidden="true" />
-                                {caso.avaliacao_2_disponivel ? 'Finalizar e receber feedback' : 'Avaliação em revisão clínica'}
-                            </button>
-                        )}
-                    </div>
+                    );
+                })}
+            </nav>
 
-                    {submissionError && <p className="simulation-error" role="alert">{submissionError}</p>}
-                    {caso.avaliacao_2_disponivel ? (
-                        <p className="evaluation-note">Seu raciocínio será comparado ao gabarito clínico revisado deste caso.</p>
-                    ) : (
-                        <p className="evaluation-note evaluation-note-pending">
-                            Você pode explorar o caso, mas a finalização será liberada após a revisão da rubrica clínica.
-                        </p>
+            <main className={`journey-layout ${activeStep === 0 ? 'is-presentation' : ''}`}>
+                <section className="journey-stage" key={step.id}>
+                    {activeStep === 0 && <PresentationStage caso={caso} onAdvance={advance} />}
+                    {activeStep === 1 && (
+                        <ExamsStage
+                            caso={caso}
+                            selectedExams={selectedExams}
+                            onSelect={handleExamSelection}
+                            selectedCount={selectedExamCount}
+                            results={examResults}
+                            resultsReleased={resultsReleased}
+                            onRelease={handleShowResults}
+                            statusMessage={statusMessage}
+                        />
                     )}
+                    {activeStep === 2 && (
+                        <ReasoningStage
+                            kind="hypothesis"
+                            value={hipotese}
+                            onChange={setHipotese}
+                        />
+                    )}
+                    {activeStep === 3 && (
+                        <ReasoningStage
+                            kind="conduct"
+                            value={conduta}
+                            onChange={setConduta}
+                        />
+                    )}
+
+                    {activeStep > 0 && (
+                        <div className="journey-actions">
+                            <button type="button" className="journey-back" onClick={() => goToStep(activeStep - 1)}><FiArrowLeft /> Voltar</button>
+                            {activeStep < 3 ? (
+                                <button type="button" className="journey-next" onClick={advance}>Avançar para {workflowSteps[activeStep + 1].label.toLowerCase()} <FiArrowRight /></button>
+                            ) : (
+                                <button type="button" className="journey-submit" onClick={handleSubmit} disabled={!caso.avaliacao_2_disponivel}>
+                                    <FiActivity /> {caso.avaliacao_2_disponivel ? 'Enviar para a Synapse' : 'Avaliação em revisão clínica'}
+                                </button>
+                            )}
+                        </div>
+                    )}
+                    {submissionError && <p className="simulation-error journey-error" role="alert"><FiAlertCircle /> {submissionError}</p>}
                 </section>
-            </div>
+
+                {activeStep > 0 && (
+                    <ClinicalMemory
+                        caso={caso}
+                        activeStep={activeStep}
+                        results={examResults}
+                        hypothesis={hipotese}
+                        completedSteps={completedSteps}
+                        onReview={goToStep}
+                    />
+                )}
+            </main>
         </div>
     );
 };
 
-const ClinicalTextEditor = ({ id, kicker, title, description, value, onChange, placeholder, guideItems }) => (
-    <div className="tab-content clinical-tab-content clinical-editor" id={`simulation-panel-${id}`} role="tabpanel">
-        <div className="decision-content-heading">
-            <div>
-                <span className="content-kicker">{kicker}</span>
-                <h3>{title}</h3>
-                <p>{description}</p>
+const PresentationStage = ({ caso, onAdvance }) => (
+    <div className="presentation-stage">
+        <div className="stage-heading">
+            <span>01 · APRESENTAÇÃO DO PACIENTE</span>
+            <h2>Antes de decidir, observe.</h2>
+            <p>Leia o prontuário com calma e identifique os achados que mudam a prioridade clínica.</p>
+        </div>
+
+        <div className="patient-record-grid">
+            <article className="patient-record-card history">
+                <span><FiFileText /></span>
+                <div><small>HISTÓRIA CLÍNICA</small><h3>Queixa e contexto</h3><p>{caso.historia_clinica}</p></div>
+            </article>
+            <article className="patient-record-card physical">
+                <span><FiUser /></span>
+                <div><small>EXAME FÍSICO</small><h3>Achados ao exame</h3><p>{caso.exame_fisico}</p></div>
+            </article>
+        </div>
+
+        <section className="vital-signs-section">
+            <div className="vitals-heading">
+                <div><span>SINAIS VITAIS</span><h3>Estado atual do paciente</h3></div>
+                <p><i className="normal" /> Normal <i className="altered" /> Alterado</p>
             </div>
-            <span className={`draft-status ${value.trim() ? 'has-content' : ''}`}>
-                {value.trim() ? <><FiCheckCircle aria-hidden="true" /> Preenchido</> : <><FiEdit3 aria-hidden="true" /> Em branco</>}
-            </span>
-        </div>
-        <div className="editor-guide" aria-label="Sugestão de estrutura">
-            {guideItems.map((item, index) => <span key={item}><b>{index + 1}</b>{item}</span>)}
-        </div>
-        <div className="clinical-editor-field">
-            <textarea
-                aria-label={title}
-                value={value}
-                onChange={(event) => onChange(event.target.value)}
-                rows="11"
-                className="transcription-box"
-                placeholder={placeholder}
-            />
-            <span className="character-counter">{value.length} caracteres</span>
+            <div className="vital-signs-grid">
+                {(caso.sinais_vitais || []).map((vital) => <VitalCard key={vital.id} vital={vital} />)}
+            </div>
+            <small className="vital-reference-note">Faixas gerais para adultos em repouso. Interprete sempre no contexto clínico.</small>
+        </section>
+
+        <div className="presentation-advance">
+            <div><FiCheckCircle /><p><strong>Terminou a leitura?</strong><span>As informações permanecerão disponíveis nas próximas etapas.</span></p></div>
+            <button type="button" onClick={onAdvance}>Iniciar investigação <FiArrowRight /></button>
         </div>
     </div>
+);
+
+const VitalCard = ({ vital }) => {
+    const Icon = vitalIcons[vital.id] || FiActivity;
+    const informed = vital.valor !== null && vital.valor !== undefined;
+    return (
+        <article className={`vital-card is-${vital.status}`}>
+            <div className="vital-icon"><Icon /></div>
+            <div className="vital-copy"><span>{vital.nome}</span><strong>{informed ? vital.valor : '—'} <small>{informed ? vital.unidade : 'não informado'}</small></strong></div>
+            <div className="vital-status"><i />{vital.status === 'normal' ? 'Normal' : vital.status === 'alterado' ? 'Alterado' : 'Sem dado'}<small>Ref. {vital.referencia}</small></div>
+        </article>
+    );
+};
+
+const ExamsStage = ({ caso, selectedExams, onSelect, selectedCount, results, resultsReleased, onRelease, statusMessage }) => (
+    <div className="decision-stage">
+        <div className="stage-heading compact">
+            <span>02 · INVESTIGAÇÃO</span>
+            <h2>Quais exames mudariam sua decisão?</h2>
+            <p>Escolha com intenção. Exames essenciais, omitidos e de baixo valor serão considerados no feedback.</p>
+        </div>
+        <div className="stage-tip"><FiAlertCircle /><span>Evite pedir tudo. Pense em probabilidade pré-teste, gravidade e impacto sobre a conduta.</span></div>
+        <div className="journey-exam-grid">
+            {caso.exames_disponiveis.map((exam) => {
+                const selected = Boolean(selectedExams[exam.id]);
+                return (
+                    <label key={exam.id} className={selected ? 'is-selected' : ''}>
+                        <input type="checkbox" checked={selected} onChange={() => onSelect(exam.id)} />
+                        <span>{selected ? <FiCheck /> : <FiClipboard />}</span>
+                        <strong>{exam.nome}</strong>
+                    </label>
+                );
+            })}
+        </div>
+        <button type="button" className="release-results-button" onClick={onRelease}><FiClipboard /> Solicitar exames selecionados <b>{selectedCount}</b></button>
+        {statusMessage && <p className="simulation-status" role="status">{statusMessage}</p>}
+        {resultsReleased && (
+            <section className="released-results">
+                <div><span>RESULTADOS LIBERADOS</span><strong>{results.length} novo(s) dado(s) no prontuário</strong></div>
+                {results.map((result, index) => (
+                    <article key={result.id} style={{ '--delay': `${index * 80}ms` }}><FiCheckCircle /><div><strong>{result.nome}</strong><p>{result.resultado}</p></div></article>
+                ))}
+            </section>
+        )}
+    </div>
+);
+
+const ReasoningStage = ({ kind, value, onChange }) => {
+    const hypothesis = kind === 'hypothesis';
+    const title = hypothesis ? 'Qual é a sua hipótese diagnóstica?' : 'O que você faria por este paciente agora?';
+    return (
+        <div className="decision-stage reasoning-stage">
+            <div className="stage-heading compact">
+                <span>{hypothesis ? '03 · SÍNTESE DIAGNÓSTICA' : '04 · PLANO DE CUIDADO'}</span>
+                <h2>{title}</h2>
+                <p>{hypothesis ? 'Registre a hipótese principal, diferenciais relevantes e os achados que sustentam sua decisão.' : 'Defina prioridades, medidas imediatas, tratamento, monitorização e critérios de reavaliação.'}</p>
+            </div>
+            <div className="reasoning-scaffold">
+                {(hypothesis
+                    ? ['Hipótese principal', 'Diferenciais relevantes', 'Achados que sustentam']
+                    : ['Estabilização e prioridades', 'Tratamento proposto', 'Monitorização e reavaliação']
+                ).map((item, index) => <span key={item}><b>{index + 1}</b>{item}</span>)}
+            </div>
+            <label className="journey-textarea">
+                <span>{hypothesis ? 'Seu raciocínio diagnóstico' : 'Sua conduta inicial'}</span>
+                <textarea
+                    aria-label={hypothesis ? 'Qual é a sua principal hipótese?' : 'Qual será sua conduta inicial?'}
+                    value={value}
+                    onChange={(event) => onChange(event.target.value)}
+                    rows="12"
+                    placeholder={hypothesis ? 'Minha principal hipótese é... porque os achados...' : 'Inicialmente, eu priorizaria... Em seguida... Reavaliaria...'}
+                />
+                <small><FiEdit3 /> {value.length} caracteres {value.trim() && <b><FiCheck /> resposta registrada</b>}</small>
+            </label>
+            {!hypothesis && <div className="synapse-submit-note"><FiActivity /><p><strong>A Synapse analisará sua decisão</strong><span>O feedback comparará hipótese e conduta com a rubrica clínica revisada e simulará a resposta esperada do paciente.</span></p></div>}
+        </div>
+    );
+};
+
+const ClinicalMemory = ({ caso, activeStep, results, hypothesis, completedSteps, onReview }) => (
+    <aside className="clinical-memory" aria-label="Resumo clínico acumulado">
+        <div className="memory-heading"><span><FiFileText /></span><div><small>PRONTUÁRIO ACUMULADO</small><h2>O que você já sabe</h2></div><b>{completedSteps}/4</b></div>
+        <MemoryBlock number="01" title="Apresentação" onClick={() => onReview(0)}>
+            <p>{caso.historia_clinica}</p><small>{caso.exame_fisico}</small>
+        </MemoryBlock>
+        {activeStep >= 2 && (
+            <MemoryBlock number="02" title="Exames solicitados" onClick={() => onReview(1)}>
+                {results.length ? results.map((item) => <p key={item.id}><strong>{item.nome}:</strong> {item.resultado}</p>) : <p>Nenhum resultado liberado.</p>}
+            </MemoryBlock>
+        )}
+        {activeStep >= 3 && (
+            <MemoryBlock number="03" title="Sua hipótese" onClick={() => onReview(2)}>
+                <p>{hypothesis || 'Hipótese ainda não registrada.'}</p>
+            </MemoryBlock>
+        )}
+        <div className="memory-live"><i /><span>Etapa atual</span><strong>{workflowSteps[activeStep].label}</strong></div>
+    </aside>
+);
+
+const MemoryBlock = ({ number, title, onClick, children }) => (
+    <section className="memory-block">
+        <header><span>{number}</span><strong>{title}</strong><button type="button" onClick={onClick}>Revisar</button></header>
+        <div>{children}</div>
+    </section>
 );
 
 export default SimulacaoCaso;

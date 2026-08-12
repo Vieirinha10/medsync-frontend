@@ -2104,11 +2104,28 @@
 .patient-outcome-heading .simulation-kicker { color: var(--journey-green); }
 .patient-outcome-heading h2 { margin: 6px 0; color: #fff; font: 750 clamp(1.35rem, 3vw, 1.9rem) 'Sora', sans-serif; }
 .patient-outcome-heading p { margin: 0; color: rgba(255, 255, 255, 0.65); }
+.conduct-level { display: inline-flex; padding: 7px 11px; margin-top: 14px; border-radius: 999px; font-size: 0.7rem; font-weight: 850; text-transform: uppercase; }
+.conduct-level.is-adequada { background: rgba(185, 255, 51, 0.18); color: #d8ff88; }
+.conduct-level.is-parcial { background: rgba(255, 210, 94, 0.18); color: #ffe29a; }
+.conduct-level.is-insegura { background: rgba(255, 114, 105, 0.2); color: #ffc0bb; }
 .patient-outcome-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
 .patient-outcome-grid article { display: flex; gap: 14px; padding: 20px; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 17px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); }
 .patient-outcome-grid article > span { display: grid; flex: 0 0 40px; width: 40px; height: 40px; border-radius: 12px; background: rgba(185, 255, 51, 0.16); color: var(--journey-green); place-items: center; }
 .patient-outcome-grid small { color: #86e9f4; font-size: 0.62rem; font-weight: 850; letter-spacing: 0.1em; }
 .patient-outcome-grid p { margin: 7px 0 0; color: rgba(255, 255, 255, 0.88); line-height: 1.7; }
+
+.rubric-evidence-section { display: grid; grid-template-columns: 1fr 0.9fr; gap: 20px; padding: 28px; margin-top: 24px; border: 1px solid rgba(18, 92, 142, 0.12); border-radius: 22px; background: #fff; box-shadow: 0 17px 42px rgba(17, 79, 121, 0.07); }
+.rubric-learning-goals ul { display: grid; gap: 9px; padding: 0; margin: 18px 0 0; list-style: none; }
+.rubric-learning-goals li { display: flex; gap: 9px; color: #49677c; line-height: 1.5; }
+.rubric-learning-goals li svg { flex: 0 0 auto; margin-top: 4px; color: #16a05b; }
+.clinical-sources { display: grid; align-content: start; gap: 9px; padding: 20px; border-radius: 17px; background: #f3f8fb; }
+.clinical-sources > span { margin-bottom: 2px; color: #0786cc; font-size: 0.64rem; font-weight: 850; letter-spacing: 0.1em; }
+.clinical-sources a { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-radius: 12px; background: #fff; color: #315a73; text-decoration: none; transition: 180ms ease; }
+.clinical-sources a:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(18, 92, 142, 0.09); }
+.clinical-sources a div { display: grid; gap: 3px; }
+.clinical-sources a strong { font-size: 0.76rem; line-height: 1.4; }
+.clinical-sources a small { color: #7990a0; font-size: 0.64rem; }
+.clinical-sources a > svg { flex: 0 0 auto; color: #0786cc; }
 
 @keyframes journey-stage-enter { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @keyframes result-row-enter { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
@@ -2127,7 +2144,8 @@
   .journey-stepper button div,
   .journey-stepper button > i { display: none; }
   .patient-record-grid,
-  .patient-outcome-grid { grid-template-columns: 1fr; }
+  .patient-outcome-grid,
+  .rubric-evidence-section { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
   .clinical-journey { padding-right: 12px; padding-left: 12px; }

@@ -3,7 +3,9 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   FiAlertTriangle,
   FiArrowRight,
+  FiBookOpen,
   FiCheck,
+  FiExternalLink,
   FiHeart,
   FiRefreshCw,
   FiTarget,
@@ -220,6 +222,11 @@ const ResultadoSimulacaoPage = () => {
           <span className="simulation-kicker">IMPACTO DA SUA DECISÃO</span>
           <h2>Como o paciente responderia à sua conduta</h2>
           <p>Uma simulação educacional baseada na rubrica clínica deste caso.</p>
+          {result.nivel_conduta && (
+            <span className={`conduct-level is-${result.nivel_conduta}`}>
+              Conduta {result.nivel_conduta}
+            </span>
+          )}
         </div>
         <div className="patient-outcome-grid">
           <article>
@@ -238,6 +245,31 @@ const ResultadoSimulacaoPage = () => {
           </article>
         </div>
       </section>
+
+      {(result.objetivos_aprendizagem?.length > 0 || result.fontes_clinicas?.length > 0) && (
+        <section className="rubric-evidence-section">
+          <div className="rubric-learning-goals">
+            <div className="result-panel-title">
+              <FiBookOpen />
+              <div><span>Rubrica Clínica 2.0</span><h2>Objetivos deste caso</h2></div>
+            </div>
+            <ul>
+              {(result.objetivos_aprendizagem || []).map((objective) => (
+                <li key={objective}><FiCheck /><span>{objective}</span></li>
+              ))}
+            </ul>
+          </div>
+          <div className="clinical-sources">
+            <span>REFERÊNCIAS CLÍNICAS</span>
+            {(result.fontes_clinicas || []).map((source) => (
+              <a key={source.url} href={source.url} target="_blank" rel="noreferrer">
+                <div><strong>{source.titulo}</strong><small>{source.organizacao} · {source.ano}</small></div>
+                <FiExternalLink />
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="study-recommendations">
         <div>

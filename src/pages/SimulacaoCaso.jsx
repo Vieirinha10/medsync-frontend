@@ -46,6 +46,7 @@ const SimulacaoCaso = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [maxReachedStep, setMaxReachedStep] = useState(0);
     const [selectedExams, setSelectedExams] = useState({});
+    const [examJustifications, setExamJustifications] = useState({});
     const [examResults, setExamResults] = useState([]);
     const [resultsReleased, setResultsReleased] = useState(false);
     const [hipotese, setHipotese] = useState('');
@@ -100,7 +101,15 @@ const SimulacaoCaso = () => {
     };
 
     const handleExamSelection = (examId) => {
-        setSelectedExams((previous) => ({ ...previous, [examId]: !previous[examId] }));
+        const willSelect = !selectedExams[examId];
+        setSelectedExams((previous) => ({ ...previous, [examId]: willSelect }));
+        if (!willSelect) {
+            setExamJustifications((current) => {
+                const next = { ...current };
+                delete next[examId];
+                return next;
+            });
+        }
         setResultsReleased(false);
         setExamResults([]);
         setStatusMessage('');
@@ -132,6 +141,9 @@ const SimulacaoCaso = () => {
         try {
             const result = await api.finalizeSimulation(Number(casoId), {
                 exames_solicitados: Object.keys(selectedExams).filter((id) => selectedExams[id]),
+                justificativas_exames: Object.fromEntries(
+                    Object.entries(examJustifications).filter(([, value]) => value.trim()),
+                ),
                 hipotese_diagnostica: hipotese,
                 conduta_proposta: conduta,
             });
@@ -208,6 +220,8 @@ const SimulacaoCaso = () => {
                             resultsReleased={resultsReleased}
                             onRelease={handleShowResults}
                             statusMessage={statusMessage}
+                            justifications={examJustifications}
+                            onJustificationChange={(examId, value) => setExamJustifications((current) => ({ ...current, [examId]: value }))}
                         />
                     )}
                     {activeStep === 2 && (
@@ -245,6 +259,7 @@ const SimulacaoCaso = () => {
                         caso={caso}
                         activeStep={activeStep}
                         results={examResults}
+                        justifications={examJustifications}
                         hypothesis={hipotese}
                         completedSteps={completedSteps}
                         onReview={goToStep}
@@ -304,7 +319,7 @@ const VitalCard = ({ vital }) => {
     );
 };
 
-const ExamsStage = ({ caso, selectedExams, onSelect, selectedCount, results, resultsReleased, onRelease, statusMessage }) => (
+const ExamsStage = ({ caso, selectedExams, onSelect, selectedCount, results, resultsReleased, onRelease, statusMessage, justifications, onJustificationChange }) => (
     <div className="decision-stage">
         <div className="stage-heading compact">
             <span>02 · INVESTIGAÇÃO</span>
@@ -324,6 +339,29 @@ const ExamsStage = ({ caso, selectedExams, onSelect, selectedCount, results, res
                 );
             })}
         </div>
+        {selectedCount > 0 && (
+            <section className="exam-rationale-section">
+                <div>
+                    <span>JUSTIFICATIVA CLÍNICA · OPCIONAL</span>
+                    <h3>O que você espera descobrir com cada exame?</h3>
+                    <p>A Synapse avaliará se você compreendeu a utilidade do exame, sem alterar a pontuação por deixar o campo vazio.</p>
+                </div>
+                {caso.exames_disponiveis.filter((exam) => selectedExams[exam.id]).map((exam) => (
+                    <label key={exam.id}>
+                        <strong>{exam.nome}</strong>
+                        <textarea
+                            aria-label={`Justificativa para ${exam.nome}`}
+                            rows="2"
+                            maxLength="600"
+                            value={justifications[exam.id] || ''}
+                            onChange={(event) => onJustificationChange(String(exam.id), event.target.value)}
+                            placeholder="Ex.: este resultado ajudaria a confirmar, excluir ou estratificar..."
+                        />
+                        <small>{(justifications[exam.id] || '').length}/600</small>
+                    </label>
+                ))}
+            </section>
+        )}
         <button type="button" className="release-results-button" onClick={onRelease}><FiClipboard /> Solicitar exames selecionados <b>{selectedCount}</b></button>
         {statusMessage && <p className="simulation-status" role="status">{statusMessage}</p>}
         {resultsReleased && (
@@ -369,7 +407,7 @@ const ReasoningStage = ({ kind, value, onChange }) => {
     );
 };
 
-const ClinicalMemory = ({ caso, activeStep, results, hypothesis, completedSteps, onReview }) => (
+const ClinicalMemory = ({ caso, activeStep, results, justifications, hypothesis, completedSteps, onReview }) => (
     <aside className="clinical-memory" aria-label="Resumo clínico acumulado">
         <div className="memory-heading"><span><FiFileText /></span><div><small>PRONTUÁRIO ACUMULADO</small><h2>O que você já sabe</h2></div><b>{completedSteps}/4</b></div>
         <MemoryBlock number="01" title="Apresentação" onClick={() => onReview(0)}>
@@ -377,7 +415,7 @@ const ClinicalMemory = ({ caso, activeStep, results, hypothesis, completedSteps,
         </MemoryBlock>
         {activeStep >= 2 && (
             <MemoryBlock number="02" title="Exames solicitados" onClick={() => onReview(1)}>
-                {results.length ? results.map((item) => <p key={item.id}><strong>{item.nome}:</strong> {item.resultado}</p>) : <p>Nenhum resultado liberado.</p>}
+                {results.length ? results.map((item) => <div className="memory-exam" key={item.id}><p><strong>{item.nome}:</strong> {item.resultado}</p>{justifications[item.id] && <small><b>Sua justificativa:</b> {justifications[item.id]}</small>}</div>) : <p>Nenhum resultado liberado.</p>}
             </MemoryBlock>
         )}
         {activeStep >= 3 && (

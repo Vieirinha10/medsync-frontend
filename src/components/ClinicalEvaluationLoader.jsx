@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { FiActivity, FiCheck } from 'react-icons/fi';
 
 const ANALYSIS_STAGES = [
-  'Organizando os dados clínicos',
-  'Revisando os exames solicitados',
-  'Comparando sua hipótese com a rubrica',
-  'Avaliando a segurança da conduta',
-  'Preparando seu feedback personalizado',
+  'Organizando o prontuário',
+  'Revisando o valor dos exames',
+  'Comparando a hipótese com a rubrica',
+  'Simulando a resposta à conduta',
+  'Preparando a devolutiva Synapse',
 ];
 
 const ClinicalEvaluationLoader = ({ caseTitle }) => {
@@ -47,10 +47,10 @@ const ClinicalEvaluationLoader = ({ caseTitle }) => {
           </span>
         </div>
 
-        <span className="evaluation-loader-kicker">ANÁLISE CLÍNICA EM ANDAMENTO</span>
-        <h1>Construindo seu feedback</h1>
+        <span className="evaluation-loader-kicker">SYNAPSE · ANÁLISE CLÍNICA</span>
+        <h1>A Synapse está avaliando seu raciocínio</h1>
         <p className="evaluation-loader-description">
-          O avaliador clínico está comparando suas decisões com a rubrica revisada
+          Sua hipótese, seus exames e sua conduta estão sendo comparados com a rubrica revisada
           {caseTitle ? ` de “${caseTitle}”` : ' deste caso'}.
         </p>
 

@@ -36,7 +36,7 @@ const emptyCase = {
   titulo: '', titulo_publico: '', especialidade: '', nivel_dificuldade: 'Médio', historia_clinica: '',
   exame_fisico: '', status: 'rascunho', premium: false, exames: [],
   diagnostico_referencia: '', diagnostico_termos: '', conduta_referencia: '',
-  conduta_termos: '', temas_estudo: '',
+  conduta_termos: '', reacao_paciente_referencia: '', desfecho_referencia: '', temas_estudo: '',
 };
 
 const emptyChallenge = {
@@ -142,6 +142,8 @@ const AdminAcademicPage = () => {
         justificativa_exames: {},
         conduta_criterios: [{ nome: 'Conduta principal', pontos: 30, termos: listFromText(caseForm.conduta_termos) }],
         conduta_referencia: caseForm.conduta_referencia,
+        reacao_paciente_referencia: caseForm.reacao_paciente_referencia,
+        desfecho_referencia: caseForm.desfecho_referencia,
         feedback_hipotese_parcial: 'A hipótese está próxima, mas precisa ser mais específica.',
         feedback_hipotese_incorreta: 'Revise os achados principais e reformule a hipótese diagnóstica.',
         feedback_seguranca: 'Considere estabilização, contraindicações e protocolos locais.',
@@ -164,6 +166,8 @@ const AdminAcademicPage = () => {
       diagnostico_termos: (rubric.diagnostico_termos || []).join(', '),
       conduta_referencia: rubric.conduta_referencia || '',
       conduta_termos: (rubric.conduta_criterios || []).flatMap((criterion) => criterion.termos).join(', '),
+      reacao_paciente_referencia: rubric.reacao_paciente_referencia || '',
+      desfecho_referencia: rubric.desfecho_referencia || '',
       temas_estudo: (rubric.temas_estudo || []).join(', '),
     });
     setActiveTab('cases'); window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -264,7 +268,7 @@ const CasesManager = ({ items, form, setForm, editingId, cancel, save, edit, sav
       <label className="admin-switch"><input type="checkbox" checked={form.premium} onChange={(e) => setForm({ ...form, premium: e.target.checked })} /><span /><strong>Conteúdo Premium</strong></label>
       <Field label="História clínica"><textarea required rows="5" value={form.historia_clinica} onChange={(e) => setForm({ ...form, historia_clinica: e.target.value })} /></Field><Field label="Exame físico"><textarea required rows="4" value={form.exame_fisico} onChange={(e) => setForm({ ...form, exame_fisico: e.target.value })} /></Field>
       <div className="admin-subsection"><div><strong>Exames disponíveis</strong><button type="button" onClick={() => setForm({ ...form, exames: [...form.exames, { codigo: '', nome: '', resultado: '', referencia_adequada: true }] })}><FiPlus /> Adicionar exame</button></div>{form.exames.map((exam, index) => <article className="admin-exam-editor" key={`${exam.codigo}-${index}`}><input required placeholder="Código" value={exam.codigo} onChange={(e) => setForm({ ...form, exames: form.exames.map((item, i) => i === index ? { ...item, codigo: e.target.value } : item) })} /><input required placeholder="Nome do exame" value={exam.nome} onChange={(e) => setForm({ ...form, exames: form.exames.map((item, i) => i === index ? { ...item, nome: e.target.value } : item) })} /><textarea required placeholder="Resultado liberado ao usuário" value={exam.resultado} onChange={(e) => setForm({ ...form, exames: form.exames.map((item, i) => i === index ? { ...item, resultado: e.target.value } : item) })} /><label><input type="checkbox" checked={exam.referencia_adequada} onChange={(e) => setForm({ ...form, exames: form.exames.map((item, i) => i === index ? { ...item, referencia_adequada: e.target.checked } : item) })} /> Adequado</label><button type="button" aria-label="Remover exame" onClick={() => setForm({ ...form, exames: form.exames.filter((_, i) => i !== index) })}><FiTrash2 /></button></article>)}</div>
-      <div className="admin-subsection rubric"><strong>Gabarito e avaliação automática</strong><p>Preencha os campos abaixo para ativar o feedback estruturado sem editar código.</p><Field label="Diagnóstico de referência"><textarea rows="2" value={form.diagnostico_referencia} onChange={(e) => setForm({ ...form, diagnostico_referencia: e.target.value })} /></Field><Field label="Termos aceitos no diagnóstico (separados por vírgula)"><input value={form.diagnostico_termos} onChange={(e) => setForm({ ...form, diagnostico_termos: e.target.value })} /></Field><Field label="Conduta de referência"><textarea rows="3" value={form.conduta_referencia} onChange={(e) => setForm({ ...form, conduta_referencia: e.target.value })} /></Field><Field label="Palavras-chave da conduta (separadas por vírgula)"><input value={form.conduta_termos} onChange={(e) => setForm({ ...form, conduta_termos: e.target.value })} /></Field><Field label="Temas recomendados para estudo"><input value={form.temas_estudo} onChange={(e) => setForm({ ...form, temas_estudo: e.target.value })} /></Field></div>
+      <div className="admin-subsection rubric"><strong>Gabarito e avaliação Synapse</strong><p>Preencha os campos abaixo para ativar o feedback estruturado sem editar código. Reação e desfecho devem ser clinicamente revisados.</p><Field label="Diagnóstico de referência"><textarea rows="2" value={form.diagnostico_referencia} onChange={(e) => setForm({ ...form, diagnostico_referencia: e.target.value })} /></Field><Field label="Termos aceitos no diagnóstico (separados por vírgula)"><input value={form.diagnostico_termos} onChange={(e) => setForm({ ...form, diagnostico_termos: e.target.value })} /></Field><Field label="Conduta de referência"><textarea rows="3" value={form.conduta_referencia} onChange={(e) => setForm({ ...form, conduta_referencia: e.target.value })} /></Field><Field label="Palavras-chave da conduta (separadas por vírgula)"><input value={form.conduta_termos} onChange={(e) => setForm({ ...form, conduta_termos: e.target.value })} /></Field><Field label="Reação esperada do paciente"><textarea rows="3" placeholder="Descreva como o paciente responde à conduta adequada e aos principais riscos de omissão." value={form.reacao_paciente_referencia} onChange={(e) => setForm({ ...form, reacao_paciente_referencia: e.target.value })} /></Field><Field label="Desfecho clínico de referência"><textarea rows="3" placeholder="Descreva o desfecho esperado e os critérios de reavaliação." value={form.desfecho_referencia} onChange={(e) => setForm({ ...form, desfecho_referencia: e.target.value })} /></Field><Field label="Temas recomendados para estudo"><input value={form.temas_estudo} onChange={(e) => setForm({ ...form, temas_estudo: e.target.value })} /></Field></div>
       <button className="admin-save-button" disabled={saving}><FiSave /> {saving ? 'Salvando...' : 'Salvar caso clínico'}</button>
     </form>
     <ContentList title={`${items.length} casos cadastrados`} items={items} edit={edit} type="case" />

@@ -4,8 +4,10 @@ import {
   FiAlertTriangle,
   FiArrowRight,
   FiCheck,
+  FiHeart,
   FiRefreshCw,
   FiTarget,
+  FiTrendingUp,
 } from 'react-icons/fi';
 import { ApiError, api } from '../services/api';
 
@@ -93,14 +95,14 @@ const ResultadoSimulacaoPage = () => {
   }
 
   const sourceLabel = result.fonte_feedback === 'openai'
-    ? 'Feedback aprimorado por IA'
-    : 'Avaliação estruturada pela rubrica clínica';
+    ? 'Synapse · feedback personalizado por IA'
+    : 'Synapse · feedback estruturado pela rubrica clínica';
 
   return (
     <div className="page-container simulation-result-page">
       <header className="result-hero">
         <div className="result-heading">
-          <span className="simulation-kicker">AVALIAÇÃO CONCLUÍDA</span>
+          <span className="simulation-kicker">SYNAPSE · AVALIAÇÃO CONCLUÍDA</span>
           <h1>{result.caso_titulo}</h1>
           <p>{result.feedback.resumo}</p>
           <span className="feedback-source">{sourceLabel}</span>
@@ -136,7 +138,7 @@ const ResultadoSimulacaoPage = () => {
           <div className="result-panel-title">
             <FiTarget />
             <div>
-              <span>Análise da rubrica</span>
+              <span>Análise da Synapse</span>
               <h2>O que você fez bem</h2>
             </div>
           </div>
@@ -150,8 +152,8 @@ const ResultadoSimulacaoPage = () => {
           <div className="result-panel-title warning">
             <FiAlertTriangle />
             <div>
-              <span>Próximo passo</span>
-              <h2>Como melhorar</h2>
+              <span>Orientação da Synapse</span>
+              <h2>O que precisa melhorar</h2>
             </div>
           </div>
           <FeedbackList
@@ -211,6 +213,30 @@ const ResultadoSimulacaoPage = () => {
           <span>SEGURANÇA DO PACIENTE</span>
           <p>{result.feedback.feedback_seguranca}</p>
         </article>
+      </section>
+
+      <section className="patient-outcome-section" aria-label="Resposta clínica simulada">
+        <div className="patient-outcome-heading">
+          <span className="simulation-kicker">IMPACTO DA SUA DECISÃO</span>
+          <h2>Como o paciente responderia à sua conduta</h2>
+          <p>Uma simulação educacional baseada na rubrica clínica deste caso.</p>
+        </div>
+        <div className="patient-outcome-grid">
+          <article>
+            <span><FiHeart /></span>
+            <div>
+              <small>REAÇÃO DO PACIENTE</small>
+              <p>{result.feedback.reacao_paciente || 'A reação do paciente não foi registrada nesta avaliação.'}</p>
+            </div>
+          </article>
+          <article>
+            <span><FiTrendingUp /></span>
+            <div>
+              <small>DESFECHO CLÍNICO ESPERADO</small>
+              <p>{result.feedback.desfecho_clinico || 'O desfecho clínico não foi registrado nesta avaliação.'}</p>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section className="study-recommendations">

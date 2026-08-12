@@ -36,6 +36,14 @@ const result = {
     recomendacoes_estudo: ['Estratificação de risco no TEP'],
   },
   fonte_feedback: 'openai',
+  nivel_conduta: 'adequada',
+  objetivos_aprendizagem: ['Estratificar o risco do TEP'],
+  fontes_clinicas: [{
+    titulo: 'ASH Guidelines for treatment of DVT and PE',
+    organizacao: 'American Society of Hematology',
+    ano: 2020,
+    url: 'https://doi.org/10.1182/bloodadvances.2020001830',
+  }],
   aviso_educacional: 'Conteúdo exclusivamente educacional.',
 };
 
@@ -54,5 +62,11 @@ describe('ResultadoSimulacaoPage', () => {
     expect(screen.getByText('A tendência é melhora progressiva da hipoxemia.')).toBeInTheDocument();
     expect(screen.getByText('A paciente permanece internada e monitorizada.')).toBeInTheDocument();
     expect(screen.getByLabelText('Pontuação total: 86 de 100')).toBeInTheDocument();
+    expect(screen.getByText('Conduta adequada')).toBeInTheDocument();
+    expect(screen.getByText('Estratificar o risco do TEP')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /ASH Guidelines/ })).toHaveAttribute(
+      'href',
+      'https://doi.org/10.1182/bloodadvances.2020001830',
+    );
   });
 });

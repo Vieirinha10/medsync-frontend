@@ -53,6 +53,9 @@ describe('SimulacaoCaso', () => {
     fireEvent.click(screen.getByRole('button', { name: /Iniciar investigação/ }));
 
     fireEvent.click(screen.getByRole('checkbox', { name: 'Troponina' }));
+    fireEvent.change(screen.getByRole('textbox', { name: 'Justificativa para Troponina' }), {
+      target: { value: 'Confirmar lesão miocárdica e orientar a estratégia.' },
+    });
 
     fireEvent.click(screen.getByRole('button', { name: /Solicitar exames selecionados/ }));
     expect(screen.getByText('Elevada.')).toBeInTheDocument();
@@ -75,6 +78,7 @@ describe('SimulacaoCaso', () => {
     await waitFor(() => {
       expect(api.finalizeSimulation).toHaveBeenCalledWith(8, {
         exames_solicitados: ['2'],
+        justificativas_exames: { 2: 'Confirmar lesão miocárdica e orientar a estratégia.' },
         hipotese_diagnostica: 'Síndrome coronariana aguda com supradesnivelamento de ST.',
         conduta_proposta: 'Monitorização, antiagregação e estratégia imediata de reperfusão.',
       });

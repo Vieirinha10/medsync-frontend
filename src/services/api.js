@@ -165,6 +165,11 @@ export const api = {
     }),
   getSimulationResult: (progressId) =>
     request(`/simulacoes/resultados/${progressId}`),
+  askSimulationQuestion: (progressId, pergunta) =>
+    request(`/simulacoes/resultados/${progressId}/perguntar`, {
+      method: 'POST',
+      body: { pergunta },
+    }),
   getStudyErrors: () => request('/caderno-erros/meu'),
   getDueReviews: () => request('/caderno-erros/revisoes-hoje'),
   submitSpacedReview: (errorId, rating) =>

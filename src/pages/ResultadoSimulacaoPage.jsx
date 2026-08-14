@@ -5,13 +5,22 @@ import {
   FiArrowRight,
   FiBookOpen,
   FiCheck,
+  FiClock,
   FiExternalLink,
   FiHeart,
+  FiMessageCircle,
   FiRefreshCw,
+  FiSend,
   FiTarget,
   FiTrendingUp,
 } from 'react-icons/fi';
 import { ApiError, api } from '../services/api';
+
+const suggestedQuestions = [
+  'Por que este exame era desnecessário?',
+  'Qual seria a conduta se o paciente estivesse instável?',
+  'Como diferenciar os principais diagnósticos?',
+];
 
 const ScoreCard = ({ label, value, total }) => (
   <div className="score-breakdown-card">
@@ -43,6 +52,10 @@ const ResultadoSimulacaoPage = () => {
   const [result, setResult] = useState(location.state?.result || null);
   const [isLoading, setIsLoading] = useState(!location.state?.result);
   const [error, setError] = useState(null);
+  const [question, setQuestion] = useState('');
+  const [questionAnswer, setQuestionAnswer] = useState(null);
+  const [questionError, setQuestionError] = useState('');
+  const [isAsking, setIsAsking] = useState(false);
 
   useEffect(() => {
     if (result) return;
@@ -100,13 +113,28 @@ const ResultadoSimulacaoPage = () => {
     ? 'Synapse · feedback personalizado por IA'
     : 'Synapse · feedback estruturado pela rubrica clínica';
 
+  const askSynapse = async (selectedQuestion = question) => {
+    const cleanQuestion = selectedQuestion.trim();
+    if (!cleanQuestion || isAsking) return;
+    setQuestion(cleanQuestion);
+    setQuestionError('');
+    setIsAsking(true);
+    try {
+      setQuestionAnswer(await api.askSimulationQuestion(progressoId, cleanQuestion));
+    } catch (requestError) {
+      setQuestionError(requestError.message);
+    } finally {
+      setIsAsking(false);
+    }
+  };
+
   return (
     <div className="page-container simulation-result-page">
       <header className="result-hero">
         <div className="result-heading">
           <span className="simulation-kicker">SYNAPSE · AVALIAÇÃO CONCLUÍDA</span>
           <h1>{result.caso_titulo}</h1>
-          <p>{result.feedback.resumo}</p>
+          <p>{result.feedback.sintese_raciocinio || result.feedback.resumo}</p>
           <span className="feedback-source">{sourceLabel}</span>
         </div>
         <div
@@ -159,7 +187,7 @@ const ResultadoSimulacaoPage = () => {
             </div>
           </div>
           <FeedbackList
-            items={result.feedback.pontos_melhoria}
+            items={result.feedback.omissoes?.length ? result.feedback.omissoes : result.feedback.pontos_melhoria}
             emptyText="Nenhum ponto crítico de melhoria foi identificado."
             tone="warning"
           />
@@ -200,6 +228,18 @@ const ResultadoSimulacaoPage = () => {
           </div>
         </div>
         <p className="exam-comment">{result.exames.comentario}</p>
+        {result.feedback.justificativas_exames?.length > 0 && (
+          <div className="exam-rationale-feedback">
+            <div><span>COMPREENSÃO DA UTILIDADE</span><h3>Suas justificativas</h3></div>
+            {result.feedback.justificativas_exames.map((item) => (
+              <article key={item.exame_id} className={`is-${item.compreensao}`}>
+                <header><strong>{item.exame}</strong><span>{item.compreensao === 'nao_justificada' ? 'Opcional não preenchida' : item.compreensao}</span></header>
+                {item.justificativa_estudante && <p><b>Você escreveu:</b> {item.justificativa_estudante}</p>}
+                <small>{item.feedback}</small>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
       <section className="reasoning-feedback">
@@ -216,6 +256,35 @@ const ResultadoSimulacaoPage = () => {
           <p>{result.feedback.feedback_seguranca}</p>
         </article>
       </section>
+
+      {result.consequencias && (
+        <section className="clinical-consequences" aria-label="Consequências clínicas simuladas">
+          <div className="consequence-heading">
+            <span className="simulation-kicker">CONSEQUÊNCIAS DAS DECISÕES</span>
+            <h2>O caso reagiu ao que você decidiu</h2>
+            <p>{result.consequencias.aviso_tempo}</p>
+          </div>
+          <div className="consequence-summary">
+            <article><FiClock /><span>Impacto fictício</span><strong>{result.consequencias.tempo_total_impactado_minutos} min</strong></article>
+            <article><FiHeart /><span>Estado após a conduta</span><strong>{result.consequencias.estado_paciente.replace('_', ' ')}</strong></article>
+          </div>
+          <div className="consequence-timeline">
+            {result.consequencias.eventos.map((event, index) => (
+              <article key={`${event.tipo}-${index}`} className={`is-${event.tipo}`}>
+                <i>{index + 1}</i><div><span>{event.minutos > 0 ? `+${event.minutos} min fictícios` : 'Efeito clínico'}</span><h3>{event.titulo}</h3><p>{event.descricao}</p></div>
+              </article>
+            ))}
+          </div>
+          {result.consequencias.reavaliacao?.length > 0 && (
+            <div className="vital-reassessment">
+              <div><span>REAVALIAÇÃO</span><h3>Novos indicadores após a conduta</h3></div>
+              <div>{result.consequencias.reavaliacao.map((item) => (
+                <article key={item.indicador} className={`is-${item.tendencia}`}><strong>{item.indicador}</strong><small>Antes: {item.antes}</small><p>{item.depois}</p><span>{item.tendencia}</span></article>
+              ))}</div>
+            </div>
+          )}
+        </section>
+      )}
 
       <section className="patient-outcome-section" aria-label="Resposta clínica simulada">
         <div className="patient-outcome-heading">
@@ -277,10 +346,23 @@ const ResultadoSimulacaoPage = () => {
           <h2>O que revisar agora</h2>
         </div>
         <div className="study-chips">
-          {result.feedback.recomendacoes_estudo.map((topic) => (
+          {(result.feedback.plano_pessoal_melhoria || result.feedback.recomendacoes_estudo).map((topic) => (
             <span key={topic}>{topic}</span>
           ))}
         </div>
+      </section>
+
+      <section className="synapse-follow-up" aria-label="Pergunte à Synapse">
+        <div className="follow-up-heading"><span><FiMessageCircle /></span><div><small>SYNAPSE · APROFUNDE O CASO</small><h2>Ficou alguma dúvida?</h2><p>A resposta usa somente este caso, sua resolução e a rubrica revisada.</p></div></div>
+        <div className="suggested-questions">
+          {suggestedQuestions.map((item) => <button key={item} type="button" onClick={() => askSynapse(item)} disabled={isAsking}>{item}</button>)}
+        </div>
+        <form onSubmit={(event) => { event.preventDefault(); askSynapse(); }}>
+          <label><span>Sua pergunta sobre o caso</span><textarea rows="3" maxLength="500" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Pergunte sobre exames, hipótese, conduta ou segurança..." /></label>
+          <button type="submit" disabled={isAsking || question.trim().length < 5}>{isAsking ? 'Synapse analisando...' : <><FiSend /> Perguntar</>}</button>
+        </form>
+        {questionError && <p className="follow-up-error" role="alert">{questionError}</p>}
+        {questionAnswer && <article className="synapse-answer"><header><FiMessageCircle /><div><strong>Synapse</strong><small>{questionAnswer.fonte_feedback === 'openai' ? 'Resposta personalizada por IA' : 'Resposta estruturada pela rubrica'}</small></div></header><p>{questionAnswer.resposta}</p><small>{questionAnswer.aviso_educacional}</small></article>}
       </section>
 
       <p className="educational-notice">{result.aviso_educacional}</p>

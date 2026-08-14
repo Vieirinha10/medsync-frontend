@@ -15,7 +15,10 @@ describe('SiteFooter', () => {
       'href',
       'https://www.tiktok.com/@medsync.edu?is_from_webapp=1&sender_device=pc',
     );
-    expect(screen.getByLabelText('WhatsApp do MedSync em breve')).toHaveAttribute('aria-disabled', 'true');
+    expect(screen.getByRole('link', { name: 'WhatsApp do MedSync' })).toHaveAttribute(
+      'href',
+      'https://contate.me/5586988063766',
+    );
     expect(screen.getByRole('link', { name: 'Sobre o MedSync' })).toHaveAttribute('href', '/sobre');
     expect(screen.getByRole('link', { name: 'Termos de Uso' })).toHaveAttribute('href', '/termos');
     expect(screen.getByRole('link', { name: 'Política de Privacidade' })).toHaveAttribute('href', '/privacidade');

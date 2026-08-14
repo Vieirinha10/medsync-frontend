@@ -192,7 +192,7 @@ export const enhancedLegalPages = {
       {
         title: '3. Dados de aprendizagem e uso',
         items: [
-          'Casos e desafios acessados, respostas, exames selecionados, hipóteses, condutas, pontuações, favoritos e progresso.',
+          'Casos e desafios acessados, respostas, exames selecionados, hipóteses, condutas, pontuações e progresso.',
           'Interações com feedback automatizado ou inteligência artificial, quando o recurso for utilizado.',
           'Preferências, trilhas, conquistas e eventos necessários para métricas de conclusão, retenção e melhoria do conteúdo.',
         ],
@@ -217,7 +217,7 @@ export const enhancedLegalPages = {
         title: '6. Finalidades do tratamento',
         items: [
           'Criar, autenticar, personalizar e proteger a conta.',
-          'Entregar casos, desafios, feedbacks, histórico, favoritos, métricas e benefícios do plano.',
+          'Entregar casos, desafios, feedbacks, histórico, métricas e benefícios do plano.',
           'Processar pagamentos, prevenir fraude, conciliar cobranças e atender cancelamentos ou reembolsos.',
           'Responder solicitações, enviar avisos operacionais e comunicar alterações relevantes.',
           'Medir desempenho do serviço, corrigir falhas e desenvolver funcionalidades e conteúdos.',

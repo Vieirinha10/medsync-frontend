@@ -57,32 +57,30 @@ describe('DesafiosPage', () => {
     expect(screen.getByText('Ainda não. Observe os achados-chave')).toBeInTheDocument();
   });
 
-  it('favorita um desafio e mantém a lista salva entre renderizações', () => {
+  it('identifica o exame e explica sua finalidade sem exibir favoritos', () => {
     render(<DesafiosPage />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar desafio 1 para estudar depois' }));
-    expect(screen.getByRole('button', { name: 'Remover desafio 1 dos favoritos' })).toBeInTheDocument();
-    expect(screen.getByText('Radiografia de tórax · Radiologia · Intermediário')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Desafio visual #01/ })).not.toHaveTextContent('Pneumotórax hipertensivo');
-
-    cleanup();
-    render(<DesafiosPage />);
-
-    expect(screen.getByRole('button', { name: 'Remover desafio 1 dos favoritos' })).toBeInTheDocument();
+    expect(screen.getByRole('button', {
+      name: 'Radiografia de tórax: saiba para que serve este exame',
+    })).toBeInTheDocument();
+    expect(screen.getByRole('tooltip')).toHaveTextContent('Para que serve este exame?');
+    expect(screen.getByRole('tooltip')).toHaveTextContent('Avalia pulmões, pleuras, mediastino e silhueta cardíaca');
+    expect(screen.queryByText(/favorit/i)).not.toBeInTheDocument();
   });
 
-  it('filtra desafios por dificuldade, especialidade e favoritos', () => {
+  it('filtra desafios por dificuldade, especialidade e tipo de exame', () => {
     render(<DesafiosPage />);
 
     fireEvent.click(screen.getByRole('button', { name: 'Avançado' }));
     expect(screen.getByText('Qual diagnóstico deve ser priorizado diante desta lesão pigmentada?')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Todas' }));
-    fireEvent.change(screen.getByLabelText('CONTEÚDO OU ESPECIALIDADE'), { target: { value: 'Urologia' } });
+    fireEvent.change(screen.getByLabelText('ESPECIALIDADE'), { target: { value: 'Urologia' } });
     expect(screen.getByText('Qual achado explica melhor a obstrução observada nesta tomografia?')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /Somente favoritos/ }));
-    expect(screen.getByRole('heading', { name: 'Nenhum desafio encontrado' })).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('ESPECIALIDADE'), { target: { value: 'Todas' } });
+    fireEvent.change(screen.getByLabelText('TIPO DE EXAME'), { target: { value: 'Esfregaço periférico' } });
+    expect(screen.getByText('Qual diagnóstico é sugerido pela morfologia das hemácias?')).toBeInTheDocument();
   });
 
   it('salva automaticamente uma resposta incorreta no Caderno de Erros', async () => {

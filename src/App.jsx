@@ -52,6 +52,7 @@ import './styles/challenge-cards.css';
 import './styles/home-solid.css';
 import './styles/platform-solid.css';
 import './styles/checkout.css';
+import './styles/visual-challenges-v2.css';
 
 function App() {
   const navigate = useNavigate();

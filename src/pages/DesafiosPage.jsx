@@ -4,21 +4,28 @@ import {
   FiArrowRight,
   FiCheck,
   FiCheckCircle,
+  FiEye,
   FiFilter,
+  FiHelpCircle,
   FiImage,
+  FiInfo,
+  FiLayers,
+  FiMousePointer,
   FiRefreshCw,
   FiRotateCcw,
-  FiStar,
   FiX,
   FiZap,
 } from 'react-icons/fi';
 import { visualChallenges } from '../data/visualChallenges';
+import { enrichVisualChallenge } from '../data/examModalities';
 import { api } from '../services/api';
 
 const OPTION_LABELS = ['A', 'B', 'C', 'D'];
-const FAVORITES_STORAGE_KEY = 'medsync:visual-challenge-favorites';
 const ALL_DIFFICULTIES = 'Todas';
 const ALL_CATEGORIES = 'Todas';
+const ALL_MODALITIES = 'Todos';
+const DIFFICULTY_ORDER = ['Básico', 'Intermediário', 'Avançado'];
+const INITIAL_CHALLENGES = visualChallenges.map(enrichVisualChallenge);
 const LEGACY_CHALLENGE_IDS = {
   'pneumotorax-hipertensivo': 'desafio-visual-001',
   'fibrilacao-atrial': 'desafio-visual-002',
@@ -46,49 +53,51 @@ const getInitialChallengeIndex = () => {
   return index >= 0 ? index : 0;
 };
 
-const loadFavorites = () => {
-  try {
-    const savedFavorites = JSON.parse(window.localStorage.getItem(FAVORITES_STORAGE_KEY));
-    return Array.isArray(savedFavorites)
-      ? [...new Set(savedFavorites.map((id) => LEGACY_CHALLENGE_IDS[id] || id))]
-      : [];
-  } catch {
-    return [];
-  }
-};
-
 const DesafiosPage = () => {
-  const [challenges, setChallenges] = useState(visualChallenges);
+  const [challenges, setChallenges] = useState(INITIAL_CHALLENGES);
   const [currentIndex, setCurrentIndex] = useState(getInitialChallengeIndex);
   const [answers, setAnswers] = useState({});
-  const [favorites, setFavorites] = useState(loadFavorites);
   const [difficultyFilter, setDifficultyFilter] = useState(ALL_DIFFICULTIES);
   const [categoryFilter, setCategoryFilter] = useState(ALL_CATEGORIES);
-  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [modalityFilter, setModalityFilter] = useState(ALL_MODALITIES);
   const [notebookMessage, setNotebookMessage] = useState('');
   const [answeringId, setAnsweringId] = useState(null);
   const touchStartX = useRef(null);
   const trailContext = useMemo(getTrailContext, []);
 
   const categories = useMemo(
-    () => [...new Set(challenges.map((challenge) => challenge.category))].sort(),
+    () => [...new Set(challenges.map((challenge) => challenge.category))]
+      .sort((first, second) => first.localeCompare(second, 'pt-BR')),
     [challenges],
   );
   const difficulties = useMemo(
-    () => [...new Set(challenges.map((challenge) => challenge.difficulty))],
+    () => DIFFICULTY_ORDER.filter((difficulty) => (
+      challenges.some((challenge) => challenge.difficulty === difficulty)
+    )),
     [challenges],
   );
-  const favoriteChallenges = useMemo(
-    () => challenges.filter((challenge) => favorites.includes(challenge.id)),
-    [challenges, favorites],
-  );
+  const examGroups = useMemo(() => {
+    const groups = challenges.reduce((currentGroups, challenge) => {
+      const modalities = currentGroups.get(challenge.examClass) || new Set();
+      modalities.add(challenge.modality);
+      currentGroups.set(challenge.examClass, modalities);
+      return currentGroups;
+    }, new Map());
+
+    return [...groups.entries()]
+      .sort(([first], [second]) => first.localeCompare(second, 'pt-BR'))
+      .map(([examClass, modalities]) => ({
+        examClass,
+        modalities: [...modalities].sort((first, second) => first.localeCompare(second, 'pt-BR')),
+      }));
+  }, [challenges]);
   const filteredChallenges = useMemo(
     () => challenges.filter((challenge) => (
       (difficultyFilter === ALL_DIFFICULTIES || challenge.difficulty === difficultyFilter)
       && (categoryFilter === ALL_CATEGORIES || challenge.category === categoryFilter)
-      && (!favoritesOnly || favorites.includes(challenge.id))
+      && (modalityFilter === ALL_MODALITIES || challenge.modality === modalityFilter)
     )),
-    [categoryFilter, challenges, difficultyFilter, favorites, favoritesOnly],
+    [categoryFilter, challenges, difficultyFilter, modalityFilter],
   );
 
   const currentChallenge = filteredChallenges[currentIndex] ?? null;
@@ -108,7 +117,7 @@ const DesafiosPage = () => {
     : 0;
   const hasActiveFilters = difficultyFilter !== ALL_DIFFICULTIES
     || categoryFilter !== ALL_CATEGORIES
-    || favoritesOnly;
+    || modalityFilter !== ALL_MODALITIES;
 
   const goToPrevious = () => {
     setCurrentIndex((index) => Math.max(0, index - 1));
@@ -119,13 +128,9 @@ const DesafiosPage = () => {
   };
 
   useEffect(() => {
-    window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
-  }, [favorites]);
-
-  useEffect(() => {
     if (!api.getDynamicChallenges) return;
     void api.getDynamicChallenges().then((items) => {
-      const dynamic = items.map((item) => ({
+      const dynamic = items.map((item) => enrichVisualChallenge({
         id: item.id,
         category: item.especialidade,
         difficulty: item.dificuldade,
@@ -138,7 +143,7 @@ const DesafiosPage = () => {
           label: option.texto || option.label || String(option),
         })),
       }));
-      setChallenges([...dynamic, ...visualChallenges.filter(
+      setChallenges([...dynamic, ...INITIAL_CHALLENGES.filter(
         (builtIn) => !dynamic.some((item) => item.id === builtIn.id),
       )]);
     }).catch(() => {});
@@ -235,32 +240,10 @@ const DesafiosPage = () => {
     }
   };
 
-  const toggleFavorite = (challengeId) => {
-    setFavorites((current) => (
-      current.includes(challengeId)
-        ? current.filter((favoriteId) => favoriteId !== challengeId)
-        : [...current, challengeId]
-    ));
-  };
-
-  const openFavorite = (challengeId) => {
-    const favoriteIndex = favoriteChallenges.findIndex((challenge) => challenge.id === challengeId);
-    setDifficultyFilter(ALL_DIFFICULTIES);
-    setCategoryFilter(ALL_CATEGORIES);
-    setFavoritesOnly(true);
-    setAnswers((current) => {
-      const next = { ...current };
-      delete next[challengeId];
-      return next;
-    });
-    setNotebookMessage('');
-    setCurrentIndex(Math.max(favoriteIndex, 0));
-  };
-
   const clearFilters = () => {
     setDifficultyFilter(ALL_DIFFICULTIES);
     setCategoryFilter(ALL_CATEGORIES);
-    setFavoritesOnly(false);
+    setModalityFilter(ALL_MODALITIES);
     setCurrentIndex(0);
   };
 
@@ -285,34 +268,89 @@ const DesafiosPage = () => {
   return (
     <div className="page-container visual-challenges-page">
       <header className="visual-challenges-header">
-        <div>
-          <span className="visual-challenges-kicker"><FiZap /> TREINO VISUAL RÁPIDO</span>
-          <h1>Qual é o diagnóstico?</h1>
+        <div className="visual-header-copy">
+          <span className="visual-challenges-kicker"><FiZap /> TREINO DE INTERPRETAÇÃO</span>
+          <h1>Desafios visuais</h1>
           <p>
-            Analise imagens clínicas, filtre por especialidade e salve desafios para revisar depois.
+            Treine o reconhecimento de exames, identifique achados importantes e escolha o
+            diagnóstico mais provável com feedback imediato.
           </p>
         </div>
 
         <div className="visual-header-stats">
-          <div className="visual-favorite-stat" aria-label={`${favorites.length} desafios favoritados`}>
-            <FiStar aria-hidden="true" />
-            <span><small>FAVORITOS</small><strong>{favorites.length}</strong></span>
+          <div className="visual-library-stat" aria-label={`${challenges.length} desafios disponíveis`}>
+            <FiLayers aria-hidden="true" />
+            <span><small>CATÁLOGO</small><strong>{challenges.length}</strong></span>
           </div>
           <div className="visual-score" aria-label={`${correctCount} acertos em ${answeredCount} respostas`}>
-            <span>SEU PLACAR</span>
+            <span>DESEMPENHO</span>
             <strong>{correctCount}<small>/{answeredCount || 0}</small></strong>
           </div>
         </div>
       </header>
 
+      <section className="visual-guidance" aria-labelledby="visual-guidance-title">
+        <div className="visual-guidance-intro">
+          <span><FiHelpCircle aria-hidden="true" /></span>
+          <div>
+            <strong id="visual-guidance-title">Como usar este treino</strong>
+            <p>Consultar a finalidade do exame não revela a resposta — faz parte do aprendizado.</p>
+          </div>
+        </div>
+        <ol className="visual-guidance-steps">
+          <li>
+            <FiMousePointer aria-hidden="true" />
+            <span><strong>1. Reconheça o exame</strong><small>Passe o cursor ou toque no nome para saber para que ele serve.</small></span>
+          </li>
+          <li>
+            <FiEye aria-hidden="true" />
+            <span><strong>2. Observe a imagem</strong><small>Procure alterações, padrões e sinais que diferenciem as hipóteses.</small></span>
+          </li>
+          <li>
+            <FiCheckCircle aria-hidden="true" />
+            <span><strong>3. Responda e revise</strong><small>Escolha uma alternativa e compare seu raciocínio com o feedback.</small></span>
+          </li>
+        </ol>
+      </section>
+
       <div className="visual-challenges-workspace">
         <section className="visual-filter-island" aria-label="Filtros dos desafios">
           <div className="visual-filter-heading">
             <span><FiFilter aria-hidden="true" /></span>
-            <div><strong>Encontre seu próximo desafio</strong><small>{filteredChallenges.length} de {challenges.length} disponíveis</small></div>
+            <div><strong>Organize seu treino</strong><small>{filteredChallenges.length} de {challenges.length} desafios nesta seleção</small></div>
           </div>
 
           <div className="visual-filter-controls">
+            <label className="visual-filter-group visual-category-filter">
+              <span>TIPO DE EXAME</span>
+              <select
+                aria-label="TIPO DE EXAME"
+                value={modalityFilter}
+                onChange={(event) => { setModalityFilter(event.target.value); setCurrentIndex(0); }}
+              >
+                <option value={ALL_MODALITIES}>Todos os exames</option>
+                {examGroups.map((group) => (
+                  <optgroup label={group.examClass} key={group.examClass}>
+                    {group.modalities.map((modality) => (
+                      <option value={modality} key={modality}>{modality}</option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </label>
+
+            <label className="visual-filter-group visual-category-filter">
+              <span>ESPECIALIDADE</span>
+              <select
+                aria-label="ESPECIALIDADE"
+                value={categoryFilter}
+                onChange={(event) => { setCategoryFilter(event.target.value); setCurrentIndex(0); }}
+              >
+                <option value={ALL_CATEGORIES}>Todas as áreas</option>
+                {categories.map((category) => <option value={category} key={category}>{category}</option>)}
+              </select>
+            </label>
+
             <div className="visual-filter-group">
               <span>DIFICULDADE</span>
               <div className="visual-difficulty-options">
@@ -330,56 +368,10 @@ const DesafiosPage = () => {
               </div>
             </div>
 
-            <label className="visual-filter-group visual-category-filter">
-              <span>ESPECIALIDADE</span>
-              <select
-                aria-label="CONTEÚDO OU ESPECIALIDADE"
-                value={categoryFilter}
-                onChange={(event) => { setCategoryFilter(event.target.value); setCurrentIndex(0); }}
-              >
-                <option value={ALL_CATEGORIES}>Todas as áreas</option>
-                {categories.map((category) => <option value={category} key={category}>{category}</option>)}
-              </select>
-            </label>
-
-            <button
-              type="button"
-              className={`visual-favorites-filter ${favoritesOnly ? 'is-active' : ''}`}
-              onClick={() => { setFavoritesOnly((current) => !current); setCurrentIndex(0); }}
-              aria-label={`Somente favoritos (${favorites.length} salvos)`}
-              aria-pressed={favoritesOnly}
-            >
-              <FiStar aria-hidden="true" />
-              <span><strong>Favoritos</strong><small>{favorites.length} salvos</small></span>
-            </button>
-
             {hasActiveFilters && (
               <button type="button" className="visual-clear-filters" onClick={clearFilters}>
-                <FiRefreshCw aria-hidden="true" /> Limpar
+                <FiRefreshCw aria-hidden="true" /> Limpar filtros
               </button>
-            )}
-          </div>
-
-          <div className={`visual-saved-challenges ${favoriteChallenges.length ? 'has-items' : ''}`}>
-            <div className="visual-saved-heading">
-              <span><FiStar aria-hidden="true" /> FAVORITADOS</span>
-              <strong>{favorites.length}</strong>
-            </div>
-            {favoriteChallenges.length ? (
-              <div className="visual-saved-list">
-                {favoriteChallenges.map((challenge, index) => (
-                  <button type="button" key={challenge.id} onClick={() => openFavorite(challenge.id)}>
-                    <img src={challenge.imageSrc} alt="" />
-                    <span>
-                      <strong>Desafio visual #{String(index + 1).padStart(2, '0')}</strong>
-                      <small>{challenge.modality} · {challenge.category} · {challenge.difficulty}</small>
-                    </span>
-                    <FiArrowRight aria-hidden="true" />
-                  </button>
-                ))}
-              </div>
-            ) : (
-              <p>Use a estrela dos cards para montar sua lista de revisão.</p>
             )}
           </div>
         </section>
@@ -411,18 +403,31 @@ const DesafiosPage = () => {
                     decoding="async"
                   />
 
-                  <button
-                    type="button"
-                    className={`visual-favorite-button ${favorites.includes(currentChallenge.id) ? 'is-active' : ''}`}
-                    onClick={() => toggleFavorite(currentChallenge.id)}
-                    aria-label={favorites.includes(currentChallenge.id)
-                      ? `Remover desafio ${currentIndex + 1} dos favoritos`
-                      : `Salvar desafio ${currentIndex + 1} para estudar depois`}
-                    aria-pressed={favorites.includes(currentChallenge.id)}
-                  >
-                    <FiStar aria-hidden="true" />
-                    <span>{favorites.includes(currentChallenge.id) ? 'Favoritado' : 'Estudar depois'}</span>
-                  </button>
+                  <div className="visual-exam-context">
+                    <button
+                      type="button"
+                      className="visual-exam-trigger"
+                      aria-describedby={`exam-purpose-${currentChallenge.id}`}
+                      aria-label={`${currentChallenge.modality}: saiba para que serve este exame`}
+                    >
+                      <FiImage aria-hidden="true" />
+                      <span>
+                        <small>EXAME APRESENTADO</small>
+                        <strong>{currentChallenge.modality}</strong>
+                      </span>
+                      <FiInfo aria-hidden="true" />
+                    </button>
+                    <div
+                      className="visual-exam-tooltip"
+                      id={`exam-purpose-${currentChallenge.id}`}
+                      role="tooltip"
+                    >
+                      <span>{currentChallenge.examClass}</span>
+                      <strong>Para que serve este exame?</strong>
+                      <p>{currentChallenge.purpose}</p>
+                      <small>Passe o cursor para consultar. No celular, toque no nome do exame.</small>
+                    </div>
+                  </div>
 
                   <button
                     type="button"
@@ -443,8 +448,8 @@ const DesafiosPage = () => {
                     <FiArrowRight />
                   </button>
 
-                  <div className="visual-image-badges">
-                    <span><FiImage /> {currentChallenge.modality}</span>
+                  <div className="visual-image-classification" aria-label="Classificação do desafio">
+                    <span>{currentChallenge.category}</span>
                     <span>{currentChallenge.difficulty}</span>
                   </div>
                 </div>
@@ -454,13 +459,14 @@ const DesafiosPage = () => {
                     DESAFIO {String(currentIndex + 1).padStart(2, '0')}
                   </span>
                   <div className="visual-challenge-meta">
-                    <span>{currentChallenge.category}</span>
+                    <span><FiLayers aria-hidden="true" /> {currentChallenge.examClass}</span>
                     <strong>Desafio {currentIndex + 1} de {filteredChallenges.length}</strong>
                   </div>
 
                   <h2>{currentChallenge.question}</h2>
                   <p className="visual-challenge-instruction">
-                    Selecione apenas uma alternativa. A resposta não poderá ser alterada.
+                    Observe a imagem com atenção e selecione uma alternativa. Você terá uma
+                    tentativa e receberá a explicação logo após responder.
                   </p>
 
                   <p className="visual-notebook-message" aria-live="polite">{notebookMessage}</p>
@@ -558,7 +564,7 @@ const DesafiosPage = () => {
                       key={challenge.id}
                       onClick={() => setCurrentIndex(index)}
                       className={`${index === currentIndex ? 'is-active' : ''} ${answerState}`}
-                      aria-label={`Ir para o desafio ${index + 1}`}
+                      aria-label={`Ir para o desafio ${index + 1}: ${challenge.modality}`}
                       aria-current={index === currentIndex ? 'step' : undefined}
                     >
                       {index + 1}
@@ -584,7 +590,7 @@ const DesafiosPage = () => {
             <section className="visual-empty-state">
               <span><FiFilter aria-hidden="true" /></span>
               <h2>Nenhum desafio encontrado</h2>
-              <p>Ajuste os filtros ou favorite alguns desafios para montar sua lista de revisão.</p>
+              <p>Não há desafios com essa combinação de tipo de exame, especialidade e dificuldade.</p>
               <button type="button" onClick={clearFilters}>Ver todos os desafios</button>
             </section>
           )}

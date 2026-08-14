@@ -110,6 +110,25 @@ const sortByNextReview = (first, second) => (
   new Date(first.proxima_revisao_em) - new Date(second.proxima_revisao_em)
 );
 
+const normalizeReviewText = (value = '') => value
+  .normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '')
+  .replace(/[^a-zA-Z0-9]+/g, ' ')
+  .trim()
+  .toLocaleLowerCase('pt-BR');
+
+const getReviewPublicTitle = (entry) => {
+  if (entry.tipo_origem !== 'desafio_visual') return entry.titulo;
+
+  const title = normalizeReviewText(entry.titulo);
+  const answer = normalizeReviewText(entry.resposta_correta);
+  const titleRevealsAnswer = title && answer
+    && (title.includes(answer) || answer.includes(title));
+
+  if (!titleRevealsAnswer) return entry.titulo;
+  return `Desafio visual · ${entry.especialidade}`;
+};
+
 const RevisoesPage = () => {
   const navigate = useNavigate();
   const [plan, setPlan] = useState([]);
@@ -159,7 +178,7 @@ const RevisoesPage = () => {
     const normalizedSearch = agendaSearch.trim().toLocaleLowerCase('pt-BR');
     return plan.filter((entry) => (
       (specialtyFilter === ALL_SPECIALTIES || entry.especialidade === specialtyFilter)
-      && (!normalizedSearch || `${entry.titulo} ${entry.especialidade}`
+      && (!normalizedSearch || `${getReviewPublicTitle(entry)} ${entry.pergunta} ${entry.especialidade}`
         .toLocaleLowerCase('pt-BR')
         .includes(normalizedSearch))
     ));
@@ -300,10 +319,10 @@ const RevisoesPage = () => {
               </div>
 
               <div className="review-question">
-                {details.imagem && <img src={details.imagem} alt={`Imagem para revisar: ${current.titulo}`} />}
+                {details.imagem && <img src={details.imagem} alt={`Imagem para revisar: ${getReviewPublicTitle(current)}`} />}
                 <div>
                   <small>CONTEÚDO {completed + 1} DE {initialTotal}</small>
-                  <h2>{current.titulo}</h2>
+                  <h2>{getReviewPublicTitle(current)}</h2>
                   <p>{current.pergunta}</p>
                   <span className="review-due-label"><FiClock /> Disponível para revisão agora</span>
                 </div>
@@ -400,7 +419,7 @@ const RevisoesPage = () => {
                         <span className="review-agenda-source">{entry.tipo_origem === 'desafio_visual' ? <FiImage /> : <FiBookOpen />}</span>
                         <div className="review-agenda-content">
                           <span>{SOURCE_LABELS[entry.tipo_origem]} · {entry.especialidade}</span>
-                          <h3>{entry.titulo}</h3>
+                          <h3>{getReviewPublicTitle(entry)}</h3>
                           <p>{entry.intervalo_dias ? `Intervalo atual: ${intervalLabel(entry.intervalo_dias)}` : 'Primeira revisão'} · {entry.revisoes_realizadas || 0} {entry.revisoes_realizadas === 1 ? 'revisão realizada' : 'revisões realizadas'}</p>
                         </div>
                         <span className={`review-stage is-${entry.status}`}>{getLearningStage(entry)}</span>

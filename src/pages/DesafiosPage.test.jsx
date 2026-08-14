@@ -94,6 +94,7 @@ describe('DesafiosPage', () => {
 
     await waitFor(() => expect(api.recordVisualChallengeAttempt).toHaveBeenCalledWith(expect.objectContaining({
       desafio_id: 'desafio-visual-001',
+      titulo: 'Radiografia de tórax',
       resposta_usuario: 'Pneumonia lobar',
       resposta_correta: 'Pneumotórax hipertensivo à esquerda',
     })));

@@ -203,7 +203,7 @@ const DesafiosPage = () => {
 
     void api.recordVisualChallengeAttempt({
       desafio_id: currentChallenge.id,
-      titulo: correction.diagnostico_correto,
+      titulo: currentChallenge.modality || `Desafio visual de ${currentChallenge.category}`,
       especialidade: currentChallenge.category,
       dificuldade: currentChallenge.difficulty,
       pergunta: currentChallenge.question,

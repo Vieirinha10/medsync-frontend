@@ -64,8 +64,10 @@ describe('RevisoesPage', () => {
   it('mostra a previsão, registra a lembrança e resume a próxima data', async () => {
     render(<MemoryRouter><RevisoesPage /></MemoryRouter>);
 
-    expect(await screen.findByRole('heading', { name: 'Fibrilação atrial no ECG' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Desafio visual · Cardiologia' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Como funciona a revisão espaçada?' })).toBeInTheDocument();
+    expect(screen.queryByText('Fibrilação atrial no ECG')).not.toBeInTheDocument();
+    expect(screen.queryByText('Fibrilação atrial')).not.toBeInTheDocument();
     expect(screen.queryByText('Flutter atrial')).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /Mostrar resposta/ }));
@@ -93,7 +95,8 @@ describe('RevisoesPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /Agenda completa/ }));
     expect(screen.getByRole('heading', { name: 'Todos os conteúdos agendados' })).toBeInTheDocument();
     expect(screen.getByText('Próximo ciclo')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Fibrilação atrial no ECG' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Desafio visual · Cardiologia' })).toBeInTheDocument();
+    expect(screen.queryByText('Fibrilação atrial no ECG')).not.toBeInTheDocument();
   });
 
   it('organiza e filtra os conteúdos futuros por especialidade', async () => {
@@ -111,13 +114,13 @@ describe('RevisoesPage', () => {
 
     await screen.findByRole('heading', { name: 'Nenhuma revisão para hoje' });
     fireEvent.click(screen.getByRole('button', { name: /Agenda completa/ }));
-    expect(screen.getByRole('heading', { name: 'Fibrilação atrial no ECG' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Desafio visual · Cardiologia' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Apendicite aguda' })).toBeInTheDocument();
 
     fireEvent.change(screen.getByLabelText('Filtrar agenda por especialidade'), {
       target: { value: 'Cirurgia Geral' },
     });
-    expect(screen.queryByRole('heading', { name: 'Fibrilação atrial no ECG' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Desafio visual · Cardiologia' })).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Apendicite aguda' })).toBeInTheDocument();
   });
 });

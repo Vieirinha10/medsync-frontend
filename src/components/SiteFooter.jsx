@@ -68,11 +68,16 @@ const SiteFooter = () => (
               <span>TikTok</span>
               <FiArrowUpRight aria-hidden="true" />
             </a>
-            <span className="footer-social-disabled" aria-label="WhatsApp do MedSync em breve" aria-disabled="true">
+            <a
+              href="https://contate.me/5586988063766"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp do MedSync"
+            >
               <FaWhatsapp aria-hidden="true" />
               <span>WhatsApp</span>
-              <small>Em breve</small>
-            </span>
+              <FiArrowUpRight aria-hidden="true" />
+            </a>
           </div>
         </section>
 

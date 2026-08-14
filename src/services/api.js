@@ -172,6 +172,7 @@ export const api = {
     }),
   getStudyErrors: () => request('/caderno-erros/meu'),
   getDueReviews: () => request('/caderno-erros/revisoes-hoje'),
+  getSpacedReviewPlan: () => request('/caderno-erros/revisoes-plano'),
   submitSpacedReview: (errorId, rating) =>
     request(`/caderno-erros/${errorId}/revisar`, {
       method: 'POST',

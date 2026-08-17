@@ -9,6 +9,7 @@ import {
   FiBookOpen,
   FiCheckCircle,
   FiDownload,
+  FiDollarSign,
   FiEdit3,
   FiEye,
   FiFileText,
@@ -23,9 +24,11 @@ import {
   FiX,
 } from 'react-icons/fi';
 import { ApiError, api } from '../services/api';
+import AdminFinancialCenter from '../components/AdminFinancialCenter';
 
 const TABS = [
   { id: 'overview', label: 'Visão geral', icon: FiBarChart2 },
+  { id: 'financial', label: 'Financeiro', icon: FiDollarSign },
   { id: 'cases', label: 'Casos clínicos', icon: FiBookOpen },
   { id: 'challenges', label: 'Desafios', icon: FiImage },
   { id: 'audience', label: 'Usuários', icon: FiUsers },
@@ -60,6 +63,16 @@ const emptyAdminData = {
     total_usuarios: 0, perfis_academicos_preenchidos: 0, cobertura_percentual: 0,
     novos_ultimos_30_dias: 0, periodos: [], faculdades: [],
   },
+  financial: {
+    resumo: {
+      total_pedidos: 0, pedidos_pendentes: 0, pedidos_pagos: 0, falhas_30_dias: 0,
+      assinaturas_ativas: 0, assinaturas_recorrentes: 0, receita_bruta_centavos: 0,
+      estornos_centavos: 0, receita_liquida_centavos: 0, receita_mes_centavos: 0,
+      mrr_centavos: 0, ticket_medio_centavos: 0, conversao_percentual: 0,
+    },
+    pedidos: [], pagamentos: [], assinaturas: [], falhas: [], receita_mensal: [],
+    status_pedidos: {}, planos_ativos: {},
+  },
   cases: [],
   challenges: [],
   announcements: [],
@@ -90,6 +103,7 @@ const AdminAcademicPage = () => {
     const requests = [
       ['overview', 'visão geral', api.getAdminOverview],
       ['academic', 'dados dos usuários', api.getAcademicAnalytics],
+      ['financial', 'dados financeiros', api.getAdminFinancial],
       ['cases', 'casos clínicos', api.getAdminCases],
       ['challenges', 'desafios', api.getAdminChallenges],
       ['announcements', 'avisos', api.getAdminAnnouncements],
@@ -213,8 +227,8 @@ const AdminAcademicPage = () => {
     <div className="page-container admin-operations-page">
       <Link to="/dashboard" className="admin-back-link"><FiArrowLeft /> Meu painel</Link>
       <header className="admin-operations-hero">
-        <div><span><FiShield /> CENTRO DE OPERAÇÕES</span><h1>Administração MedSync</h1><p>Conteúdo, audiência, desempenho e comunicação em um único ambiente seguro.</p></div>
-        <div className="admin-health"><FiCheckCircle /><span><strong>Plataforma operacional</strong><small>Dados agregados e anonimizados</small></span></div>
+        <div><span><FiShield /> CENTRO DE OPERAÇÕES</span><h1>Administração MedSync</h1><p>Conteúdo, audiência, finanças e comunicação em um único ambiente seguro.</p></div>
+        <div className="admin-health"><FiCheckCircle /><span><strong>Plataforma operacional</strong><small>Acesso administrativo protegido</small></span></div>
       </header>
 
       <nav className="admin-tabs" aria-label="Seções administrativas">
@@ -225,6 +239,7 @@ const AdminAcademicPage = () => {
       {error && <p className="admin-operation-error"><FiAlertTriangle /> {error}</p>}
 
       {activeTab === 'overview' && <Overview overview={data.overview} exportReport={() => api.downloadAnonymizedReport().catch((requestError) => setError(requestError.message))} />}
+      {activeTab === 'financial' && <AdminFinancialCenter data={data.financial} onRefresh={load} />}
       {activeTab === 'cases' && <CasesManager items={data.cases} form={caseForm} setForm={setCaseForm} editingId={caseId} cancel={() => { setCaseId(null); setCaseForm(emptyCase); }} save={saveCase} edit={editCase} saving={isSaving} />}
       {activeTab === 'challenges' && <ChallengesManager items={data.challenges} form={challengeForm} setForm={setChallengeForm} editingId={challengeId} cancel={() => { setChallengeId(null); setChallengeForm(emptyChallenge); }} save={saveChallenge} edit={editChallenge} saving={isSaving} />}
       {activeTab === 'audience' && <Audience academic={data.academic} overview={data.overview} />}
@@ -302,3 +317,4 @@ const Empty = ({ text }) => <div className="admin-empty-state"><FiActivity /><st
 const AdminError = ({ error, reload }) => <div className="page-container admin-academic-error"><FiAlertTriangle /><h1>Acesso ao painel indisponível</h1><p>{error}</p><div><Link to="/dashboard"><FiArrowLeft /> Voltar</Link><button type="button" onClick={reload}><FiRefreshCw /> Tentar novamente</button></div></div>;
 
 export default AdminAcademicPage;
+

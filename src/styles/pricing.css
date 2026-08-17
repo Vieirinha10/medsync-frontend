@@ -54,6 +54,7 @@
 .pricing-hero-offer {
   position: relative;
   z-index: 1;
+  min-width: 0;
 }
 
 .pricing-eyebrow,
@@ -210,17 +211,23 @@
 }
 
 .pricing-offer-price.is-complete {
-  align-items: end;
-  gap: 16px;
+  display: grid;
+  gap: 10px;
+  align-items: start;
 }
 
 .pricing-offer-price.is-complete > strong {
-  font-size: clamp(3.4rem, 7vw, 5.4rem);
+  max-width: 100%;
+  font-size: clamp(3rem, 4.5vw, 3.75rem);
   white-space: nowrap;
 }
 
 .pricing-offer-price.is-complete > div {
-  margin-bottom: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 7px;
+  align-items: baseline;
+  margin: 0;
 }
 
 .pricing-offer-price.is-complete b {

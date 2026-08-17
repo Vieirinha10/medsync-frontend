@@ -95,6 +95,7 @@ async function request(path, { auth = true, body, headers, ...options } = {}) {
 }
 
 export const api = {
+  getPublicStats: () => request('/estatisticas-publicas', { auth: false }),
   registerUser: (user) =>
     request('/usuarios/registrar', { method: 'POST', auth: false, body: user }),
   login: (credentials) =>

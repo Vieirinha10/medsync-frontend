@@ -1154,6 +1154,58 @@ body {
   box-shadow: 0 26px 66px rgba(67, 129, 25, 0.13);
 }
 
+.pricing-plan-card.is-recorrente {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: linear-gradient(130deg, #0877d3, #09a2df);
+  box-shadow: 0 25px 60px rgba(8, 127, 224, 0.2);
+}
+
+.pricing-plan-card.is-trimestral {
+  color: #fff;
+  border-color: rgba(167, 243, 75, 0.24);
+  background: var(--med-navy);
+  box-shadow: 0 22px 55px rgba(4, 39, 61, 0.18);
+}
+
+.pricing-plan-card:is(.is-recorrente, .is-trimestral) :is(
+  .pricing-plan-heading h3,
+  .pricing-plan-price strong
+) {
+  color: #fff;
+}
+
+.pricing-plan-card:is(.is-recorrente, .is-trimestral) :is(
+  .pricing-plan-heading small,
+  .pricing-plan-price span,
+  .pricing-plan-description,
+  li,
+  .pricing-plan-note
+) {
+  color: rgba(229, 244, 251, 0.78);
+}
+
+.pricing-plan-card:is(.is-recorrente, .is-trimestral) ul {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pricing-plan-card:is(.is-recorrente, .is-trimestral) li svg {
+  color: var(--med-lime);
+}
+
+.pricing-plan-card:is(.is-recorrente, .is-trimestral) .pricing-plan-icon {
+  color: var(--med-lime);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+.pricing-plan-card:is(.is-recorrente, .is-trimestral) .pricing-plan-button.is-primary {
+  color: var(--med-navy-deep);
+  border-color: var(--med-lime);
+  background: var(--med-lime);
+}
+
 .pricing-plan-card.is-premium::before {
   background: linear-gradient(90deg, var(--med-cyan), var(--med-lime));
 }

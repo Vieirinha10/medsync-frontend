@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiActivity,
@@ -16,9 +17,33 @@ import {
   FiZap,
 } from 'react-icons/fi';
 import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../config/pricing';
+import { api } from '../services/api';
 
-const HomePage = () => (
-  <div className="home-container home-solid">
+const HomePage = () => {
+  const [studentCount, setStudentCount] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    api.getPublicStats()
+      .then(({ estudantes_medsync: count }) => {
+        if (isMounted && Number.isInteger(count) && count >= 0) {
+          setStudentCount(count);
+        }
+      })
+      .catch(() => undefined);
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const formattedStudentCount = studentCount === null
+    ? '—'
+    : studentCount.toLocaleString('pt-BR');
+
+  return (
+    <div className="home-container home-solid">
     <section className="solid-hero">
       <div className="solid-hero-glow solid-hero-glow-one" aria-hidden="true" />
       <div className="solid-hero-glow solid-hero-glow-two" aria-hidden="true" />
@@ -99,8 +124,8 @@ const HomePage = () => (
     <section className="solid-proof-strip" aria-label="Números do MedSync">
       <div><strong>40</strong><span>casos clínicos</span></div>
       <div><strong>10</strong><span>desafios visuais</span></div>
-      <div><strong>4</strong><span>etapas de raciocínio</span></div>
-      <div><strong>1</strong><span>painel de evolução</span></div>
+      <div><strong aria-live="polite">{formattedStudentCount}</strong><span>estudantes MedSync</span></div>
+      <div><strong>19</strong><span>áreas médicas contempladas</span></div>
     </section>
 
     <section className="solid-manifesto">
@@ -243,7 +268,8 @@ const HomePage = () => (
       </Link>
       <small><FiUsers /> Para estudantes que querem ir além do estudo passivo.</small>
     </section>
-  </div>
-);
+    </div>
+  );
+};
 
 export default HomePage;

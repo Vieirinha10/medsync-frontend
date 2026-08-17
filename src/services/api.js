@@ -116,6 +116,7 @@ export const api = {
   getPaymentStatus: (orderId) => request(`/pagamentos/pedidos/${orderId}`),
   getAcademicAnalytics: () => request('/admin/analytics/academico'),
   getAdminOverview: () => request('/admin/overview'),
+  getAdminFinancial: () => request('/admin/financeiro'),
   getAdminCases: () => request('/admin/casos'),
   saveAdminCase: (caseId, payload) => request(
     caseId ? `/admin/casos/${caseId}` : '/admin/casos',
@@ -195,3 +196,4 @@ export const api = {
       body: { pontuacao: score },
     }),
 };
+

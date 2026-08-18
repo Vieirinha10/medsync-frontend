@@ -25,6 +25,7 @@ import AdminAcademicPage from './pages/AdminAcademicPage';
 import CadernoErrosPage from './pages/CadernoErrosPage';
 import TrilhasPage from './pages/TrilhasPage';
 import RevisoesPage from './pages/RevisoesPage';
+import QuestoesPage from './pages/QuestoesPage';
 import { InstitutionalPage, LegalPage } from './pages/InstitutionalPage';
 import SiteFooter from './components/SiteFooter';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -54,6 +55,7 @@ import './styles/platform-solid.css';
 import './styles/checkout.css';
 import './styles/visual-challenges-v2.css';
 import './styles/review-center.css';
+import './styles/questions.css';
 
 function App() {
   const navigate = useNavigate();
@@ -94,6 +96,7 @@ function App() {
           <div className={`nav-links ${isMenuOpen ? 'is-open' : ''}`}>
             <NavLink to="/casos">Casos clínicos</NavLink>
             <NavLink to="/desafios">Desafios</NavLink>
+            <NavLink to="/questoes">Questões</NavLink>
             <NavLink to="/trilhas">Trilhas</NavLink>
             <NavLink to="/revisoes">Revisões</NavLink>
             <NavLink to="/caderno-erros">Caderno de erros</NavLink>
@@ -139,6 +142,7 @@ function App() {
           <Route path="/casos/:casoId" element={<ProtectedRoute><SimulacaoCaso /></ProtectedRoute>} />
           <Route path="/resultados/:progressoId" element={<ProtectedRoute><ResultadoSimulacaoPage /></ProtectedRoute>} />
           <Route path="/desafios" element={<ProtectedRoute><DesafiosPage /></ProtectedRoute>} /> {/* 3. Adicionar a nova rota */}
+          <Route path="/questoes" element={<ProtectedRoute><QuestoesPage /></ProtectedRoute>} />
           <Route path="/caderno-erros" element={<ProtectedRoute><CadernoErrosPage /></ProtectedRoute>} />
           <Route path="/trilhas" element={<ProtectedRoute><TrilhasPage /></ProtectedRoute>} />
           <Route path="/trilhas/:trilhaId" element={<ProtectedRoute><TrilhasPage /></ProtectedRoute>} />

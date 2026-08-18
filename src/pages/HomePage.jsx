@@ -230,6 +230,7 @@ const HomePage = () => {
           <p>Uma porta de entrada para experimentar a prática clínica interativa.</p>
           <ul>
             <li><FiCheck /> 5 casos clínicos por mês</li>
+            <li><FiCheck /> 10 questões de provas por dia</li>
             <li><FiCheck /> Painel pessoal</li>
             <li><FiCheck /> Histórico de desempenho</li>
           </ul>

@@ -13,6 +13,7 @@ import {
   FiEdit3,
   FiEye,
   FiFileText,
+  FiHelpCircle,
   FiImage,
   FiPlus,
   FiRefreshCw,
@@ -25,12 +26,14 @@ import {
 } from 'react-icons/fi';
 import { ApiError, api } from '../services/api';
 import AdminFinancialCenter from '../components/AdminFinancialCenter';
+import AdminQuestionsManager from '../components/AdminQuestionsManager';
 
 const TABS = [
   { id: 'overview', label: 'Visão geral', icon: FiBarChart2 },
   { id: 'financial', label: 'Financeiro', icon: FiDollarSign },
   { id: 'cases', label: 'Casos clínicos', icon: FiBookOpen },
   { id: 'challenges', label: 'Desafios', icon: FiImage },
+  { id: 'questions', label: 'Questões', icon: FiHelpCircle },
   { id: 'audience', label: 'Usuários', icon: FiUsers },
   { id: 'announcements', label: 'Avisos', icon: FiBell },
 ];
@@ -75,6 +78,13 @@ const emptyAdminData = {
   },
   cases: [],
   challenges: [],
+  questions: {
+    resumo: {
+      total: 0, publicadas: 0, explicacoes_pendentes: 0,
+      explicacoes_geradas: 0, relatos_abertos: 0, tentativas: 0,
+    },
+    questoes: [], relatos: [],
+  },
   announcements: [],
 };
 
@@ -106,6 +116,7 @@ const AdminAcademicPage = () => {
       ['financial', 'dados financeiros', api.getAdminFinancial],
       ['cases', 'casos clínicos', api.getAdminCases],
       ['challenges', 'desafios', api.getAdminChallenges],
+      ['questions', 'questões', api.getAdminQuestions],
       ['announcements', 'avisos', api.getAdminAnnouncements],
     ];
 
@@ -242,6 +253,7 @@ const AdminAcademicPage = () => {
       {activeTab === 'financial' && <AdminFinancialCenter data={data.financial} onRefresh={load} />}
       {activeTab === 'cases' && <CasesManager items={data.cases} form={caseForm} setForm={setCaseForm} editingId={caseId} cancel={() => { setCaseId(null); setCaseForm(emptyCase); }} save={saveCase} edit={editCase} saving={isSaving} />}
       {activeTab === 'challenges' && <ChallengesManager items={data.challenges} form={challengeForm} setForm={setChallengeForm} editingId={challengeId} cancel={() => { setChallengeId(null); setChallengeForm(emptyChallenge); }} save={saveChallenge} edit={editChallenge} saving={isSaving} />}
+      {activeTab === 'questions' && <AdminQuestionsManager initialData={data.questions} />}
       {activeTab === 'audience' && <Audience academic={data.academic} overview={data.overview} />}
       {activeTab === 'announcements' && <AnnouncementsManager items={data.announcements} form={announcementForm} setForm={setAnnouncementForm} editingId={announcementId} cancel={() => { setAnnouncementId(null); setAnnouncementForm(emptyAnnouncement); }} save={saveAnnouncement} edit={(item) => { setAnnouncementId(item.id); setAnnouncementForm(item); }} saving={isSaving} />}
     </div>

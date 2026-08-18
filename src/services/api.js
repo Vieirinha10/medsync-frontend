@@ -117,6 +117,24 @@ export const api = {
   getAcademicAnalytics: () => request('/admin/analytics/academico'),
   getAdminOverview: () => request('/admin/overview'),
   getAdminFinancial: () => request('/admin/financeiro'),
+  getAdminQuestions: (filters = {}) => {
+    const query = new URLSearchParams(
+      Object.entries(filters).filter(([, value]) => value !== '' && value != null),
+    );
+    const queryString = query.toString();
+    return request(`/admin/questoes${queryString ? `?${queryString}` : ''}`);
+  },
+  updateAdminQuestion: (questionId, payload) => request(`/admin/questoes/${questionId}`, {
+    method: 'PATCH',
+    body: payload,
+  }),
+  updateAdminQuestionReport: (reportId, status) => request(`/admin/questoes/relatos/${reportId}`, {
+    method: 'PATCH',
+    body: { status },
+  }),
+  generateAdminQuestionExplanation: (questionId) => request(`/admin/questoes/${questionId}/gerar-explicacao`, {
+    method: 'POST',
+  }),
   getAdminCases: () => request('/admin/casos'),
   saveAdminCase: (caseId, payload) => request(
     caseId ? `/admin/casos/${caseId}` : '/admin/casos',
@@ -138,6 +156,23 @@ export const api = {
     { method: 'POST', body: { alternativa_id: optionId } },
   ),
   getAnnouncements: () => request('/avisos'),
+  getQuestionMetadata: () => request('/questoes/meta'),
+  getQuestions: (filters = {}) => {
+    const query = new URLSearchParams(
+      Object.entries(filters).filter(([, value]) => value !== '' && value != null),
+    );
+    const queryString = query.toString();
+    return request(`/questoes${queryString ? `?${queryString}` : ''}`);
+  },
+  answerQuestion: (questionId, alternativeId, seconds) => request(
+    `/questoes/${questionId}/responder`,
+    { method: 'POST', body: { alternativa_id: alternativeId, tempo_segundos: seconds } },
+  ),
+  getQuestionPerformance: () => request('/questoes/desempenho'),
+  reportQuestion: (questionId, payload) => request(`/questoes/${questionId}/reportar`, {
+    method: 'POST',
+    body: payload,
+  }),
   downloadAnonymizedReport: async () => {
     const response = await fetch(`${API_URL}/admin/relatorios/anonimizado.csv`, {
       headers: { Authorization: `Bearer ${getAuthToken()}` },

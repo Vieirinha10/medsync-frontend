@@ -767,6 +767,8 @@
 
 .quick-action-links {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 10px;
 }
 
@@ -1047,6 +1049,10 @@
   .dashboard-quick-actions {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .quick-action-links {
+    justify-content: flex-start;
   }
 }
 

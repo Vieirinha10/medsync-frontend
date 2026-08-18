@@ -27,6 +27,7 @@ import { getAuthToken } from '../services/api';
 const freeBenefits = [
   'Acesso aos casos clínicos selecionados',
   'Desafios visuais para treinos rápidos',
+  'Até 10 questões de provas por dia',
   'Histórico das atividades realizadas',
   'Painel pessoal com seu progresso',
 ];
@@ -34,6 +35,7 @@ const freeBenefits = [
 const premiumBenefits = [
   'Biblioteca completa de casos clínicos',
   'Simulações e desafios sem limite mensal',
+  'Questões de provas sem limite diário',
   'Todas as especialidades disponíveis',
   'Feedback completo sobre exames, hipótese e conduta',
   'Indicadores detalhados de desempenho',
@@ -67,6 +69,7 @@ const valueHighlights = [
 const comparisonRows = [
   ['Casos clínicos', 'Seleção mensal', 'Acesso completo'],
   ['Desafios visuais', 'Seleção disponível', 'Sem limite mensal'],
+  ['Questões de provas', 'Até 10 por dia', 'Listas ilimitadas de até 30'],
   ['Especialidades', 'Acesso selecionado', 'Todas disponíveis'],
   ['Feedback da resolução', 'Essencial', 'Completo e detalhado'],
   ['Painel de desempenho', 'Resumo do progresso', 'Indicadores avançados'],

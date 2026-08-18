@@ -188,7 +188,7 @@ const QuestoesPage = () => {
           <p>Pratique questões de residência e concursos sem desviar do foco principal: desenvolver raciocínio clínico.</p>
           <div className="questions-hero-tags"><span><FiCheckCircle /> Itens completos e sem repetição</span><span><FiLayers /> Organizado por assunto</span><span><FiZap /> Explicações próprias</span></div>
         </div>
-        <div className="questions-catalog-card"><small>CATÁLOGO DISPONÍVEL</small><strong>{metadata?.total_questoes || 0}</strong><span>questões completas</span></div>
+        <div className="questions-catalog-card" aria-label={`${metadata?.respondidas_hoje || 0} questões realizadas hoje`}><small>QUESTÕES REALIZADAS HOJE</small><strong>{metadata?.respondidas_hoje || 0}</strong><span>respondidas neste dia</span></div>
       </header>
 
       <section className="questions-guidance">

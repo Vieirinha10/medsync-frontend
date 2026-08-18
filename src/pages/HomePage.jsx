@@ -18,6 +18,7 @@ import {
 } from 'react-icons/fi';
 import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../config/pricing';
 import { api } from '../services/api';
+import HomeParticleField from '../components/HomeParticleField';
 
 const HomePage = () => {
   const [studentCount, setStudentCount] = useState(null);
@@ -44,6 +45,7 @@ const HomePage = () => {
 
   return (
     <div className="home-container home-solid">
+    <HomeParticleField />
     <section className="solid-hero">
       <div className="solid-hero-glow solid-hero-glow-one" aria-hidden="true" />
       <div className="solid-hero-glow solid-hero-glow-two" aria-hidden="true" />

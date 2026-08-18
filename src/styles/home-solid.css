@@ -10,11 +10,31 @@
   --home-paper: #f4f8fa;
   --home-white: #fff;
   --home-line: rgba(19, 75, 105, 0.14);
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   color: var(--home-ink);
   background: var(--home-paper);
 }
 
 .home-solid * { box-sizing: border-box; }
+
+.home-solid > section {
+  position: relative;
+  z-index: 1;
+}
+
+.home-s-particle-field {
+  position: fixed;
+  z-index: 0;
+  inset: 78px 0 0;
+  width: 100%;
+  height: calc(100vh - 78px);
+  opacity: .92;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 91%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 91%, transparent 100%);
+}
 
 .solid-hero {
   position: relative;
@@ -394,7 +414,7 @@
 .solid-process-list h3 { margin: 0 0 8px; color: #fff; font-size: clamp(1.15rem,2vw,1.55rem); }
 .solid-process-list p { margin: 0; color: rgba(218,239,248,.66); line-height: 1.6; }
 
-.solid-value-section { background: var(--home-paper); }
+.solid-value-section { background: transparent; }
 .solid-plan-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; align-items: stretch; }
 .solid-plan-card { position: relative; display: flex; flex-direction: column; min-width: 0; padding: clamp(25px,3vw,38px); border-radius: 26px; overflow: hidden; }
 .solid-plan-card > span { font-size: .63rem; font-weight: 900; letter-spacing: .13em; }
@@ -460,6 +480,12 @@
 }
 
 @media (max-width: 760px) {
+  .home-s-particle-field {
+    inset-block-start: 68px;
+    height: calc(100vh - 68px);
+    opacity: .72;
+  }
+
   .solid-hero { margin: 8px; padding: 62px 20px 72px; border-radius: 23px; }
   .solid-hero h1 { font-size: clamp(2.85rem,15vw,4.4rem); }
   .solid-hero-actions > a { width: 100%; }

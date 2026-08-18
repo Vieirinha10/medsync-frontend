@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaInstagram, FaTiktok, FaWhatsapp } from 'react-icons/fa';
-import { FiArrowUpRight, FiHeart } from 'react-icons/fi';
+import { FiArrowUpRight } from 'react-icons/fi';
 
 const footerGroups = [
   {
@@ -36,8 +36,7 @@ const SiteFooter = () => (
       <div className="site-footer-main">
         <section className="footer-brand" aria-label="MedSync">
           <Link to="/" className="footer-wordmark">
-            <span className="footer-brand-symbol" aria-hidden="true"><FiHeart /></span>
-            <strong>MEDSYNC</strong>
+            <img src="/logo-medsync.png" alt="MedSync" className="footer-logo-image" />
           </Link>
           <p>
             Prática clínica guiada para estudantes de medicina que querem transformar

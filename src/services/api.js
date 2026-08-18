@@ -98,6 +98,16 @@ export const api = {
   getPublicStats: () => request('/estatisticas-publicas', { auth: false }),
   registerUser: (user) =>
     request('/usuarios/registrar', { method: 'POST', auth: false, body: user }),
+  verifyEmail: (token) => request('/usuarios/verificar-email', {
+    method: 'POST',
+    auth: false,
+    body: { token },
+  }),
+  resendEmailVerification: (email) => request('/usuarios/reenviar-verificacao', {
+    method: 'POST',
+    auth: false,
+    body: { email },
+  }),
   login: (credentials) =>
     request('/usuarios/login', {
       method: 'POST',
@@ -168,6 +178,9 @@ export const api = {
     `/questoes/${questionId}/responder`,
     { method: 'POST', body: { alternativa_id: alternativeId, tempo_segundos: seconds } },
   ),
+  retryQuestionExplanation: (questionId) => request(`/questoes/${questionId}/explicacao`, {
+    method: 'POST',
+  }),
   getQuestionPerformance: () => request('/questoes/desempenho'),
   reportQuestion: (questionId, payload) => request(`/questoes/${questionId}/reportar`, {
     method: 'POST',
@@ -231,4 +244,3 @@ export const api = {
       body: { pontuacao: score },
     }),
 };
-

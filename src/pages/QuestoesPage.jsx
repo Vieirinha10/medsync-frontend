@@ -233,7 +233,7 @@ const QuestoesPage = () => {
             <header><div><span>{currentQuestion.especialidade}</span><span>{currentQuestion.assunto}</span></div><p><strong>{currentQuestion.instituicao}</strong><small>{currentQuestion.ano}</small></p></header>
             <div className="questions-statement"><small>ENUNCIADO</small><h2>{currentQuestion.enunciado}</h2></div>
             <div className="questions-alternatives">{currentQuestion.alternativas.map((alternative) => { const isSelected = selectedId === alternative.id; const isCorrect = currentAnswer?.alternativa_correta_id === alternative.id; const isWrongSelection = currentAnswer && isSelected && !isCorrect; return <button type="button" key={alternative.id} aria-pressed={isSelected} disabled={Boolean(currentAnswer)} onClick={() => setSelectedId(alternative.id)} className={`${isSelected ? 'is-selected' : ''} ${isCorrect ? 'is-correct' : ''} ${isWrongSelection ? 'is-wrong' : ''}`}><b>{alternative.id}</b><span>{alternative.texto}</span>{isCorrect && <FiCheckCircle />}{isWrongSelection && <FiX />}</button>; })}</div>
-            {!currentAnswer ? <button type="button" className={`questions-confirm-button ${isAnswering ? 'is-loading' : ''}`} onClick={submitAnswer} disabled={!selectedId || isAnswering}>{isAnswering ? <><FiRefreshCw /> A Synapse está preparando a explicação...</> : <><FiCheck /> Confirmar resposta</>}</button> : <QuestionFeedback answer={currentAnswer} />}
+            {!currentAnswer ? <button type="button" className={`questions-confirm-button ${isAnswering ? 'is-loading' : ''}`} onClick={submitAnswer} disabled={!selectedId || isAnswering}>{isAnswering ? <><FiRefreshCw /> A Synapse está preparando a explicação...</> : <><FiCheck /> Confirmar resposta</>}</button> : <QuestionFeedback answer={currentAnswer} questionId={currentQuestion.id} />}
           </article>
 
           {currentAnswer && <div className="questions-after-answer"><button type="button" className="questions-report-trigger" onClick={() => setReportOpen((value) => !value)}><FiFlag /> Reportar problema</button><button type="button" className="questions-next-button" onClick={nextQuestion}>{currentIndex === questions.length - 1 ? 'Ver resultado' : 'Próxima questão'} <FiArrowRight /></button></div>}
@@ -258,9 +258,72 @@ const FilterDatalist = ({ label, value, onChange, items, placeholder }) => {
   return <label className="questions-filter"><span>{label}</span><input list={listId} value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} /><datalist id={listId}>{items.map((item) => <option value={item.valor} key={item.valor}>{item.total} questão(ões)</option>)}</datalist></label>;
 };
 
-const QuestionFeedback = ({ answer }) => {
-  const explanation = answer.explicacao;
-  return <section className={`questions-feedback ${answer.correta ? 'is-correct' : 'is-wrong'}`}><header><span>{answer.correta ? <FiCheckCircle /> : <FiAlertCircle />}</span><div><small>{answer.correta ? 'RESPOSTA CORRETA' : 'RESPOSTA INCORRETA'}</small><h3>{explanation.resumo}</h3></div></header><div className="questions-correct-rationale"><strong>Por que essa é a resposta?</strong><p>{explanation.porque_correta}</p></div><div className="questions-option-analysis"><strong>Análise das alternativas</strong>{explanation.analise_alternativas.map((item) => <article key={item.id} className={item.correta ? 'is-correct' : ''}><b>{item.id}</b><p>{item.explicacao}</p></article>)}</div><div className="questions-key-point"><FiZap /><p><strong>Ponto-chave para a prova</strong><span>{explanation.ponto_chave}</span></p></div>{explanation.alerta_atualizacao && <div className="questions-update-alert"><FiClock /><p><strong>Atenção à atualização</strong><span>{explanation.alerta_atualizacao}</span></p></div>}<footer>Explicação educacional própria do MedSync · {explanation.fonte === 'synapse' ? 'Preparada pela Synapse' : 'Resumo temporário'}</footer></section>;
+const QuestionFeedback = ({ answer, questionId }) => {
+  const [explanation, setExplanation] = useState(answer.explicacao);
+  const [isRetrying, setIsRetrying] = useState(false);
+  const [retryError, setRetryError] = useState('');
+  const explanationUnavailable = explanation.fonte === 'resumo_automatico';
+
+  useEffect(() => {
+    setExplanation(answer.explicacao);
+    setRetryError('');
+  }, [answer.explicacao]);
+
+  const retryExplanation = async () => {
+    setIsRetrying(true);
+    setRetryError('');
+    try {
+      setExplanation(await api.retryQuestionExplanation(questionId));
+    } catch (requestError) {
+      setRetryError(requestError.message);
+    } finally {
+      setIsRetrying(false);
+    }
+  };
+
+  return (
+    <section className={`questions-feedback ${answer.correta ? 'is-correct' : 'is-wrong'}`}>
+      <header>
+        <span>{answer.correta ? <FiCheckCircle /> : <FiAlertCircle />}</span>
+        <div>
+          <small>{answer.correta ? 'RESPOSTA CORRETA' : 'RESPOSTA INCORRETA'}</small>
+          <h3>{explanationUnavailable ? `Gabarito: alternativa ${answer.alternativa_correta_id}.` : explanation.resumo}</h3>
+        </div>
+      </header>
+
+      {explanationUnavailable ? (
+        <div className="questions-explanation-unavailable">
+          <FiRefreshCw />
+          <div>
+            <strong>Explicação detalhada temporariamente indisponível</strong>
+            <p>O gabarito foi preservado, mas a análise clínica completa não terminou de carregar. Tente novamente para ver o raciocínio da resposta e de cada alternativa.</p>
+            {retryError && <small role="alert">{retryError}</small>}
+            <button type="button" onClick={retryExplanation} disabled={isRetrying}>
+              {isRetrying ? <><FiRefreshCw className="spinning" /> Preparando explicação...</> : <><FiRefreshCw /> Tentar novamente</>}
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="questions-correct-rationale">
+            <strong>Por que essa é a resposta?</strong>
+            <p>{explanation.porque_correta}</p>
+          </div>
+          <div className="questions-option-analysis">
+            <strong>Análise das alternativas</strong>
+            {explanation.analise_alternativas.map((item) => (
+              <article key={item.id} className={item.correta ? 'is-correct' : ''}>
+                <b>{item.id}</b>
+                <p>{item.explicacao}</p>
+              </article>
+            ))}
+          </div>
+          {explanation.alerta_atualizacao && <div className="questions-update-alert"><FiClock /><p><strong>Atenção à atualização</strong><span>{explanation.alerta_atualizacao}</span></p></div>}
+          <footer>Explicação educacional própria do MedSync · {explanation.fonte === 'synapse' ? 'Preparada pela Synapse' : 'Revisada pela equipe MedSync'}</footer>
+        </>
+      )}
+    </section>
+  );
 };
 
 export default QuestoesPage;

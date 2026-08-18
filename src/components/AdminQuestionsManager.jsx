@@ -244,7 +244,7 @@ const AdminQuestionsManager = ({ initialData }) => {
                         <div className="admin-question-review-options">
                           {(question.alternativas || []).map((alternative) => <p key={alternative.id} className={alternative.id === question.alternativa_correta_id ? 'is-correct' : ''}><b>{alternative.id}</b><span>{alternative.texto}</span></p>)}
                         </div>
-                        {question.explicacao ? <div className="admin-question-review-explanation"><strong>Explicação própria</strong><p>{question.explicacao.resumo}</p><p>{question.explicacao.porque_correta}</p><small>{question.explicacao.ponto_chave}</small></div> : <p className="admin-question-review-pending">A explicação será criada somente quando solicitada, reduzindo custo e evitando conteúdo externo.</p>}
+                        {question.explicacao ? <div className="admin-question-review-explanation"><strong>Explicação própria</strong><p>{question.explicacao.resumo}</p><p>{question.explicacao.porque_correta}</p></div> : <p className="admin-question-review-pending">A explicação será criada somente quando solicitada, reduzindo custo e evitando conteúdo externo.</p>}
                         {question.explicacao_status === 'gerada' && <button type="button" disabled={isBusy} onClick={() => updateQuestion(question, { explicacao_status: 'revisada' }, `Explicação da questão #${question.id} marcada como revisada.`)}><FiCheckCircle /> Aprovar revisão editorial</button>}
                       </div>
                     </details>

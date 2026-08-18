@@ -7,7 +7,17 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom';
-import { FiLogOut, FiMenu, FiX } from 'react-icons/fi';
+import {
+  FiBookOpen,
+  FiChevronDown,
+  FiCreditCard,
+  FiGrid,
+  FiLayers,
+  FiLogOut,
+  FiMenu,
+  FiUser,
+  FiX,
+} from 'react-icons/fi';
 
 // Importação de todas as nossas páginas e componentes
 import HomePage from './pages/HomePage';
@@ -61,16 +71,44 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openNavMenu, setOpenNavMenu] = useState(null);
   const isAuthenticated = Boolean(getAuthToken());
+  const isMoreActive = ['/trilhas', '/caderno-erros'].some((path) => location.pathname.startsWith(path));
+  const isAccountActive = location.pathname.startsWith('/dashboard');
 
   useEffect(() => {
     setIsMenuOpen(false);
+    setOpenNavMenu(null);
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (!openNavMenu) return undefined;
+
+    const closeDropdown = (event) => {
+      if (!event.target.closest('.nav-dropdown')) setOpenNavMenu(null);
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setOpenNavMenu(null);
+    };
+
+    document.addEventListener('pointerdown', closeDropdown);
+    document.addEventListener('keydown', closeOnEscape);
+
+    return () => {
+      document.removeEventListener('pointerdown', closeDropdown);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [openNavMenu]);
+
   const handleLogout = () => {
     clearAuthToken();
+    setOpenNavMenu(null);
     navigate('/login');
+  };
+
+  const toggleNavMenu = (menu) => {
+    setOpenNavMenu((current) => (current === menu ? null : menu));
   };
 
   return (
@@ -86,33 +124,88 @@ function App() {
             className="nav-toggle"
             aria-label={isMenuOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={isMenuOpen}
-            onClick={() => setIsMenuOpen((current) => !current)}
+            onClick={() => {
+              setIsMenuOpen((current) => !current);
+              setOpenNavMenu(null);
+            }}
           >
             {isMenuOpen ? <FiX /> : <FiMenu />}
           </button>
 
           <div className={`nav-links ${isMenuOpen ? 'is-open' : ''}`}>
-            <NavLink to="/casos">Casos clínicos</NavLink>
-            <NavLink to="/desafios">Desafios</NavLink>
-            <NavLink to="/questoes">Questões</NavLink>
-            <NavLink to="/trilhas">Trilhas</NavLink>
-            <NavLink to="/revisoes">Revisões</NavLink>
-            <NavLink to="/caderno-erros">Caderno de erros</NavLink>
-            <NavLink to="/dashboard">Meu painel</NavLink>
-            <NavLink to="/assinatura">Planos</NavLink>
-            {isAuthenticated ? (
-              <button onClick={handleLogout} className="logout-button">
-                <FiLogOut aria-hidden="true" />
-                Sair
-              </button>
-            ) : (
-              <>
-                <Link to="/login">Entrar</Link>
-                <Link to="/cadastro" className="login-button">
-                  Criar conta grátis
-                </Link>
-              </>
-            )}
+            <div className="nav-primary-links" aria-label="Treinamento">
+              <NavLink to="/casos" className="nav-main-link">Casos clínicos</NavLink>
+              <NavLink to="/desafios" className="nav-main-link">Desafios</NavLink>
+              <NavLink to="/questoes" className="nav-main-link">Questões</NavLink>
+              <NavLink to="/revisoes" className="nav-main-link">Revisões</NavLink>
+
+              <div className={`nav-dropdown nav-more ${openNavMenu === 'more' ? 'is-open' : ''}`}>
+                <button
+                  type="button"
+                  className={`nav-dropdown-trigger ${isMoreActive ? 'active' : ''}`}
+                  aria-expanded={openNavMenu === 'more'}
+                  aria-controls="more-navigation-menu"
+                  onClick={() => toggleNavMenu('more')}
+                >
+                  Mais
+                  <FiChevronDown aria-hidden="true" />
+                </button>
+                <div id="more-navigation-menu" className="nav-dropdown-panel">
+                  <NavLink to="/trilhas">
+                    <span className="nav-dropdown-icon"><FiLayers aria-hidden="true" /></span>
+                    <span><strong>Trilhas</strong><small>Percursos guiados de aprendizagem</small></span>
+                  </NavLink>
+                  <NavLink to="/caderno-erros">
+                    <span className="nav-dropdown-icon"><FiBookOpen aria-hidden="true" /></span>
+                    <span><strong>Caderno de erros</strong><small>Revise seus pontos mais frágeis</small></span>
+                  </NavLink>
+                </div>
+              </div>
+            </div>
+
+            <div className="nav-account-actions" aria-label="Conta e assinatura">
+              <NavLink to="/assinatura" className="plans-nav-button">
+                Planos
+              </NavLink>
+
+              {isAuthenticated ? (
+                <div className={`nav-dropdown nav-account ${openNavMenu === 'account' ? 'is-open' : ''}`}>
+                  <button
+                    type="button"
+                    className={`account-menu-trigger ${isAccountActive ? 'active' : ''}`}
+                    aria-label="Abrir menu da conta"
+                    aria-expanded={openNavMenu === 'account'}
+                    aria-controls="account-navigation-menu"
+                    onClick={() => toggleNavMenu('account')}
+                  >
+                    <span className="account-avatar"><FiUser aria-hidden="true" /></span>
+                    <span className="account-label">Conta</span>
+                    <FiChevronDown className="account-chevron" aria-hidden="true" />
+                  </button>
+                  <div id="account-navigation-menu" className="nav-dropdown-panel account-dropdown-panel">
+                    <NavLink to="/dashboard">
+                      <span className="nav-dropdown-icon"><FiGrid aria-hidden="true" /></span>
+                      <span><strong>Meu painel</strong><small>Progresso e atividades</small></span>
+                    </NavLink>
+                    <NavLink to="/assinatura">
+                      <span className="nav-dropdown-icon"><FiCreditCard aria-hidden="true" /></span>
+                      <span><strong>Minha assinatura</strong><small>Plano e pagamentos</small></span>
+                    </NavLink>
+                    <button type="button" onClick={handleLogout} className="logout-button">
+                      <span className="nav-dropdown-icon"><FiLogOut aria-hidden="true" /></span>
+                      <span><strong>Sair</strong><small>Encerrar esta sessão</small></span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <Link to="/login" className="nav-login-link">Entrar</Link>
+                  <Link to="/cadastro" className="login-button">
+                    Criar conta grátis
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
         </nav>
       </header>

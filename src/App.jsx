@@ -78,9 +78,7 @@ function App() {
       <header className="App-header">
         <nav className="App-nav">
           <Link to="/" className="logo-link">
-            <span className="logo-crop">
-              <img src="/logo-medsync.png" alt="MedSync" className="logo-image" />
-            </span>
+            <img src="/logo-medsync.png" alt="MedSync" className="logo-image" />
           </Link>
 
           <button

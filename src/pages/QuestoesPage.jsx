@@ -48,6 +48,11 @@ const formatSeconds = (value) => {
   return minutes ? `${minutes}min ${seconds}s` : `${seconds}s`;
 };
 
+const formatPercentage = (value) => {
+  const numericValue = Number(value || 0);
+  return `${numericValue.toLocaleString('pt-BR', { maximumFractionDigits: 1 })}%`;
+};
+
 const QuestoesPage = () => {
   const [metadata, setMetadata] = useState(null);
   const [performance, setPerformance] = useState(null);
@@ -232,7 +237,39 @@ const QuestoesPage = () => {
           <article className="questions-question-card">
             <header><div><span>{currentQuestion.especialidade}</span><span>{currentQuestion.assunto}</span></div><p><strong>{currentQuestion.instituicao}</strong><small>{currentQuestion.ano}</small></p></header>
             <div className="questions-statement"><small>ENUNCIADO</small><h2>{currentQuestion.enunciado}</h2></div>
-            <div className="questions-alternatives">{currentQuestion.alternativas.map((alternative) => { const isSelected = selectedId === alternative.id; const isCorrect = currentAnswer?.alternativa_correta_id === alternative.id; const isWrongSelection = currentAnswer && isSelected && !isCorrect; return <button type="button" key={alternative.id} aria-pressed={isSelected} disabled={Boolean(currentAnswer)} onClick={() => setSelectedId(alternative.id)} className={`${isSelected ? 'is-selected' : ''} ${isCorrect ? 'is-correct' : ''} ${isWrongSelection ? 'is-wrong' : ''}`}><b>{alternative.id}</b><span>{alternative.texto}</span>{isCorrect && <FiCheckCircle />}{isWrongSelection && <FiX />}</button>; })}</div>
+            <div className="questions-alternatives">
+              {currentAnswer && <div className="questions-community-distribution"><FiBarChart2 /><p><strong>Como os estudantes responderam</strong><span>{currentAnswer.total_respondentes === 1 ? '1 resposta registrada' : `${currentAnswer.total_respondentes || 0} respostas registradas`} · cada estudante conta uma vez</span></p></div>}
+              {currentQuestion.alternativas.map((alternative) => {
+                const isSelected = selectedId === alternative.id;
+                const isCorrect = currentAnswer?.alternativa_correta_id === alternative.id;
+                const isWrongSelection = currentAnswer && isSelected && !isCorrect;
+                const distribution = currentAnswer?.distribuicao_alternativas || [];
+                const selectionStats = distribution.find((item) => item.id === alternative.id);
+                const highestDistractorPercentage = Math.max(
+                  0,
+                  ...distribution
+                    .filter((item) => item.id !== currentAnswer?.alternativa_correta_id)
+                    .map((item) => item.percentual),
+                );
+                const isMostSelectedDistractor = Boolean(
+                  currentAnswer
+                  && !isCorrect
+                  && selectionStats?.percentual > 0
+                  && selectionStats.percentual === highestDistractorPercentage,
+                );
+                return (
+                  <button type="button" key={alternative.id} aria-pressed={isSelected} disabled={Boolean(currentAnswer)} onClick={() => setSelectedId(alternative.id)} className={`${isSelected ? 'is-selected' : ''} ${isCorrect ? 'is-correct' : ''} ${isWrongSelection ? 'is-wrong' : ''}`}>
+                    <b>{alternative.id}</b>
+                    <div className="questions-alternative-copy">
+                      <span>{alternative.texto}</span>
+                      {selectionStats && <div className="questions-selection-share"><i><em style={{ width: `${selectionStats.percentual}%` }} /></i><small><strong>{formatPercentage(selectionStats.percentual)}</strong> escolheram esta alternativa{isMostSelectedDistractor ? <mark>Distrator mais escolhido</mark> : null}</small></div>}
+                    </div>
+                    {isCorrect && <FiCheckCircle />}
+                    {isWrongSelection && <FiX />}
+                  </button>
+                );
+              })}
+            </div>
             {!currentAnswer ? <button type="button" className={`questions-confirm-button ${isAnswering ? 'is-loading' : ''}`} onClick={submitAnswer} disabled={!selectedId || isAnswering}>{isAnswering ? <><FiRefreshCw /> A Synapse está preparando a explicação...</> : <><FiCheck /> Confirmar resposta</>}</button> : <QuestionFeedback answer={currentAnswer} questionId={currentQuestion.id} />}
           </article>
 

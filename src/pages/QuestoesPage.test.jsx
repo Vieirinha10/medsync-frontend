@@ -50,6 +50,12 @@ const question = {
 const correction = {
   correta: true,
   alternativa_correta_id: 'B',
+  total_respondentes: 137,
+  distribuicao_alternativas: [
+    { id: 'A', escolhas: 31, percentual: 22.6 },
+    { id: 'B', escolhas: 88, percentual: 64.2 },
+    { id: 'C', escolhas: 18, percentual: 13.1 },
+  ],
   respondidas_hoje: 1,
   restantes_hoje: 9,
   explicacao: {
@@ -96,11 +102,15 @@ describe('QuestoesPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
     expect(await screen.findByText(question.enunciado)).toBeInTheDocument();
     expect(screen.queryByText(correction.explicacao.resumo)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Como os estudantes responderam/i)).not.toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /^B\s*Avaliação e estabilização imediatas$/ }));
     fireEvent.click(screen.getByRole('button', { name: 'Confirmar resposta' }));
 
     expect(await screen.findByText('RESPOSTA CORRETA')).toBeInTheDocument();
+    expect(screen.getByText('137 respostas registradas · cada estudante conta uma vez')).toBeInTheDocument();
+    expect(screen.getByText('64,2%')).toBeInTheDocument();
+    expect(screen.getByText('Distrator mais escolhido')).toBeInTheDocument();
     expect(screen.getByText(correction.explicacao.resumo)).toBeInTheDocument();
     expect(screen.getByText(correction.explicacao.porque_correta)).toBeInTheDocument();
     correction.explicacao.analise_alternativas.forEach((item) => {

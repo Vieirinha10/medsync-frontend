@@ -96,7 +96,7 @@ const SiteFooter = () => (
           <p>Copyright © {new Date().getFullYear()} MedSync. Todos os direitos reservados.</p>
           <span>MEDSYNC TECNOLOGIA EM SAUDE INOVA SIMPLES I.S. - ME · CNPJ 63.108.735/0001-53</span>
         </div>
-        <p className="footer-made-with">Feito com <FiHeart aria-label="cuidado" /> para quem aprende medicina.</p>
+        <p className="footer-made-with">Mais preparo. Mais clareza. Melhores decisões.</p>
       </div>
     </div>
   </footer>

@@ -30,7 +30,7 @@
   inset: 78px 0 0;
   width: 100%;
   height: calc(100vh - 78px);
-  opacity: .72;
+  opacity: .86;
   mix-blend-mode: multiply;
   pointer-events: none;
 }
@@ -482,7 +482,7 @@
   .home-s-particle-field {
     inset-block-start: 68px;
     height: calc(100vh - 68px);
-    opacity: .58;
+    opacity: .74;
   }
 
   .solid-hero { margin: 8px; padding: 62px 20px 72px; border-radius: 23px; }

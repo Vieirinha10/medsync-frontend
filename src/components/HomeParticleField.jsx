@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+const NETWORK_SYMBOLS = ['+', '%', '*', '=', '•', '/', '\\', '—', '|', '·', '≠'];
 
 const createRandom = (initialSeed) => {
   let seed = initialSeed >>> 0;
@@ -29,6 +30,7 @@ const pointAtDistance = (branch, distance) => {
       x: previous.x + (current.x - previous.x) * progress,
       y: previous.y + (current.y - previous.y) * progress,
       angle: Math.atan2(current.y - previous.y, current.x - previous.x),
+      symbol: current.symbol,
     };
   }
 
@@ -51,51 +53,35 @@ const HomeParticleField = () => {
     let lastFrame = 0;
     let isDocumentVisible = !document.hidden;
     let isDisposed = false;
-    let baseSprite = null;
-    let cyanSprite = null;
-    let limeSprite = null;
+    let centralSprite = null;
     let networkLayer = null;
     let branches = [];
     let pulses = [];
 
-    const tintSprite = (source, colors) => {
-      const sprite = document.createElement('canvas');
-      const spriteContext = sprite.getContext('2d');
-      sprite.width = source.width;
-      sprite.height = source.height;
-      if (!spriteContext) return sprite;
-
-      spriteContext.drawImage(source, 0, 0);
-      spriteContext.globalCompositeOperation = 'source-in';
-      const gradient = spriteContext.createLinearGradient(0, 0, sprite.width, 0);
-      gradient.addColorStop(0, colors[0]);
-      gradient.addColorStop(1, colors[1]);
-      spriteContext.fillStyle = gradient;
-      spriteContext.fillRect(0, 0, sprite.width, sprite.height);
-      return sprite;
-    };
-
-    const drawGlyph = (target, sprite, x, y, size, opacity, rotation = 0, glow = 0) => {
+    const drawNetworkSymbol = (
+      target,
+      symbol,
+      x,
+      y,
+      size,
+      opacity,
+      rotation = 0,
+      color = '#0c5f91',
+      glow = false,
+    ) => {
       target.save();
       target.translate(x, y);
       target.rotate(rotation);
       target.globalAlpha = opacity;
-
       if (glow) {
-        target.shadowColor = glow > 1 ? 'rgba(167, 243, 75, .8)' : 'rgba(34, 199, 236, .82)';
-        target.shadowBlur = size * (1.4 + glow * 0.7);
+        target.shadowColor = color;
+        target.shadowBlur = size * 1.9;
       }
-
-      if (sprite) {
-        target.drawImage(sprite, -size / 2, -size * 0.63, size, size * 1.27);
-      } else {
-        target.fillStyle = glow > 1 ? '#a7f34b' : glow ? '#22c7ec' : '#126da6';
-        target.font = `800 ${size}px Sora, Manrope, sans-serif`;
-        target.textAlign = 'center';
-        target.textBaseline = 'middle';
-        target.fillText('S', 0, 0);
-      }
-
+      target.fillStyle = color;
+      target.font = `700 ${size}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+      target.textAlign = 'center';
+      target.textBaseline = 'middle';
+      target.fillText(symbol, 0, 0);
       target.restore();
     };
 
@@ -138,13 +124,16 @@ const HomeParticleField = () => {
         }
         sourceContext.putImageData(imageData, 0, 0);
 
-        const mark = document.createElement('canvas');
-        mark.width = 40;
-        mark.height = 52;
-        mark.getContext('2d')?.drawImage(sourceCanvas, 0, 0, mark.width, mark.height);
-        baseSprite = tintSprite(mark, ['#0a4d7a', '#1687c4']);
-        cyanSprite = tintSprite(mark, ['#087fe0', '#45e3f1']);
-        limeSprite = tintSprite(mark, ['#22c7a4', '#a7f34b']);
+        centralSprite = document.createElement('canvas');
+        centralSprite.width = 300;
+        centralSprite.height = 376;
+        centralSprite.getContext('2d')?.drawImage(
+          sourceCanvas,
+          0,
+          0,
+          centralSprite.width,
+          centralSprite.height,
+        );
         buildNetwork();
         restartAnimation();
       });
@@ -178,14 +167,18 @@ const HomeParticleField = () => {
           const previous = points[points.length - 1];
           travelled += Math.hypot(point.x - previous.x, point.y - previous.y);
         }
-        points.push({ ...point, distance: travelled });
+        points.push({
+          ...point,
+          distance: travelled,
+          symbol: NETWORK_SYMBOLS[Math.floor(random() * NETWORK_SYMBOLS.length)],
+        });
       }
 
       const branch = {
         points,
         length: travelled,
         depth,
-        opacity: 0.22 - depth * 0.026 + random() * 0.08,
+        opacity: 0.3 - depth * 0.032 + random() * 0.09,
       };
       branches.push(branch);
 
@@ -218,15 +211,16 @@ const HomeParticleField = () => {
             0.22,
             1,
           );
-          const size = (width < 760 ? 5.1 : 5.8) + (3 - branch.depth) * 0.35;
-          drawGlyph(
+          const size = (width < 760 ? 6.7 : 8.1) + (3 - branch.depth) * 0.42;
+          drawNetworkSymbol(
             layerContext,
-            baseSprite,
+            point.symbol,
             point.x,
             point.y,
             size,
             branch.opacity * edgeFade,
             angle * 0.08,
+            '#0b5e91',
           );
         });
       });
@@ -285,7 +279,7 @@ const HomeParticleField = () => {
         context.drawImage(networkLayer, 0, 0, width, height);
       }
 
-      pulses.forEach((pulse, pulseIndex) => {
+      pulses.forEach((pulse) => {
         const movement = reducedMotion ? pulse.offset : seconds * pulse.speed + pulse.offset;
         const headDistance = movement % (pulse.branch.length + 170) - 70;
 
@@ -296,19 +290,42 @@ const HomeParticleField = () => {
 
           const strength = 1 - trailIndex / pulse.trail;
           const size = (width < 760 ? 5.6 : 6.7) + strength * 2.4;
-          const sprite = pulse.lime ? limeSprite : cyanSprite;
-          drawGlyph(
+          const pulseColor = pulse.lime ? '#a7f34b' : '#32dff1';
+          drawNetworkSymbol(
             context,
-            sprite,
+            point.symbol,
             point.x,
             point.y,
             size,
             0.18 + strength * 0.72,
             point.angle * 0.06,
-            pulse.lime ? 1.45 : 0.82 + (pulseIndex % 3) * 0.05,
+            pulseColor,
+            true,
           );
         }
       });
+
+      if (centralSprite) {
+        const markWidth = clamp(
+          Math.min(width * 0.17, height * 0.29),
+          width < 760 ? 84 : 142,
+          width < 760 ? 122 : 218,
+        );
+        const markHeight = markWidth * 1.253;
+        context.save();
+        context.globalAlpha = 0.97;
+        context.shadowColor = 'rgba(3, 38, 62, .34)';
+        context.shadowBlur = markWidth * 0.12;
+        context.shadowOffsetY = markWidth * 0.055;
+        context.drawImage(
+          centralSprite,
+          width * 0.5 - markWidth / 2,
+          height * 0.47 - markHeight / 2,
+          markWidth,
+          markHeight,
+        );
+        context.restore();
+      }
     };
 
     const animate = (time) => {

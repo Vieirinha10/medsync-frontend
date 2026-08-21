@@ -1,13 +1,26 @@
 import { useEffect, useRef } from 'react';
 
-const CLUSTERS = [
-  { start: -0.08, y: 0.2, scale: 1.04, speed: 0.010, direction: 1, phase: 0.2 },
-  { start: 0.42, y: 0.74, scale: 0.86, speed: 0.008, direction: -1, phase: 1.7 },
-  { start: 0.82, y: 0.43, scale: 0.7, speed: 0.012, direction: 1, phase: 3.1 },
-  { start: 0.16, y: 0.52, scale: 0.56, speed: 0.007, direction: -1, phase: 4.4 },
-];
-
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+const rotatePoint = (point, rotation) => {
+  const cosX = Math.cos(rotation.x);
+  const sinX = Math.sin(rotation.x);
+  const cosY = Math.cos(rotation.y);
+  const sinY = Math.sin(rotation.y);
+  const cosZ = Math.cos(rotation.z);
+  const sinZ = Math.sin(rotation.z);
+
+  const yAfterX = point.y * cosX - point.z * sinX;
+  const zAfterX = point.y * sinX + point.z * cosX;
+  const xAfterY = point.x * cosY + zAfterX * sinY;
+  const zAfterY = -point.x * sinY + zAfterX * cosY;
+
+  return {
+    x: xAfterY * cosZ - yAfterX * sinZ,
+    y: xAfterY * sinZ + yAfterX * cosZ,
+    z: zAfterY,
+  };
+};
 
 const HomeParticleField = () => {
   const canvasRef = useRef(null);
@@ -110,65 +123,80 @@ const HomeParticleField = () => {
       context.restore();
     };
 
-    const drawCluster = (cluster, index, seconds, isMobile, reducedMotion) => {
-      const travel = reducedMotion
-        ? cluster.start
-        : (cluster.start + seconds * cluster.speed + 2) % 1;
-      const normalizedTravel = cluster.direction > 0 ? travel : 1 - travel;
-      const centerX = (-0.18 + normalizedTravel * 1.36) * width;
-      const centerY = cluster.y * height + Math.sin(seconds * 0.25 + cluster.phase) * height * 0.035;
-      const shapeHeight = Math.min(height * 0.58, 490) * cluster.scale;
-      const curveWidth = Math.min(width * 0.12, 170) * cluster.scale;
-      const rowCount = isMobile ? 18 : 24;
-      const layerCount = isMobile ? 2 : 3;
-      const layerSpacing = (isMobile ? 9 : 11) * cluster.scale;
+    const drawRibbon = (seconds, isMobile, reducedMotion) => {
+      const longSegments = isMobile ? 72 : 124;
+      const wideSegments = isMobile ? 10 : 17;
+      const radius = Math.min(width * (isMobile ? 0.43 : 0.4), height * 0.51);
+      const halfWidth = radius * (isMobile ? 0.29 : 0.34);
+      const centerX = width * 0.5;
+      const centerY = height * (isMobile ? 0.5 : 0.48);
+      const cameraDistance = radius * 4.25;
+      const motionTime = reducedMotion ? 8.5 : seconds;
+      const phase = motionTime * 0.18;
+      const rotation = {
+        x: -0.58 + Math.sin(motionTime * 0.1) * 0.13,
+        y: 0.26 + Math.sin(motionTime * 0.075) * 0.18,
+        z: -0.2 + motionTime * 0.045,
+      };
+      const points = [];
 
-      for (let row = 0; row < rowCount; row += 1) {
-        const progress = row / (rowCount - 1);
-        const curvePhase = progress * Math.PI * 2;
-        const baseY = centerY + (progress - 0.5) * shapeHeight;
-        const baseX = centerX + Math.sin(curvePhase) * curveWidth;
-        const tangentX = Math.cos(curvePhase) * curveWidth * Math.PI * 2;
-        const tangentY = shapeHeight;
-        const tangentLength = Math.hypot(tangentX, tangentY) || 1;
-        const normalX = -tangentY / tangentLength;
-        const normalY = tangentX / tangentLength;
-        const taper = Math.sin(progress * Math.PI) * 0.72 + 0.28;
+      for (let longIndex = 0; longIndex < longSegments; longIndex += 1) {
+        const progress = longIndex / longSegments;
+        const angle = progress * Math.PI * 2 + phase;
+        const wave = 1 + Math.sin(angle * 3 - motionTime * 0.14) * 0.105;
+        const twist = angle * 0.5 + motionTime * 0.115;
 
-        for (let layer = -layerCount; layer <= layerCount; layer += 1) {
-          const seed = index * 97 + row * 17 + layer * 31;
-          const jitterX = Math.sin(seed * 1.91) * 3.4;
-          const jitterY = Math.cos(seed * 1.37) * 3.1;
-          const distance = layer * layerSpacing * taper;
-          const x = baseX + normalX * distance + jitterX;
-          const y = baseY + normalY * distance + jitterY;
+        for (let wideIndex = 0; wideIndex < wideSegments; wideIndex += 1) {
+          const across = wideIndex / (wideSegments - 1) * 2 - 1;
+          const surfaceOffset = across * halfWidth;
+          const ringRadius = radius * wave + surfaceOffset * Math.cos(twist);
+          const point = rotatePoint({
+            x: ringRadius * Math.cos(angle),
+            y: ringRadius * Math.sin(angle) * 0.83,
+            z: surfaceOffset * Math.sin(twist)
+              + radius * 0.22 * Math.sin(angle * 2 + motionTime * 0.13),
+          }, rotation);
+          const perspective = cameraDistance / Math.max(cameraDistance - point.z, cameraDistance * 0.42);
+          const x = centerX + point.x * perspective;
+          const y = centerY + point.y * perspective;
 
-          if (x < -35 || x > width + 35 || y < -35 || y > height + 35) continue;
+          if (x < -30 || x > width + 30 || y < -30 || y > height + 30) continue;
 
-          const edgeDistance = Math.abs(x - width / 2) / Math.max(width / 2, 1);
-          const edgeEmphasis = isMobile ? 0.78 : 0.54 + clamp(edgeDistance, 0, 1) * 0.46;
-          const layerFade = 1 - Math.abs(layer) / (layerCount + 1);
-          const pulse = reducedMotion ? 0.82 : 0.76 + Math.sin(seconds * 0.7 + seed) * 0.16;
-          const endpointFade = clamp(Math.sin(progress * Math.PI) * 1.65, 0.22, 1);
-          const isGreenHighlight = Math.abs(seed) % 37 === 0;
-          const color = isGreenHighlight
-            ? 'rgb(116, 207, 58)'
-            : row % 4 === 0
-              ? 'rgb(34, 181, 227)'
-              : 'rgb(7, 108, 190)';
-          const opacity = (isGreenHighlight ? 0.22 : 0.115)
-            * layerFade
-            * endpointFade
-            * pulse
-            * edgeEmphasis;
-          const size = (isMobile ? 7 : 8.5)
-            + layerFade * (isMobile ? 2.2 : 3.6)
-            + Math.sin(seed) * 0.8;
-          const rotation = Math.sin(seconds * 0.18 + seed) * 0.045;
+          const normalizedDepth = clamp((point.z / radius + 0.92) / 1.84, 0, 1);
+          const surfaceCenter = 1 - Math.abs(across);
+          const shimmer = reducedMotion
+            ? 0.92
+            : 0.88 + Math.sin(motionTime * 0.62 + longIndex * 0.19 + wideIndex) * 0.12;
+          const opacity = (0.14 + normalizedDepth * 0.5)
+            * (0.78 + surfaceCenter * 0.22)
+            * shimmer;
+          const size = (isMobile ? 5.8 : 6.6)
+            + normalizedDepth * (isMobile ? 3.8 : 5.2);
+          const glyphRotation = Math.sin(angle * 2 + across + motionTime * 0.09) * 0.09;
 
-          drawGlyph(x, y, size, rotation, color, opacity);
+          points.push({
+            x,
+            y,
+            z: point.z,
+            size,
+            rotation: glyphRotation,
+            color: normalizedDepth > 0.72 ? 'rgb(24, 183, 225)' : 'rgb(7, 112, 194)',
+            opacity,
+          });
         }
       }
+
+      points.sort((first, second) => first.z - second.z);
+      points.forEach((point) => {
+        drawGlyph(
+          point.x,
+          point.y,
+          point.size,
+          point.rotation,
+          point.color,
+          point.opacity,
+        );
+      });
     };
 
     const render = (time = 0) => {
@@ -179,15 +207,14 @@ const HomeParticleField = () => {
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       context.clearRect(0, 0, width, height);
 
-      CLUSTERS.slice(0, isMobile ? 3 : CLUSTERS.length).forEach((cluster, index) => {
-        drawCluster(cluster, index, seconds, isMobile, reducedMotion);
-      });
+      drawRibbon(seconds, isMobile, reducedMotion);
     };
 
     const animate = (time) => {
       if (!isDocumentVisible) return;
 
-      if (time - lastFrame >= 40) {
+      const frameInterval = width < 760 ? 42 : 33;
+      if (time - lastFrame >= frameInterval) {
         render(time);
         lastFrame = time;
       }

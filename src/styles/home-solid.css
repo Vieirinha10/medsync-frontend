@@ -30,10 +30,11 @@
   inset: 78px 0 0;
   width: 100%;
   height: calc(100vh - 78px);
-  opacity: .92;
+  opacity: .78;
+  mix-blend-mode: multiply;
   pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 91%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 8%, #000 91%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 56% 48% at 50% 34%, transparent 24%, #000 86%);
+  mask-image: radial-gradient(ellipse 56% 48% at 50% 34%, transparent 24%, #000 86%);
 }
 
 .solid-hero {
@@ -483,7 +484,9 @@
   .home-s-particle-field {
     inset-block-start: 68px;
     height: calc(100vh - 68px);
-    opacity: .72;
+    opacity: .58;
+    -webkit-mask-image: radial-gradient(ellipse 78% 44% at 50% 34%, transparent 20%, #000 90%);
+    mask-image: radial-gradient(ellipse 78% 44% at 50% 34%, transparent 20%, #000 90%);
   }
 
   .solid-hero { margin: 8px; padding: 62px 20px 72px; border-radius: 23px; }

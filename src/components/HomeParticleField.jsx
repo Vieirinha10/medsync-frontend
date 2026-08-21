@@ -39,6 +39,17 @@ const HomeParticleField = () => {
     let isDocumentVisible = !document.hidden;
     let isDisposed = false;
     let brandMarkSprite = null;
+    let synapsePulseSprite = null;
+    let scrollImpulse = 0;
+    let lastScrollY = window.scrollY;
+    const pointer = {
+      x: width * 0.5,
+      y: height * 0.5,
+      targetX: width * 0.5,
+      targetY: height * 0.5,
+      presence: 0,
+      targetPresence: 0,
+    };
 
     const prepareBrandMark = () => {
       const image = new Image();
@@ -86,6 +97,22 @@ const HomeParticleField = () => {
         sprite.height = 66;
         sprite.getContext('2d')?.drawImage(sourceCanvas, 0, 0, sprite.width, sprite.height);
         brandMarkSprite = sprite;
+
+        const pulseSprite = document.createElement('canvas');
+        const pulseContext = pulseSprite.getContext('2d');
+        pulseSprite.width = sprite.width;
+        pulseSprite.height = sprite.height;
+        pulseContext?.drawImage(sprite, 0, 0);
+        if (pulseContext) {
+          pulseContext.globalCompositeOperation = 'source-in';
+          const pulseGradient = pulseContext.createLinearGradient(0, 0, pulseSprite.width, 0);
+          pulseGradient.addColorStop(0, '#67e96f');
+          pulseGradient.addColorStop(0.55, '#a7f34b');
+          pulseGradient.addColorStop(1, '#d4ff72');
+          pulseContext.fillStyle = pulseGradient;
+          pulseContext.fillRect(0, 0, pulseSprite.width, pulseSprite.height);
+        }
+        synapsePulseSprite = pulseSprite;
         restartAnimation();
       });
 
@@ -101,9 +128,16 @@ const HomeParticleField = () => {
       canvas.height = Math.round(height * pixelRatio);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
+
+      if (!pointer.presence) {
+        pointer.x = width * 0.5;
+        pointer.y = height * 0.5;
+        pointer.targetX = pointer.x;
+        pointer.targetY = pointer.y;
+      }
     };
 
-    const drawGlyph = (x, y, size, rotation, color, opacity) => {
+    const drawGlyph = (x, y, size, rotation, color, opacity, pulseStrength = 0) => {
       context.save();
       context.translate(x, y);
       context.rotate(rotation);
@@ -112,6 +146,13 @@ const HomeParticleField = () => {
       if (brandMarkSprite) {
         const glyphHeight = size * 1.27;
         context.drawImage(brandMarkSprite, -size / 2, -glyphHeight / 2, size, glyphHeight);
+
+        if (synapsePulseSprite && pulseStrength > 0.01) {
+          context.globalAlpha = opacity * pulseStrength;
+          context.shadowColor = 'rgba(167, 243, 75, 0.72)';
+          context.shadowBlur = size * (0.35 + pulseStrength * 0.55);
+          context.drawImage(synapsePulseSprite, -size / 2, -glyphHeight / 2, size, glyphHeight);
+        }
       } else {
         context.fillStyle = color;
         context.font = `800 ${size}px Sora, Manrope, sans-serif`;
@@ -132,11 +173,15 @@ const HomeParticleField = () => {
       const centerY = height * (isMobile ? 0.5 : 0.48);
       const cameraDistance = radius * 4.25;
       const motionTime = reducedMotion ? 8.5 : seconds;
-      const phase = motionTime * 0.18;
+      const breathing = reducedMotion ? 1 : 1 + Math.sin(motionTime * 0.54) * 0.026;
+      const livingScroll = reducedMotion ? 0 : scrollImpulse;
+      const phase = motionTime * 0.18
+        + (reducedMotion ? 0 : window.scrollY * 0.00011)
+        + livingScroll * 0.03;
       const rotation = {
-        x: -0.58 + Math.sin(motionTime * 0.1) * 0.13,
-        y: 0.26 + Math.sin(motionTime * 0.075) * 0.18,
-        z: -0.2 + motionTime * 0.045,
+        x: -0.58 + Math.sin(motionTime * 0.1) * 0.13 + livingScroll * 0.007,
+        y: 0.26 + Math.sin(motionTime * 0.075) * 0.18 - livingScroll * 0.005,
+        z: -0.2 + motionTime * 0.045 + livingScroll * 0.009,
       };
       const points = [];
 
@@ -149,7 +194,7 @@ const HomeParticleField = () => {
         for (let wideIndex = 0; wideIndex < wideSegments; wideIndex += 1) {
           const across = wideIndex / (wideSegments - 1) * 2 - 1;
           const surfaceOffset = across * halfWidth;
-          const ringRadius = radius * wave + surfaceOffset * Math.cos(twist);
+          const ringRadius = radius * breathing * wave + surfaceOffset * Math.cos(twist);
           const point = rotatePoint({
             x: ringRadius * Math.cos(angle),
             y: ringRadius * Math.sin(angle) * 0.83,
@@ -157,8 +202,22 @@ const HomeParticleField = () => {
               + radius * 0.22 * Math.sin(angle * 2 + motionTime * 0.13),
           }, rotation);
           const perspective = cameraDistance / Math.max(cameraDistance - point.z, cameraDistance * 0.42);
-          const x = centerX + point.x * perspective;
-          const y = centerY + point.y * perspective;
+          let x = centerX + point.x * perspective;
+          let y = centerY + point.y * perspective;
+
+          if (!reducedMotion && pointer.presence > 0.01) {
+            const deltaX = x - pointer.x;
+            const deltaY = y - pointer.y;
+            const distance = Math.hypot(deltaX, deltaY);
+            const responseRadius = isMobile ? 110 : 175;
+            const response = Math.max(0, 1 - distance / responseRadius);
+            const waveResponse = response * response * pointer.presence;
+            const directionX = distance > 0 ? deltaX / distance : 0;
+            const directionY = distance > 0 ? deltaY / distance : 0;
+            const displacement = waveResponse * (isMobile ? 8 : 14);
+            x += directionX * displacement;
+            y += directionY * displacement + Math.sin(seconds * 2.1 + distance * 0.035) * waveResponse * 3;
+          }
 
           if (x < -30 || x > width + 30 || y < -30 || y > height + 30) continue;
 
@@ -173,6 +232,17 @@ const HomeParticleField = () => {
           const size = (isMobile ? 5.8 : 6.6)
             + normalizedDepth * (isMobile ? 3.8 : 5.2);
           const glyphRotation = Math.sin(angle * 2 + across + motionTime * 0.09) * 0.09;
+          const primaryPulse = Math.max(0, Math.cos(angle - motionTime * 0.72));
+          const secondaryPulse = Math.max(0, Math.cos(angle * 1.5 + motionTime * 0.48 - 2.2));
+          const pulseStrength = reducedMotion
+            ? 0.08
+            : clamp(
+              Math.pow(primaryPulse, 14) * 0.92
+                + Math.pow(secondaryPulse, 20) * 0.48
+                + Math.max(0, Math.sin(motionTime * 0.54)) * 0.035,
+              0,
+              1,
+            );
 
           points.push({
             x,
@@ -182,6 +252,7 @@ const HomeParticleField = () => {
             rotation: glyphRotation,
             color: normalizedDepth > 0.72 ? 'rgb(24, 183, 225)' : 'rgb(7, 112, 194)',
             opacity,
+            pulseStrength,
           });
         }
       }
@@ -195,6 +266,7 @@ const HomeParticleField = () => {
           point.rotation,
           point.color,
           point.opacity,
+          point.pulseStrength,
         );
       });
     };
@@ -212,6 +284,11 @@ const HomeParticleField = () => {
 
     const animate = (time) => {
       if (!isDocumentVisible) return;
+
+      pointer.x += (pointer.targetX - pointer.x) * 0.075;
+      pointer.y += (pointer.targetY - pointer.y) * 0.075;
+      pointer.presence += (pointer.targetPresence - pointer.presence) * 0.055;
+      scrollImpulse *= 0.91;
 
       const frameInterval = width < 760 ? 42 : 33;
       if (time - lastFrame >= frameInterval) {
@@ -241,11 +318,32 @@ const HomeParticleField = () => {
       else window.cancelAnimationFrame(animationFrame);
     };
 
+    const handlePointerMove = (event) => {
+      if (event.pointerType === 'touch') return;
+      pointer.targetX = event.clientX;
+      pointer.targetY = event.clientY;
+      pointer.targetPresence = 1;
+    };
+
+    const handlePointerLeave = () => {
+      pointer.targetPresence = 0;
+    };
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const delta = clamp(currentScrollY - lastScrollY, -120, 120);
+      scrollImpulse = clamp(scrollImpulse + delta * 0.018, -2.4, 2.4);
+      lastScrollY = currentScrollY;
+    };
+
     resizeCanvas();
     prepareBrandMark();
     restartAnimation();
 
     window.addEventListener('resize', handleResize, { passive: true });
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    document.documentElement.addEventListener('pointerleave', handlePointerLeave);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     document.addEventListener('visibilitychange', handleVisibilityChange);
     reducedMotionQuery.addEventListener?.('change', restartAnimation);
 
@@ -253,6 +351,9 @@ const HomeParticleField = () => {
       isDisposed = true;
       window.cancelAnimationFrame(animationFrame);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('pointermove', handlePointerMove);
+      document.documentElement.removeEventListener('pointerleave', handlePointerLeave);
+      window.removeEventListener('scroll', handleScroll);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       reducedMotionQuery.removeEventListener?.('change', restartAnimation);
     };

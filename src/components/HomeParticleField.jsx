@@ -3,10 +3,10 @@ import { useEffect, useRef } from 'react';
 const SYMBOLS = ['+', '%', '*', '·', '#', '-'];
 const BASE_COLOR = '10, 30, 77';
 const PULSE_COLOR = '63, 169, 245';
-const PULSE_TRAVEL_MS = 550;
-const PULSE_HOLD_MS = 260;
-const PULSE_FADE_MS = 400;
-const PULSE_INTERVAL_MS = 1250;
+const PULSE_TRAVEL_MS = 1700;
+const PULSE_HOLD_MS = 180;
+const PULSE_FADE_MS = 850;
+const PULSE_INTERVAL_MS = 3100;
 
 const createRandom = (initialSeed) => {
   let seed = initialSeed >>> 0;
@@ -52,12 +52,12 @@ const HomeParticleField = () => {
 
       layerContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       layerContext.clearRect(0, 0, width, height);
-      layerContext.font = `600 ${width < 760 ? 12.8 : 15.5}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+      layerContext.font = `600 ${width < 760 ? 9.3 : 11.2}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
       layerContext.textAlign = 'center';
       layerContext.textBaseline = 'middle';
 
       cells.forEach((cell) => {
-        paintSymbol(layerContext, cell, `rgb(${BASE_COLOR})`, width < 760 ? 0.22 : 0.3);
+        paintSymbol(layerContext, cell, `rgb(${BASE_COLOR})`, width < 760 ? 0.12 : 0.17);
       });
       layerContext.globalAlpha = 1;
     };
@@ -119,11 +119,11 @@ const HomeParticleField = () => {
       if (reducedMotionQuery.matches) return;
 
       const cycleTime = time % PULSE_INTERVAL_MS;
-      context.font = `600 ${width < 760 ? 12.8 : 15.5}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+      context.font = `600 ${width < 760 ? 9.3 : 11.2}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
       context.textAlign = 'center';
       context.textBaseline = 'middle';
-      context.shadowColor = `rgba(${PULSE_COLOR}, .72)`;
-      context.shadowBlur = width < 760 ? 5 : 7;
+      context.shadowColor = `rgba(${PULSE_COLOR}, .42)`;
+      context.shadowBlur = width < 760 ? 4 : 5;
 
       cells.forEach((cell) => {
         const delay = cell.distance / maxDistance * PULSE_TRAVEL_MS;
@@ -133,7 +133,7 @@ const HomeParticleField = () => {
           context,
           cell,
           `rgb(${PULSE_COLOR})`,
-          0.24 + strength * 0.76,
+          0.1 + strength * 0.58,
         );
       });
       context.shadowBlur = 0;

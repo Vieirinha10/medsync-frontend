@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-const SYMBOLS = ['+', '%', '*', '·', '#', '-'];
+const SYMBOLS = ['+', '\u2695\uFE0E', '◇', '•', '≈', '✦'];
+const SYMBOL_FONT = '"Segoe UI Symbol", "Noto Sans Symbols 2", "Apple Symbols", Arial, sans-serif';
 const BASE_COLOR = '10, 30, 77';
 const PULSE_COLOR = '63, 169, 245';
 const PULSE_TRAVEL_MS = 1700;
@@ -52,7 +53,7 @@ const HomeParticleField = () => {
 
       layerContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       layerContext.clearRect(0, 0, width, height);
-      layerContext.font = `600 ${width < 760 ? 9.3 : 11.2}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+      layerContext.font = `600 ${width < 760 ? 9.3 : 11.2}px ${SYMBOL_FONT}`;
       layerContext.textAlign = 'center';
       layerContext.textBaseline = 'middle';
 
@@ -119,7 +120,7 @@ const HomeParticleField = () => {
       if (reducedMotionQuery.matches) return;
 
       const cycleTime = time % PULSE_INTERVAL_MS;
-      context.font = `600 ${width < 760 ? 9.3 : 11.2}px ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
+      context.font = `600 ${width < 760 ? 9.3 : 11.2}px ${SYMBOL_FONT}`;
       context.textAlign = 'center';
       context.textBaseline = 'middle';
       context.shadowColor = `rgba(${PULSE_COLOR}, .42)`;

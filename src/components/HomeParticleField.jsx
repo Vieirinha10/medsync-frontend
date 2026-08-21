@@ -64,7 +64,7 @@ const HomeParticleField = () => {
 
     const buildGrid = () => {
       const isMobile = width < 760;
-      const targetColumns = isMobile ? 23 : 40;
+      const targetColumns = isMobile ? 25 : 44;
       const spacing = width / targetColumns;
       const rows = Math.ceil(height / spacing) + 1;
       const random = createRandom(Math.round(width * 13 + height * 19));

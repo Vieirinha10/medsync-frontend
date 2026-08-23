@@ -29,9 +29,9 @@ const CadastroPage = () => {
                 password,
                 aceite_termos: acceptedLegal,
             });
-            navigate('/login', {
+            navigate('/verificar-email', {
                 replace: true,
-                state: { message: 'Cadastro realizado. Entre com sua nova conta.' },
+                state: { email },
             });
         } catch (err) {
             setError(err.message);

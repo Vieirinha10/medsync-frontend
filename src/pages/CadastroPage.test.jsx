@@ -41,6 +41,9 @@ describe('CadastroPage', () => {
       password: 'senha-segura',
       aceite_termos: true,
     }));
-    expect(navigate).toHaveBeenCalledWith('/login', expect.objectContaining({ replace: true }));
+    expect(navigate).toHaveBeenCalledWith('/verificar-email', {
+      replace: true,
+      state: { email: 'gustavo@example.com' },
+    });
   });
 });

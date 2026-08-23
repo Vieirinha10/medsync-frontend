@@ -9,6 +9,8 @@ const API_URL = (import.meta.env.VITE_API_URL || DEFAULT_API_URL).replace(
 
 const AUTH_TOKEN_KEY = 'authToken';
 const REQUEST_TIMEOUT_MS = 20_000;
+const SYNAPSE_EVALUATION_TIMEOUT_MS = 60_000;
+const SYNAPSE_QUESTION_TIMEOUT_MS = 45_000;
 
 export class ApiError extends Error {
   constructor(message, status, requestId = null) {
@@ -47,10 +49,16 @@ function getErrorMessage(detail) {
   return 'Não foi possível concluir a solicitação.';
 }
 
-async function request(path, { auth = true, body, headers, ...options } = {}) {
+async function request(path, {
+  auth = true,
+  body,
+  headers,
+  timeoutMs = REQUEST_TIMEOUT_MS,
+  ...options
+} = {}) {
   const token = getAuthToken();
   const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
   let response;
 
   try {
@@ -66,7 +74,10 @@ async function request(path, { auth = true, body, headers, ...options } = {}) {
     });
   } catch (error) {
     if (error.name === 'AbortError') {
-      throw new ApiError('A solicitação demorou demais. Tente novamente.', 408);
+      throw new ApiError(
+        'A solicitação demorou demais. Seu envio foi preservado; aguarde alguns instantes antes de tentar novamente.',
+        408,
+      );
     }
     throw new ApiError('Não foi possível conectar ao MedSync.', 0);
   } finally {
@@ -208,10 +219,14 @@ export const api = {
       method: 'POST',
       body: progress,
     }),
-  finalizeSimulation: (caseId, submission) =>
+  finalizeSimulation: (caseId, submission, idempotencyKey) =>
     request(`/simulacoes/${caseId}/finalizar`, {
       method: 'POST',
       body: submission,
+      headers: idempotencyKey
+        ? { 'X-Idempotency-Key': idempotencyKey }
+        : undefined,
+      timeoutMs: SYNAPSE_EVALUATION_TIMEOUT_MS,
     }),
   getSimulationResult: (progressId) =>
     request(`/simulacoes/resultados/${progressId}`),
@@ -219,6 +234,7 @@ export const api = {
     request(`/simulacoes/resultados/${progressId}/perguntar`, {
       method: 'POST',
       body: { pergunta },
+      timeoutMs: SYNAPSE_QUESTION_TIMEOUT_MS,
     }),
   getStudyErrors: () => request('/caderno-erros/meu'),
   getDueReviews: () => request('/caderno-erros/revisoes-hoje'),

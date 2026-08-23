@@ -85,6 +85,14 @@ describe('ResultadoSimulacaoPage', () => {
     expect(screen.queryByText('Impacto fictício')).not.toBeInTheDocument();
     expect(screen.queryByText('Tempo educacional fictício.')).not.toBeInTheDocument();
 
+    const detailedAnalysis = screen.getByText('Ver análise clínica completa').closest('details');
+    const improvementPlan = screen.getByRole('region', { name: 'Plano rápido de melhoria' });
+    const synapseQuestions = screen.getByRole('region', { name: 'Pergunte à Synapse' });
+    expect(detailedAnalysis).not.toContainElement(improvementPlan);
+    expect(improvementPlan.previousElementSibling).toBe(detailedAnalysis);
+    expect(improvementPlan.nextElementSibling).toBe(synapseQuestions);
+    expect(screen.getByText('Treinar a estratificação hemodinâmica.')).toBeVisible();
+
     fireEvent.click(screen.getByText('Ver análise clínica completa'));
     expect(screen.getByText('Estratificar o risco do TEP')).toBeInTheDocument();
     expect(screen.getByText('Justificativa alinhada à rubrica.')).toBeInTheDocument();

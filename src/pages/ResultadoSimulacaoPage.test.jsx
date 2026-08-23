@@ -66,7 +66,7 @@ const result = {
 };
 
 describe('ResultadoSimulacaoPage', () => {
-  it('expõe o diagnóstico, as consequências e permite aprofundar com a Synapse', async () => {
+  it('prioriza nota simplificada, raciocínio e impacto antes da análise completa', async () => {
     render(
       <MemoryRouter initialEntries={[{ pathname: '/resultados/42', state: { result } }]}>
         <Routes>
@@ -79,10 +79,14 @@ describe('ResultadoSimulacaoPage', () => {
     expect(screen.getByText('Synapse · feedback personalizado por IA')).toBeInTheDocument();
     expect(screen.getByText('A tendência é melhora progressiva da hipoxemia.')).toBeInTheDocument();
     expect(screen.getByText('A paciente permanece internada e monitorizada.')).toBeInTheDocument();
-    expect(screen.getByLabelText('Pontuação total: 86 de 100')).toBeInTheDocument();
-    expect(screen.getByText('Conduta adequada')).toBeInTheDocument();
+    expect(screen.getByLabelText('Pontuação total: 8,6 de 10')).toBeInTheDocument();
+    expect(screen.getByText('Conduta clinicamente adequada')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Paciente estabilizado' })).toHaveTextContent('🙂');
+    expect(screen.queryByText('Impacto fictício')).not.toBeInTheDocument();
+    expect(screen.queryByText('Tempo educacional fictício.')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Ver análise clínica completa'));
     expect(screen.getByText('Estratificar o risco do TEP')).toBeInTheDocument();
-    expect(screen.getByText('A conduta estabilizou o paciente')).toBeInTheDocument();
     expect(screen.getByText('Justificativa alinhada à rubrica.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /ASH Guidelines/ })).toHaveAttribute(
       'href',
@@ -90,5 +94,35 @@ describe('ResultadoSimulacaoPage', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'Por que este exame era desnecessário?' }));
     await waitFor(() => expect(screen.getByText('Neste cenário, o exame não mudaria a conduta inicial.')).toBeInTheDocument());
+  });
+
+  it('reserva o emoji de olhos em X para risco grave explícito', () => {
+    const criticalResult = {
+      ...result,
+      pontuacao_total: 18,
+      pontuacao: { exames: 4, hipotese: 0, conduta: 14 },
+      nivel_conduta: 'insegura',
+      feedback: {
+        ...result.feedback,
+        reacao_paciente: 'O quadro apresenta deterioração progressiva.',
+        desfecho_clinico: 'A paciente permanece em risco de óbito sem intervenção imediata.',
+      },
+      consequencias: {
+        ...result.consequencias,
+        estado_paciente: 'deterioracao',
+      },
+    };
+
+    render(
+      <MemoryRouter initialEntries={[{ pathname: '/resultados/43', state: { result: criticalResult } }]}>
+        <Routes>
+          <Route path="/resultados/:progressoId" element={<ResultadoSimulacaoPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByLabelText('Pontuação total: 1,8 de 10')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Estado crítico' })).toHaveTextContent('😵');
+    expect(screen.getByText('Atenção: esta conduta oferece risco')).toBeInTheDocument();
   });
 });

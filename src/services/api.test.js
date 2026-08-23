@@ -35,4 +35,24 @@ describe('serviço da API', () => {
     await expect(api.getCases()).rejects.toMatchObject({ status: 401 });
     expect(getAuthToken()).toBeNull();
   });
+
+  it('envia a chave idempotente ao finalizar uma simulação', async () => {
+    setAuthToken('token-seguro');
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify({ progresso_id: 42 }), {
+        status: 201,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    await api.finalizeSimulation(
+      8,
+      { hipotese_diagnostica: 'TEP', conduta_proposta: 'Anticoagulação' },
+      'synapse-request-123456789',
+    );
+
+    const [url, options] = fetchMock.mock.calls[0];
+    expect(url).toContain('/simulacoes/8/finalizar');
+    expect(options.headers['X-Idempotency-Key']).toBe('synapse-request-123456789');
+  });
 });

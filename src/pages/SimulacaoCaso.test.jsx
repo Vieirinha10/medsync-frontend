@@ -76,12 +76,16 @@ describe('SimulacaoCaso', () => {
     fireEvent.click(screen.getByRole('button', { name: /Enviar para a Synapse/ }));
 
     await waitFor(() => {
-      expect(api.finalizeSimulation).toHaveBeenCalledWith(8, {
-        exames_solicitados: ['2'],
-        justificativas_exames: { 2: 'Confirmar lesão miocárdica e orientar a estratégia.' },
-        hipotese_diagnostica: 'Síndrome coronariana aguda com supradesnivelamento de ST.',
-        conduta_proposta: 'Monitorização, antiagregação e estratégia imediata de reperfusão.',
-      });
+      expect(api.finalizeSimulation).toHaveBeenCalledWith(
+        8,
+        {
+          exames_solicitados: ['2'],
+          justificativas_exames: { 2: 'Confirmar lesão miocárdica e orientar a estratégia.' },
+          hipotese_diagnostica: 'Síndrome coronariana aguda com supradesnivelamento de ST.',
+          conduta_proposta: 'Monitorização, antiagregação e estratégia imediata de reperfusão.',
+        },
+        expect.any(String),
+      );
     });
     expect(await screen.findByText('Resultado carregado')).toBeInTheDocument();
   });

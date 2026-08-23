@@ -91,6 +91,7 @@ body {
 .form-group input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(77, 182, 247, 0.2); outline: none; }
 .btn-submit { width: 100%; padding: 15px; background: linear-gradient(90deg, #4DB6F7, #0091ea); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
 .btn-submit:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.auth-action-link { display: block; box-sizing: border-box; text-align: center; text-decoration: none; }
 .auth-link { text-align: center; margin-top: 20px; }
 .auth-link a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
 .error-message { color: #D32F2F; background-color: #FFCDD2; padding: 12px; border-radius: 4px; text-align: center; margin: 20px 0; }

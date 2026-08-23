@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
     FiActivity,
@@ -34,6 +34,11 @@ const vitalIcons = {
     temperatura: FiThermometer,
 };
 
+const createIdempotencyKey = () => (
+    globalThis.crypto?.randomUUID?.()
+    || `synapse-${Date.now()}-${Math.random().toString(36).slice(2)}`
+);
+
 const SimulacaoCaso = () => {
     const { casoId } = useParams();
     const navigate = useNavigate();
@@ -51,6 +56,7 @@ const SimulacaoCaso = () => {
     const [resultsReleased, setResultsReleased] = useState(false);
     const [hipotese, setHipotese] = useState('');
     const [conduta, setConduta] = useState('');
+    const lastSubmission = useRef(null);
 
     useEffect(() => {
         api.getCase(casoId)
@@ -139,14 +145,26 @@ const SimulacaoCaso = () => {
         setSubmissionError(null);
         setIsSubmitting(true);
         try {
-            const result = await api.finalizeSimulation(Number(casoId), {
+            const submission = {
                 exames_solicitados: Object.keys(selectedExams).filter((id) => selectedExams[id]),
                 justificativas_exames: Object.fromEntries(
                     Object.entries(examJustifications).filter(([, value]) => value.trim()),
                 ),
                 hipotese_diagnostica: hipotese,
                 conduta_proposta: conduta,
-            });
+            };
+            const signature = JSON.stringify(submission);
+            if (lastSubmission.current?.signature !== signature) {
+                lastSubmission.current = {
+                    signature,
+                    idempotencyKey: createIdempotencyKey(),
+                };
+            }
+            const result = await api.finalizeSimulation(
+                Number(casoId),
+                submission,
+                lastSubmission.current.idempotencyKey,
+            );
             const currentParams = new URLSearchParams(window.location.search);
             const resultParams = new URLSearchParams();
             if (currentParams.get('trilha') && currentParams.get('atividade')) {

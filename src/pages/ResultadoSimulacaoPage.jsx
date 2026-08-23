@@ -483,19 +483,21 @@ const ResultadoSimulacaoPage = () => {
             </section>
           )}
 
-          <section className="study-recommendations">
-            <div>
-              <span className="simulation-kicker">SEU PRÓXIMO PASSO</span>
-              <h2>Plano rápido de melhoria</h2>
-            </div>
-            <div className="study-chips">
-              {(result.feedback.plano_pessoal_melhoria || result.feedback.recomendacoes_estudo).map((topic) => (
-                <span key={topic}>{topic}</span>
-              ))}
-            </div>
-          </section>
         </div>
       </details>
+
+      <section className="study-recommendations is-standalone" aria-label="Plano rápido de melhoria">
+        <div>
+          <span className="simulation-kicker">SEU PRÓXIMO PASSO</span>
+          <h2>Plano rápido de melhoria</h2>
+          <p>Leve estes pontos para o próximo caso e transforme o feedback em prática.</p>
+        </div>
+        <div className="study-chips">
+          {(result.feedback.plano_pessoal_melhoria || result.feedback.recomendacoes_estudo).map((topic) => (
+            <span key={topic}>{topic}</span>
+          ))}
+        </div>
+      </section>
 
       <section className="synapse-follow-up" aria-label="Pergunte à Synapse">
         <div className="follow-up-heading"><span><FiMessageCircle /></span><div><small>SYNAPSE · APROFUNDE O CASO</small><h2>Ficou alguma dúvida?</h2><p>A resposta usa somente este caso, sua resolução e a rubrica revisada.</p></div></div>

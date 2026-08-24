@@ -305,7 +305,7 @@ const HomePage = () => {
     </section>
 
     <section className="solid-proof-strip" aria-label="Números do MedSync">
-      <div><strong>40</strong><span>casos clínicos</span></div>
+      <div><strong>55</strong><span>casos clínicos</span></div>
       <div><strong>10</strong><span>desafios visuais</span></div>
       <div><strong aria-live="polite">{formattedStudentCount}</strong><span>estudantes MedSync</span></div>
       <div><strong>19</strong><span>áreas médicas contempladas</span></div>

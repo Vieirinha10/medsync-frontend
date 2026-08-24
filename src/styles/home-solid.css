@@ -648,10 +648,19 @@
     radial-gradient(circle at 8% 90%, rgba(34,199,236,.14), transparent 24rem),
     #061d2d;
 }
-.feedback-system-intro { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(270px,.65fr); gap: 50px; align-items: end; margin-bottom: 48px; }
-.feedback-system-intro .solid-section-index { color: #78dafa; }
-.feedback-system-intro h2 { max-width: 850px; margin: 0; color: #fff; font-size: clamp(2.35rem,5vw,5rem); letter-spacing: -.065em; line-height: .96; }
-.feedback-system-intro > p { margin: 0; color: rgba(222,241,249,.67); line-height: 1.72; }
+.feedback-system-intro {
+  display: grid;
+  grid-template-columns: minmax(0,1.35fr) minmax(270px,.65fr);
+  grid-template-areas:
+    "index index"
+    "title copy";
+  gap: 18px 50px;
+  align-items: end;
+  margin-bottom: 48px;
+}
+.feedback-system-intro .solid-section-index { grid-area: index; margin-bottom: 0; color: #78dafa; }
+.feedback-system-intro h2 { grid-area: title; max-width: 850px; margin: 0; color: #fff; font-size: clamp(2.35rem,5vw,5rem); letter-spacing: -.065em; line-height: .96; text-wrap: balance; }
+.feedback-system-intro > p { grid-area: copy; margin: 0; color: rgba(222,241,249,.67); line-height: 1.72; }
 .feedback-system-console { display: grid; grid-template-columns: minmax(260px,.72fr) minmax(0,1.28fr); gap: 18px; }
 .feedback-step-tabs { display: grid; align-content: start; gap: 8px; padding: 12px; border: 1px solid rgba(255,255,255,.1); border-radius: 23px; background: rgba(255,255,255,.045); }
 .feedback-step-tabs button { display: grid; grid-template-columns: 34px 1fr 10px; gap: 10px; align-items: center; min-height: 68px; padding: 12px 14px; color: rgba(222,241,249,.62); text-align: left; border: 1px solid transparent; border-radius: 15px; background: transparent; cursor: pointer; transition: 190ms ease; }
@@ -756,7 +765,14 @@
   .credibility-layout { grid-template-columns: 1fr; }
   .synapse-network { min-height: 520px; }
   .synapse-capability-panel { width: min(100%,720px); justify-self: center; }
-  .feedback-system-intro { grid-template-columns: 1fr; gap: 18px; }
+  .feedback-system-intro {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "index"
+      "title"
+      "copy";
+    gap: 18px;
+  }
   .solid-process { grid-template-columns: 1fr; }
   .solid-process-intro { position: static; }
   .solid-plan-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }

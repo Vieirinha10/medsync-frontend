@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
   FiAlertTriangle,
   FiArrowRight,
+  FiAward,
   FiBookOpen,
   FiCheck,
   FiChevronDown,
@@ -33,11 +34,31 @@ const scoreFromHundred = (value) => Math.max(0, Math.min(10, value / 10));
 const scoreFromSection = (value, total) => Math.max(0, Math.min(10, (value / total) * 10));
 
 const getScoreProfile = (score) => {
-  if (score >= 9) return { label: 'Excelente resultado', tone: 'excellent' };
-  if (score >= 7.5) return { label: 'Muito bom', tone: 'great' };
-  if (score >= 6) return { label: 'Bom raciocínio', tone: 'good' };
-  if (score >= 4) return { label: 'Em desenvolvimento', tone: 'developing' };
-  return { label: 'Vamos revisar juntos', tone: 'review' };
+  if (score >= 9) return {
+    label: 'Excelente resultado',
+    message: 'Seu raciocínio está muito bem consolidado neste caso.',
+    tone: 'excellent',
+  };
+  if (score >= 7.5) return {
+    label: 'Muito bom',
+    message: 'Você tomou decisões consistentes e clinicamente seguras.',
+    tone: 'great',
+  };
+  if (score >= 6) return {
+    label: 'Bom raciocínio',
+    message: 'Você construiu uma boa linha clínica e já sabe onde evoluir.',
+    tone: 'good',
+  };
+  if (score >= 4) return {
+    label: 'Em desenvolvimento',
+    message: 'Você identificou parte do caminho. Use o plano para avançar.',
+    tone: 'developing',
+  };
+  return {
+    label: 'Vamos revisar juntos',
+    message: 'Este resultado é um ponto de partida para rever as prioridades com calma.',
+    tone: 'review',
+  };
 };
 
 const getPatientStatus = (result) => {
@@ -237,17 +258,36 @@ const ResultadoSimulacaoPage = () => {
           <p>{result.feedback.resumo || result.feedback.sintese_raciocinio}</p>
           <span className="feedback-source">{sourceLabel}</span>
         </div>
-        <div
-          className={`total-score is-${scoreProfile.tone}`}
-          style={{ '--score': `${result.pontuacao_total * 3.6}deg` }}
+        <aside
+          className={`score-celebration is-${scoreProfile.tone}`}
           aria-label={`Pontuação total: ${formatScore(scoreOutOfTen)} de 10`}
         >
-          <div>
-            <strong>{formatScore(scoreOutOfTen)}</strong>
-            <span>de 10</span>
-            <small>{scoreProfile.label}</small>
+          <div className="score-card-heading">
+            <FiAward />
+            <span>Seu resultado</span>
           </div>
-        </div>
+          <div className="score-orbit">
+            <span className="score-orbit-track" aria-hidden="true"><i /><i /></span>
+            <svg viewBox="0 0 128 128" aria-hidden="true">
+              <circle className="score-ring-track" cx="64" cy="64" r="52" />
+              <circle
+                className="score-ring-value"
+                cx="64"
+                cy="64"
+                r="52"
+                style={{ '--score-offset': 326.73 * (1 - scoreOutOfTen / 10) }}
+              />
+            </svg>
+            <div className="score-core">
+              <strong>{formatScore(scoreOutOfTen)}</strong>
+              <span>de 10</span>
+            </div>
+          </div>
+          <div className="score-celebration-copy">
+            <strong>{scoreProfile.label}</strong>
+            <p>{scoreProfile.message}</p>
+          </div>
+        </aside>
       </header>
 
       <section className="clinical-core-summary" aria-label="Resumo da hipótese e da conduta">

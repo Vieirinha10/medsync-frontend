@@ -86,6 +86,9 @@ describe('ResultadoSimulacaoPage', () => {
     expect(screen.getByRole('img', { name: 'Paciente estabilizado' })).toHaveTextContent('🙂');
     expect(screen.queryByText('Impacto fictício')).not.toBeInTheDocument();
     expect(screen.queryByText('Tempo educacional fictício.')).not.toBeInTheDocument();
+    expect(screen.queryByText('REAVALIAÇÃO')).not.toBeInTheDocument();
+    expect(screen.queryByText('Como os sinais podem evoluir')).not.toBeInTheDocument();
+    expect(screen.queryByText('Saturação periférica')).not.toBeInTheDocument();
 
     const detailedAnalysis = screen.getByText('Ver análise clínica completa').closest('details');
     const improvementPlan = screen.getByRole('region', { name: 'Plano rápido de melhoria' });

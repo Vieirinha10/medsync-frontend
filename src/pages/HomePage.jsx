@@ -107,55 +107,47 @@ const ACADEMIC_INSTITUTIONS = [
   {
     acronym: 'UFMA',
     name: 'Universidade Federal do Maranhão',
-    category: 'Pública',
     state: 'MA',
     logo: '/images/institutions/ufma.png',
   },
   {
     acronym: 'CEUMA',
     name: 'Universidade CEUMA',
-    category: 'Privada',
     state: 'MA',
     logo: '/images/institutions/ceuma.png',
   },
   {
     acronym: 'UFPI',
     name: 'Universidade Federal do Piauí',
-    category: 'Pública',
     state: 'PI',
     logo: '/images/institutions/ufpi.png',
   },
   {
     acronym: 'UNINOVAFAPI',
     name: 'Centro Universitário Afya Teresina',
-    category: 'Privada',
     state: 'PI',
     logo: '/images/institutions/afya-teresina.png',
   },
   {
     acronym: 'UEMA',
     name: 'Universidade Estadual do Maranhão',
-    category: 'Pública',
     state: 'MA',
     logo: '/images/institutions/uema.png',
   },
   {
     acronym: 'UNIFACID',
     name: 'Centro Universitário UniFacid Wyden',
-    category: 'Privada',
     state: 'PI',
   },
   {
     acronym: 'UESPI',
     name: 'Universidade Estadual do Piauí',
-    category: 'Pública',
     state: 'PI',
     logo: '/images/institutions/uespi.png',
   },
   {
     acronym: 'UNIFSA',
     name: 'Centro Universitário Santo Agostinho',
-    category: 'Privada',
     state: 'PI',
     logo: '/images/institutions/unifsa.png',
   },
@@ -174,7 +166,7 @@ const AcademicInstitutionCard = ({ institution }) => (
       <strong>{institution.acronym}</strong>
       <small>{institution.name}</small>
     </span>
-    <span className="academic-institution-meta">{institution.category} · {institution.state}</span>
+    <span className="academic-institution-meta">{institution.state}</span>
   </article>
 );
 

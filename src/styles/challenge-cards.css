@@ -22,7 +22,7 @@
   padding: 7px 11px;
   border: 1px solid rgba(0, 126, 222, 0.14);
   border-radius: 999px;
-  background: rgba(236, 248, 255, 0.86);
+  background: transparent;
 }
 
 .visual-header-stats > div {

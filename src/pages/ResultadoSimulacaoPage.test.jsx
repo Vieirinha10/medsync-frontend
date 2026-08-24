@@ -80,6 +80,8 @@ describe('ResultadoSimulacaoPage', () => {
     expect(screen.getByText('A tendência é melhora progressiva da hipoxemia.')).toBeInTheDocument();
     expect(screen.getByText('A paciente permanece internada e monitorizada.')).toBeInTheDocument();
     expect(screen.getByLabelText('Pontuação total: 8,6 de 10')).toBeInTheDocument();
+    expect(screen.getByText('Seu resultado')).toBeInTheDocument();
+    expect(screen.getByText('Você tomou decisões consistentes e clinicamente seguras.')).toBeInTheDocument();
     expect(screen.getByText('Conduta clinicamente adequada')).toBeInTheDocument();
     expect(screen.getByRole('img', { name: 'Paciente estabilizado' })).toHaveTextContent('🙂');
     expect(screen.queryByText('Impacto fictício')).not.toBeInTheDocument();

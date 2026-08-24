@@ -31,6 +31,26 @@ const EXAM_MODALITY_INFO = {
     examClass: 'Diagnóstico por imagem',
     purpose: 'Fornece cortes detalhados do abdome e retroperitônio para localizar cálculos, obstruções, inflamações e massas.',
   },
+  'Fotografia clínica ocular': {
+    examClass: 'Exame oftalmológico',
+    purpose: 'Documenta estruturas externas do olho e ajuda a reconhecer alterações da conjuntiva, córnea, pupila e pálpebras.',
+  },
+  Otoscopia: {
+    examClass: 'Exame otorrinolaringológico',
+    purpose: 'Permite observar o conduto auditivo e a membrana timpânica para identificar inflamação, secreção, abaulamento e perfurações.',
+  },
+  'Inspeção da orofaringe': {
+    examClass: 'Exame otorrinolaringológico',
+    purpose: 'Avalia tonsilas, palato, úvula e parede da faringe, demonstrando edema, assimetrias, lesões e exsudatos.',
+  },
+  'Ultrassonografia renal': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'Avalia rins e sistema coletor sem radiação, auxiliando na identificação de dilatações, cálculos, cistos e massas.',
+  },
+  'Radiografia de punho': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'Demonstra alinhamento ósseo e articular do punho, sendo utilizada principalmente na avaliação de fraturas e luxações.',
+  },
 };
 
 const FALLBACK_INFO = {

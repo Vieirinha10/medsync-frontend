@@ -36,6 +36,7 @@ describe('HomePage', () => {
     render(<MemoryRouter><HomePage /></MemoryRouter>);
 
     expect(screen.getByRole('heading', { name: 'Uma inteligência clínica que acompanha o seu raciocínio.' })).toBeInTheDocument();
+    expect(screen.getByAltText('Logo da Synapse')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Próximo passo' }));
     expect(screen.getByRole('heading', { name: 'Transforma feedback em direção' })).toBeInTheDocument();
 

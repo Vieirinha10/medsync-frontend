@@ -941,8 +941,7 @@
 }
 
 .exam-rationale-section > div span,
-.exam-rationale-feedback > div span,
-.vital-reassessment > div:first-child span {
+.exam-rationale-feedback > div span {
   color: #0878f9;
   font-size: 0.7rem;
   font-weight: 900;
@@ -950,8 +949,7 @@
 }
 
 .exam-rationale-section h3,
-.exam-rationale-feedback h3,
-.vital-reassessment h3 { margin: 5px 0; color: #102f46; }
+.exam-rationale-feedback h3 { margin: 5px 0; color: #102f46; }
 .exam-rationale-section > div p { margin: 0 0 18px; color: #60798c; }
 .exam-rationale-section label { display: block; margin-top: 13px; }
 .exam-rationale-section label strong { display: block; margin-bottom: 7px; color: #244e69; }
@@ -1004,17 +1002,6 @@
 .consequence-timeline span { color: #5eff66; font-size: .68rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 .consequence-timeline h3 { margin: 3px 0; color: #fff; }
 .consequence-timeline p { margin: 0; color: rgba(255,255,255,.75); }
-.vital-reassessment { margin-top: 26px; padding: 22px; border-radius: 22px; color: #102f46; background: rgba(255,255,255,.94); }
-.vital-reassessment > div:last-child { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 14px; }
-.vital-reassessment article { position: relative; padding: 15px; border-radius: 15px; background: #edf7ff; }
-.vital-reassessment article strong,
-.vital-reassessment article small { display: block; }
-.vital-reassessment article small { margin-top: 5px; color: #718696; }
-.vital-reassessment article p { margin: 8px 0 20px; color: #365b73; }
-.vital-reassessment article > span { position: absolute; bottom: 12px; right: 12px; color: #0878f9; font-size: .7rem; font-weight: 900; text-transform: uppercase; }
-.vital-reassessment article.is-melhora > span { color: #168b42; }
-.vital-reassessment article.is-piora > span { color: #d74657; }
-
 .synapse-follow-up { margin: 32px 0; padding: clamp(22px, 4vw, 38px); border-radius: 28px; background: linear-gradient(145deg, #f5faff, #effff0); border: 1px solid rgba(8, 120, 249, .12); }
 .follow-up-heading { display: flex; gap: 15px; align-items: flex-start; }
 .follow-up-heading > span { display: grid; place-items: center; width: 48px; height: 48px; flex: 0 0 auto; border-radius: 15px; color: #062e54; background: #5eff66; font-size: 1.25rem; }
@@ -2567,8 +2554,6 @@
 .decision-factors article > svg { flex: 0 0 auto; margin-top: 4px; color: var(--impact-accent); }
 .decision-factors strong { color: #fff; }
 .decision-factors p { margin: 3px 0 0; color: rgba(255, 255, 255, 0.72); line-height: 1.55; }
-.patient-impact-card .vital-reassessment { margin-bottom: 0; }
-
 .detailed-clinical-analysis {
   overflow: hidden;
   margin: 28px 0;

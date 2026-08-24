@@ -378,14 +378,6 @@ const ResultadoSimulacaoPage = () => {
           </div>
         )}
 
-        {result.consequencias?.reavaliacao?.length > 0 && (
-          <div className="vital-reassessment">
-            <div><span>REAVALIAÇÃO</span><h3>Como os sinais podem evoluir</h3></div>
-            <div>{result.consequencias.reavaliacao.map((item) => (
-              <article key={item.indicador} className={`is-${item.tendencia}`}><strong>{item.indicador}</strong><small>Antes: {item.antes}</small><p>{item.depois}</p><span>{item.tendencia}</span></article>
-            ))}</div>
-          </div>
-        )}
       </section>
 
       <details className="detailed-clinical-analysis">

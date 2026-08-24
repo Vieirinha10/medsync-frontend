@@ -103,6 +103,81 @@ const TRUST_PILLARS = [
   { icon: FiCheckCircle, title: 'Aprendizado transparente', text: 'O estudante consegue entender como a nota e o feedback foram formados.' },
 ];
 
+const ACADEMIC_INSTITUTIONS = [
+  {
+    acronym: 'UFMA',
+    name: 'Universidade Federal do Maranhão',
+    category: 'Pública',
+    state: 'MA',
+    logo: '/images/institutions/ufma.png',
+  },
+  {
+    acronym: 'CEUMA',
+    name: 'Universidade CEUMA',
+    category: 'Privada',
+    state: 'MA',
+    logo: '/images/institutions/ceuma.png',
+  },
+  {
+    acronym: 'UFPI',
+    name: 'Universidade Federal do Piauí',
+    category: 'Pública',
+    state: 'PI',
+    logo: '/images/institutions/ufpi.png',
+  },
+  {
+    acronym: 'UNINOVAFAPI',
+    name: 'Centro Universitário Afya Teresina',
+    category: 'Privada',
+    state: 'PI',
+    logo: '/images/institutions/afya-teresina.png',
+  },
+  {
+    acronym: 'UEMA',
+    name: 'Universidade Estadual do Maranhão',
+    category: 'Pública',
+    state: 'MA',
+    logo: '/images/institutions/uema.png',
+  },
+  {
+    acronym: 'UNIFACID',
+    name: 'Centro Universitário UniFacid Wyden',
+    category: 'Privada',
+    state: 'PI',
+  },
+  {
+    acronym: 'UESPI',
+    name: 'Universidade Estadual do Piauí',
+    category: 'Pública',
+    state: 'PI',
+    logo: '/images/institutions/uespi.png',
+  },
+  {
+    acronym: 'UNIFSA',
+    name: 'Centro Universitário Santo Agostinho',
+    category: 'Privada',
+    state: 'PI',
+    logo: '/images/institutions/unifsa.png',
+  },
+];
+
+const AcademicInstitutionCard = ({ institution }) => (
+  <article className="academic-institution-card">
+    <span className={`academic-institution-logo${institution.logo ? '' : ' is-wordmark'}`}>
+      {institution.logo ? (
+        <img src={institution.logo} alt="" loading="lazy" decoding="async" />
+      ) : (
+        institution.acronym
+      )}
+    </span>
+    <span className="academic-institution-copy">
+      <strong>{institution.acronym}</strong>
+      <small>{institution.name}</small>
+    </span>
+    <span className="academic-institution-meta">{institution.category} · {institution.state}</span>
+  </article>
+);
+
 const HomePage = () => {
   const [studentCount, setStudentCount] = useState(null);
   const [activeSynapseCapability, setActiveSynapseCapability] = useState(0);
@@ -392,6 +467,49 @@ const HomePage = () => {
           <p>Definir critérios de reavaliação</p>
         </div>
       </div>
+    </section>
+
+    <section className="home-academic-network home-reveal" data-home-reveal aria-labelledby="academic-network-title">
+      <div className="academic-network-heading">
+        <div>
+          <span className="solid-section-index">COMUNIDADE ACADÊMICA</span>
+          <h2 id="academic-network-title">Uma comunidade médica em formação.</h2>
+        </div>
+        <p>
+          Estudantes de diferentes instituições encontram no MedSync um espaço comum para
+          praticar raciocínio clínico e transformar estudo em decisão.
+        </p>
+      </div>
+
+      <p className="academic-network-accessible-list">
+        Instituições representadas: {ACADEMIC_INSTITUTIONS.map(({ acronym }) => acronym).join(', ')}.
+      </p>
+
+      <div className="academic-network-stage" aria-hidden="true">
+        <span className="academic-signal academic-signal-one" />
+        <span className="academic-signal academic-signal-two" />
+
+        <div className="academic-marquee-row">
+          <div className="academic-marquee-track">
+            {[...ACADEMIC_INSTITUTIONS, ...ACADEMIC_INSTITUTIONS].map((institution, index) => (
+              <AcademicInstitutionCard institution={institution} key={`forward-${institution.acronym}-${index}`} />
+            ))}
+          </div>
+        </div>
+
+        <div className="academic-marquee-row is-reverse">
+          <div className="academic-marquee-track">
+            {[...ACADEMIC_INSTITUTIONS].reverse().concat([...ACADEMIC_INSTITUTIONS].reverse()).map((institution, index) => (
+              <AcademicInstitutionCard institution={institution} key={`reverse-${institution.acronym}-${index}`} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <p className="academic-network-disclaimer">
+        <FiShield aria-hidden="true" />
+        <span>A exibição indica a origem acadêmica de usuários cadastrados e não representa vínculo ou parceria institucional.</span>
+      </p>
     </section>
 
     <section className="solid-features home-reveal" data-home-reveal>

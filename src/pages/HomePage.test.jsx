@@ -44,4 +44,14 @@ describe('HomePage', () => {
     expect(screen.getByRole('heading', { name: 'A comparação segue uma estrutura clínica' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Robustez que o estudante consegue enxergar.' })).toBeInTheDocument();
   });
+
+  it('apresenta a comunidade acadêmica sem sugerir parceria institucional', () => {
+    api.getPublicStats.mockResolvedValue({ estudantes_medsync: 127 });
+
+    render(<MemoryRouter><HomePage /></MemoryRouter>);
+
+    expect(screen.getByRole('heading', { name: 'Uma comunidade médica em formação.' })).toBeInTheDocument();
+    expect(screen.getByText(/Instituições representadas: UFMA, CEUMA, UFPI/)).toBeInTheDocument();
+    expect(screen.getByText(/não representa vínculo ou parceria institucional/i)).toBeInTheDocument();
+  });
 });

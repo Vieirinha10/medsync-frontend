@@ -270,8 +270,8 @@ const HomePage = () => {
       <div className="synapse-showcase">
         <div className="synapse-network" aria-label="Capacidades da Synapse">
           <div className="synapse-network-grid" aria-hidden="true" />
-          <div className="synapse-core" aria-hidden="true">
-            <span>S</span>
+          <div className="synapse-core">
+            <img src="/images/synapse-logo.svg" alt="Logo da Synapse" />
             <small>SYNAPSE</small>
             <i /><i /><i />
           </div>

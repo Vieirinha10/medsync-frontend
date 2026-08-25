@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { visualChallenges } from './visualChallenges';
 
 describe('visualChallenges', () => {
-  it('mantém 55 desafios nativos completos após o terceiro lote', () => {
-    expect(visualChallenges).toHaveLength(55);
-    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(55);
+  it('mantém 70 desafios nativos completos após o quarto lote', () => {
+    expect(visualChallenges).toHaveLength(70);
+    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(70);
 
     visualChallenges.forEach((challenge) => {
       expect(challenge.id).toMatch(/^desafio-visual-\d{3}$/);
@@ -34,5 +34,25 @@ describe('visualChallenges', () => {
     expect(thirdBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(7);
     expect(thirdBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(6);
     expect(thirdBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(2);
+  });
+
+  it('preserva a distribuição editorial do quarto lote', () => {
+    const fourthBatch = visualChallenges.slice(55, 70);
+
+    expect(fourthBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 15 },
+        (_, index) => `desafio-visual-${String(index + 56).padStart(3, '0')}`,
+      ),
+    );
+    expect(fourthBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(7);
+    expect(fourthBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(6);
+    expect(fourthBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(2);
+    expect(fourthBatch.filter(({ category }) => category === 'Dermatologia')).toHaveLength(5);
+    expect(fourthBatch.filter(({ category }) => category === 'Oftalmologia')).toHaveLength(3);
+    expect(fourthBatch.filter(({ category }) => category === 'Otorrinolaringologia')).toHaveLength(2);
+    expect(fourthBatch.filter(({ category }) => category === 'Cavidade oral')).toHaveLength(2);
+    expect(fourthBatch.filter(({ category }) => category === 'Microbiologia')).toHaveLength(2);
+    expect(fourthBatch.filter(({ category }) => category === 'Parasitologia')).toHaveLength(1);
   });
 });

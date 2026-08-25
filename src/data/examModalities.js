@@ -15,6 +15,14 @@ const EXAM_MODALITY_INFO = {
     examClass: 'Imagem clínica',
     purpose: 'Documenta a aparência e a distribuição de lesões visíveis, ajudando a reconhecer padrões morfológicos e acompanhar sua evolução.',
   },
+  'Histopatologia cutânea': {
+    examClass: 'Microscopia anatomopatológica',
+    purpose: 'Avalia a arquitetura da epiderme e da derme e a morfologia celular para diferenciar neoplasias, inflamações e outras dermatoses.',
+  },
+  Biomicroscopia: {
+    examClass: 'Exame oftalmológico',
+    purpose: 'Utiliza a lâmpada de fenda para examinar com ampliação córnea, câmara anterior, íris e cristalino, identificando opacidades e inflamações.',
+  },
   Fundoscopia: {
     examClass: 'Exame oftalmológico',
     purpose: 'Permite observar retina, vasos e disco óptico para reconhecer alterações vasculares, hemorrágicas e do nervo óptico.',
@@ -38,6 +46,26 @@ const EXAM_MODALITY_INFO = {
   Otoscopia: {
     examClass: 'Exame otorrinolaringológico',
     purpose: 'Permite observar o conduto auditivo e a membrana timpânica para identificar inflamação, secreção, abaulamento e perfurações.',
+  },
+  'Rinoscopia anterior': {
+    examClass: 'Exame otorrinolaringológico',
+    purpose: 'Permite inspecionar septo, cornetos e porção anterior das fossas nasais para identificar edema, secreções, massas e alterações estruturais.',
+  },
+  'Fotografia clínica oral': {
+    examClass: 'Exame da cavidade oral',
+    purpose: 'Documenta mucosas, língua, gengivas e palato para reconhecer placas, úlceras, pigmentações e padrões inflamatórios ou infecciosos.',
+  },
+  'Coloração de Gram': {
+    examClass: 'Microscopia microbiológica',
+    purpose: 'Diferencia bactérias pela estrutura da parede celular e demonstra sua morfologia e agrupamento, orientando a identificação inicial do agente.',
+  },
+  'Baciloscopia (Ziehl-Neelsen)': {
+    examClass: 'Microscopia microbiológica',
+    purpose: 'Pesquisa bacilos álcool-ácido resistentes em amostras clínicas, sendo utilizada principalmente na investigação inicial da tuberculose.',
+  },
+  'Esfregaço sanguíneo': {
+    examClass: 'Microscopia parasitológica',
+    purpose: 'Permite observar parasitos e formas evolutivas no sangue periférico, auxiliando no diagnóstico e na diferenciação das espécies de malária.',
   },
   'Inspeção da orofaringe': {
     examClass: 'Exame otorrinolaringológico',

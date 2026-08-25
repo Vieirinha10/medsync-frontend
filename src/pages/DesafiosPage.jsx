@@ -26,6 +26,7 @@ const ALL_CATEGORIES = 'Todas';
 const ALL_MODALITIES = 'Todos';
 const DIFFICULTY_ORDER = ['Básico', 'Intermediário', 'Avançado'];
 const INITIAL_CHALLENGES = visualChallenges.map(enrichVisualChallenge);
+const PAGINATION_WINDOW_SIZE = 7;
 const LEGACY_CHALLENGE_IDS = {
   'pneumotorax-hipertensivo': 'desafio-visual-001',
   'fibrilacao-atrial': 'desafio-visual-002',
@@ -53,6 +54,26 @@ const getInitialChallengeIndex = () => {
   return index >= 0 ? index : 0;
 };
 
+const getPaginationItems = (total, currentIndex) => {
+  if (total <= PAGINATION_WINDOW_SIZE + 2) {
+    return Array.from({ length: total }, (_, index) => index);
+  }
+
+  const halfWindow = Math.floor(PAGINATION_WINDOW_SIZE / 2);
+  let start = Math.max(1, currentIndex - halfWindow);
+  let end = Math.min(total - 2, currentIndex + halfWindow);
+
+  if (currentIndex <= halfWindow + 1) end = PAGINATION_WINDOW_SIZE;
+  if (currentIndex >= total - halfWindow - 2) start = total - PAGINATION_WINDOW_SIZE - 1;
+
+  const items = [0];
+  if (start > 1) items.push('ellipsis-start');
+  for (let index = start; index <= end; index += 1) items.push(index);
+  if (end < total - 2) items.push('ellipsis-end');
+  items.push(total - 1);
+  return items;
+};
+
 const DesafiosPage = () => {
   const [challenges, setChallenges] = useState(INITIAL_CHALLENGES);
   const [currentIndex, setCurrentIndex] = useState(getInitialChallengeIndex);
@@ -60,7 +81,7 @@ const DesafiosPage = () => {
   const [difficultyFilter, setDifficultyFilter] = useState(ALL_DIFFICULTIES);
   const [categoryFilter, setCategoryFilter] = useState(ALL_CATEGORIES);
   const [modalityFilter, setModalityFilter] = useState(ALL_MODALITIES);
-  const [notebookMessage, setNotebookMessage] = useState('');
+  const [notebookMessages, setNotebookMessages] = useState({});
   const [answeringId, setAnsweringId] = useState(null);
   const touchStartX = useRef(null);
   const trailContext = useMemo(getTrailContext, []);
@@ -102,6 +123,7 @@ const DesafiosPage = () => {
 
   const currentChallenge = filteredChallenges[currentIndex] ?? null;
   const currentAnswer = currentChallenge ? answers[currentChallenge.id] : undefined;
+  const notebookMessage = currentChallenge ? notebookMessages[currentChallenge.id] || '' : '';
   const selectedOptionId = currentAnswer?.selectedOptionId;
   const isAnswered = Boolean(currentAnswer);
   const answeredCount = Object.keys(answers).length;
@@ -118,6 +140,10 @@ const DesafiosPage = () => {
   const hasActiveFilters = difficultyFilter !== ALL_DIFFICULTIES
     || categoryFilter !== ALL_CATEGORIES
     || modalityFilter !== ALL_MODALITIES;
+  const paginationItems = useMemo(
+    () => getPaginationItems(filteredChallenges.length, currentIndex),
+    [currentIndex, filteredChallenges.length],
+  );
 
   const goToPrevious = () => {
     setCurrentIndex((index) => Math.max(0, index - 1));
@@ -181,21 +207,25 @@ const DesafiosPage = () => {
 
   const handleAnswer = async (optionId) => {
     if (isAnswered || !currentChallenge) return;
+    const challengeId = currentChallenge.id;
     const selectedOption = currentChallenge.options.find((option) => option.id === optionId);
-    setNotebookMessage('');
-    setAnsweringId(currentChallenge.id);
+    setNotebookMessages((current) => ({ ...current, [challengeId]: '' }));
+    setAnsweringId(challengeId);
 
     let correction;
     try {
-      correction = await api.answerVisualChallenge(currentChallenge.id, optionId);
+      correction = await api.answerVisualChallenge(challengeId, optionId);
     } catch {
-      setNotebookMessage('Não foi possível corrigir agora. Tente novamente em instantes.');
+      setNotebookMessages((current) => ({
+        ...current,
+        [challengeId]: 'Não foi possível corrigir agora. Tente novamente em instantes.',
+      }));
       setAnsweringId(null);
       return;
     }
 
     const answer = { selectedOptionId: optionId, ...correction };
-    setAnswers((current) => ({ ...current, [currentChallenge.id]: answer }));
+    setAnswers((current) => ({ ...current, [challengeId]: answer }));
     setAnsweringId(null);
     const correctOption = currentChallenge.options.find(
       (option) => option.id === correction.alternativa_correta_id,
@@ -213,10 +243,16 @@ const DesafiosPage = () => {
       imagem: currentChallenge.imageSrc,
     }).then((entry) => {
       if (!correction.correta && entry) {
-        setNotebookMessage('Erro salvo automaticamente no seu Caderno de Erros.');
+        setNotebookMessages((current) => ({
+          ...current,
+          [challengeId]: 'Erro salvo automaticamente no seu Caderno de Erros.',
+        }));
       }
       if (correction.correta && entry?.status === 'dominado') {
-        setNotebookMessage('Ótimo! Este conteúdo foi marcado como dominado no seu caderno.');
+        setNotebookMessages((current) => ({
+          ...current,
+          [challengeId]: 'Ótimo! Este conteúdo foi marcado como dominado no seu caderno.',
+        }));
       }
     }).catch(() => {
       // A correção do desafio continua disponível mesmo se a sincronização falhar.
@@ -229,11 +265,15 @@ const DesafiosPage = () => {
         trailContext.activityId,
         score,
       ).then(() => {
-        setNotebookMessage((message) => (
-          message
-            ? `${message} Progresso da trilha atualizado.`
-            : 'Atividade concluída e progresso da trilha atualizado.'
-        ));
+        setNotebookMessages((current) => {
+          const message = current[challengeId] || '';
+          return {
+            ...current,
+            [challengeId]: message
+              ? `${message} Progresso da trilha atualizado.`
+              : 'Atividade concluída e progresso da trilha atualizado.',
+          };
+        });
       }).catch(() => {
         // O desafio permanece funcional se o progresso da trilha não sincronizar.
       });
@@ -262,6 +302,7 @@ const DesafiosPage = () => {
 
   const restartChallenges = () => {
     setAnswers({});
+    setNotebookMessages({});
     setCurrentIndex(0);
   };
 
@@ -389,7 +430,10 @@ const DesafiosPage = () => {
 
           {currentChallenge ? (
             <>
-              <article className="visual-challenge-card" key={currentChallenge.id}>
+              <article
+                className={`visual-challenge-card ${isAnswered ? 'is-answered' : ''}`}
+                key={currentChallenge.id}
+              >
                 <span className="visual-card-orbit" aria-hidden="true" />
                 <div
                   className="visual-challenge-media"
@@ -501,59 +545,75 @@ const DesafiosPage = () => {
                     })}
                   </div>
 
-                  {isAnswered && (
-                    <section
-                      className={`visual-answer ${currentAnswer.correta ? 'is-correct' : 'is-incorrect'}`}
-                      role="status"
-                      aria-live="polite"
-                    >
-                      <div className="visual-answer-heading">
-                        {currentAnswer.correta
-                          ? <FiCheckCircle />
-                          : <FiX />}
-                        <div>
-                          <span>
-                            {currentAnswer.correta
-                              ? 'Diagnóstico correto'
-                              : 'Ainda não. Observe os achados-chave'}
-                          </span>
-                          <h3>{currentAnswer.diagnostico_correto}</h3>
-                        </div>
-                      </div>
-
-                      <p>{currentAnswer.explicacao}</p>
-                      <div className="visual-findings">
-                        <strong>O que observar na imagem:</strong>
-                        <ul>
-                          {currentAnswer.achados_chave.map((finding) => (
-                            <li key={finding}>{finding}</li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {currentAnswer.fonte_url && (
-                        <a
-                          href={currentAnswer.fonte_url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="visual-image-source"
-                        >
-                          Imagem: {currentAnswer.fonte_credito} · {currentAnswer.fonte_licenca}
-                        </a>
-                      )}
-
-                      {currentIndex < filteredChallenges.length - 1 && (
-                        <button type="button" className="visual-continue-button" onClick={goToNext}>
-                          Próximo diagnóstico <FiArrowRight />
-                        </button>
-                      )}
-                    </section>
-                  )}
                 </div>
+
+                {isAnswered && (
+                  <section
+                    className={`visual-answer ${currentAnswer.correta ? 'is-correct' : 'is-incorrect'}`}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    <div className="visual-answer-heading">
+                      {currentAnswer.correta
+                        ? <FiCheckCircle />
+                        : <FiX />}
+                      <div>
+                        <span>
+                          {currentAnswer.correta
+                            ? 'Diagnóstico correto'
+                            : 'Ainda não. Observe os achados-chave'}
+                        </span>
+                        <h3>{currentAnswer.diagnostico_correto}</h3>
+                      </div>
+                    </div>
+
+                    <p>{currentAnswer.explicacao}</p>
+                    <div className="visual-findings">
+                      <strong>O que observar na imagem:</strong>
+                      <ul>
+                        {currentAnswer.achados_chave.map((finding) => (
+                          <li key={finding}>{finding}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {currentAnswer.fonte_url && (
+                      <a
+                        href={currentAnswer.fonte_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="visual-image-source"
+                      >
+                        Imagem: {currentAnswer.fonte_credito} · {currentAnswer.fonte_licenca}
+                      </a>
+                    )}
+
+                    {currentIndex < filteredChallenges.length - 1 && (
+                      <button type="button" className="visual-continue-button" onClick={goToNext}>
+                        Próximo diagnóstico <FiArrowRight />
+                      </button>
+                    )}
+                  </section>
+                )}
               </article>
 
               <nav className="visual-challenge-pagination" aria-label="Escolher desafio">
-                {filteredChallenges.map((challenge, index) => {
+                <button
+                  type="button"
+                  className="visual-pagination-arrow"
+                  onClick={goToPrevious}
+                  disabled={currentIndex === 0}
+                  aria-label="Desafio anterior na paginação"
+                >
+                  <FiArrowLeft />
+                </button>
+                {paginationItems.map((item) => {
+                  if (typeof item === 'string') {
+                    return <span className="visual-pagination-ellipsis" key={item}>…</span>;
+                  }
+
+                  const index = item;
+                  const challenge = filteredChallenges[index];
                   const answer = answers[challenge.id];
                   const answerState = answer
                     ? answer.correta ? 'is-correct' : 'is-incorrect'
@@ -571,6 +631,18 @@ const DesafiosPage = () => {
                     </button>
                   );
                 })}
+                <button
+                  type="button"
+                  className="visual-pagination-arrow"
+                  onClick={goToNext}
+                  disabled={currentIndex === filteredChallenges.length - 1}
+                  aria-label="Próximo desafio na paginação"
+                >
+                  <FiArrowRight />
+                </button>
+                <span className="visual-pagination-status">
+                  {currentIndex + 1} de {filteredChallenges.length}
+                </span>
               </nav>
 
               {visibleAnsweredCount === filteredChallenges.length && filteredChallenges.length > 0 && (

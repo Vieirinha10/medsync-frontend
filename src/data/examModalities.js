@@ -135,6 +135,30 @@ const EXAM_MODALITY_INFO = {
     examClass: 'Prova de função pulmonar',
     purpose: 'Mede volumes e fluxos respiratórios para identificar padrões ventilatórios obstrutivos, restritivos e alterações de vias aéreas superiores.',
   },
+  'Radiografia de abdome': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'Avalia o padrão de gás intestinal, níveis hidroaéreos, calcificações e ar livre, auxiliando na investigação inicial de dor, distensão e obstrução abdominal.',
+  },
+  Cistoscopia: {
+    examClass: 'Endoscopia urológica',
+    purpose: 'Permite inspecionar diretamente uretra e bexiga para reconhecer tumores, cálculos, sangramento e alterações inflamatórias da mucosa.',
+  },
+  'Ultrassonografia com Doppler': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'Combina a anatomia em modo bidimensional com a avaliação do fluxo sanguíneo, sendo útil em emergências vasculares testiculares e ovarianas.',
+  },
+  'Ultrassonografia transvaginal': {
+    examClass: 'Diagnóstico ginecológico por imagem',
+    purpose: 'Avalia útero, endométrio, ovários e anexos em alta resolução, incluindo a localização da gestação inicial e massas pélvicas.',
+  },
+  'Ultrassonografia obstétrica': {
+    examClass: 'Diagnóstico obstétrico por imagem',
+    purpose: 'Avalia feto, placenta, líquido amniótico e colo uterino para acompanhar a gestação e reconhecer complicações obstétricas.',
+  },
+  'Endoscopia digestiva alta': {
+    examClass: 'Endoscopia digestiva',
+    purpose: 'Inspeciona diretamente esôfago, estômago e duodeno para identificar úlceras, varizes, inflamações, sangramento e neoplasias.',
+  },
 };
 
 const FALLBACK_INFO = {

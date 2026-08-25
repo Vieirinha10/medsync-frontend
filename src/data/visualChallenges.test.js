@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { visualChallenges } from './visualChallenges';
 
 describe('visualChallenges', () => {
-  it('mantém 70 desafios nativos completos após o quarto lote', () => {
-    expect(visualChallenges).toHaveLength(70);
-    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(70);
+  it('mantém 85 desafios nativos completos após o quinto lote', () => {
+    expect(visualChallenges).toHaveLength(85);
+    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(85);
 
     visualChallenges.forEach((challenge) => {
       expect(challenge.id).toMatch(/^desafio-visual-\d{3}$/);
@@ -54,5 +54,24 @@ describe('visualChallenges', () => {
     expect(fourthBatch.filter(({ category }) => category === 'Cavidade oral')).toHaveLength(2);
     expect(fourthBatch.filter(({ category }) => category === 'Microbiologia')).toHaveLength(2);
     expect(fourthBatch.filter(({ category }) => category === 'Parasitologia')).toHaveLength(1);
+  });
+
+  it('preserva a distribuição editorial do quinto lote', () => {
+    const fifthBatch = visualChallenges.slice(70, 85);
+
+    expect(fifthBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 15 },
+        (_, index) => `desafio-visual-${String(index + 71).padStart(3, '0')}`,
+      ),
+    );
+    expect(fifthBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(7);
+    expect(fifthBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(6);
+    expect(fifthBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(2);
+    expect(fifthBatch.filter(({ category }) => category === 'Radiologia abdominal')).toHaveLength(4);
+    expect(fifthBatch.filter(({ category }) => category === 'Ultrassonografia')).toHaveLength(3);
+    expect(fifthBatch.filter(({ category }) => category === 'Urologia')).toHaveLength(3);
+    expect(fifthBatch.filter(({ category }) => category === 'Ginecologia e Obstetrícia')).toHaveLength(3);
+    expect(fifthBatch.filter(({ category }) => category === 'Endoscopia digestiva')).toHaveLength(2);
   });
 });

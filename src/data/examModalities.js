@@ -163,6 +163,22 @@ const EXAM_MODALITY_INFO = {
     examClass: 'Endoscopia digestiva',
     purpose: 'Inspeciona diretamente esôfago, estômago e duodeno para identificar úlceras, varizes, inflamações, sangramento e neoplasias.',
   },
+  'Ultrassonografia pediátrica': {
+    examClass: 'Diagnóstico pediátrico por imagem',
+    purpose: 'Avalia estruturas abdominais de crianças sem radiação, sendo especialmente útil para reconhecer invaginação intestinal e alterações do piloro.',
+  },
+  Citologia: {
+    examClass: 'Microscopia citopatológica',
+    purpose: 'Analisa células isoladas ou agrupadas para reconhecer padrões de inflamação, atipia e neoplasia.',
+  },
+  Histopatologia: {
+    examClass: 'Microscopia anatomopatológica',
+    purpose: 'Avalia arquitetura tecidual e morfologia celular em lâminas coradas para identificar inflamações, displasias e neoplasias.',
+  },
+  'Microscopia urinária': {
+    examClass: 'Microscopia laboratorial',
+    purpose: 'Examina o sedimento urinário para identificar células, cilindros, microrganismos e cristais que orientam diagnósticos renais, metabólicos e toxicológicos.',
+  },
 };
 
 const FALLBACK_INFO = {

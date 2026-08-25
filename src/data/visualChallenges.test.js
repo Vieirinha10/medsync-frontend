@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { visualChallenges } from './visualChallenges';
 
 describe('visualChallenges', () => {
-  it('mantém 85 desafios nativos completos após o quinto lote', () => {
-    expect(visualChallenges).toHaveLength(85);
-    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(85);
+  it('mantém 100 desafios nativos completos após o sexto lote', () => {
+    expect(visualChallenges).toHaveLength(100);
+    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(100);
 
     visualChallenges.forEach((challenge) => {
       expect(challenge.id).toMatch(/^desafio-visual-\d{3}$/);
@@ -73,5 +73,25 @@ describe('visualChallenges', () => {
     expect(fifthBatch.filter(({ category }) => category === 'Urologia')).toHaveLength(3);
     expect(fifthBatch.filter(({ category }) => category === 'Ginecologia e Obstetrícia')).toHaveLength(3);
     expect(fifthBatch.filter(({ category }) => category === 'Endoscopia digestiva')).toHaveLength(2);
+  });
+
+  it('preserva a distribuição editorial do sexto lote', () => {
+    const sixthBatch = visualChallenges.slice(85, 100);
+
+    expect(sixthBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 15 },
+        (_, index) => `desafio-visual-${String(index + 86).padStart(3, '0')}`,
+      ),
+    );
+    expect(sixthBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(7);
+    expect(sixthBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(6);
+    expect(sixthBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(2);
+    expect(sixthBatch.filter(({ category }) => category === 'Pediatria')).toHaveLength(4);
+    expect(sixthBatch.filter(({ category }) => category === 'Hematologia')).toHaveLength(3);
+    expect(sixthBatch.filter(({ category }) => category === 'Histopatologia')).toHaveLength(3);
+    expect(sixthBatch.filter(({ category }) => category === 'Infectologia')).toHaveLength(2);
+    expect(sixthBatch.filter(({ category }) => category === 'Endocrinologia')).toHaveLength(2);
+    expect(sixthBatch.filter(({ category }) => category === 'Toxicologia')).toHaveLength(1);
   });
 });

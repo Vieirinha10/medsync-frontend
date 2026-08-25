@@ -31,4 +31,10 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 - `desafio-visual-069.webp`: Ajay Kumar Chaurasiya, via Wikimedia Commons — CC0.
 - `desafio-visual-070.webp`: Microrao, via Wikimedia Commons — CC BY-SA 4.0.
 
+## Lote 5 — abdome, urinário e saúde da mulher
+
+As imagens 071–085 são ilustrações educacionais originais do MedSync, produzidas sem dados de pacientes e disponibilizadas sob CC BY 4.0. Elas representam os sinais visuais clássicos descritos nos respectivos desafios.
+
+- `desafio-visual-071.webp` a `desafio-visual-085.webp`: MedSync — CC BY 4.0.
+
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

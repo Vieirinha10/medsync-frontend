@@ -1,0 +1,40 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const outDir = '/tmp/medsync-batch-5-visuals';
+const frame = (content, background = '#090b0e') => `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <defs>
+    <filter id="grain"><feTurbulence baseFrequency=".7" numOctaves="2" seed="7" result="n"/><feBlend in="SourceGraphic" in2="n" mode="soft-light"/></filter>
+    <radialGradient id="scope"><stop stop-color="#e39a71"/><stop offset=".72" stop-color="#a84f48"/><stop offset="1" stop-color="#401d27"/></radialGradient>
+    <linearGradient id="us" x2="0" y2="1"><stop stop-color="#30363a"/><stop offset="1" stop-color="#080a0c"/></linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="${background}"/>
+  ${content}
+</svg>`;
+
+const ctBase = (inside) => frame(`<g filter="url(#grain)"><ellipse cx="600" cy="450" rx="385" ry="330" fill="#a8a8a8"/><ellipse cx="600" cy="450" rx="335" ry="280" fill="#353535"/><ellipse cx="600" cy="450" rx="72" ry="62" fill="#dedede"/><circle cx="600" cy="450" r="25" fill="#3b3b3b"/>${inside}</g>`);
+const usBase = (inside) => frame(`<path d="M210 70 Q600 18 990 70 L1080 850 H120 Z" fill="url(#us)" stroke="#bfc3c5" stroke-width="6"/><g filter="url(#grain)">${inside}</g>`);
+const scopeBase = (inside) => frame(`<circle cx="600" cy="450" r="390" fill="url(#scope)"/><circle cx="600" cy="450" r="370" fill="none" stroke="#f5c09b" stroke-opacity=".35" stroke-width="16"/><g filter="url(#grain)">${inside}</g>`, '#080608');
+
+const visuals = {
+  71: frame(`<g opacity=".92" filter="url(#grain)"><path d="M355 80 Q245 280 285 760 Q600 845 915 760 Q955 280 845 80Z" fill="#9ba0a1"/><g fill="none" stroke="#e7e7df" stroke-width="24" stroke-linecap="round"><path d="M390 260 Q610 175 805 270 Q920 360 790 430 Q590 500 400 410 Q300 350 390 260"/><path d="M365 455 Q555 390 790 470 Q900 540 805 620 Q600 700 390 615 Q285 540 365 455"/></g><g stroke="#111" stroke-width="10"><path d="M330 336h210"/><path d="M610 380h230"/><path d="M350 535h220"/><path d="M640 575h210"/></g></g>`),
+  72: ctBase(`<path d="M360 385 Q455 310 585 365 Q720 420 850 365" fill="none" stroke="#c9c9c9" stroke-width="72"/><path d="M350 320 Q500 265 640 330 Q780 390 900 310" fill="none" stroke="#eee" stroke-opacity=".34" stroke-width="85" stroke-dasharray="9 18"/>`),
+  73: ctBase(`<path d="M330 560 Q430 410 560 550 Q690 690 820 520" fill="none" stroke="#d1d1d1" stroke-width="70"/><g fill="#202020" stroke="#efefef" stroke-width="12"><circle cx="385" cy="515" r="24"/><circle cx="450" cy="470" r="20"/><circle cx="780" cy="545" r="22"/></g><path d="M315 600 Q450 735 610 620" fill="none" stroke="#f2f2f2" stroke-opacity=".35" stroke-width="60" stroke-dasharray="8 14"/>`),
+  74: ctBase(`<g fill="none" stroke="#d7d7d7" stroke-width="58"><ellipse cx="430" cy="360" rx="115" ry="70"/><ellipse cx="780" cy="370" rx="120" ry="76"/><ellipse cx="460" cy="610" rx="120" ry="74"/><ellipse cx="765" cy="610" rx="115" ry="68"/></g><g fill="#080808"><circle cx="372" cy="333" r="13"/><circle cx="425" cy="310" r="12"/><circle cx="480" cy="325" r="14"/><circle cx="720" cy="340" r="12"/><circle cx="785" cy="315" r="13"/><circle cx="830" cy="352" r="12"/><circle cx="735" cy="580" r="14"/><circle cx="800" cy="600" r="12"/></g><path d="M650 235 Q760 185 875 260" fill="none" stroke="#050505" stroke-width="17" stroke-dasharray="5 16"/>`),
+  75: usBase(`<ellipse cx="600" cy="470" rx="230" ry="135" fill="#090a0b" stroke="#d5d9d7" stroke-width="28"/><circle cx="515" cy="505" r="53" fill="#f1f1e5"/><path d="M515 555 L430 810 H600 Z" fill="#050505"/><path d="M380 630 Q600 700 820 620" fill="none" stroke="#d7d7d7" stroke-opacity=".35" stroke-width="18"/>`),
+  76: usBase(`<path d="M260 210 Q590 120 925 240 Q900 600 720 770 Q430 720 250 510Z" fill="#b8b8b3" opacity=".78"/><g fill="none" stroke="#eaeae2" stroke-opacity=".58" stroke-width="11"><path d="M330 250L800 650"/><path d="M290 350L690 690"/><path d="M470 190L890 530"/></g><ellipse cx="700" cy="520" rx="105" ry="150" fill="#303336" opacity=".55"/>`),
+  77: usBase(`<path d="M320 210 Q690 120 885 390 Q790 650 430 720 Q250 520 320 210Z" fill="#777d7d" stroke="#d7dddd" stroke-width="10"/><line x1="320" y1="210" x2="430" y2="720" stroke="#f4f4e8" stroke-width="5"/><g stroke="#f4f4e8" stroke-width="5"><path d="M300 220h55M292 205l20 30M418 694h55M435 680l-18 32"/></g>`),
+  78: frame(`<g filter="url(#grain)"><path d="M330 70 Q230 300 300 800 H900 Q970 300 870 70Z" fill="#777d80"/><path d="M600 100v620" stroke="#e7e7e0" stroke-width="68" stroke-dasharray="42 12"/><path d="M420 285 Q350 345 395 470 Q420 570 475 655" fill="none" stroke="#f5f0d6" stroke-width="42"/><path d="M398 355l-80-65M408 425l-95 25M440 510l-85 70" stroke="#f5f0d6" stroke-width="34" stroke-linecap="round"/><path d="M275 740Q600 620 925 740" fill="none" stroke="#d9d9d4" stroke-width="48"/></g>`),
+  79: scopeBase(`<path d="M260 560 Q330 220 660 250 Q910 270 950 555 Q780 515 650 625 Q430 760 260 560Z" fill="#e9b59b"/><g fill="#d97679" stroke="#7d2635" stroke-width="12"><circle cx="520" cy="420" r="70"/><circle cx="640" cy="365" r="78"/><circle cx="720" cy="485" r="90"/><circle cx="570" cy="540" r="85"/></g><g fill="#f2c3aa"><circle cx="505" cy="400" r="20"/><circle cx="620" cy="345" r="19"/><circle cx="700" cy="465" r="22"/></g>`),
+  80: usBase(`<ellipse cx="440" cy="470" rx="180" ry="230" fill="#8e9290" stroke="#d9dcda" stroke-width="9"/><ellipse cx="780" cy="470" rx="180" ry="230" fill="#6d7473" stroke="#d9dcda" stroke-width="9"/><g fill="#d63f55" opacity=".9"><circle cx="390" cy="390" r="18"/><circle cx="470" cy="460" r="20"/><circle cx="410" cy="540" r="17"/></g><g fill="#3789cf"><circle cx="500" cy="360" r="17"/><circle cx="385" cy="490" r="15"/></g><path d="M695 360Q780 300 860 370M700 500Q790 445 850 520" fill="none" stroke="#b8bcba" stroke-width="13"/>`),
+  81: usBase(`<ellipse cx="630" cy="465" rx="255" ry="185" fill="#4f5454" stroke="#c8ccca" stroke-width="10"/><ellipse cx="455" cy="510" rx="115" ry="102" fill="#111" stroke="#e2e5e2" stroke-width="17"/><circle cx="455" cy="510" r="43" fill="none" stroke="#f3f3e9" stroke-width="13"/><path d="M690 390Q800 430 830 545" fill="none" stroke="#aeb3b1" stroke-width="20"/>`),
+  82: usBase(`<path d="M380 230 Q650 110 860 330 Q900 590 650 770 Q400 700 330 500Z" fill="#595d5e" stroke="#c5c9c7" stroke-width="8"/><ellipse cx="650" cy="470" rx="120" ry="165" fill="#17191a"/><path d="M330 565 Q590 430 870 560 L850 720 Q570 610 350 720Z" fill="#b3b6b3"/><path d="M520 690 Q600 595 690 690" fill="none" stroke="#ededdf" stroke-width="18"/>`),
+  83: usBase(`<ellipse cx="620" cy="475" rx="285" ry="225" fill="#707675" stroke="#d8dcda" stroke-width="9"/><g fill="#101213" stroke="#bfc4c2" stroke-width="7"><circle cx="450" cy="390" r="48"/><circle cx="540" cy="325" r="45"/><circle cx="690" cy="315" r="48"/><circle cx="800" cy="395" r="51"/><circle cx="810" cy="530" r="47"/><circle cx="705" cy="625" r="44"/><circle cx="555" cy="635" r="49"/><circle cx="430" cy="535" r="45"/></g><path d="M535 445Q625 385 705 475Q620 560 535 445" fill="none" stroke="#b9435b" stroke-width="14"/>`),
+  84: scopeBase(`<path d="M180 495 Q420 175 790 245 Q1020 315 970 610 Q760 760 500 690 Q285 660 180 495Z" fill="#d7866d"/><ellipse cx="610" cy="470" rx="210" ry="160" fill="#61313b" stroke="#f1c8a1" stroke-width="34"/><ellipse cx="610" cy="475" rx="128" ry="88" fill="#efe0a7"/><path d="M470 405Q600 325 750 410" fill="none" stroke="#f7d7ba" stroke-width="18"/>`),
+  85: scopeBase(`<ellipse cx="600" cy="450" rx="255" ry="315" fill="#572631"/><g fill="none" stroke="#b45a68" stroke-width="65" stroke-linecap="round"><path d="M430 205Q520 330 450 710"/><path d="M595 165Q665 340 590 740"/><path d="M755 215Q690 370 770 690"/></g><g fill="none" stroke="#ec8e82" stroke-width="12"><path d="M400 300l105 18M550 390l100 10M700 500l105 15M405 590l100 8"/></g>`),
+};
+
+fs.mkdirSync(outDir, { recursive: true });
+for (const [id, svg] of Object.entries(visuals)) {
+  fs.writeFileSync(path.join(outDir, `desafio-visual-${id.padStart(3, '0')}.svg`), svg);
+}

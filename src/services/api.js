@@ -20,13 +20,25 @@ export class ApiError extends Error {
   }
 }
 
-export const getAuthToken = () => localStorage.getItem(AUTH_TOKEN_KEY);
+export const getAuthToken = () => {
+  const sessionToken = sessionStorage.getItem(AUTH_TOKEN_KEY);
+  if (sessionToken) return sessionToken;
+
+  const legacyToken = localStorage.getItem(AUTH_TOKEN_KEY);
+  if (legacyToken) {
+    sessionStorage.setItem(AUTH_TOKEN_KEY, legacyToken);
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+  }
+  return legacyToken;
+};
 
 export const setAuthToken = (token) => {
-  localStorage.setItem(AUTH_TOKEN_KEY, token);
+  sessionStorage.setItem(AUTH_TOKEN_KEY, token);
+  localStorage.removeItem(AUTH_TOKEN_KEY);
 };
 
 export const clearAuthToken = () => {
+  sessionStorage.removeItem(AUTH_TOKEN_KEY);
   localStorage.removeItem(AUTH_TOKEN_KEY);
 };
 

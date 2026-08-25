@@ -4,7 +4,16 @@ import { api, getAuthToken, setAuthToken } from './api';
 describe('serviço da API', () => {
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     vi.restoreAllMocks();
+  });
+
+  it('migra sessões antigas para o armazenamento da aba', () => {
+    localStorage.setItem('authToken', 'token-legado');
+
+    expect(getAuthToken()).toBe('token-legado');
+    expect(sessionStorage.getItem('authToken')).toBe('token-legado');
+    expect(localStorage.getItem('authToken')).toBeNull();
   });
 
   it('envia o token nas rotas protegidas', async () => {

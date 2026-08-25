@@ -49,6 +49,10 @@ describe('DesafiosPage', () => {
     expect(await screen.findByText('Ainda não. Observe os achados-chave')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Pneumotórax hipertensivo à esquerda' })).toBeInTheDocument();
     expect(screen.getByText(/ausência de trama vascular periférica/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /^A\s*Pneumonia lobar$/ })).toHaveClass('is-incorrect');
+    expect(screen.getByRole('button', {
+      name: /^C\s*Pneumotórax hipertensivo à esquerda$/,
+    })).toHaveClass('is-correct');
 
     fireEvent.click(screen.getByRole('button', { name: 'Próximo desafio' }));
     expect(screen.getByText('Qual ritmo está representado neste eletrocardiograma?')).toBeInTheDocument();
@@ -99,6 +103,35 @@ describe('DesafiosPage', () => {
       resposta_correta: 'Pneumotórax hipertensivo à esquerda',
     })));
     expect(screen.getByText(/Erro salvo automaticamente/)).toBeInTheDocument();
+  });
+
+  it('mantém o aviso do Caderno de Erros apenas no desafio respondido', async () => {
+    let finishRecording;
+    api.recordVisualChallengeAttempt.mockReturnValue(new Promise((resolve) => {
+      finishRecording = resolve;
+    }));
+    render(<DesafiosPage />);
+
+    fireEvent.click(screen.getByRole('button', { name: /^A\s*Pneumonia lobar$/ }));
+    await screen.findByText('Ainda não. Observe os achados-chave');
+    fireEvent.click(screen.getByRole('button', { name: 'Próximo desafio' }));
+
+    finishRecording({ id: 1, status: 'pendente' });
+    fireEvent.click(screen.getByRole('button', { name: 'Desafio anterior' }));
+    expect(await screen.findByText(/Erro salvo automaticamente/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Próximo desafio' }));
+    expect(screen.queryByText(/Erro salvo automaticamente/)).not.toBeInTheDocument();
+  });
+
+  it('resume a navegação numérica em uma janela organizada', () => {
+    render(<DesafiosPage />);
+
+    const numberedButtons = screen.getAllByRole('button', { name: /Ir para o desafio/i });
+    expect(numberedButtons).toHaveLength(9);
+    expect(screen.getByRole('button', { name: /Ir para o desafio 100:/i })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Ir para o desafio 50:/i })).not.toBeInTheDocument();
+    expect(screen.getByText('1 de 100')).toBeInTheDocument();
   });
 
   it('abre o desafio indicado e registra a conclusão da atividade da trilha', async () => {

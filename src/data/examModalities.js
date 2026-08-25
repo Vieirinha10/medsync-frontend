@@ -51,6 +51,30 @@ const EXAM_MODALITY_INFO = {
     examClass: 'Diagnóstico por imagem',
     purpose: 'Demonstra alinhamento ósseo e articular do punho, sendo utilizada principalmente na avaliação de fraturas e luxações.',
   },
+  'Angiotomografia de tórax': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'Avalia as artérias pulmonares após contraste intravenoso e permite identificar falhas de enchimento compatíveis com embolia pulmonar.',
+  },
+  'Angiotomografia da aorta': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'Demonstra a luz e a parede da aorta após contraste, permitindo reconhecer aneurismas, rupturas, flap íntimal e dissecção.',
+  },
+  'Ecocardiografia à beira-leito': {
+    examClass: 'Ultrassonografia cardíaca',
+    purpose: 'Avalia rapidamente câmaras cardíacas, contratilidade, volume intravascular e presença de líquido pericárdico no ponto de atendimento.',
+  },
+  'Ultrassonografia pulmonar': {
+    examClass: 'Ultrassonografia à beira-leito',
+    purpose: 'Analisa pleura e artefatos pulmonares para reconhecer padrões de edema intersticial, consolidação, derrame pleural e pneumotórax.',
+  },
+  'Ultrassonografia vascular': {
+    examClass: 'Diagnóstico vascular',
+    purpose: 'Avalia vasos em modo bidimensional e Doppler, incluindo compressibilidade venosa, fluxo e presença de trombos.',
+  },
+  Espirometria: {
+    examClass: 'Prova de função pulmonar',
+    purpose: 'Mede volumes e fluxos respiratórios para identificar padrões ventilatórios obstrutivos, restritivos e alterações de vias aéreas superiores.',
+  },
 };
 
 const FALLBACK_INFO = {

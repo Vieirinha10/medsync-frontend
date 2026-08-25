@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { visualChallenges } from './visualChallenges';
 
 describe('visualChallenges', () => {
-  it('mantém 25 desafios nativos completos após o primeiro lote', () => {
-    expect(visualChallenges).toHaveLength(25);
-    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(25);
+  it('mantém 40 desafios nativos completos após o segundo lote', () => {
+    expect(visualChallenges).toHaveLength(40);
+    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(40);
 
     visualChallenges.forEach((challenge) => {
       expect(challenge.id).toMatch(/^desafio-visual-\d{3}$/);

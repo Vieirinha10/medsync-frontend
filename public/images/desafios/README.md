@@ -49,4 +49,22 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 - `desafio-visual-084.webp`: Samir, via Wikimedia Commons — CC BY-SA 3.0.
 - `desafio-visual-085.webp`: Jeremias, via Wikimedia Commons — CC BY-SA 4.0.
 
+## Lote 6 — pediatria, hematologia e patologia
+
+- `desafio-visual-086.webp`: Alma Jula, Matti Waris, Kalle Kantola, Ville Peltola, Maria Söderlund-Venermo, Klaus Hedman e Olli Ruuskanen, via Wikimedia Commons — domínio público.
+- `desafio-visual-087.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-088.webp`: Cerevisae, via Wikimedia Commons — CC BY-SA 4.0; painel ultrassonográfico recortado sem legenda diagnóstica.
+- `desafio-visual-089.webp`: Laughlin Dawes, via Wikimedia Commons — CC BY-SA 4.0; área técnica inferior recortada.
+- `desafio-visual-090.webp`: Ed Uthman, MD, via Wikimedia Commons — CC BY 2.0.
+- `desafio-visual-091.webp`: Viv Caruna, via Wikimedia Commons — CC BY 2.0.
+- `desafio-visual-092.webp`: Mikael Häggström, M.D., via Wikimedia Commons — CC0 1.0.
+- `desafio-visual-093.webp`: Ed Uthman, MD, via Wikimedia Commons — CC BY 2.0.
+- `desafio-visual-094.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-095.webp`: Ed Uthman, MD, via Wikimedia Commons — CC BY-SA 2.0.
+- `desafio-visual-096.webp`: Michael Geary, via Wikimedia Commons — domínio público.
+- `desafio-visual-097.webp`: Masryyy, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-098.webp`: Jonathan Trobe, M.D., University of Michigan Kellogg Eye Center, via Wikimedia Commons — CC BY 3.0.
+- `desafio-visual-099.webp`: Madhero88, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-100.webp`: Ajay Kumar Chaurasiya, via Wikimedia Commons — CC BY-SA 4.0.
+
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

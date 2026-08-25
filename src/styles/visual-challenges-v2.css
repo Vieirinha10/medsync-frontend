@@ -637,6 +637,10 @@
   height: 36px;
 }
 
+.visual-challenge-pagination .visual-pagination-number.is-wide {
+  width: 42px;
+}
+
 .visual-challenge-pagination .visual-pagination-arrow {
   border-color: rgba(8, 113, 198, 0.16);
   background: #edf7fc;

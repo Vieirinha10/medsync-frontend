@@ -623,7 +623,7 @@ const DesafiosPage = () => {
                       type="button"
                       key={challenge.id}
                       onClick={() => setCurrentIndex(index)}
-                      className={`${index === currentIndex ? 'is-active' : ''} ${answerState}`}
+                      className={`visual-pagination-number ${index + 1 >= 100 ? 'is-wide' : ''} ${index === currentIndex ? 'is-active' : ''} ${answerState}`}
                       aria-label={`Ir para o desafio ${index + 1}: ${challenge.modality}`}
                       aria-current={index === currentIndex ? 'step' : undefined}
                     >

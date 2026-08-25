@@ -1175,8 +1175,8 @@ export const visualChallenges = [
     modality: 'Cistoscopia',
     difficulty: 'Básico',
     imageSrc: '/images/desafios/desafio-visual-079.webp',
-    imageAlt: 'Cistoscopia com lesão papilífera irregular projetando-se para a luz da bexiga',
-    question: 'Qual lesão é mais provável diante deste aspecto papilífero na bexiga?',
+    imageAlt: 'Cistoscopia comparativa sob luz branca e luz azul, com área plana fluorescente em rosa',
+    question: 'Qual lesão vesical é evidenciada pela fluorescência sob luz azul?',
     options: [
       { id: 'tumor-urotelial-bexiga', label: 'Tumor urotelial da bexiga' },
       { id: 'cistite-intersticial', label: 'Cistite intersticial' },
@@ -1217,11 +1217,11 @@ export const visualChallenges = [
   {
     id: 'desafio-visual-082',
     category: 'Ginecologia e Obstetrícia',
-    modality: 'Ultrassonografia obstétrica',
+    modality: 'Ilustração anatômica obstétrica',
     difficulty: 'Intermediário',
     imageSrc: '/images/desafios/desafio-visual-082.webp',
-    imageAlt: 'Ultrassonografia obstétrica mostrando placenta recobrindo o orifício interno do colo uterino',
-    question: 'Qual alteração placentária está representada nesta ultrassonografia?',
+    imageAlt: 'Ilustração anatômica mostrando placenta implantada no segmento inferior e recobrindo o colo uterino',
+    question: 'Qual alteração placentária está representada nesta ilustração?',
     options: [
       { id: 'placenta-previa', label: 'Placenta prévia' },
       { id: 'descolamento-prematuro', label: 'Descolamento prematuro da placenta' },

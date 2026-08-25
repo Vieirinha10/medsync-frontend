@@ -33,8 +33,20 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 
 ## Lote 5 — abdome, urinário e saúde da mulher
 
-As imagens 071–085 são ilustrações educacionais originais do MedSync, produzidas sem dados de pacientes e disponibilizadas sob CC BY 4.0. Elas representam os sinais visuais clássicos descritos nos respectivos desafios.
-
-- `desafio-visual-071.webp` a `desafio-visual-085.webp`: MedSync — CC BY 4.0.
+- `desafio-visual-071.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-072.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-073.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-074.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-075.webp`: Cerevisae, via Wikimedia Commons — CC BY-SA 4.0; rótulos textuais removidos para uso no desafio.
+- `desafio-visual-076.webp`: Cerevisae, via Wikimedia Commons — CC BY-SA 4.0; rótulos textuais removidos para uso no desafio.
+- `desafio-visual-077.webp`: Mikael Häggström, M.D., via Wikimedia Commons — CC0 1.0.
+- `desafio-visual-078.webp`: Nevit Dilmen, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-079.webp`: B. Geavlete, R. Mulțescu, D. Georgescu, M. Jecu e P. Geavlete, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-080.webp`: Chee-Wai Mak e Wen-Sheng Tzeng, via Wikimedia Commons — CC BY 3.0.
+- `desafio-visual-081.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 3.0; recorte sem identificação do diagnóstico.
+- `desafio-visual-082.webp`: OpenStax College, via Wikimedia Commons — CC BY 3.0; painel anatômico recortado sem legenda diagnóstica.
+- `desafio-visual-083.webp`: Nevit Dilmen, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-084.webp`: Samir, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-085.webp`: Jeremias, via Wikimedia Commons — CC BY-SA 4.0.
 
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

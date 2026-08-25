@@ -155,6 +155,10 @@ const EXAM_MODALITY_INFO = {
     examClass: 'Diagnóstico obstétrico por imagem',
     purpose: 'Avalia feto, placenta, líquido amniótico e colo uterino para acompanhar a gestação e reconhecer complicações obstétricas.',
   },
+  'Ilustração anatômica obstétrica': {
+    examClass: 'Recurso educacional anatômico',
+    purpose: 'Representa relações anatômicas entre feto, placenta, segmento uterino inferior e colo para facilitar o reconhecimento de complicações obstétricas.',
+  },
   'Endoscopia digestiva alta': {
     examClass: 'Endoscopia digestiva',
     purpose: 'Inspeciona diretamente esôfago, estômago e duodeno para identificar úlceras, varizes, inflamações, sangramento e neoplasias.',

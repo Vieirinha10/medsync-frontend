@@ -13,4 +13,22 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 - `desafio-visual-009.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 3.0.
 - `desafio-visual-010.webp`: National Cancer Institute, via Wikimedia Commons — domínio público.
 
+## Lote 4 — pele, sentidos e infecções
+
+- `desafio-visual-056.webp`: George Henry Fox, via Wikimedia Commons — domínio público.
+- `desafio-visual-057.webp`: Eisfelder, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-058.webp`: Ed Uthman, MD, via Wikimedia Commons — CC BY-SA 2.0.
+- `desafio-visual-059.webp`: Thomas Habif, MD, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-060.webp`: Aceofhearts1968, via Wikimedia Commons — domínio público.
+- `desafio-visual-061.webp`: Rakesh Ahuja, MD, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-062.webp`: Snoop, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-063.webp`: Gopal Bisht, MD, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-064.webp`: Michael Hawke, MD, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-065.webp`: MathieuMD, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-066.webp`: CDC e Sol Silverman Jr., DDS, via Wikimedia Commons — domínio público.
+- `desafio-visual-067.webp`: Farhan 9909, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-068.webp`: Graham Beards, MD, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-069.webp`: Ajay Kumar Chaurasiya, via Wikimedia Commons — CC0.
+- `desafio-visual-070.webp`: Microrao, via Wikimedia Commons — CC BY-SA 4.0.
+
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

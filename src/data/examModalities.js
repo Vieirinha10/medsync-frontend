@@ -51,6 +51,38 @@ const EXAM_MODALITY_INFO = {
     examClass: 'Diagnóstico por imagem',
     purpose: 'Demonstra alinhamento ósseo e articular do punho, sendo utilizada principalmente na avaliação de fraturas e luxações.',
   },
+  'Ressonância magnética cerebral (SWI)': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'A sequência ponderada por suscetibilidade destaca sangue e produtos de degradação da hemoglobina, sendo útil para identificar micro-hemorragias traumáticas.',
+  },
+  'Radiografia do ombro': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'Avalia congruência glenoumeral, articulação acromioclavicular e estruturas ósseas do ombro em casos de trauma, dor e deformidade.',
+  },
+  'Radiografia de pelve': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'Examina o anel pélvico e os quadris para reconhecer fraturas, luxações e alterações do alinhamento articular.',
+  },
+  'Radiografia do pé': {
+    examClass: 'Diagnóstico por imagem',
+    purpose: 'Demonstra ossos e articulações do pé, incluindo o alinhamento tarsometatarsal, para investigar fraturas e luxações traumáticas.',
+  },
+  'Inspeção retroauricular': {
+    examClass: 'Exame físico visual',
+    purpose: 'Avalia pele e tecidos atrás da orelha em busca de equimose, edema, inflamação e sinais externos associados ao trauma craniano.',
+  },
+  'Exame físico da mão': {
+    examClass: 'Exame neurológico e musculoesquelético',
+    purpose: 'Observa postura, trofismo e movimentos dos dedos para reconhecer deformidades e padrões de comprometimento nervoso periférico.',
+  },
+  'Ultrassonografia FAST': {
+    examClass: 'Ultrassonografia à beira-leito',
+    purpose: 'Pesquisa rapidamente líquido livre intraperitoneal e pericárdico em pacientes traumatizados, orientando prioridades da avaliação inicial.',
+  },
+  'Exame neuro-oftalmológico': {
+    examClass: 'Exame neurológico ocular',
+    purpose: 'Avalia pálpebras, pupilas, posição ocular e movimentos extrínsecos para localizar alterações de nervos cranianos e vias oculomotoras.',
+  },
   'Angiotomografia de tórax': {
     examClass: 'Diagnóstico por imagem',
     purpose: 'Avalia as artérias pulmonares após contraste intravenoso e permite identificar falhas de enchimento compatíveis com embolia pulmonar.',

@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { visualChallenges } from './visualChallenges';
 
 describe('visualChallenges', () => {
-  it('mantém 40 desafios nativos completos após o segundo lote', () => {
-    expect(visualChallenges).toHaveLength(40);
-    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(40);
+  it('mantém 55 desafios nativos completos após o terceiro lote', () => {
+    expect(visualChallenges).toHaveLength(55);
+    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(55);
 
     visualChallenges.forEach((challenge) => {
       expect(challenge.id).toMatch(/^desafio-visual-\d{3}$/);
@@ -20,5 +20,19 @@ describe('visualChallenges', () => {
       expect(challenge.category).toBeTruthy();
       expect(['Básico', 'Intermediário', 'Avançado']).toContain(challenge.difficulty);
     });
+  });
+
+  it('preserva a progressão editorial do terceiro lote', () => {
+    const thirdBatch = visualChallenges.slice(40, 55);
+
+    expect(thirdBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 15 },
+        (_, index) => `desafio-visual-${String(index + 41).padStart(3, '0')}`,
+      ),
+    );
+    expect(thirdBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(7);
+    expect(thirdBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(6);
+    expect(thirdBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(2);
   });
 });

@@ -18,7 +18,7 @@ import {
 } from 'react-icons/fi';
 import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../config/pricing';
 import { api } from '../services/api';
-import HomeParticleField from '../components/HomeParticleField';
+import ChromaticWavesBackground from '../components/ChromaticWavesBackground';
 
 const SYNAPSE_CAPABILITIES = [
   {
@@ -225,7 +225,7 @@ const HomePage = () => {
 
   return (
     <div className="home-container home-solid" ref={homeRef}>
-    <HomeParticleField />
+    <ChromaticWavesBackground />
     <section className="solid-hero">
       <div className="solid-hero-glow solid-hero-glow-one" aria-hidden="true" />
       <div className="solid-hero-glow solid-hero-glow-two" aria-hidden="true" />

@@ -24,15 +24,42 @@
   z-index: 1;
 }
 
-.home-s-particle-field {
+.home-chromatic-waves {
   position: fixed;
   z-index: 0;
   inset: 78px 0 0;
   width: 100%;
   height: calc(100vh - 78px);
-  opacity: .78;
-  mix-blend-mode: multiply;
+  overflow: hidden;
   pointer-events: none;
+}
+
+.home-chromatic-waves::after {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255,255,255,.2), transparent 36%),
+    linear-gradient(180deg, rgba(244,248,250,.08), rgba(244,248,250,.3));
+  content: '';
+}
+
+.home-chromatic-waves-canvas,
+.home-chromatic-waves-canvas canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.home-chromatic-waves-canvas canvas { display: block; }
+
+.home-chromatic-waves.is-fallback {
+  background:
+    radial-gradient(circle at 15% 25%, rgba(34,199,236,.14), transparent 32%),
+    radial-gradient(circle at 82% 58%, rgba(118,89,237,.12), transparent 36%),
+    #f4f8fa;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-chromatic-waves { opacity: .72; }
 }
 
 .solid-hero {

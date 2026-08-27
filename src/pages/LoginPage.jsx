@@ -41,6 +41,9 @@ const LoginPage = () => {
                 <div className="form-group">
                     <label htmlFor="password_login">Senha</label>
                     <input type="password" id="password_login" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                    <div className="auth-field-link">
+                        <Link to="/recuperar-senha">Esqueci minha senha</Link>
+                    </div>
                 </div>
                 {error && <p className="error-message">{error}</p>}
                 <button type="submit" className="btn-submit" disabled={isSubmitting}>

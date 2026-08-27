@@ -27,6 +27,8 @@ import DashboardPage from './pages/DashboardPage';
 import CadastroPage from './pages/CadastroPage';
 import LoginPage from './pages/LoginPage';
 import VerificarEmailPage from './pages/VerificarEmailPage';
+import RecuperarSenhaPage from './pages/RecuperarSenhaPage';
+import RedefinirSenhaPage from './pages/RedefinirSenhaPage';
 import PlanosPage from './pages/PlanosPage';
 import PagamentoRetornoPage from './pages/PagamentoRetornoPage';
 import CheckoutPage from './pages/CheckoutPage';
@@ -220,6 +222,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/cadastro" element={<CadastroPage />} />
           <Route path="/verificar-email" element={<VerificarEmailPage />} />
+          <Route path="/recuperar-senha" element={<RecuperarSenhaPage />} />
+          <Route path="/redefinir-senha" element={<RedefinirSenhaPage />} />
           <Route path="/assinatura" element={<PlanosPage />} />
           <Route path="/pagamento/retorno" element={<ProtectedRoute><PagamentoRetornoPage /></ProtectedRoute>} />
           <Route path="/checkout/:planId" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />

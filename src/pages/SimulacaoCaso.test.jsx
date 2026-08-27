@@ -9,7 +9,12 @@ vi.mock('../services/api', () => ({
     getCase: vi.fn(),
     finalizeSimulation: vi.fn(),
   },
-  ApiError: class ApiError extends Error {},
+  ApiError: class ApiError extends Error {
+    constructor(message, status) {
+      super(message);
+      this.status = status;
+    }
+  },
 }));
 
 const clinicalCase = {
@@ -88,5 +93,33 @@ describe('SimulacaoCaso', () => {
       );
     });
     expect(await screen.findByText('Resultado carregado')).toBeInTheDocument();
+  });
+
+  it('apresenta um convite Premium em vez de erro técnico para conta gratuita', async () => {
+    const { ApiError } = await import('../services/api');
+    api.getCase.mockRejectedValueOnce(
+      new ApiError('Este conteúdo requer uma assinatura Premium ativa.', 403),
+    );
+
+    render(
+      <MemoryRouter initialEntries={['/casos/8']}>
+        <Routes>
+          <Route path="/casos/:casoId" element={<SimulacaoCaso />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', {
+      name: 'Este caso faz parte da experiência completa',
+    })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Ver planos Premium/ })).toHaveAttribute(
+      'href',
+      '/assinatura',
+    );
+    expect(screen.getByRole('link', { name: /Voltar aos casos/ })).toHaveAttribute(
+      'href',
+      '/casos',
+    );
+    expect(screen.queryByText(/Erro:/)).not.toBeInTheDocument();
   });
 });

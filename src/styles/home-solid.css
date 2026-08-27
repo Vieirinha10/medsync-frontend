@@ -383,7 +383,7 @@
 
 .stat-morph {
   position: relative;
-  width: min(100%, 920px);
+  width: min(100%, 1120px);
   min-width: 0;
   height: 116px;
 }
@@ -398,10 +398,12 @@
   gap: clamp(14px, 2vw, 26px);
   align-items: baseline;
   color: var(--home-navy);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Bitter', Georgia, serif;
+  font-style: italic;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: geometricPrecision;
+  text-transform: uppercase;
   white-space: nowrap;
   will-change: opacity, filter, transform;
 }
@@ -410,16 +412,16 @@
   color: #087dcc;
   font-family: inherit;
   font-size: clamp(3rem, 5.2vw, 4.7rem);
-  font-weight: 700;
-  letter-spacing: -.045em;
+  font-weight: 900;
+  letter-spacing: .005em;
   line-height: .9;
 }
 
 .stat-morph-word span {
   font-family: inherit;
-  font-size: clamp(1.15rem, 2.25vw, 2rem);
-  font-weight: 600;
-  letter-spacing: -.025em;
+  font-size: clamp(1.55rem, 3.35vw, 3rem);
+  font-weight: 800;
+  letter-spacing: .015em;
 }
 
 .stat-morph-indicators {

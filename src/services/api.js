@@ -131,6 +131,16 @@ export const api = {
     auth: false,
     body: { email },
   }),
+  requestPasswordRecovery: (email) => request('/usuarios/recuperar-senha', {
+    method: 'POST',
+    auth: false,
+    body: { email },
+  }),
+  resetPassword: (token, password) => request('/usuarios/redefinir-senha', {
+    method: 'POST',
+    auth: false,
+    body: { token, password },
+  }),
   login: (credentials) =>
     request('/usuarios/login', {
       method: 'POST',

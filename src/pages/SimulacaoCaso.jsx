@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
     FiActivity,
     FiAlertCircle,
@@ -11,6 +11,8 @@ import {
     FiEdit3,
     FiFileText,
     FiHeart,
+    FiLock,
+    FiStar,
     FiTarget,
     FiThermometer,
     FiUser,
@@ -45,6 +47,7 @@ const SimulacaoCaso = () => {
     const [caso, setCaso] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [premiumAccessDenied, setPremiumAccessDenied] = useState(false);
     const [submissionError, setSubmissionError] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [statusMessage, setStatusMessage] = useState('');
@@ -64,6 +67,11 @@ const SimulacaoCaso = () => {
             .catch((requestError) => {
                 if (requestError instanceof ApiError && requestError.status === 401) {
                     navigate('/login', { replace: true });
+                    return;
+                }
+                if (requestError instanceof ApiError && requestError.status === 403) {
+                    setPremiumAccessDenied(true);
+                    setIsLoading(false);
                     return;
                 }
                 setError(requestError.message);
@@ -185,6 +193,37 @@ const SimulacaoCaso = () => {
     };
 
     if (isLoading) return <div className="page-container simulation-message">Preparando o prontuário...</div>;
+    if (premiumAccessDenied) {
+        return (
+            <div className="page-container premium-access-page">
+                <section className="premium-access-card" aria-labelledby="premium-access-title">
+                    <span className="premium-access-orbit premium-access-orbit-one" aria-hidden="true" />
+                    <span className="premium-access-orbit premium-access-orbit-two" aria-hidden="true" />
+                    <div className="premium-access-icon" aria-hidden="true"><FiLock /></div>
+                    <div className="premium-access-copy">
+                        <span className="premium-access-eyebrow"><FiStar /> Conteúdo Premium</span>
+                        <h1 id="premium-access-title">Este caso faz parte da experiência completa</h1>
+                        <p>
+                            Assine o MedSync Premium para liberar esta simulação, receber o feedback
+                            estruturado da Synapse e continuar aprimorando seu raciocínio clínico.
+                        </p>
+                        <div className="premium-access-note">
+                            <FiCheckCircle aria-hidden="true" />
+                            <span>Seu acesso gratuito e todo o progresso já realizado continuam preservados.</span>
+                        </div>
+                        <div className="premium-access-actions">
+                            <Link className="premium-access-primary" to="/assinatura">
+                                Ver planos Premium <FiArrowRight aria-hidden="true" />
+                            </Link>
+                            <Link className="premium-access-secondary" to="/casos">
+                                <FiArrowLeft aria-hidden="true" /> Voltar aos casos
+                            </Link>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        );
+    }
     if (error) return <div className="page-container simulation-message">Erro: {error}</div>;
     if (!caso) return <div className="page-container simulation-message">Não foi possível carregar o caso.</div>;
     if (isSubmitting) return <ClinicalEvaluationLoader caseTitle={caso.titulo} />;

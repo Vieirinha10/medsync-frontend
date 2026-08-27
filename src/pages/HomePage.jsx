@@ -19,6 +19,7 @@ import {
 import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../config/pricing';
 import { api } from '../services/api';
 import ChromaticWavesBackground from '../components/ChromaticWavesBackground';
+import StatMorph from '../components/StatMorph';
 
 const SYNAPSE_CAPABILITIES = [
   {
@@ -304,56 +305,16 @@ const HomePage = () => {
       </div>
     </section>
 
-    <section className="solid-proof-section" aria-labelledby="home-proof-title">
-      <header className="solid-proof-heading">
-        <span>MEDSYNC EM NÚMEROS</span>
-        <div>
-          <h2 id="home-proof-title">Conhecimento médico que ganha escala na prática.</h2>
-          <p>Uma experiência completa para estudar, decidir e evoluir em diferentes cenários clínicos.</p>
-        </div>
-      </header>
-
-      <div className="solid-proof-strip">
-        <article className="solid-proof-card is-primary">
-          <div className="solid-proof-card-top">
-            <span className="solid-proof-icon"><FiActivity /></span>
-            <small>01</small>
-          </div>
-          <strong>55</strong>
-          <h3>Casos clínicos</h3>
-          <p>Simulações guiadas para treinar decisões em cada etapa.</p>
-        </article>
-
-        <article className="solid-proof-card">
-          <div className="solid-proof-card-top">
-            <span className="solid-proof-icon"><FiTarget /></span>
-            <small>02</small>
-          </div>
-          <strong>100</strong>
-          <h3>Desafios visuais</h3>
-          <p>Treino diagnóstico com imagens clínicas selecionadas.</p>
-        </article>
-
-        <article className="solid-proof-card">
-          <div className="solid-proof-card-top">
-            <span className="solid-proof-icon"><FiUsers /></span>
-            <small>03</small>
-          </div>
-          <strong aria-live="polite">{formattedStudentCount}</strong>
-          <h3>Estudantes MedSync</h3>
-          <p>Uma comunidade médica em crescimento contínuo.</p>
-        </article>
-
-        <article className="solid-proof-card">
-          <div className="solid-proof-card-top">
-            <span className="solid-proof-icon"><FiCompass /></span>
-            <small>04</small>
-          </div>
-          <strong>19</strong>
-          <h3>Áreas médicas contempladas</h3>
-          <p>Conteúdo diverso para ampliar o repertório clínico.</p>
-        </article>
-      </div>
+    <section className="solid-proof-morph" aria-label="Números do MedSync">
+      <span className="solid-proof-morph-label">MEDSYNC EM NÚMEROS</span>
+      <StatMorph
+        items={[
+          { value: '55', label: 'casos clínicos' },
+          { value: '100', label: 'desafios visuais' },
+          { value: formattedStudentCount, label: 'estudantes MedSync' },
+          { value: '19', label: 'áreas médicas contempladas' },
+        ]}
+      />
     </section>
 
     <section className="solid-manifesto">

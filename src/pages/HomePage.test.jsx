@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { api } from '../services/api';
@@ -24,11 +24,10 @@ describe('HomePage', () => {
 
     render(<MemoryRouter><HomePage /></MemoryRouter>);
 
-    expect(screen.getByRole('heading', { name: 'Conhecimento médico que ganha escala na prática.' })).toBeInTheDocument();
-    expect(screen.getByText('19')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Áreas médicas contempladas' })).toBeInTheDocument();
-    await waitFor(() => expect(screen.getByText('127')).toBeInTheDocument());
-    expect(screen.getByRole('heading', { name: 'Estudantes MedSync' })).toBeInTheDocument();
+    const stats = screen.getByRole('region', { name: 'Números do MedSync' });
+    expect(within(stats).getByText('19 áreas médicas contempladas')).toBeInTheDocument();
+    expect(within(stats).getAllByRole('listitem')).toHaveLength(4);
+    await waitFor(() => expect(within(stats).getByText('127 estudantes MedSync')).toBeInTheDocument());
   });
 
   it('explica a Synapse e permite explorar a análise estruturada', () => {

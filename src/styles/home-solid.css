@@ -361,17 +361,13 @@
 .solid-proof-morph {
   position: relative;
   isolation: isolate;
-  display: grid;
-  grid-template-columns: minmax(170px, .42fr) minmax(0, 1.58fr);
+  display: flex;
   align-items: center;
+  justify-content: center;
   min-height: 178px;
-  padding: 30px max(28px, calc((100vw - 1264px) / 2));
+  padding: 30px max(20px, calc((100vw - 1264px) / 2));
   overflow: hidden;
-  border-block: 1px solid rgba(7, 92, 137, .08);
-  background:
-    radial-gradient(circle at 11% 30%, rgba(30, 194, 230, .1), transparent 18rem),
-    radial-gradient(circle at 88% 70%, rgba(120, 226, 76, .1), transparent 20rem),
-    rgba(248, 252, 253, .9);
+  background: transparent;
 }
 
 .solid-proof-morph::before {
@@ -381,38 +377,17 @@
   background-image: radial-gradient(rgba(5, 112, 174, .12) 1px, transparent 1px);
   background-size: 18px 18px;
   content: '';
-  mask-image: linear-gradient(90deg, #000, transparent 38%, transparent 62%, #000);
-  opacity: .48;
-}
-
-.solid-proof-morph-label {
-  display: inline-flex;
-  gap: 9px;
-  align-items: center;
-  color: #087dcc;
-  font-size: .68rem;
-  font-weight: 900;
-  letter-spacing: .14em;
-  white-space: nowrap;
-}
-
-.solid-proof-morph-label::before {
-  width: 9px;
-  height: 9px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: var(--home-lime);
-  box-shadow: 0 0 0 5px rgba(120, 226, 76, .15);
-  content: '';
+  mask-image: linear-gradient(90deg, transparent, #000 24%, #000 76%, transparent);
+  opacity: .32;
 }
 
 .stat-morph {
   position: relative;
+  width: min(100%, 920px);
   min-width: 0;
   height: 116px;
 }
 
-.stat-morph-filter { position: absolute; width: 0; height: 0; pointer-events: none; }
 .stat-morph-stage { position: absolute; inset: 0 0 20px; overflow: hidden; }
 
 .stat-morph-word {
@@ -423,24 +398,28 @@
   gap: clamp(14px, 2vw, 26px);
   align-items: baseline;
   color: var(--home-navy);
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
   white-space: nowrap;
   will-change: opacity, filter, transform;
 }
 
 .stat-morph-word strong {
   color: #087dcc;
-  font-family: 'Sora', sans-serif;
+  font-family: inherit;
   font-size: clamp(3rem, 5.2vw, 4.7rem);
-  font-weight: 850;
-  letter-spacing: -.07em;
+  font-weight: 700;
+  letter-spacing: -.045em;
   line-height: .9;
 }
 
 .stat-morph-word span {
-  font-family: 'Sora', sans-serif;
+  font-family: inherit;
   font-size: clamp(1.15rem, 2.25vw, 2rem);
-  font-weight: 760;
-  letter-spacing: -.045em;
+  font-weight: 600;
+  letter-spacing: -.025em;
 }
 
 .stat-morph-indicators {
@@ -1133,12 +1112,9 @@
   .solid-patient-data span { border-right: 0; border-bottom: 1px solid #d4e4eb; }
   .solid-patient-data span:last-child { border: 0; }
   .solid-proof-morph {
-    grid-template-columns: 1fr;
-    gap: 8px;
-    min-height: 186px;
-    padding: 22px 18px 18px;
+    min-height: 178px;
+    padding: 24px 18px 18px;
   }
-  .solid-proof-morph-label { justify-self: center; }
   .stat-morph { width: 100%; height: 112px; }
   .solid-manifesto { padding-inline: 18px; }
   .solid-manifesto h2 { font-size: clamp(3rem,17vw,5.2rem); }

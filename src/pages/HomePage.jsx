@@ -306,7 +306,6 @@ const HomePage = () => {
     </section>
 
     <section className="solid-proof-morph" aria-label="Números do MedSync">
-      <span className="solid-proof-morph-label">MEDSYNC EM NÚMEROS</span>
       <StatMorph
         items={[
           { value: '55', label: 'casos clínicos' },

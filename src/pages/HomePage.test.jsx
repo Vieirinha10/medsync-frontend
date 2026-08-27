@@ -24,10 +24,11 @@ describe('HomePage', () => {
 
     render(<MemoryRouter><HomePage /></MemoryRouter>);
 
+    expect(screen.getByRole('heading', { name: 'Conhecimento médico que ganha escala na prática.' })).toBeInTheDocument();
     expect(screen.getByText('19')).toBeInTheDocument();
-    expect(screen.getByText('áreas médicas contempladas')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Áreas médicas contempladas' })).toBeInTheDocument();
     await waitFor(() => expect(screen.getByText('127')).toBeInTheDocument());
-    expect(screen.getByText('estudantes MedSync')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Estudantes MedSync' })).toBeInTheDocument();
   });
 
   it('explica a Synapse e permite explorar a análise estruturada', () => {

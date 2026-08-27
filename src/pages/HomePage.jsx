@@ -483,9 +483,6 @@ const HomePage = () => {
       </p>
 
       <div className="academic-network-stage" aria-hidden="true">
-        <span className="academic-signal academic-signal-one" />
-        <span className="academic-signal academic-signal-two" />
-
         <div className="academic-marquee-row">
           <div className="academic-marquee-track">
             {[...ACADEMIC_INSTITUTIONS, ...ACADEMIC_INSTITUTIONS].map((institution, index) => (

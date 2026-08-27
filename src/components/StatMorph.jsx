@@ -10,7 +10,6 @@ export default function StatMorph({ items }) {
   );
   const rawId = useId();
   const safeId = rawId.replace(/:/g, '');
-  const filterId = `stat-morph-${safeId}`;
   const animationName = `stat-morph-rotate-${safeId}`;
   const indicatorName = `stat-morph-indicator-${safeId}`;
 
@@ -24,10 +23,10 @@ export default function StatMorph({ items }) {
 
   const keyframes = `
     @keyframes ${animationName} {
-      0% { opacity: 0; filter: blur(16px); transform: translate(-50%, -50%) scale(.86); }
+      0% { opacity: 0; filter: blur(7px); transform: translate(-50%, -50%) scale(.94); }
       ${morphIn}% { opacity: 1; filter: blur(0); transform: translate(-50%, -50%) scale(1); }
       ${holdEnd}% { opacity: 1; filter: blur(0); transform: translate(-50%, -50%) scale(1); }
-      ${morphOut}%, 100% { opacity: 0; filter: blur(16px); transform: translate(-50%, -50%) scale(1.12); }
+      ${morphOut}%, 100% { opacity: 0; filter: blur(7px); transform: translate(-50%, -50%) scale(1.06); }
     }
 
     @keyframes ${indicatorName} {
@@ -40,24 +39,7 @@ export default function StatMorph({ items }) {
     <div className="stat-morph">
       <style>{keyframes}</style>
 
-      <svg className="stat-morph-filter" aria-hidden="true">
-        <defs>
-          <filter id={filterId}>
-            <feColorMatrix
-              in="SourceGraphic"
-              type="matrix"
-              values="1 0 0 0 0
-                      0 1 0 0 0
-                      0 0 1 0 0
-                      0 0 0 24 -9"
-              result="goo"
-            />
-            <feComposite in="SourceGraphic" in2="goo" operator="atop" />
-          </filter>
-        </defs>
-      </svg>
-
-      <div className="stat-morph-stage" style={{ filter: `url(#${filterId})` }} aria-hidden="true">
+      <div className="stat-morph-stage" aria-hidden="true">
         {normalizedItems.map((item, index) => (
           <div
             className="stat-morph-word"

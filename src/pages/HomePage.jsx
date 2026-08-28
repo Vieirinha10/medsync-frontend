@@ -332,7 +332,6 @@ const HomePage = () => {
     <section className="home-synapse-section home-reveal" data-home-reveal aria-labelledby="synapse-home-title">
       <header className="solid-section-heading home-synapse-heading">
         <div>
-          <span className="solid-section-index">CONHEÇA A SYNAPSE</span>
           <h2 id="synapse-home-title">Uma inteligência clínica que acompanha o seu raciocínio.</h2>
         </div>
         <p>
@@ -386,7 +385,6 @@ const HomePage = () => {
 
     <section className="home-feedback-system home-reveal" data-home-reveal aria-labelledby="feedback-system-title">
       <div className="feedback-system-intro">
-        <span className="solid-section-index">COMO O FEEDBACK É CONSTRUÍDO</span>
         <h2 id="feedback-system-title">Existe uma estrutura por trás de cada análise.</h2>
         <p>
           Explore as etapas para entender como a resolução do estudante se transforma em um
@@ -432,7 +430,6 @@ const HomePage = () => {
     <section className="home-result-preview home-reveal" data-home-reveal aria-labelledby="result-preview-title">
       <header className="solid-section-heading">
         <div>
-          <span className="solid-section-index">RESULTADO QUE ENSINA</span>
           <h2 id="result-preview-title">A nota é só o começo da conversa.</h2>
         </div>
         <p>O resultado ajuda o estudante a compreender o caso, o paciente e o que fazer diferente na próxima tentativa.</p>
@@ -471,7 +468,6 @@ const HomePage = () => {
     <section className="home-academic-network home-reveal" data-home-reveal aria-labelledby="academic-network-title">
       <div className="academic-network-heading">
         <div>
-          <span className="solid-section-index">COMUNIDADE ACADÊMICA</span>
           <h2 id="academic-network-title">Uma comunidade médica em formação.</h2>
         </div>
         <p>
@@ -511,7 +507,6 @@ const HomePage = () => {
     <section className="solid-features home-reveal" data-home-reveal>
       <header className="solid-section-heading">
         <div>
-          <span className="solid-section-index">EXPERIÊNCIA COMPLETA</span>
           <h2>Uma plataforma que acompanha o seu raciocínio.</h2>
         </div>
         <p>Recursos conectados para você estudar com intenção, prática e continuidade.</p>
@@ -577,7 +572,6 @@ const HomePage = () => {
     <section className="home-credibility home-reveal" data-home-reveal aria-labelledby="credibility-title">
       <header className="solid-section-heading">
         <div>
-          <span className="solid-section-index">CONFIANÇA PELA ESTRUTURA</span>
           <h2 id="credibility-title">Robustez que o estudante consegue enxergar.</h2>
         </div>
         <p>Sem promessas vagas: a confiança vem de critérios, referências e explicações presentes em cada resultado.</p>
@@ -614,7 +608,6 @@ const HomePage = () => {
 
     <section className="solid-process home-reveal" data-home-reveal>
       <div className="solid-process-intro">
-        <span className="solid-section-index">APRENDIZADO CONTÍNUO</span>
         <h2>Um resultado que prepara o próximo caso.</h2>
         <p>A experiência conecta prática, feedback e revisão para que cada tentativa tenha continuidade.</p>
         <Link to="/cadastro" className="solid-outline-button">Iniciar primeiro caso <FiArrowRight /></Link>
@@ -643,7 +636,6 @@ const HomePage = () => {
     <section className="solid-value-section home-reveal" data-home-reveal>
       <header className="solid-section-heading">
         <div>
-          <span className="solid-section-index">PLANOS</span>
           <h2>Comece livre. Avance quando fizer sentido.</h2>
         </div>
         <p>Experimente o método e escolha o acesso que acompanha o seu ritmo.</p>

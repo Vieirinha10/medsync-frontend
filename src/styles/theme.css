@@ -529,6 +529,15 @@
   filter: saturate(0.92) contrast(1.12);
 }
 
+/* Mantém as ondas acima do fundo do painel, mas abaixo de todo o conteúdo. */
+:root[data-theme='light'] .solid-hero {
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.025), transparent 45%);
+}
+
+:root[data-theme='light'] .solid-hero::before {
+  content: none;
+}
+
 :root[data-theme='dark'] .home-chromatic-waves {
   position: fixed;
   inset: 78px 0 0;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiActivity,
@@ -6,6 +6,7 @@ import {
   FiBookOpen,
   FiCheck,
   FiCheckCircle,
+  FiCompass,
   FiFileText,
   FiHeart,
   FiLayers,
@@ -13,12 +14,13 @@ import {
   FiTarget,
   FiTrendingUp,
   FiUsers,
+  FiZap,
 } from 'react-icons/fi';
 import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../config/pricing';
 import { api } from '../services/api';
 import ChromaticWavesBackground from '../components/ChromaticWavesBackground';
+import StatMorph from '../components/StatMorph';
 import MedSyncIntro from '../components/MedSyncIntro';
-import '../styles/home-refined.css';
 
 const SYNAPSE_CAPABILITIES = [
   {
@@ -174,6 +176,7 @@ const HomePage = () => {
   const [studentCount, setStudentCount] = useState(null);
   const [activeSynapseCapability, setActiveSynapseCapability] = useState(0);
   const [activeFeedbackStep, setActiveFeedbackStep] = useState(0);
+  const homeRef = useRef(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -191,6 +194,30 @@ const HomePage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const root = homeRef.current;
+    if (!root) return undefined;
+
+    const sections = [...root.querySelectorAll('[data-home-reveal]')];
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+      sections.forEach((section) => section.classList.add('is-visible'));
+      return undefined;
+    }
+
+    root.classList.add('has-scroll-reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.13 });
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   const formattedStudentCount = studentCount === null
     ? '—'
     : studentCount.toLocaleString('pt-BR');
@@ -199,339 +226,476 @@ const HomePage = () => {
   const activeFeedback = FEEDBACK_STEPS[activeFeedbackStep];
 
   return (
-    <div className="home-container home-refined">
-      <MedSyncIntro />
-      <ChromaticWavesBackground />
+    <div className="home-container home-solid" ref={homeRef}>
+    <MedSyncIntro />
+    <ChromaticWavesBackground />
+    <section className="solid-hero">
+      <div className="solid-hero-glow solid-hero-glow-one" aria-hidden="true" />
+      <div className="solid-hero-glow solid-hero-glow-two" aria-hidden="true" />
 
-      <section className="refined-hero">
-        <div className="refined-hero-copy">
-          <span className="refined-eyebrow">
-            <FiActivity aria-hidden="true" />
-            Simulação clínica para estudantes de medicina
-          </span>
-          <h1>
-            Raciocínio clínico
-            <span> que vira conduta.</span>
-          </h1>
-          <p>
-            Analise casos, solicite exames, construa hipóteses e tome decisões
-            em uma experiência criada para aproximar estudo e prática médica.
-          </p>
-
-          <div className="refined-hero-actions">
-            <Link to="/cadastro" className="refined-primary-button">
-              Começar gratuitamente
-              <FiArrowRight aria-hidden="true" />
-            </Link>
-            <Link to="/casos" className="refined-text-link">
-              Explorar casos
-              <FiArrowRight aria-hidden="true" />
-            </Link>
-          </div>
-
-          <div className="refined-hero-notes" aria-label="Informações sobre o acesso">
-            <span><FiCheckCircle aria-hidden="true" /> Gratuito para começar</span>
-            <span><FiShield aria-hidden="true" /> Progresso individual</span>
-          </div>
-        </div>
-
-        <article className="refined-clinical-card" aria-label="Exemplo do fluxo de um caso clínico">
-          <header>
-            <span><i /> Caso em andamento</span>
-            <small>Cardiologia · Intermediário</small>
-          </header>
-
-          <div className="refined-patient-summary">
-            <div className="refined-patient-icon"><FiActivity aria-hidden="true" /></div>
-            <div>
-              <small>Paciente · 32 anos</small>
-              <h2>Dor torácica de início súbito</h2>
-            </div>
-            <span className="refined-patient-status">Estável</span>
-          </div>
-
-          <ol className="refined-clinical-line">
-            <li className="is-complete">
-              <span><FiCheck aria-hidden="true" /></span>
-              <div><strong>História clínica</strong><small>Dados analisados</small></div>
-            </li>
-            <li className="is-active">
-              <span><FiFileText aria-hidden="true" /></span>
-              <div><strong>Solicitação de exames</strong><small>Decisão atual</small></div>
-            </li>
-            <li>
-              <span><FiTarget aria-hidden="true" /></span>
-              <div><strong>Hipótese diagnóstica</strong><small>Próxima etapa</small></div>
-            </li>
-            <li>
-              <span><FiHeart aria-hidden="true" /></span>
-              <div><strong>Conduta</strong><small>Próxima etapa</small></div>
-            </li>
-          </ol>
-
-          <footer>
-            <span><FiActivity aria-hidden="true" /> A Synapse acompanha cada decisão</span>
-            <strong>Etapa 2 de 4</strong>
-          </footer>
-        </article>
-      </section>
-
-      <section className="refined-evidence" aria-label="Números do MedSync">
-        <div><strong>55</strong><span>casos clínicos estruturados</span></div>
-        <div><strong>100</strong><span>desafios visuais</span></div>
-        <div><strong>8 mil+</strong><span>questões para praticar</span></div>
-        <div><strong>{formattedStudentCount}</strong><span>estudantes cadastrados</span></div>
-      </section>
-
-      <section className="refined-synapse-section">
-        <header className="refined-section-heading">
-          <span>Feedback clínico estruturado</span>
-          <h2>Da decisão ao próximo passo, em uma única análise.</h2>
-          <p>
-            A Synapse relaciona as escolhas do estudante à rubrica do caso,
-            à segurança do paciente e ao que deve ser revisto depois.
-          </p>
-        </header>
-
-        <div className="refined-synapse-workbench">
-          <nav className="refined-capability-tabs" aria-label="Aspectos avaliados pela Synapse">
-            {SYNAPSE_CAPABILITIES.map((capability, index) => (
-              <button
-                type="button"
-                className={index === activeSynapseCapability ? 'is-active' : ''}
-                aria-pressed={index === activeSynapseCapability}
-                onClick={() => setActiveSynapseCapability(index)}
-                key={capability.label}
-              >
-                <span>{String(index + 1).padStart(2, '0')}</span>
-                <strong>{capability.label}</strong>
-              </button>
-            ))}
-          </nav>
-
-          <article className="refined-synapse-output">
-            <header>
-              <span><i /> Synapse</span>
-              <small>Análise estruturada</small>
-            </header>
-            <div className="refined-output-icon">
-              <ActiveCapabilityIcon aria-hidden="true" />
-            </div>
-            <small>Aspecto avaliado</small>
-            <h3>{activeCapability.title}</h3>
-            <p>{activeCapability.description}</p>
-            <div className="refined-output-note">
-              <FiCheckCircle aria-hidden="true" />
-              <span><small>O que você recebe</small><strong>{activeCapability.output}</strong></span>
-            </div>
-          </article>
-
-          <aside className="refined-feedback-flow">
-            <header>
-              <span>Como o feedback é construído</span>
-              <strong>Um processo clínico transparente</strong>
-            </header>
-            <div className="refined-feedback-steps">
-              {FEEDBACK_STEPS.map((step, index) => (
-                <button
-                  type="button"
-                  className={index === activeFeedbackStep ? 'is-active' : ''}
-                  onClick={() => setActiveFeedbackStep(index)}
-                  aria-pressed={index === activeFeedbackStep}
-                  key={step.label}
-                >
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  {step.label}
-                </button>
-              ))}
-            </div>
-            <div className="refined-feedback-detail">
-              <small>{activeFeedback.eyebrow}</small>
-              <h3>{activeFeedback.title}</h3>
-              <p>{activeFeedback.description}</p>
-              <span><FiTrendingUp aria-hidden="true" /> {activeFeedback.signal}</span>
-            </div>
-          </aside>
-        </div>
-
-        <div className="refined-result-strip">
-          <div>
-            <span>Exemplo de resultado</span>
-            <strong>8,6 <small>de 10</small></strong>
-          </div>
-          <p>
-            Hipótese bem sustentada, conduta segura e um plano de melhoria
-            direcionado para o próximo caso.
-          </p>
-          <Link to="/casos">Experimentar em um caso <FiArrowRight aria-hidden="true" /></Link>
-        </div>
-      </section>
-
-      <section className="refined-academic-section">
-        <header className="refined-section-heading is-compact">
-          <span>Comunidade acadêmica</span>
-          <h2>Estudantes de diferentes instituições praticam no MedSync.</h2>
-          <p>
-            Uma comunidade médica em formação, conectada pelo mesmo objetivo:
-            transformar conhecimento em decisão clínica.
-          </p>
-        </header>
-
-        <p className="refined-institution-accessibility">
-          Instituições representadas: {ACADEMIC_INSTITUTIONS.map(({ acronym }) => acronym).join(', ')}.
+      <div className="solid-hero-copy">
+        <span className="solid-kicker">
+          <FiActivity aria-hidden="true" />
+          Simulação clínica para estudantes de medicina
+        </span>
+        <h1>
+          Raciocínio clínico
+          <span className="fluid-words"> que vira </span>
+          conduta.
+        </h1>
+        <p>
+          Saia do estudo passivo. Analise casos, solicite exames, defina hipóteses
+          e tome decisões em uma experiência construída para a prática médica.
         </p>
-
-        <div className="refined-academic-window" aria-hidden="true">
-          <div className="refined-academic-track">
-            {[...ACADEMIC_INSTITUTIONS, ...ACADEMIC_INSTITUTIONS].map((institution, index) => (
-              <AcademicInstitutionCard institution={institution} key={'academic-' + index} />
-            ))}
-          </div>
-        </div>
-
-        <small className="refined-academic-note">
-          A exibição indica a origem acadêmica de usuários cadastrados e não representa
-          vínculo ou parceria institucional.
-        </small>
-      </section>
-
-      <section className="refined-paths-section">
-        <header className="refined-section-heading">
-          <span>Uma jornada conectada</span>
-          <h2>Pratique, entenda e consolide.</h2>
-          <p>
-            Os recursos trabalham juntos para que cada dificuldade encontrada
-            durante o estudo indique uma próxima ação clara.
-          </p>
-        </header>
-
-        <div className="refined-paths">
-          <article>
-            <span className="refined-path-icon"><FiActivity aria-hidden="true" /></span>
-            <small>Praticar</small>
-            <h3>Casos clínicos e desafios visuais</h3>
-            <p>Decida por etapas, interprete imagens e aproxime o estudo das situações clínicas.</p>
-            <div>
-              <Link to="/casos">Casos clínicos <FiArrowRight aria-hidden="true" /></Link>
-              <Link to="/desafios">Desafios visuais <FiArrowRight aria-hidden="true" /></Link>
-            </div>
-          </article>
-
-          <article>
-            <span className="refined-path-icon"><FiTarget aria-hidden="true" /></span>
-            <small>Entender</small>
-            <h3>Questões e feedback da Synapse</h3>
-            <p>Identifique onde o raciocínio perdeu força e compreenda por que cada alternativa importa.</p>
-            <div>
-              <Link to="/questoes">Resolver questões <FiArrowRight aria-hidden="true" /></Link>
-              <Link to="/casos">Treinar com a Synapse <FiArrowRight aria-hidden="true" /></Link>
-            </div>
-          </article>
-
-          <article>
-            <span className="refined-path-icon"><FiBookOpen aria-hidden="true" /></span>
-            <small>Consolidar</small>
-            <h3>Revisões, trilhas e caderno de erros</h3>
-            <p>Retome lacunas no momento certo e continue exatamente de onde parou.</p>
-            <div>
-              <Link to="/revisoes">Abrir revisões <FiArrowRight aria-hidden="true" /></Link>
-              <Link to="/caderno-erros">Ver caderno de erros <FiArrowRight aria-hidden="true" /></Link>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section className="refined-method-section">
-        <div className="refined-method-copy">
-          <span>Método e segurança</span>
-          <h2>Você consegue entender como cada resultado foi formado.</h2>
-          <p>
-            Os casos protegem o diagnóstico durante a resolução e tornam
-            critérios, referências e prioridades clínicas visíveis no feedback.
-          </p>
-          <Link to="/casos" className="refined-text-link">
-            Iniciar primeiro caso
+        <div className="solid-hero-actions">
+          <Link to="/cadastro" className="solid-primary-button">
+            Começar gratuitamente
             <FiArrowRight aria-hidden="true" />
           </Link>
+          <Link to="/casos" className="solid-ghost-button">
+            Explorar casos
+          </Link>
         </div>
-
-        <div className="refined-trust-list">
-          {TRUST_PILLARS.map(({ icon: Icon, title, text }, index) => (
-            <article key={title}>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              <Icon aria-hidden="true" />
-              <div><h3>{title}</h3><p>{text}</p></div>
-            </article>
-          ))}
+        <div className="solid-hero-proof" aria-label="Benefícios da plataforma">
+          <span><FiCheckCircle /> Acesso gratuito para começar</span>
+          <span><FiCheckCircle /> Progresso individual</span>
+          <span><FiCheckCircle /> Feedback orientado pela Synapse</span>
         </div>
-      </section>
+      </div>
 
-      <section className="refined-pricing-section">
-        <header className="refined-section-heading is-compact">
-          <span>Planos</span>
-          <h2>Comece gratuitamente. Avance quando fizer sentido.</h2>
-          <p>Experimente o método antes de escolher o acesso que acompanha seu ritmo.</p>
-        </header>
+      <div className="solid-hero-stage" aria-label="Demonstração de uma simulação clínica">
+        <span className="stage-chip stage-chip-top"><FiZap /> Decisão em tempo real</span>
+        <span className="stage-chip stage-chip-bottom"><FiTrendingUp /> Evolução registrada</span>
 
-        <div className="refined-pricing-layout">
-          <article className="refined-free-plan">
-            <span>Para conhecer</span>
-            <h3>{FREE_PLAN.name}</h3>
-            <strong>{FREE_PLAN.price}</strong>
-            <p>Uma porta de entrada para experimentar a prática clínica interativa.</p>
-            <ul>
-              <li><FiCheck aria-hidden="true" /> 5 casos clínicos por mês</li>
-              <li><FiCheck aria-hidden="true" /> 10 questões de provas por dia</li>
-              <li><FiCheck aria-hidden="true" /> Painel e histórico pessoal</li>
-            </ul>
-            <Link to="/cadastro">Criar conta grátis <FiArrowRight aria-hidden="true" /></Link>
-          </article>
-
-          <div className="refined-premium-group">
-            <header>
-              <div><span>MedSync Premium</span><h3>Acesso completo à plataforma</h3></div>
-              <FiLayers aria-hidden="true" />
-            </header>
-
-            <div className="refined-premium-options">
-              {PREMIUM_BILLING_OPTIONS.map((plan) => (
-                <article
-                  className={[
-                    'refined-premium-option',
-                    plan.featured ? 'is-featured' : '',
-                    plan.bestValue ? 'is-best-value' : '',
-                  ].filter(Boolean).join(' ')}
-                  key={plan.id}
-                >
-                  <div className="refined-plan-heading">
-                    <span>{plan.badge}</span>
-                    <h4>{plan.name}</h4>
-                    <strong>{plan.price} <small>{plan.billingLabel}</small></strong>
-                  </div>
-                  <p>{plan.description}</p>
-                  <ul>
-                    {plan.highlights.map((highlight) => (
-                      <li key={highlight}><FiCheck aria-hidden="true" /> {highlight}</li>
-                    ))}
-                  </ul>
-                  <Link to="/assinatura">Escolher esta opção <FiArrowRight aria-hidden="true" /></Link>
-                </article>
-              ))}
+        <div className="solid-clinical-window">
+          <div className="solid-window-bar">
+            <span /><span /><span />
+            <small>SIMULAÇÃO EM ANDAMENTO</small>
+          </div>
+          <div className="solid-patient-heading">
+            <span className="solid-patient-icon"><FiActivity /></span>
+            <div>
+              <small>CASO 01 · CARDIOLOGIA</small>
+              <h2>Dor torácica em adulto jovem</h2>
+            </div>
+            <span className="solid-case-level">INTERMEDIÁRIO</span>
+          </div>
+          <div className="solid-patient-data">
+            <span><small>IDADE</small><strong>32 anos</strong></span>
+            <span><small>QUEIXA</small><strong>Dor torácica</strong></span>
+            <span><small>ETAPA</small><strong>Exames</strong></span>
+          </div>
+          <div className="solid-clinical-track">
+            <div className="is-complete">
+              <span><FiCheck /></span>
+              <p><strong>História clínica</strong><small>Dados analisados</small></p>
+            </div>
+            <div className="is-active">
+              <span><FiFileText /></span>
+              <p><strong>Solicitar exames</strong><small>Decisão atual</small></p>
+            </div>
+            <div>
+              <span>03</span>
+              <p><strong>Definir hipótese</strong><small>Próxima etapa</small></p>
             </div>
           </div>
+          <div className="solid-decision-row">
+            <div><small>PRÓXIMA DECISÃO</small><strong>Quais exames são realmente necessários?</strong></div>
+            <button type="button" aria-label="Avançar na demonstração"><FiArrowRight /></button>
+          </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section className="refined-final-cta">
-        <span>Mais preparo. Mais clareza. Melhores decisões.</span>
-        <h2>Treine hoje o raciocínio que você levará para a prática.</h2>
-        <p>Comece gratuitamente e resolva seu primeiro caso clínico.</p>
-        <Link to="/cadastro" className="refined-primary-button">
-          Começar agora
-          <FiArrowRight aria-hidden="true" />
-        </Link>
-        <small><FiUsers aria-hidden="true" /> Feito para estudantes de medicina.</small>
-      </section>
+    <section className="solid-proof-morph" aria-label="Números do MedSync">
+      <StatMorph
+        items={[
+          { value: '55', label: 'casos clínicos' },
+          { value: '100', label: 'desafios visuais' },
+          { value: formattedStudentCount, label: 'estudantes MedSync' },
+          { value: '19', label: 'áreas médicas contempladas' },
+        ]}
+      />
+    </section>
+
+    <section className="solid-manifesto">
+      <span>APRENDIZADO ATIVO, DO INÍCIO AO FIM</span>
+      <h2>
+        DECIDA. <em>JUSTIFIQUE.</em> EVOLUA.
+      </h2>
+      <p>
+        O MedSync transforma conteúdo médico em decisões que você consegue
+        analisar, comparar e aprimorar.
+      </p>
+    </section>
+
+    <section className="home-synapse-section home-reveal" data-home-reveal aria-labelledby="synapse-home-title">
+      <header className="solid-section-heading home-synapse-heading">
+        <div>
+          <span className="solid-section-index">01 — CONHEÇA A SYNAPSE</span>
+          <h2 id="synapse-home-title">Uma inteligência clínica que acompanha o seu raciocínio.</h2>
+        </div>
+        <p>
+          A Synapse não entrega apenas uma resposta. Ela conecta suas decisões à rubrica do caso,
+          à segurança do paciente e ao próximo passo do seu aprendizado.
+        </p>
+      </header>
+
+      <div className="synapse-showcase">
+        <div className="synapse-network" aria-label="Capacidades da Synapse">
+          <div className="synapse-network-grid" aria-hidden="true" />
+          <div className="synapse-core">
+            <img src="/images/synapse-logo.svg" alt="Logo da Synapse" />
+            <small>SYNAPSE</small>
+            <i /><i /><i />
+          </div>
+          {SYNAPSE_CAPABILITIES.map((capability, index) => {
+            const CapabilityIcon = capability.icon;
+            return (
+              <button
+                type="button"
+                className={`synapse-capability-node node-${index}${activeSynapseCapability === index ? ' is-active' : ''}`}
+                key={capability.label}
+                aria-pressed={activeSynapseCapability === index}
+                onClick={() => setActiveSynapseCapability(index)}
+                onMouseEnter={() => setActiveSynapseCapability(index)}
+                onFocus={() => setActiveSynapseCapability(index)}
+              >
+                <CapabilityIcon aria-hidden="true" />
+                <span>{capability.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <article className="synapse-capability-panel" aria-live="polite">
+          <header>
+            <span><ActiveCapabilityIcon aria-hidden="true" /></span>
+            <small>CAPACIDADE {String(activeSynapseCapability + 1).padStart(2, '0')}</small>
+          </header>
+          <h3>{activeCapability.title}</h3>
+          <p>{activeCapability.description}</p>
+          <div>
+            <FiZap aria-hidden="true" />
+            <span><small>O QUE O ESTUDANTE RECEBE</small><strong>{activeCapability.output}</strong></span>
+          </div>
+          <Link to="/cadastro">Experimentar em um caso <FiArrowRight aria-hidden="true" /></Link>
+        </article>
+      </div>
+    </section>
+
+    <section className="home-feedback-system home-reveal" data-home-reveal aria-labelledby="feedback-system-title">
+      <div className="feedback-system-intro">
+        <span className="solid-section-index">02 — COMO O FEEDBACK É CONSTRUÍDO</span>
+        <h2 id="feedback-system-title">Existe uma estrutura por trás de cada análise.</h2>
+        <p>
+          Explore as etapas para entender como a resolução do estudante se transforma em um
+          feedback clínico organizado, compreensível e útil.
+        </p>
+      </div>
+
+      <div className="feedback-system-console">
+        <div className="feedback-step-tabs" role="tablist" aria-label="Etapas da análise da Synapse">
+          {FEEDBACK_STEPS.map((step, index) => (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeFeedbackStep === index}
+              aria-controls="feedback-step-panel"
+              className={activeFeedbackStep === index ? 'is-active' : ''}
+              key={step.label}
+              onClick={() => setActiveFeedbackStep(index)}
+              onMouseEnter={() => setActiveFeedbackStep(index)}
+              onFocus={() => setActiveFeedbackStep(index)}
+            >
+              <span>{String(index + 1).padStart(2, '0')}</span>
+              <strong>{step.label}</strong>
+              <i aria-hidden="true" />
+            </button>
+          ))}
+        </div>
+
+        <article className="feedback-step-panel" id="feedback-step-panel" role="tabpanel" aria-live="polite">
+          <div className="feedback-panel-status"><i /> SYNAPSE · ANÁLISE ESTRUTURADA</div>
+          <small>{activeFeedback.eyebrow}</small>
+          <h3>{activeFeedback.title}</h3>
+          <p>{activeFeedback.description}</p>
+          <div className="feedback-signal">
+            <span><FiActivity aria-hidden="true" /></span>
+            <div><small>SINAL PROCESSADO</small><strong>{activeFeedback.signal}</strong></div>
+            <FiCheckCircle aria-hidden="true" />
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section className="home-result-preview home-reveal" data-home-reveal aria-labelledby="result-preview-title">
+      <header className="solid-section-heading">
+        <div>
+          <span className="solid-section-index">03 — RESULTADO QUE ENSINA</span>
+          <h2 id="result-preview-title">A nota é só o começo da conversa.</h2>
+        </div>
+        <p>O resultado ajuda o estudante a compreender o caso, o paciente e o que fazer diferente na próxima tentativa.</p>
+      </header>
+
+      <div className="result-preview-shell">
+        <span className="result-preview-label">EXEMPLO ILUSTRATIVO DE FEEDBACK</span>
+        <div className="result-preview-main">
+          <article className="preview-score-card">
+            <small>SEU RESULTADO</small>
+            <div className="preview-score-ring"><strong>8,6</strong><span>de 10</span></div>
+            <h3>Muito bom</h3>
+            <p>Decisões consistentes e clinicamente seguras.</p>
+          </article>
+
+          <div className="preview-clinical-cards">
+            <article>
+              <span><FiTarget /></span>
+              <div><small>HIPÓTESE DIAGNÓSTICA</small><h3>Raciocínio bem sustentado</h3><p>Os achados principais foram conectados à hipótese mais provável.</p></div>
+            </article>
+            <article className="is-patient">
+              <span role="img" aria-label="Paciente estabilizado">🙂</span>
+              <div><small>IMPACTO NO PACIENTE</small><h3>Paciente estabilizado</h3><p>A conduta priorizou segurança, tratamento e monitorização.</p></div>
+            </article>
+          </div>
+        </div>
+        <div className="preview-improvement-plan">
+          <div><FiTrendingUp /><span><small>SEU PRÓXIMO PASSO</small><strong>Plano rápido de melhoria</strong></span></div>
+          <p>Revisar critérios de gravidade</p>
+          <p>Justificar exames essenciais</p>
+          <p>Definir critérios de reavaliação</p>
+        </div>
+      </div>
+    </section>
+
+    <section className="home-academic-network home-reveal" data-home-reveal aria-labelledby="academic-network-title">
+      <div className="academic-network-heading">
+        <div>
+          <span className="solid-section-index">COMUNIDADE ACADÊMICA</span>
+          <h2 id="academic-network-title">Uma comunidade médica em formação.</h2>
+        </div>
+        <p>
+          Estudantes de diferentes instituições encontram no MedSync um espaço comum para
+          praticar raciocínio clínico e transformar estudo em decisão.
+        </p>
+      </div>
+
+      <p className="academic-network-accessible-list">
+        Instituições representadas: {ACADEMIC_INSTITUTIONS.map(({ acronym }) => acronym).join(', ')}.
+      </p>
+
+      <div className="academic-network-stage" aria-hidden="true">
+        <div className="academic-marquee-row">
+          <div className="academic-marquee-track">
+            {[...ACADEMIC_INSTITUTIONS, ...ACADEMIC_INSTITUTIONS].map((institution, index) => (
+              <AcademicInstitutionCard institution={institution} key={`forward-${institution.acronym}-${index}`} />
+            ))}
+          </div>
+        </div>
+
+        <div className="academic-marquee-row is-reverse">
+          <div className="academic-marquee-track">
+            {[...ACADEMIC_INSTITUTIONS].reverse().concat([...ACADEMIC_INSTITUTIONS].reverse()).map((institution, index) => (
+              <AcademicInstitutionCard institution={institution} key={`reverse-${institution.acronym}-${index}`} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <p className="academic-network-disclaimer">
+        <FiShield aria-hidden="true" />
+        <span>A exibição indica a origem acadêmica de usuários cadastrados e não representa vínculo ou parceria institucional.</span>
+      </p>
+    </section>
+
+    <section className="solid-features home-reveal" data-home-reveal>
+      <header className="solid-section-heading">
+        <div>
+          <span className="solid-section-index">04 — EXPERIÊNCIA COMPLETA</span>
+          <h2>Uma plataforma que acompanha o seu raciocínio.</h2>
+        </div>
+        <p>Recursos conectados para você estudar com intenção, prática e continuidade.</p>
+      </header>
+
+      <div className="solid-feature-grid">
+        <article className="solid-feature-card is-wide is-blue">
+          <span className="solid-feature-icon"><FiActivity /></span>
+          <small>SIMULAÇÃO CLÍNICA</small>
+          <h3>Casos que exigem decisão, não apenas memória.</h3>
+          <p>Analise o cenário, selecione exames e construa hipótese e conduta por etapas.</p>
+          <Link to="/casos">Conhecer os casos <FiArrowRight /></Link>
+          <span className="solid-card-number">01</span>
+        </article>
+
+        <article className="solid-feature-card is-light">
+          <span className="solid-feature-icon"><FiTarget /></span>
+          <small>DESAFIOS RÁPIDOS</small>
+          <h3>Interprete imagens e responda com agilidade.</h3>
+          <p>Questões visuais com quatro alternativas e explicação após a resposta.</p>
+          <Link to="/desafios">Ver desafios <FiArrowRight /></Link>
+          <span className="solid-card-number">02</span>
+        </article>
+
+        <article className="solid-feature-card is-light">
+          <span className="solid-feature-icon"><FiFileText /></span>
+          <small>QUESTÕES DE PROVAS</small>
+          <h3>Pratique conteúdo com ritmo e objetividade.</h3>
+          <p>Resolva questões, confira explicações e acompanhe seu desempenho por área.</p>
+          <Link to="/questoes">Resolver questões <FiArrowRight /></Link>
+          <span className="solid-card-number">03</span>
+        </article>
+
+        <article className="solid-feature-card is-light">
+          <span className="solid-feature-icon"><FiTrendingUp /></span>
+          <small>REVISÕES ESPAÇADAS</small>
+          <h3>Reencontre o conteúdo no momento certo.</h3>
+          <p>Organize revisões e mantenha os pontos importantes ativos ao longo do curso.</p>
+          <Link to="/revisoes">Abrir revisões <FiArrowRight /></Link>
+          <span className="solid-card-number">04</span>
+        </article>
+
+        <article className="solid-feature-card is-light">
+          <span className="solid-feature-icon"><FiBookOpen /></span>
+          <small>CADERNO DE ERROS</small>
+          <h3>Transforme dificuldade em material de estudo.</h3>
+          <p>Reúna pontos frágeis e retome o que realmente precisa ser consolidado.</p>
+          <Link to="/caderno-erros">Ver meu caderno <FiArrowRight /></Link>
+          <span className="solid-card-number">05</span>
+        </article>
+
+        <article className="solid-feature-card is-wide is-navy">
+          <span className="solid-feature-icon"><FiLayers /></span>
+          <small>JORNADA CONECTADA</small>
+          <h3>Trilhas e progresso conectam toda a experiência.</h3>
+          <p>Continue de onde parou, acompanhe sua evolução e transforme cada dificuldade em uma próxima ação clara.</p>
+          <Link to="/trilhas">Explorar trilhas <FiArrowRight /></Link>
+          <span className="solid-card-number">06</span>
+        </article>
+      </div>
+    </section>
+
+    <section className="home-credibility home-reveal" data-home-reveal aria-labelledby="credibility-title">
+      <header className="solid-section-heading">
+        <div>
+          <span className="solid-section-index">05 — CONFIANÇA PELA ESTRUTURA</span>
+          <h2 id="credibility-title">Robustez que o estudante consegue enxergar.</h2>
+        </div>
+        <p>Sem promessas vagas: a confiança vem de critérios, referências e explicações presentes em cada resultado.</p>
+      </header>
+
+      <div className="credibility-layout">
+        <article className="credibility-ledger">
+          <header>
+            <div><span><FiShield /></span><div><small>ESTRUTURA DE AVALIAÇÃO</small><h3>O que sustenta o feedback</h3></div></div>
+            <span className="credibility-status"><i /> ATIVO</span>
+          </header>
+          <ol>
+            <li><span>01</span><div><strong>O diagnóstico fica protegido</strong><p>A resposta de referência aparece somente depois que o estudante conclui sua resolução.</p></div><FiCheck /></li>
+            <li><span>02</span><div><strong>As decisões são avaliadas em conjunto</strong><p>Exames, hipótese, conduta e segurança fazem parte da mesma análise.</p></div><FiCheck /></li>
+            <li><span>03</span><div><strong>A nota pode ser compreendida</strong><p>O resultado explica a composição do desempenho em uma escala simples de 0 a 10.</p></div><FiCheck /></li>
+            <li><span>04</span><div><strong>O aprendizado continua</strong><p>O feedback termina com referências e um plano rápido de melhoria.</p></div><FiCheck /></li>
+          </ol>
+        </article>
+
+        <div className="credibility-pillar-grid">
+          {TRUST_PILLARS.map((pillar) => {
+            const PillarIcon = pillar.icon;
+            return (
+              <article key={pillar.title}>
+                <span><PillarIcon aria-hidden="true" /></span>
+                <h3>{pillar.title}</h3>
+                <p>{pillar.text}</p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+
+    <section className="solid-process home-reveal" data-home-reveal>
+      <div className="solid-process-intro">
+        <span className="solid-section-index">06 — APRENDIZADO CONTÍNUO</span>
+        <h2>Um resultado que prepara o próximo caso.</h2>
+        <p>A experiência conecta prática, feedback e revisão para que cada tentativa tenha continuidade.</p>
+        <Link to="/cadastro" className="solid-outline-button">Iniciar primeiro caso <FiArrowRight /></Link>
+      </div>
+
+      <ol className="solid-process-list">
+        <li>
+          <span>01</span><FiCompass />
+          <div><h3>Resolva um novo caso</h3><p>Analise o cenário e registre suas decisões sem receber spoilers do diagnóstico.</p></div>
+        </li>
+        <li>
+          <span>02</span><FiBookOpen />
+          <div><h3>Entenda o feedback</h3><p>Veja o que funcionou, o que faltou e como o paciente pode responder.</p></div>
+        </li>
+        <li>
+          <span>03</span><FiFileText />
+          <div><h3>Leve as lacunas para revisão</h3><p>Use o plano de melhoria, as revisões e o caderno de erros para organizar o estudo.</p></div>
+        </li>
+        <li>
+          <span>04</span><FiTrendingUp />
+          <div><h3>Volte mais preparado</h3><p>Aplique o que aprendeu em novos cenários e acompanhe sua evolução.</p></div>
+        </li>
+      </ol>
+    </section>
+
+    <section className="solid-value-section home-reveal" data-home-reveal>
+      <header className="solid-section-heading">
+        <div>
+          <span className="solid-section-index">07 — PLANOS</span>
+          <h2>Comece livre. Avance quando fizer sentido.</h2>
+        </div>
+        <p>Experimente o método e escolha o acesso que acompanha o seu ritmo.</p>
+      </header>
+
+      <div className="solid-plan-grid">
+        <article className="solid-plan-card is-free">
+          <span>PARA CONHECER</span>
+          <h3>{FREE_PLAN.name}</h3>
+          <div className="solid-price">{FREE_PLAN.price}</div>
+          <p>Uma porta de entrada para experimentar a prática clínica interativa.</p>
+          <ul>
+            <li><FiCheck /> 5 casos clínicos por mês</li>
+            <li><FiCheck /> 10 questões de provas por dia</li>
+            <li><FiCheck /> Painel pessoal</li>
+            <li><FiCheck /> Histórico de desempenho</li>
+          </ul>
+          <Link to="/cadastro">Criar conta grátis <FiArrowRight /></Link>
+        </article>
+
+        {PREMIUM_BILLING_OPTIONS.map((plan) => (
+          <article
+            className={`solid-plan-card is-premium-option is-${plan.id}${plan.featured ? ' is-featured' : ''}${plan.bestValue ? ' is-best-value' : ''}`}
+            key={plan.id}
+          >
+            <span>{plan.badge}</span>
+            <h3>{plan.name}</h3>
+            <div className="solid-price">{plan.price} <small>{plan.billingLabel}</small></div>
+            <p>{plan.description}</p>
+            <ul>
+              {plan.highlights.map((highlight) => (
+                <li key={highlight}><FiCheck /> {highlight}</li>
+              ))}
+            </ul>
+            <Link to="/assinatura">Ver esta opção <FiArrowRight /></Link>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section className="solid-trust home-reveal" data-home-reveal>
+      <div>
+        <FiShield aria-hidden="true" />
+        <span>CONSTRUÍDO PARA A FORMAÇÃO MÉDICA</span>
+      </div>
+      <h2>Estude com método.<br /><span className="fluid-words">Decida com confiança.</span></h2>
+      <p>Treine hoje o raciocínio que você vai precisar levar para a prática.</p>
+      <Link to="/cadastro" className="solid-primary-button">
+        Começar agora <FiArrowRight />
+      </Link>
+      <small><FiUsers /> Para estudantes que querem ir além do estudo passivo.</small>
+    </section>
     </div>
   );
 };

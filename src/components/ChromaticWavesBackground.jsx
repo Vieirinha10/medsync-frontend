@@ -230,7 +230,6 @@ const createCanvas2DFallback = (container, settingsRef) => {
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
   let active = true;
   let rafId = 0;
-  let themeFrameId = 0;
   let lastFrame = 0;
   let width = 1;
   let height = 1;
@@ -252,8 +251,9 @@ const createCanvas2DFallback = (container, settingsRef) => {
     const settings = settingsRef.current;
     const palette = settings.palette;
     const paletteCount = Math.max(1, palette.count);
-    const spacing = width < 760 ? 13 : 11;
-    const phase = time * 0.00018 * settings.speed;
+    const spacing = width < 760 ? 12 : 10;
+    const phase = time * 0.00007 * settings.speed;
+    const effectiveGamma = mapLinear(settings.gamma, 1, 20, 0.5, 8);
     const paths = Array.from({ length: paletteCount }, () => []);
 
     context.clearRect(0, 0, width, height);
@@ -262,26 +262,31 @@ const createCanvas2DFallback = (container, settingsRef) => {
       const normalizedY = y / height;
       for (let x = -spacing; x <= width + spacing; x += spacing) {
         const normalizedX = x / width;
-        const ridgeA = 0.3
-          + 0.12 * Math.sin(normalizedX * 7.2 + phase)
-          + 0.045 * Math.sin(normalizedX * 15.4 - phase * 0.6);
-        const ridgeB = 0.69
-          + 0.11 * Math.sin(normalizedX * 6.4 - phase * 0.86 + 1.6)
-          + 0.05 * Math.cos(normalizedX * 14 + phase * 0.45);
+        const ridgeA = 0.31
+          + 0.115 * Math.sin(normalizedX * 7 + phase)
+          + 0.04 * Math.sin(normalizedX * 15 - phase * 0.55);
+        const ridgeB = 0.7
+          + 0.105 * Math.sin(normalizedX * 6.2 - phase * 0.82 + 1.65)
+          + 0.042 * Math.cos(normalizedX * 13.5 + phase * 0.4);
         const distanceA = (normalizedY - ridgeA) / 0.115;
-        const distanceB = (normalizedY - ridgeB) / 0.13;
+        const distanceB = (normalizedY - ridgeB) / 0.125;
         const bandA = Math.exp(-(distanceA * distanceA));
         const bandB = Math.exp(-(distanceB * distanceB));
-        const interference = 0.62
-          + 0.38 * (0.5 + 0.5 * Math.sin((normalizedX + normalizedY * 0.75) * 10.5 - phase * 0.55));
-        const intensity = clamp(Math.max(bandA, bandB * 0.86) * interference, 0, 1);
+        const interference = 0.68
+          + 0.32 * (0.5 + 0.5 * Math.sin((normalizedX + normalizedY * 0.72) * 10 - phase * 0.48));
+        const intensity = clamp(Math.max(bandA, bandB * 0.8) * interference, 0, 1);
+        const shapedIntensity = clamp(
+          Math.pow(Math.max(intensity, 0.0001), effectiveGamma) + settings.paletteBias * 0.05,
+          0,
+          1,
+        );
 
-        if (intensity < 0.09) continue;
+        if (shapedIntensity < 0.035) continue;
 
-        const radius = 0.55 + intensity * 1.85;
-        const paletteIndex = Math.min(paletteCount - 1, Math.floor(intensity * paletteCount));
-        const driftX = Math.sin(y * 0.055 + phase) * 1.25;
-        const driftY = Math.cos(x * 0.035 - phase * 0.72) * 0.8;
+        const radius = 0.35 + shapedIntensity * 1.25;
+        const paletteIndex = Math.min(paletteCount - 1, Math.floor(shapedIntensity * paletteCount));
+        const driftX = Math.sin(y * 0.05 + phase) * 0.7;
+        const driftY = Math.cos(x * 0.032 - phase * 0.66) * 0.45;
         paths[paletteIndex].push([x + driftX, y + driftY, radius]);
       }
     }
@@ -337,13 +342,8 @@ const createCanvas2DFallback = (container, settingsRef) => {
     resize();
     render(performance.now());
   });
-  const themeObserver = new MutationObserver(() => {
-    if (themeFrameId) cancelAnimationFrame(themeFrameId);
-    themeFrameId = requestAnimationFrame(() => render(performance.now()));
-  });
 
   resizeObserver.observe(container);
-  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   document.addEventListener('visibilitychange', handleVisibilityChange);
   reducedMotion?.addEventListener?.('change', restart);
 
@@ -352,62 +352,27 @@ const createCanvas2DFallback = (container, settingsRef) => {
     document.removeEventListener('visibilitychange', handleVisibilityChange);
     reducedMotion?.removeEventListener?.('change', restart);
     if (rafId) cancelAnimationFrame(rafId);
-    if (themeFrameId) cancelAnimationFrame(themeFrameId);
     resizeObserver.disconnect();
-    themeObserver.disconnect();
     if (canvas.parentElement === container) container.removeChild(canvas);
   };
 };
 
-const THEME_PALETTES = {
-  light: [
-    'rgba(4, 39, 61, .48)',
-    'rgba(8, 127, 224, .82)',
-    'rgba(34, 199, 236, .88)',
-    'rgba(118, 89, 237, .72)',
-  ],
-  dark: [
-    'rgba(8, 127, 224, .56)',
-    'rgba(34, 199, 236, .9)',
-    'rgba(102, 222, 255, .92)',
-    'rgba(135, 105, 255, .76)',
-  ],
-};
-
-const readTheme = () => (
-  typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark'
-    ? 'dark'
-    : 'light'
-);
-
 const ChromaticWavesBackground = ({
   frequency = 6,
   speed = 2,
-  bgColor = null,
-  colors = null,
+  bgColor = '#f4f8fa',
+  colors = ['rgba(4, 39, 61, .22)', 'rgba(8, 127, 224, .52)', 'rgba(34, 199, 236, .58)', 'rgba(118, 89, 237, .46)'],
   cellSize = 5,
-  gamma = 2.6,
-  paletteBias = 0.4,
+  gamma = 3,
+  paletteBias = -2,
 }) => {
   const containerRef = useRef(null);
   const [isFallback, setIsFallback] = useState(false);
-  const [theme, setTheme] = useState(readTheme);
-  const activeColors = colors?.length ? colors : THEME_PALETTES[theme];
-  const paletteKey = activeColors.slice(0, MAX_COLORS).join('|');
+  const paletteKey = colors.slice(0, MAX_COLORS).join('|');
   const palette = useMemo(() => createPalette(paletteKey.split('|')), [paletteKey]);
   const settingsRef = useRef({ frequency, speed, cellSize, gamma, paletteBias, palette });
 
   settingsRef.current = { frequency, speed, cellSize, gamma, paletteBias, palette };
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const syncTheme = () => setTheme(readTheme());
-    const observer = new MutationObserver(syncTheme);
-
-    syncTheme();
-    observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -584,8 +549,7 @@ const ChromaticWavesBackground = ({
   return (
     <div
       className={`home-chromatic-waves${isFallback ? ' is-fallback' : ''}`}
-      style={{ backgroundColor: bgColor || 'var(--home-mesh-background, #f4f8fa)' }}
-      data-wave-theme={theme}
+      style={{ backgroundColor: bgColor }}
       aria-hidden="true"
     >
       <div ref={containerRef} className="home-chromatic-waves-canvas" />

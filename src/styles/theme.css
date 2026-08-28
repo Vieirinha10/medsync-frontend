@@ -479,30 +479,68 @@
 
 /*
  * Chromatic Waves
- * Uma única camada animada, como antes do seletor de temas.
- * O tema altera somente a base; não há malha estática sobreposta.
+ * No tema claro, recupera exatamente o campo visual da antiga home:
+ * base azul-petróleo, ondas densas de pontos finos e grade quase imperceptível.
  */
 .App::before {
   content: none !important;
 }
 
 .home-chromatic-waves {
-  background-color: #f4f8fa !important;
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: 930px;
+  background-color: #031a2a !important;
   background-image: none !important;
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.92) 78%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.92) 78%, transparent 100%);
+}
+
+.home-chromatic-waves::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(34, 199, 236, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 199, 236, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.72) 34%, transparent 72%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.72) 34%, transparent 72%);
+  content: '';
+}
+
+.home-chromatic-waves::after {
+  z-index: 2;
+  background:
+    linear-gradient(90deg, rgba(3, 26, 42, 0.44), transparent 36%, rgba(3, 26, 42, 0.2)),
+    linear-gradient(180deg, transparent 58%, #031a2a);
 }
 
 .home-chromatic-waves-canvas {
-  opacity: 1;
+  position: relative;
+  z-index: 0;
+  opacity: 0.26;
   mix-blend-mode: normal;
 }
 
 .home-chromatic-waves-canvas canvas {
-  filter: none;
+  filter: saturate(0.92) contrast(1.12);
 }
 
 :root[data-theme='dark'] .home-chromatic-waves {
+  position: fixed;
+  inset: 78px 0 0;
+  height: calc(100vh - 78px);
   background-color: #031923 !important;
   background-image: none !important;
+  mask-image: none;
+  -webkit-mask-image: none;
+}
+
+:root[data-theme='dark'] .home-chromatic-waves::before {
+  content: none;
 }
 
 :root[data-theme='dark'] .home-chromatic-waves::after {
@@ -516,7 +554,19 @@
   mix-blend-mode: screen;
 }
 
+:root[data-theme='dark'] .home-chromatic-waves-canvas canvas {
+  filter: none;
+}
+
 @media (max-width: 720px) {
+  .home-chromatic-waves {
+    height: 1080px;
+  }
+
+  :root[data-theme='dark'] .home-chromatic-waves {
+    height: calc(100vh - 78px);
+  }
+
   :root[data-theme='dark'] .home-chromatic-waves-canvas {
     opacity: 0.66;
   }

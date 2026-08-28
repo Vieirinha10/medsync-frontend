@@ -251,7 +251,8 @@ const createCanvas2DFallback = (container, settingsRef) => {
     const settings = settingsRef.current;
     const palette = settings.palette;
     const paletteCount = Math.max(1, palette.count);
-    const spacing = width < 760 ? 12 : 10;
+    const baseSpacing = mapLinear(settings.cellSize, 1, 100, 6, 60);
+    const spacing = baseSpacing * (width < 760 ? 1.12 : 1);
     const phase = time * 0.00007 * settings.speed;
     const effectiveGamma = mapLinear(settings.gamma, 1, 20, 0.5, 8);
     const paths = Array.from({ length: paletteCount }, () => []);
@@ -357,22 +358,92 @@ const createCanvas2DFallback = (container, settingsRef) => {
   };
 };
 
+const HOME_WAVE_PRESETS = {
+  light: {
+    frequency: 6,
+    speed: 1.4,
+    bgColor: '#031a2a',
+    colors: [
+      'rgba(3, 26, 42, .2)',
+      'rgba(8, 127, 224, .72)',
+      'rgba(34, 199, 236, .7)',
+      'rgba(167, 243, 75, .52)',
+    ],
+    cellSize: 4,
+    gamma: 3,
+    paletteBias: -2,
+  },
+  dark: {
+    frequency: 6,
+    speed: 2,
+    bgColor: '#031923',
+    colors: [
+      'rgba(4, 39, 61, .22)',
+      'rgba(8, 127, 224, .52)',
+      'rgba(34, 199, 236, .58)',
+      'rgba(118, 89, 237, .46)',
+    ],
+    cellSize: 5,
+    gamma: 3,
+    paletteBias: -2,
+  },
+};
+
+const readDocumentTheme = () => (
+  typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark'
+    ? 'dark'
+    : 'light'
+);
+
 const ChromaticWavesBackground = ({
-  frequency = 6,
-  speed = 2,
-  bgColor = '#f4f8fa',
-  colors = ['rgba(4, 39, 61, .22)', 'rgba(8, 127, 224, .52)', 'rgba(34, 199, 236, .58)', 'rgba(118, 89, 237, .46)'],
-  cellSize = 5,
-  gamma = 3,
-  paletteBias = -2,
+  frequency,
+  speed,
+  bgColor,
+  colors,
+  cellSize,
+  gamma,
+  paletteBias,
 }) => {
   const containerRef = useRef(null);
   const [isFallback, setIsFallback] = useState(false);
-  const paletteKey = colors.slice(0, MAX_COLORS).join('|');
+  const [theme, setTheme] = useState(readDocumentTheme);
+  const preset = HOME_WAVE_PRESETS[theme];
+  const resolvedFrequency = frequency ?? preset.frequency;
+  const resolvedSpeed = speed ?? preset.speed;
+  const resolvedBgColor = bgColor ?? preset.bgColor;
+  const resolvedColors = colors?.length ? colors : preset.colors;
+  const resolvedCellSize = cellSize ?? preset.cellSize;
+  const resolvedGamma = gamma ?? preset.gamma;
+  const resolvedPaletteBias = paletteBias ?? preset.paletteBias;
+  const paletteKey = resolvedColors.slice(0, MAX_COLORS).join('|');
   const palette = useMemo(() => createPalette(paletteKey.split('|')), [paletteKey]);
-  const settingsRef = useRef({ frequency, speed, cellSize, gamma, paletteBias, palette });
+  const settingsRef = useRef({
+    frequency: resolvedFrequency,
+    speed: resolvedSpeed,
+    cellSize: resolvedCellSize,
+    gamma: resolvedGamma,
+    paletteBias: resolvedPaletteBias,
+    palette,
+  });
 
-  settingsRef.current = { frequency, speed, cellSize, gamma, paletteBias, palette };
+  settingsRef.current = {
+    frequency: resolvedFrequency,
+    speed: resolvedSpeed,
+    cellSize: resolvedCellSize,
+    gamma: resolvedGamma,
+    paletteBias: resolvedPaletteBias,
+    palette,
+  };
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const syncTheme = () => setTheme(readDocumentTheme());
+    const observer = new MutationObserver(syncTheme);
+
+    syncTheme();
+    observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -549,7 +620,8 @@ const ChromaticWavesBackground = ({
   return (
     <div
       className={`home-chromatic-waves${isFallback ? ' is-fallback' : ''}`}
-      style={{ backgroundColor: bgColor }}
+      style={{ backgroundColor: resolvedBgColor }}
+      data-wave-theme={theme}
       aria-hidden="true"
     >
       <div ref={containerRef} className="home-chromatic-waves-canvas" />

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { getResponsiveFrequencyScale } from './chromaticWavesUtils';
 
 const MAX_COLORS = 10;
 
@@ -513,10 +514,12 @@ const ChromaticWavesBackground = ({
         gamma: gl.getUniformLocation(dotProgram, 'uGamma'),
         bias: gl.getUniformLocation(dotProgram, 'uPaletteBias'),
       };
+      let responsiveFrequencyScale = 1;
 
       const resize = () => {
         const width = Math.max(container.clientWidth, 1);
         const height = Math.max(container.clientHeight, 1);
+        responsiveFrequencyScale = getResponsiveFrequencyScale(width, height);
         const dpr = Math.min(window.devicePixelRatio || 1, width < 760 ? 1.25 : 1.75);
         canvas.width = Math.round(width * dpr);
         canvas.height = Math.round(height * dpr);
@@ -532,7 +535,10 @@ const ChromaticWavesBackground = ({
         gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
         gl.useProgram(perlinProgram);
         gl.uniform1f(perlinUniforms.time, time * 0.001);
-        gl.uniform1f(perlinUniforms.frequency, mapLinear(settings.frequency, 1, 10, 0.3, 6));
+        gl.uniform1f(
+          perlinUniforms.frequency,
+          mapLinear(settings.frequency, 1, 10, 0.3, 6) * responsiveFrequencyScale,
+        );
         gl.uniform1f(perlinUniforms.speed, settings.speed * 0.05);
         gl.uniform1f(perlinUniforms.value, 1);
         gl.uniform2f(perlinUniforms.resolution, canvas.width, canvas.height);

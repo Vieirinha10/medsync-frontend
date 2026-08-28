@@ -224,6 +224,8 @@ O campo de ondas pontilhadas é a textura oficial da página inicial.
 - Composição: `mix-blend-mode: screen`.
 - Paleta: azul-petróleo, azul, ciano e violeta.
 - Movimento contínuo, lento e secundário ao conteúdo.
+- Em larguras abaixo de `760 px`, preservar integralmente a frequência original.
+- Em telas largas, aumentar progressivamente apenas a frequência espacial conforme a proporção da tela, com limite de 1.42×, para evitar grandes vazios sem alterar pontos, cores, velocidade ou opacidade.
 - Deve funcionar com WebGL 2 e fallback Canvas 2D.
 - Nunca sobrepor uma segunda malha estática ao campo dinâmico.
 - Nunca permitir que uma superfície opaca esconda o fundo quando ele for parte da composição pretendida.

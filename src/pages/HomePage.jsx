@@ -20,6 +20,7 @@ import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../config/pricing';
 import { api } from '../services/api';
 import ChromaticWavesBackground from '../components/ChromaticWavesBackground';
 import StatMorph from '../components/StatMorph';
+import MedSyncIntro from '../components/MedSyncIntro';
 
 const SYNAPSE_CAPABILITIES = [
   {
@@ -226,6 +227,7 @@ const HomePage = () => {
 
   return (
     <div className="home-container home-solid" ref={homeRef}>
+    <MedSyncIntro />
     <ChromaticWavesBackground />
     <section className="solid-hero">
       <div className="solid-hero-glow solid-hero-glow-one" aria-hidden="true" />

@@ -1,0 +1,178 @@
+html.medsync-intro-lock,
+html.medsync-intro-lock body {
+  overflow: hidden;
+}
+
+html.medsync-intro-lock .App-header,
+html.medsync-intro-lock .announcement-banner {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.medsync-intro {
+  --intro-deep: #031722;
+  --intro-blue: #087fe0;
+  --intro-cyan: #22c7ec;
+  --intro-lime: #a7f34b;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #fff;
+  background: var(--intro-deep);
+  animation: medsync-intro-enter 320ms ease both;
+}
+
+.medsync-intro.is-leaving {
+  animation: medsync-intro-exit 900ms cubic-bezier(.65, .01, .05, .99) both;
+}
+
+.medsync-intro-grid {
+  position: absolute;
+  inset: 0;
+  opacity: .5;
+  background-image:
+    linear-gradient(rgba(34, 199, 236, .08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 199, 236, .08) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.medsync-intro-grid::after {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 45%, rgba(8, 127, 224, .28), transparent 43%);
+  content: '';
+}
+
+.medsync-intro-logo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  animation: medsync-logo-arrive 800ms .12s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.medsync-intro-logo img {
+  width: min(64vw, 420px);
+  height: auto;
+  filter: drop-shadow(0 20px 44px rgba(0, 0, 0, .28));
+}
+
+.medsync-intro-logo span {
+  color: var(--intro-cyan);
+  font-family: monospace;
+  font-size: .69rem;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.medsync-intro-messages {
+  position: absolute;
+  bottom: 66px;
+  left: 50%;
+  width: 100%;
+  transform: translateX(-50%);
+  color: var(--intro-cyan);
+  font-family: monospace;
+  font-size: .7rem;
+  font-weight: 750;
+  letter-spacing: .15em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.medsync-intro-messages span {
+  position: absolute;
+  left: 50%;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  animation: medsync-intro-message 1.4s ease both;
+}
+
+.medsync-intro-messages span:nth-child(2) {
+  animation-delay: 1.35s;
+}
+
+.medsync-intro-progress {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 8px;
+  background: rgba(255, 255, 255, .08);
+}
+
+.medsync-intro-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--intro-blue), var(--intro-cyan), var(--intro-lime));
+  animation: medsync-intro-progress 2.8s cubic-bezier(.65, .01, .05, .99) both;
+}
+
+@keyframes medsync-intro-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes medsync-intro-exit {
+  to { transform: translateY(-101%); }
+}
+
+@keyframes medsync-logo-arrive {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateY(24px) scale(.94);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+
+@keyframes medsync-intro-message {
+  0%, 100% {
+    opacity: 0;
+    transform: translate(-50%, 18px);
+  }
+  20%, 72% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes medsync-intro-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (max-width: 600px) {
+  .medsync-intro-logo img {
+    width: 82vw;
+  }
+
+  .medsync-intro-logo span {
+    max-width: 86vw;
+    font-size: .52rem;
+    letter-spacing: .14em;
+  }
+
+  .medsync-intro-messages {
+    bottom: 54px;
+    font-size: .54rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .medsync-intro {
+    display: none;
+  }
+}

@@ -1,4 +1,5 @@
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { StrictMode } from 'react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { api } from '../services/api';
@@ -13,10 +14,27 @@ vi.mock('../services/api', () => ({
 describe('HomePage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    window.sessionStorage.setItem('medsync-home-intro-viewed', 'true');
   });
 
   afterEach(() => {
     cleanup();
+    vi.useRealTimers();
+  });
+
+  it('exibe a apresentação uma vez por sessão e a remove ao concluir', () => {
+    vi.useFakeTimers();
+    api.getPublicStats.mockResolvedValue({ estudantes_medsync: 127 });
+    window.sessionStorage.removeItem('medsync-home-intro-viewed');
+    const { unmount } = render(<StrictMode><MemoryRouter><HomePage /></MemoryRouter></StrictMode>);
+
+    expect(screen.getByRole('status', { name: 'Apresentação do MedSync' })).toBeInTheDocument();
+    act(() => vi.advanceTimersByTime(3800));
+    expect(screen.queryByRole('status', { name: 'Apresentação do MedSync' })).not.toBeInTheDocument();
+
+    unmount();
+    render(<StrictMode><MemoryRouter><HomePage /></MemoryRouter></StrictMode>);
+    expect(screen.queryByRole('status', { name: 'Apresentação do MedSync' })).not.toBeInTheDocument();
   });
 
   it('apresenta prova social e abrangência médica com dados reais', async () => {

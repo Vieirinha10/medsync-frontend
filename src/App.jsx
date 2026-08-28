@@ -65,6 +65,7 @@ import './styles/admin-operations.css';
 import './styles/challenge-cards.css';
 import './styles/home-solid.css';
 import './styles/platform-solid.css';
+import './styles/opsra-home.css';
 import './styles/checkout.css';
 import './styles/visual-challenges-v2.css';
 import './styles/review-center.css';
@@ -115,7 +116,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className={`App${location.pathname === '/' ? ' is-home' : ''}`}>
       <header className="App-header">
         <nav className="App-nav">
           <Link to="/" className="logo-link">

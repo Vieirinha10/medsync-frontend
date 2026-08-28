@@ -15,8 +15,6 @@ import {
   FiLayers,
   FiLogOut,
   FiMenu,
-  FiMoon,
-  FiSun,
   FiUser,
   FiX,
 } from 'react-icons/fi';
@@ -73,36 +71,15 @@ import './styles/review-center.css';
 import './styles/questions.css';
 import './styles/theme.css';
 
-const THEME_STORAGE_KEY = 'medsync-theme';
-
-const getSavedTheme = () => {
-  try {
-    return window.localStorage.getItem(THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light';
-  } catch {
-    return 'light';
-  }
-};
 
 function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openNavMenu, setOpenNavMenu] = useState(null);
-  const [theme, setTheme] = useState(getSavedTheme);
   const isAuthenticated = Boolean(getAuthToken());
   const isMoreActive = ['/trilhas', '/caderno-erros'].some((path) => location.pathname.startsWith(path));
   const isAccountActive = location.pathname.startsWith('/dashboard');
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-
-    try {
-      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
-    } catch {
-      // O tema continua ativo durante a sessão quando o armazenamento não está disponível.
-    }
-  }, [theme]);
 
   useEffect(() => {
     setIsMenuOpen(false);
@@ -191,22 +168,7 @@ function App() {
               </div>
             </div>
 
-            <div className="nav-account-actions" aria-label="Conta, aparência e assinatura">
-              <button
-                type="button"
-                className="theme-toggle"
-                aria-label={theme === 'dark' ? 'Ativar tema claro' : 'Ativar tema escuro'}
-                aria-pressed={theme === 'dark'}
-                title={theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'}
-                onClick={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
-              >
-                <span className="theme-toggle-icon" aria-hidden="true">
-                  {theme === 'dark' ? <FiSun /> : <FiMoon />}
-                </span>
-                <span className="theme-toggle-label">
-                  {theme === 'dark' ? 'Tema claro' : 'Tema escuro'}
-                </span>
-              </button>
+            <div className="nav-account-actions" aria-label="Conta e assinatura">
 
               <NavLink to="/assinatura" className="plans-nav-button">
                 Planos

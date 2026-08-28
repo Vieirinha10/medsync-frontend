@@ -6,14 +6,9 @@ import { BrowserRouter } from 'react-router-dom';
 // Importa um CSS global que deixaremos vazio por enquanto.
 import './index.css';
 
-// Aplica a preferência antes da montagem para evitar mudança visual durante o carregamento.
-try {
-  const savedTheme = window.localStorage.getItem('medsync-theme');
-  document.documentElement.dataset.theme = savedTheme === 'dark' ? 'dark' : 'light';
-  document.documentElement.style.colorScheme = savedTheme === 'dark' ? 'dark' : 'light';
-} catch {
-  document.documentElement.dataset.theme = 'light';
-}
+// O tema escuro é a identidade visual oficial do MedSync.
+document.documentElement.dataset.theme = 'dark';
+document.documentElement.style.colorScheme = 'dark';
 
 // Configura o React para rodar dentro do roteador de navegação.
 ReactDOM.createRoot(document.getElementById('root')).render(

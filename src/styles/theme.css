@@ -1,49 +1,10 @@
 /*
- * MedSync — temas claro e escuro
- * O tema claro preserva o sistema atual. O escuro usa a malha azul-petróleo
- * da marca e superfícies tonais para sessões prolongadas de estudo.
+ * MedSync — tema escuro oficial
+ * Azul-petróleo, superfícies tonais e contraste confortável para estudo prolongado.
  */
 
 :root {
-  color-scheme: light;
-}
-
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-width: 40px;
-  height: 40px;
-  padding: 0 11px;
-  border: 1px solid rgba(7, 68, 103, 0.13);
-  border-radius: 12px;
-  color: #365466;
-  background: rgba(255, 255, 255, 0.68);
-  font: inherit;
-  font-size: 0.78rem;
-  font-weight: 760;
-  cursor: pointer;
-  box-shadow: 0 7px 18px rgba(4, 39, 61, 0.05);
-  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
-}
-
-.theme-toggle:hover {
-  color: var(--med-navy);
-  border-color: rgba(8, 127, 224, 0.24);
-  background: rgba(8, 127, 224, 0.07);
-  box-shadow: 0 10px 24px rgba(4, 39, 61, 0.09);
-  transform: translateY(-1px);
-}
-
-.theme-toggle-icon {
-  display: grid;
-  font-size: 1.04rem;
-  place-items: center;
-}
-
-.theme-toggle-label {
-  display: none;
+  color-scheme: dark;
 }
 
 :root[data-theme='dark'] {
@@ -125,18 +86,6 @@
   background: rgba(49, 166, 207, 0.1);
 }
 
-:root[data-theme='dark'] .theme-toggle {
-  color: #a9c7d3;
-  border-color: rgba(100, 204, 242, 0.17);
-  background: rgba(10, 53, 71, 0.72);
-  box-shadow: 0 8px 22px rgba(0, 8, 14, 0.24);
-}
-
-:root[data-theme='dark'] .theme-toggle:hover {
-  color: #fff;
-  border-color: rgba(105, 215, 255, 0.34);
-  background: rgba(22, 117, 151, 0.34);
-}
 
 :root[data-theme='dark'] :where(.announcement-banner, .announcement-banner-content) {
   border-color: rgba(92, 199, 237, 0.15);
@@ -442,23 +391,8 @@
   background: rgba(111, 221, 255, 0.78);
 }
 
-@media (min-width: 1180px) {
-  .theme-toggle-label {
-    display: inline;
-  }
-}
 
 @media (max-width: 960px) {
-  .theme-toggle {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 0 12px;
-  }
-
-  .theme-toggle-label {
-    display: inline;
-  }
-
   :root[data-theme='dark'] .nav-links {
     border-color: rgba(94, 196, 234, 0.14);
     background: rgba(4, 31, 44, 0.98);
@@ -469,7 +403,6 @@
   body,
   .App,
   .App-header,
-  .theme-toggle,
   .nav-dropdown-panel,
   .home-solid,
   .page-container {
@@ -478,105 +411,49 @@
 }
 
 /*
- * Chromatic Waves
- * No tema claro, recupera exatamente o campo visual da antiga home:
- * base azul-petróleo, ondas densas de pontos finos e grade quase imperceptível.
+ * Chromatic Waves — fundo oficial do tema escuro.
  */
 .App::before {
   content: none !important;
 }
 
 .home-chromatic-waves {
-  position: absolute;
-  inset: 0 0 auto;
-  width: 100%;
-  height: 930px;
-  background-color: #031a2a !important;
-  background-image: none !important;
-  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.92) 78%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.92) 78%, transparent 100%);
-}
-
-.home-chromatic-waves::before {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(34, 199, 236, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 199, 236, 0.045) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.72) 34%, transparent 72%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.72) 34%, transparent 72%);
-  content: '';
-}
-
-.home-chromatic-waves::after {
-  z-index: 2;
-  background:
-    linear-gradient(90deg, rgba(3, 26, 42, 0.44), transparent 36%, rgba(3, 26, 42, 0.2)),
-    linear-gradient(180deg, transparent 58%, #031a2a);
-}
-
-.home-chromatic-waves-canvas {
-  position: relative;
-  z-index: 0;
-  opacity: 0.26;
-  mix-blend-mode: normal;
-}
-
-.home-chromatic-waves-canvas canvas {
-  filter: saturate(0.92) contrast(1.12);
-}
-
-/* Mantém as ondas acima do fundo do painel, mas abaixo de todo o conteúdo. */
-:root[data-theme='light'] .solid-hero {
-  background: linear-gradient(125deg, rgba(255, 255, 255, 0.025), transparent 45%);
-}
-
-:root[data-theme='light'] .solid-hero::before {
-  content: none;
-}
-
-:root[data-theme='dark'] .home-chromatic-waves {
   position: fixed;
   inset: 78px 0 0;
+  width: 100%;
   height: calc(100vh - 78px);
+  overflow: hidden;
+  pointer-events: none;
   background-color: #031923 !important;
   background-image: none !important;
   mask-image: none;
   -webkit-mask-image: none;
 }
 
-:root[data-theme='dark'] .home-chromatic-waves::before {
+.home-chromatic-waves::before {
   content: none;
 }
 
-:root[data-theme='dark'] .home-chromatic-waves::after {
+.home-chromatic-waves::after {
+  z-index: 2;
   background:
     radial-gradient(circle at 18% 22%, rgba(87, 204, 239, 0.035), transparent 36%),
     linear-gradient(180deg, rgba(3, 25, 35, 0.04), rgba(3, 25, 35, 0.22));
 }
 
-:root[data-theme='dark'] .home-chromatic-waves-canvas {
+.home-chromatic-waves-canvas {
+  position: relative;
+  z-index: 0;
   opacity: 0.72;
   mix-blend-mode: screen;
 }
 
-:root[data-theme='dark'] .home-chromatic-waves-canvas canvas {
+.home-chromatic-waves-canvas canvas {
   filter: none;
 }
 
 @media (max-width: 720px) {
-  .home-chromatic-waves {
-    height: 1080px;
-  }
-
-  :root[data-theme='dark'] .home-chromatic-waves {
-    height: calc(100vh - 78px);
-  }
-
-  :root[data-theme='dark'] .home-chromatic-waves-canvas {
+  .home-chromatic-waves-canvas {
     opacity: 0.66;
   }
 }

@@ -218,6 +218,147 @@ const createProgram = (gl, vertexSource, fragmentSource) => {
   return program;
 };
 
+const createCanvas2DFallback = (container, settingsRef) => {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d', { alpha: true });
+  if (!context) return undefined;
+
+  canvas.setAttribute('aria-hidden', 'true');
+  canvas.dataset.renderer = 'canvas-2d';
+  container.appendChild(canvas);
+
+  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  let active = true;
+  let rafId = 0;
+  let themeFrameId = 0;
+  let lastFrame = 0;
+  let width = 1;
+  let height = 1;
+  let pixelRatio = 1;
+
+  const resize = () => {
+    const rect = container.getBoundingClientRect();
+    width = Math.max(1, Math.round(rect.width));
+    height = Math.max(1, Math.round(rect.height));
+    pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = Math.max(1, Math.round(width * pixelRatio));
+    canvas.height = Math.max(1, Math.round(height * pixelRatio));
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+  };
+
+  const render = (time = 0) => {
+    const settings = settingsRef.current;
+    const palette = settings.palette;
+    const paletteCount = Math.max(1, palette.count);
+    const spacing = width < 760 ? 13 : 11;
+    const phase = time * 0.00018 * settings.speed;
+    const paths = Array.from({ length: paletteCount }, () => []);
+
+    context.clearRect(0, 0, width, height);
+
+    for (let y = -spacing; y <= height + spacing; y += spacing) {
+      const normalizedY = y / height;
+      for (let x = -spacing; x <= width + spacing; x += spacing) {
+        const normalizedX = x / width;
+        const ridgeA = 0.3
+          + 0.12 * Math.sin(normalizedX * 7.2 + phase)
+          + 0.045 * Math.sin(normalizedX * 15.4 - phase * 0.6);
+        const ridgeB = 0.69
+          + 0.11 * Math.sin(normalizedX * 6.4 - phase * 0.86 + 1.6)
+          + 0.05 * Math.cos(normalizedX * 14 + phase * 0.45);
+        const distanceA = (normalizedY - ridgeA) / 0.115;
+        const distanceB = (normalizedY - ridgeB) / 0.13;
+        const bandA = Math.exp(-(distanceA * distanceA));
+        const bandB = Math.exp(-(distanceB * distanceB));
+        const interference = 0.62
+          + 0.38 * (0.5 + 0.5 * Math.sin((normalizedX + normalizedY * 0.75) * 10.5 - phase * 0.55));
+        const intensity = clamp(Math.max(bandA, bandB * 0.86) * interference, 0, 1);
+
+        if (intensity < 0.09) continue;
+
+        const radius = 0.55 + intensity * 1.85;
+        const paletteIndex = Math.min(paletteCount - 1, Math.floor(intensity * paletteCount));
+        const driftX = Math.sin(y * 0.055 + phase) * 1.25;
+        const driftY = Math.cos(x * 0.035 - phase * 0.72) * 0.8;
+        paths[paletteIndex].push([x + driftX, y + driftY, radius]);
+      }
+    }
+
+    paths.forEach((dots, index) => {
+      if (!dots.length) return;
+      const offset = index * 3;
+      const red = Math.round(palette.rgb[offset] * 255);
+      const green = Math.round(palette.rgb[offset + 1] * 255);
+      const blue = Math.round(palette.rgb[offset + 2] * 255);
+      context.beginPath();
+      dots.forEach(([x, y, radius]) => {
+        context.moveTo(x + radius, y);
+        context.arc(x, y, radius, 0, Math.PI * 2);
+      });
+      context.fillStyle = `rgba(${red}, ${green}, ${blue}, ${palette.alpha[index]})`;
+      context.fill();
+    });
+  };
+
+  const animate = (time) => {
+    if (!active || document.hidden) {
+      rafId = 0;
+      return;
+    }
+    const frameInterval = width < 760 ? 1000 / 20 : 1000 / 24;
+    if (time - lastFrame >= frameInterval) {
+      render(time);
+      lastFrame = time;
+    }
+    rafId = requestAnimationFrame(animate);
+  };
+
+  const restart = () => {
+    if (rafId) cancelAnimationFrame(rafId);
+    render(performance.now());
+    rafId = reducedMotion?.matches || document.hidden ? 0 : requestAnimationFrame(animate);
+  };
+
+  const handleVisibilityChange = () => {
+    if (document.hidden && rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    } else if (!document.hidden) {
+      restart();
+    }
+  };
+
+  resize();
+  restart();
+
+  const resizeObserver = new ResizeObserver(() => {
+    resize();
+    render(performance.now());
+  });
+  const themeObserver = new MutationObserver(() => {
+    if (themeFrameId) cancelAnimationFrame(themeFrameId);
+    themeFrameId = requestAnimationFrame(() => render(performance.now()));
+  });
+
+  resizeObserver.observe(container);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  reducedMotion?.addEventListener?.('change', restart);
+
+  return () => {
+    active = false;
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+    reducedMotion?.removeEventListener?.('change', restart);
+    if (rafId) cancelAnimationFrame(rafId);
+    if (themeFrameId) cancelAnimationFrame(themeFrameId);
+    resizeObserver.disconnect();
+    themeObserver.disconnect();
+    if (canvas.parentElement === container) container.removeChild(canvas);
+  };
+};
+
 const THEME_PALETTES = {
   light: [
     'rgba(4, 39, 61, .48)',
@@ -273,7 +414,7 @@ const ChromaticWavesBackground = ({
     if (!container) return undefined;
     if (typeof window.WebGL2RenderingContext === 'undefined') {
       setIsFallback(true);
-      return undefined;
+      return createCanvas2DFallback(container, settingsRef);
     }
 
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -436,7 +577,7 @@ const ChromaticWavesBackground = ({
       setIsFallback(true);
       const canvas = container.querySelector('canvas');
       if (canvas) canvas.remove();
-      return undefined;
+      return createCanvas2DFallback(container, settingsRef);
     }
   }, []);
 

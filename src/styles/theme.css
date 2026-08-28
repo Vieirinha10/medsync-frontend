@@ -411,6 +411,450 @@
 }
 
 /*
+ * Compatibilidade dark-only
+ *
+ * Algumas telas anteriores ao tema oficial ainda declaravam superfícies claras
+ * localmente. Como theme.css e carregado por ultimo, este bloco reconcilia esses
+ * componentes com a escala azul-petroleo sem alterar sua estrutura ou semantica.
+ */
+:root[data-theme='dark'] {
+  --med-panel: linear-gradient(145deg, rgba(9, 48, 66, 0.98), rgba(5, 35, 49, 0.98));
+  --med-panel-raised: rgba(11, 52, 71, 0.94);
+  --med-panel-soft: rgba(12, 58, 78, 0.72);
+  --med-inset: #041f2c;
+  --med-text-primary: #e8f4f8;
+  --med-text-body: #dcebf1;
+  --med-text-secondary: #91adba;
+  --med-text-meta: #8aa6b5;
+  --med-focus: rgba(34, 199, 236, 0.34);
+}
+
+/* Formularios e preenchimento automatico do navegador. */
+:root[data-theme='dark'] :where(input, select, textarea) {
+  caret-color: #22c7ec;
+}
+
+:root[data-theme='dark'] :where(input, textarea):-webkit-autofill,
+:root[data-theme='dark'] :where(input, textarea):-webkit-autofill:hover,
+:root[data-theme='dark'] :where(input, textarea):-webkit-autofill:focus {
+  -webkit-text-fill-color: #e5f2f7;
+  caret-color: #22c7ec;
+  box-shadow: 0 0 0 1000px #041f2c inset;
+  transition: background-color 9999s ease-out 0s;
+}
+
+:root[data-theme='dark'] :where(input, select, textarea):focus-visible {
+  outline: 3px solid rgba(34, 199, 236, 0.14);
+  border-color: var(--med-focus);
+}
+
+:root[data-theme='dark'] select option {
+  color: #e5f2f7;
+  background: #041f2c;
+}
+
+/* Inicio: texto do morfismo e numeros sobre nucleos claros. */
+:root[data-theme='dark'] .stat-morph-word,
+:root[data-theme='dark'] .stat-morph-word span {
+  color: #dcebf1;
+}
+
+:root[data-theme='dark'] .stat-morph-word strong {
+  color: #22a8ee;
+}
+
+:root[data-theme='dark'] .preview-score-ring strong,
+:root[data-theme='dark'] .score-core strong {
+  color: #0873a6;
+  -webkit-text-fill-color: currentColor;
+}
+
+:root[data-theme='dark'] .preview-score-ring span,
+:root[data-theme='dark'] .score-core span {
+  color: #58798a;
+}
+
+/* Jornada clinica: uma unica familia de superficies escuras. */
+:root[data-theme='dark'] .clinical-journey {
+  --journey-ink: #e8f4f8;
+  --journey-muted: #91adba;
+}
+
+:root[data-theme='dark'] :where(
+  .journey-stepper,
+  .journey-stage,
+  .patient-record-card,
+  .journey-actions,
+  .clinical-memory,
+  .rubric-evidence-section,
+  .released-results,
+  .synapse-follow-up,
+  .synapse-answer,
+  .exam-results-card,
+  .exam-rationale-feedback article,
+  .detailed-clinical-analysis
+) {
+  color: var(--med-text-body);
+  border-color: rgba(101, 204, 241, 0.15);
+  background: var(--med-panel);
+  box-shadow: 0 17px 46px rgba(0, 8, 14, 0.25);
+}
+
+:root[data-theme='dark'] :where(
+  .patient-record-card,
+  .stage-tip,
+  .journey-exam-grid label,
+  .reasoning-scaffold span,
+  .memory-live,
+  .clinical-sources,
+  .clinical-sources a,
+  .suggested-questions button,
+  .released-results article
+) {
+  color: var(--med-text-body);
+  border-color: rgba(101, 204, 241, 0.13);
+  background: var(--med-panel-soft);
+}
+
+:root[data-theme='dark'] :where(
+  .journey-stepper button,
+  .journey-back,
+  .memory-block p,
+  .memory-block small,
+  .released-results article p,
+  .journey-textarea > small,
+  .detailed-clinical-analysis > summary p,
+  .section-score-analysis > div:first-child p
+) {
+  color: var(--med-text-secondary);
+}
+
+:root[data-theme='dark'] :where(
+  .journey-stepper button strong,
+  .stage-heading h2,
+  .patient-record-card h3,
+  .presentation-advance p strong,
+  .memory-block header strong,
+  .memory-live strong,
+  .journey-textarea,
+  .detailed-clinical-analysis > summary h2,
+  .section-score-analysis > div:first-child h2
+) {
+  color: var(--med-text-primary);
+}
+
+:root[data-theme='dark'] .journey-stepper button > span,
+:root[data-theme='dark'] .journey-exam-grid label > span,
+:root[data-theme='dark'] .reasoning-scaffold b {
+  color: #62d5f3;
+  background: rgba(19, 91, 121, 0.55);
+}
+
+:root[data-theme='dark'] .journey-stepper button > i,
+:root[data-theme='dark'] .memory-block,
+:root[data-theme='dark'] .journey-actions {
+  border-color: rgba(101, 204, 241, 0.12);
+}
+
+:root[data-theme='dark'] .journey-stepper button > i {
+  background: rgba(101, 204, 241, 0.16);
+}
+
+:root[data-theme='dark'] .journey-exam-grid label.is-selected {
+  color: #b8effb;
+  border-color: rgba(34, 199, 236, 0.48);
+  background: rgba(8, 127, 224, 0.18);
+}
+
+:root[data-theme='dark'] .journey-textarea textarea {
+  color: #e5f2f7;
+  border-color: rgba(104, 205, 242, 0.18);
+  background: var(--med-inset);
+}
+
+/* Questoes: leitura, alternativas e feedback sem paineis brancos. */
+:root[data-theme='dark'] :where(
+  .questions-setup-card,
+  .questions-performance-card,
+  .questions-question-card,
+  .questions-result-card,
+  .questions-session-topbar,
+  .questions-report-form,
+  .questions-feedback
+) {
+  color: var(--med-text-body);
+  border-color: rgba(101, 204, 241, 0.15);
+  background: var(--med-panel);
+  box-shadow: 0 17px 46px rgba(0, 8, 14, 0.24);
+}
+
+:root[data-theme='dark'] :where(
+  .questions-question-card > header,
+  .questions-alternatives button,
+  .questions-size-picker button,
+  .questions-option-analysis article,
+  .questions-report-trigger,
+  .questions-result-card a
+) {
+  color: var(--med-text-body);
+  border-color: rgba(101, 204, 241, 0.14);
+  background: var(--med-panel-soft);
+}
+
+:root[data-theme='dark'] :where(
+  .questions-statement h2,
+  .questions-question-card > header strong,
+  .questions-correct-rationale > strong,
+  .questions-option-analysis > strong,
+  .questions-report-form strong,
+  .questions-result-card h2,
+  .questions-topic-performance strong,
+  .questions-empty-performance strong
+) {
+  color: var(--med-text-primary);
+}
+
+:root[data-theme='dark'] :where(
+  .questions-alternative-copy > span,
+  .questions-correct-rationale p,
+  .questions-option-analysis article p,
+  .questions-result-card > p,
+  .questions-session-topbar > div span
+) {
+  color: var(--med-text-secondary);
+}
+
+:root[data-theme='dark'] .questions-alternatives button > b,
+:root[data-theme='dark'] .questions-option-analysis article b {
+  color: #bcecf7;
+  border-color: rgba(101, 204, 241, 0.18);
+  background: rgba(3, 31, 44, 0.72);
+}
+
+:root[data-theme='dark'] .questions-alternatives button:hover:not(:disabled),
+:root[data-theme='dark'] .questions-alternatives button.is-selected {
+  color: #efffdc;
+  border-color: rgba(167, 243, 75, 0.48);
+  background: rgba(102, 156, 42, 0.18);
+}
+
+:root[data-theme='dark'] .questions-alternatives button.is-correct,
+:root[data-theme='dark'] .questions-feedback:not(.is-wrong),
+:root[data-theme='dark'] .questions-feedback:not(.is-wrong) > header,
+:root[data-theme='dark'] .questions-option-analysis article.is-correct {
+  color: #bff6dc;
+  border-color: rgba(65, 208, 151, 0.28);
+  background: rgba(21, 111, 78, 0.22);
+}
+
+:root[data-theme='dark'] .questions-alternatives button.is-wrong,
+:root[data-theme='dark'] .questions-feedback.is-wrong,
+:root[data-theme='dark'] .questions-feedback.is-wrong > header {
+  color: #ffd0d7;
+  border-color: rgba(235, 92, 115, 0.3);
+  background: rgba(126, 37, 54, 0.22);
+}
+
+:root[data-theme='dark'] :where(.questions-update-alert, .questions-explanation-unavailable) {
+  color: #ffe0a3;
+  border-color: rgba(241, 186, 74, 0.26);
+  background: rgba(122, 82, 17, 0.2);
+}
+
+/* Painel: cards internos, recomendacoes e dialogo de redefinicao. */
+:root[data-theme='dark'] :where(
+  .dashboard-insight,
+  .dashboard-insight.positive,
+  .dashboard-insight.focus,
+  .achievement-card,
+  .achievement-card.unlocked,
+  .dashboard-quick-actions,
+  .dashboard-danger-zone,
+  .reset-dialog
+) {
+  color: var(--med-text-body);
+  border-color: rgba(101, 204, 241, 0.14);
+  background: var(--med-panel);
+  box-shadow: 0 16px 42px rgba(0, 8, 14, 0.24);
+}
+
+:root[data-theme='dark'] .quick-action-links > a {
+  color: #62d5f3;
+  border-color: rgba(101, 204, 241, 0.14);
+  background: var(--med-panel-soft);
+}
+
+:root[data-theme='dark'] :where(
+  .dashboard-insight > strong,
+  .quick-action-links strong,
+  .achievement-card strong,
+  .activity-copy strong,
+  .dashboard-empty-state strong,
+  .dashboard-quick-actions h2
+) {
+  color: var(--med-text-primary);
+}
+
+:root[data-theme='dark'] :where(
+  .dashboard-insight p,
+  .quick-action-links small,
+  .achievement-card p,
+  .activity-copy span,
+  .dashboard-empty-state p
+) {
+  color: var(--med-text-secondary);
+}
+
+:root[data-theme='dark'] .reset-dialog-close,
+:root[data-theme='dark'] .reset-cancel-button {
+  color: var(--med-text-secondary);
+  border-color: rgba(101, 204, 241, 0.14);
+  background: var(--med-panel-soft);
+}
+
+:root[data-theme='dark'] :where(.reset-dialog h2, .reset-dialog label) { color: var(--med-text-primary); }
+:root[data-theme='dark'] .reset-dialog > p { color: var(--med-text-secondary); }
+
+/* Revisoes, trilhas e caderno de erros. */
+:root[data-theme='dark'] :where(
+  .review-header,
+  .review-session-stat,
+  .review-progress,
+  .review-card,
+  .review-complete,
+  .review-agenda-list > article,
+  .review-agenda-group-heading,
+  .learning-path-objectives,
+  .learning-module,
+  .learning-path-detail-progress,
+  .error-notebook-filters,
+  .study-error-card,
+  .error-details
+) {
+  color: var(--med-text-body);
+  border-color: rgba(101, 204, 241, 0.14);
+  background: var(--med-panel);
+  box-shadow: 0 17px 46px rgba(0, 8, 14, 0.24);
+}
+
+:root[data-theme='dark'] :where(
+  .review-ratings button,
+  .review-ratings .errei,
+  .review-ratings .dificil,
+  .review-ratings .bom,
+  .review-ratings .facil,
+  .review-recall,
+  .review-answer-comparison section,
+  .review-explanation,
+  .review-complete a.secondary,
+  .learning-path-detail-meta span,
+  .learning-paths-how > div > svg,
+  .study-error-card article,
+  .user-answer,
+  .correct-answer
+) {
+  color: var(--med-text-body);
+  border-color: rgba(101, 204, 241, 0.13);
+  background: var(--med-panel-soft);
+}
+
+/* Checkout, planos e areas institucionais. */
+:root[data-theme='dark'] :where(
+  .checkout-main-card,
+  .checkout-summary-card,
+  .transparent-checkout-layout,
+  .transparent-fieldset,
+  .checkout-method-card,
+  .pricing-comparison,
+  .pricing-faq-list details,
+  .institutional-content > section,
+  .legal-document
+) {
+  color: var(--med-text-body);
+  border-color: rgba(101, 204, 241, 0.15);
+  background: var(--med-panel);
+  box-shadow: 0 18px 48px rgba(0, 8, 14, 0.27);
+}
+
+:root[data-theme='dark'] .checkout-transparent-page {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(105, 255, 181, 0.08), transparent 24%),
+    radial-gradient(circle at 92% 8%, rgba(24, 157, 226, 0.1), transparent 28%),
+    #031923;
+}
+
+:root[data-theme='dark'] :where(.transparent-method > div, .transparent-copy) {
+  color: #bff6dc;
+  border-color: rgba(65, 208, 151, 0.26);
+  background: rgba(21, 111, 78, 0.2);
+}
+
+/* O QR precisa continuar claro para garantir leitura pela camera. */
+:root[data-theme='dark'] .transparent-qr {
+  border-color: rgba(101, 204, 241, 0.2);
+  background: #fff;
+}
+
+/* Administracao: mesma base escura, preservando cores semanticas de status. */
+:root[data-theme='dark'] :where(
+  .admin-operations-hero,
+  .admin-academic-hero,
+  .admin-kpi,
+  .admin-operations-panel,
+  .admin-editor,
+  .admin-content-list,
+  .admin-toolkit,
+  .admin-financial-toolbar,
+  .admin-financial-table-wrap,
+  .admin-question-kpi,
+  .admin-question-control,
+  .admin-question-list > article,
+  .admin-question-reports > article
+) {
+  color: var(--med-text-body);
+  border-color: rgba(101, 204, 241, 0.14);
+  background: var(--med-panel);
+  box-shadow: 0 17px 46px rgba(0, 8, 14, 0.24);
+}
+
+:root[data-theme='dark'] :where(
+  .admin-content-ranking article,
+  .admin-inventory span,
+  .admin-subsection,
+  .admin-exam-editor,
+  .admin-financial-health,
+  .admin-financial-toolbar label,
+  .admin-financial-table-wrap th,
+  .admin-question-control > header,
+  .admin-question-view-switch,
+  .admin-question-filters label > div,
+  .admin-question-card-stats,
+  .admin-question-review-details
+) {
+  color: var(--med-text-secondary);
+  border-color: rgba(101, 204, 241, 0.12);
+  background: var(--med-panel-soft);
+}
+
+:root[data-theme='dark'] :where(
+  .admin-field input,
+  .admin-field textarea,
+  .admin-field select,
+  .admin-exam-editor input,
+  .admin-exam-editor textarea,
+  .admin-options-editor input,
+  .admin-financial-toolbar select,
+  .admin-question-filters input,
+  .admin-question-filters select,
+  .admin-question-topic-editor select,
+  .admin-question-reports footer select
+) {
+  color: #e5f2f7;
+  border-color: rgba(104, 205, 242, 0.18);
+  background: var(--med-inset);
+}
+
+/*
  * Chromatic Waves — fundo oficial do tema escuro.
  */
 .App::before {

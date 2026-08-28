@@ -528,3 +528,60 @@
     background-size: 15px 15px, 75px 75px, 75px 75px;
   }
 }
+
+
+/* A textura precisa viver na camada WebGL que realmente cobre a página inicial. */
+.home-chromatic-waves {
+  background-color: #f4f8fa !important;
+  background-image:
+    radial-gradient(circle, rgba(8, 127, 224, 0.24) 1.2px, transparent 1.6px),
+    radial-gradient(circle at 15% 22%, rgba(34, 199, 236, 0.11), transparent 30rem),
+    radial-gradient(circle at 84% 68%, rgba(118, 89, 237, 0.075), transparent 32rem) !important;
+  background-size: 14px 14px, auto, auto !important;
+}
+
+.home-chromatic-waves::after {
+  background:
+    linear-gradient(180deg, rgba(244, 248, 250, 0.04), rgba(244, 248, 250, 0.18)) !important;
+}
+
+.home-chromatic-waves-canvas {
+  opacity: 0.58;
+}
+
+:root[data-theme='dark'] .home-chromatic-waves {
+  background-color: #031923 !important;
+  background-image:
+    radial-gradient(circle, rgba(43, 184, 229, 0.32) 1.2px, transparent 1.65px),
+    radial-gradient(circle at 14% 20%, rgba(0, 153, 207, 0.13), transparent 29rem),
+    radial-gradient(circle at 86% 67%, rgba(25, 112, 157, 0.12), transparent 31rem),
+    linear-gradient(155deg, #031923, #042330 56%, #02151e) !important;
+  background-size: 13px 13px, auto, auto, auto !important;
+}
+
+:root[data-theme='dark'] .home-chromatic-waves::after {
+  background:
+    linear-gradient(180deg, rgba(3, 25, 35, 0.04), rgba(3, 25, 35, 0.2)) !important;
+}
+
+:root[data-theme='dark'] .home-chromatic-waves-canvas {
+  opacity: 0.42;
+  mix-blend-mode: screen;
+}
+
+:root[data-theme='dark'] .home-chromatic-waves.is-fallback {
+  background:
+    radial-gradient(circle, rgba(43, 184, 229, 0.32) 1.2px, transparent 1.65px) 0 0 / 13px 13px,
+    radial-gradient(circle at 14% 20%, rgba(0, 153, 207, 0.13), transparent 29rem),
+    linear-gradient(155deg, #031923, #042330 56%, #02151e) !important;
+}
+
+@media (max-width: 720px) {
+  .home-chromatic-waves {
+    background-size: 16px 16px, auto, auto !important;
+  }
+
+  :root[data-theme='dark'] .home-chromatic-waves {
+    background-size: 15px 15px, auto, auto, auto !important;
+  }
+}

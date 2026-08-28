@@ -1,0 +1,487 @@
+/*
+ * MedSync — temas claro e escuro
+ * O tema claro preserva o sistema atual. O escuro usa a malha azul-petróleo
+ * da marca e superfícies tonais para sessões prolongadas de estudo.
+ */
+
+:root {
+  color-scheme: light;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 11px;
+  border: 1px solid rgba(7, 68, 103, 0.13);
+  border-radius: 12px;
+  color: #365466;
+  background: rgba(255, 255, 255, 0.68);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 760;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(4, 39, 61, 0.05);
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.theme-toggle:hover {
+  color: var(--med-navy);
+  border-color: rgba(8, 127, 224, 0.24);
+  background: rgba(8, 127, 224, 0.07);
+  box-shadow: 0 10px 24px rgba(4, 39, 61, 0.09);
+  transform: translateY(-1px);
+}
+
+.theme-toggle-icon {
+  display: grid;
+  font-size: 1.04rem;
+  place-items: center;
+}
+
+.theme-toggle-label {
+  display: none;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --text-color: #dcebf1;
+  --card-bg: #082b3c;
+  --light-gray: #0b3447;
+  --border: rgba(116, 207, 242, 0.14);
+  --muted: #8aa6b5;
+  --shadow-sm: 0 10px 28px rgba(0, 8, 14, 0.26);
+  --shadow-md: 0 22px 58px rgba(0, 8, 14, 0.38);
+  --med-ink: #e8f4f8;
+  --med-paper: #031923;
+  --med-surface: rgba(7, 39, 55, 0.94);
+  --med-line: rgba(103, 203, 240, 0.15);
+  --med-muted: #91adba;
+  --med-shadow-sm: 0 13px 34px rgba(0, 8, 14, 0.22);
+  --med-shadow-md: 0 24px 65px rgba(0, 8, 14, 0.35);
+  --medsync-sky: #082b3c;
+  --medsync-ice: #092f40;
+  --medsync-lilac: #102c42;
+  --medsync-warm: #102f3a;
+  --medsync-color-shadow: 0 18px 50px rgba(0, 8, 14, 0.28);
+}
+
+:root[data-theme='dark'] body {
+  color: #dcebf1;
+  background: #031923;
+  scrollbar-color: #287a9b #031923;
+}
+
+:root[data-theme='dark'] .App {
+  background:
+    radial-gradient(circle at 10% 12%, rgba(0, 159, 214, 0.13), transparent 28rem),
+    radial-gradient(circle at 92% 37%, rgba(30, 116, 165, 0.1), transparent 31rem),
+    radial-gradient(circle at 54% 94%, rgba(0, 181, 209, 0.06), transparent 28rem),
+    linear-gradient(155deg, #031923 0%, #04202d 48%, #02141d 100%);
+  animation: none;
+}
+
+:root[data-theme='dark'] .App::before {
+  opacity: 0.58;
+  background-image: radial-gradient(circle, rgba(42, 170, 216, 0.24) 1px, transparent 1.35px);
+  background-size: 12px 12px;
+  mask-image:
+    radial-gradient(ellipse at 12% 18%, #000 0%, transparent 43%),
+    radial-gradient(ellipse at 86% 66%, #000 0%, transparent 45%);
+}
+
+:root[data-theme='dark'] .App-main {
+  background: linear-gradient(90deg, transparent, rgba(14, 67, 89, 0.12) 50%, transparent);
+}
+
+:root[data-theme='dark'] .App-header {
+  border-bottom-color: rgba(84, 190, 230, 0.14);
+  background: rgba(3, 25, 35, 0.9);
+  box-shadow: 0 10px 34px rgba(0, 8, 14, 0.32);
+}
+
+:root[data-theme='dark'] .nav-account-actions {
+  border-left-color: rgba(104, 205, 241, 0.14);
+}
+
+:root[data-theme='dark'] :where(.nav-main-link, .nav-dropdown-trigger, .nav-login-link) {
+  color: #a9c4d0;
+}
+
+:root[data-theme='dark'] :where(
+  .nav-main-link:hover,
+  .nav-main-link.active,
+  .nav-dropdown-trigger:hover,
+  .nav-dropdown-trigger.active,
+  .nav-dropdown.is-open > .nav-dropdown-trigger,
+  .nav-login-link:hover
+) {
+  color: #eefaff;
+  background: rgba(38, 171, 221, 0.11);
+}
+
+:root[data-theme='dark'] .nav-dropdown-panel {
+  color: #dcebf1;
+  border-color: rgba(94, 197, 236, 0.16);
+  background: rgba(6, 35, 49, 0.98);
+  box-shadow: 0 24px 60px rgba(0, 7, 12, 0.5);
+}
+
+:root[data-theme='dark'] .nav-dropdown-panel :where(a, .logout-button):hover {
+  background: rgba(49, 166, 207, 0.1);
+}
+
+:root[data-theme='dark'] .theme-toggle {
+  color: #a9c7d3;
+  border-color: rgba(100, 204, 242, 0.17);
+  background: rgba(10, 53, 71, 0.72);
+  box-shadow: 0 8px 22px rgba(0, 8, 14, 0.24);
+}
+
+:root[data-theme='dark'] .theme-toggle:hover {
+  color: #fff;
+  border-color: rgba(105, 215, 255, 0.34);
+  background: rgba(22, 117, 151, 0.34);
+}
+
+:root[data-theme='dark'] :where(.announcement-banner, .announcement-banner-content) {
+  border-color: rgba(92, 199, 237, 0.15);
+  background: #062536;
+  color: #dcecf2;
+}
+
+:root[data-theme='dark'] .home-solid {
+  --home-ink: #eaf6fa;
+  --home-paper: #031923;
+  --home-white: #082b3c;
+  --home-line: rgba(102, 203, 240, 0.15);
+  color: #dcebf1;
+  background: transparent;
+}
+
+:root[data-theme='dark'] :where(
+  .solid-proof-morph,
+  .home-synapse-section,
+  .home-feedback-system,
+  .home-result-preview,
+  .home-academic-network,
+  .solid-features,
+  .home-credibility,
+  .solid-process,
+  .solid-value-section
+) {
+  color: #dcebf1;
+  border-color: rgba(94, 196, 234, 0.12);
+  background: transparent;
+}
+
+:root[data-theme='dark'] :where(
+  .home-synapse-section,
+  .home-feedback-system,
+  .home-result-preview,
+  .home-academic-network,
+  .solid-features,
+  .home-credibility,
+  .solid-process,
+  .solid-value-section
+) :where(h2, h3, strong) {
+  color: #eef9fc;
+}
+
+:root[data-theme='dark'] :where(
+  .home-synapse-section,
+  .home-feedback-system,
+  .home-result-preview,
+  .home-academic-network,
+  .solid-features,
+  .home-credibility,
+  .solid-process,
+  .solid-value-section
+) p {
+  color: #9cb7c3;
+}
+
+:root[data-theme='dark'] :where(
+  .solid-clinical-window,
+  .synapse-capability-panel,
+  .feedback-system-console,
+  .feedback-step-panel,
+  .result-preview-shell,
+  .preview-score-card,
+  .preview-clinical-cards article,
+  .academic-institution-card,
+  .solid-feature-card.is-light,
+  .credibility-ledger,
+  .credibility-pillar-grid article,
+  .solid-process-list li,
+  .solid-plan-card
+) {
+  color: #dcebf1;
+  border-color: rgba(101, 204, 241, 0.15);
+  background: linear-gradient(145deg, rgba(9, 48, 66, 0.97), rgba(5, 35, 49, 0.97));
+  box-shadow: 0 18px 48px rgba(0, 8, 14, 0.27);
+}
+
+:root[data-theme='dark'] :where(
+  .solid-window-bar,
+  .solid-patient-data,
+  .solid-clinical-track > div,
+  .feedback-step-tabs button,
+  .feedback-signal,
+  .preview-improvement-plan,
+  .credibility-ledger li
+) {
+  color: #dcebf1;
+  border-color: rgba(98, 199, 237, 0.14);
+  background: rgba(11, 53, 72, 0.72);
+}
+
+:root[data-theme='dark'] :where(
+  .solid-patient-heading h2,
+  .solid-patient-data strong,
+  .solid-clinical-track strong,
+  .solid-window-bar small
+) {
+  color: #eaf6fa;
+}
+
+:root[data-theme='dark'] :where(
+  .solid-patient-heading small,
+  .solid-patient-data small,
+  .solid-clinical-track small,
+  .solid-case-level
+) {
+  color: #8eabb8;
+}
+
+:root[data-theme='dark'] .solid-clinical-track .is-active {
+  border-color: rgba(51, 181, 232, 0.34);
+  background: rgba(8, 91, 127, 0.3);
+}
+
+:root[data-theme='dark'] :where(.synapse-network, .academic-network-stage) {
+  border-color: rgba(91, 195, 235, 0.12);
+  background: rgba(4, 30, 42, 0.56);
+}
+
+:root[data-theme='dark'] .solid-plan-card.is-free {
+  background: linear-gradient(145deg, rgba(9, 48, 66, 0.97), rgba(5, 35, 49, 0.97));
+}
+
+:root[data-theme='dark'] :where(
+  .page-header,
+  .toolbar,
+  .auth-container,
+  .info-panel,
+  .action-panel,
+  .dashboard-card,
+  .dashboard-user-details,
+  .dashboard-metric-card,
+  .dashboard-panel,
+  .admin-summary-card,
+  .admin-analytics-panel,
+  .institutional-highlights article,
+  .institutional-content > section,
+  .legal-document,
+  .legal-layout aside,
+  .pricing-hero-offer,
+  .pricing-audience-grid article,
+  .pricing-plan-card,
+  .pricing-premium-benefits,
+  .pricing-comparison,
+  .pricing-faq-list details,
+  .payment-return-card,
+  .simulation-progress-card,
+  .simulation-layout .action-panel,
+  .clinical-info-card,
+  .decision-panel,
+  .exam-option-card,
+  .result-panel,
+  .score-breakdown-card,
+  .visual-filter-island,
+  .visual-progress-card,
+  .visual-challenge-card,
+  .visual-saved-challenges,
+  .review-method,
+  .review-method-ratings article,
+  .review-view-tabs,
+  .review-center-page .review-card,
+  .review-session-recap,
+  .review-agenda-list > article,
+  .error-metric,
+  .error-notebook-filters,
+  .study-error-card,
+  .learning-path-summary article,
+  .learning-path-card,
+  .learning-paths-how,
+  .checkout-card
+) {
+  color: #dcebf1;
+  border-color: rgba(101, 204, 241, 0.15);
+  background: linear-gradient(145deg, rgba(9, 48, 66, 0.97), rgba(5, 35, 49, 0.97));
+  box-shadow: 0 17px 46px rgba(0, 8, 14, 0.25);
+}
+
+:root[data-theme='dark'] :where(
+  .user-dashboard-page,
+  .admin-academic-page,
+  .pricing-page,
+  .simulation-workspace,
+  .visual-challenges-page,
+  .review-center-page,
+  .error-notebook-page,
+  .learning-path-detail,
+  .legal-page,
+  .institutional-page,
+  .checkout-page
+) {
+  --dashboard-ink: #e8f4f8;
+  --dashboard-muted: #91adba;
+  --admin-ink: #e8f4f8;
+  --admin-muted: #91adba;
+  --pricing-ink: #e8f4f8;
+  --pricing-muted: #91adba;
+  --simulation-ink: #e8f4f8;
+  --simulation-muted: #91adba;
+  --journey-ink: #e8f4f8;
+  --journey-muted: #91adba;
+  color: #dcebf1;
+}
+
+:root[data-theme='dark'] :where(
+  .user-dashboard-hero,
+  .admin-academic-hero,
+  .pricing-hero,
+  .simulation-hero,
+  .visual-challenges-header,
+  .review-center-hero,
+  .error-notebook-hero,
+  .learning-paths-hero,
+  .institutional-hero,
+  .legal-hero
+) {
+  color: #eaf6fa;
+  border-color: rgba(98, 199, 237, 0.14);
+  background:
+    radial-gradient(circle at 88% 10%, rgba(25, 177, 222, 0.15), transparent 30%),
+    linear-gradient(135deg, #072b3e, #041f2d 62%, #082f40);
+  box-shadow: 0 25px 68px rgba(0, 8, 14, 0.31);
+}
+
+:root[data-theme='dark'] :where(
+  .page-container,
+  .auth-container,
+  .dashboard-panel,
+  .admin-analytics-panel,
+  .pricing-page,
+  .simulation-workspace,
+  .visual-challenges-page,
+  .review-center-page,
+  .error-notebook-page,
+  .learning-path-detail,
+  .institutional-content,
+  .legal-document
+) :where(h1, h2, h3, h4, strong) {
+  color: #edf8fb;
+}
+
+:root[data-theme='dark'] :where(
+  .page-container,
+  .auth-container,
+  .dashboard-panel,
+  .admin-analytics-panel,
+  .pricing-page,
+  .simulation-workspace,
+  .visual-challenges-page,
+  .review-center-page,
+  .error-notebook-page,
+  .learning-path-detail,
+  .institutional-content,
+  .legal-document
+) :where(p, small, label, dt) {
+  color: #91adba;
+}
+
+:root[data-theme='dark'] :where(
+  input,
+  select,
+  textarea,
+  .transcription-box,
+  .clinical-editor .transcription-box,
+  .review-agenda-filters input,
+  .review-agenda-filters select,
+  .error-notebook-filters select,
+  .visual-category-filter select
+) {
+  color: #e5f2f7;
+  border-color: rgba(104, 205, 242, 0.18);
+  background: #041f2c;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+:root[data-theme='dark'] :where(input, textarea)::placeholder {
+  color: #6f8d9b;
+}
+
+:root[data-theme='dark'] :where(
+  .visual-option,
+  .clinical-step,
+  .review-method-ratings article,
+  .review-center-page .review-ratings button,
+  .answer-comparison article,
+  .payment-return-details,
+  .pricing-table-wrap td,
+  .pricing-table-wrap th
+) {
+  color: #dcebf1;
+  border-color: rgba(101, 204, 241, 0.13);
+  background: rgba(8, 43, 59, 0.76);
+}
+
+:root[data-theme='dark'] :where(.site-footer) {
+  border-top-color: rgba(96, 199, 237, 0.13);
+  background: linear-gradient(145deg, #02131c, #031d29 58%, #042638);
+}
+
+:root[data-theme='dark'] ::selection {
+  color: #021820;
+  background: rgba(111, 221, 255, 0.78);
+}
+
+@media (min-width: 1180px) {
+  .theme-toggle-label {
+    display: inline;
+  }
+}
+
+@media (max-width: 960px) {
+  .theme-toggle {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 12px;
+  }
+
+  .theme-toggle-label {
+    display: inline;
+  }
+
+  :root[data-theme='dark'] .nav-links {
+    border-color: rgba(94, 196, 234, 0.14);
+    background: rgba(4, 31, 44, 0.98);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body,
+  .App,
+  .App-header,
+  .theme-toggle,
+  .nav-dropdown-panel,
+  .home-solid,
+  .page-container {
+    transition: color 220ms ease, background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  }
+}

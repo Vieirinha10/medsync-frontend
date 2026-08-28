@@ -218,22 +218,55 @@ const createProgram = (gl, vertexSource, fragmentSource) => {
   return program;
 };
 
+const THEME_PALETTES = {
+  light: [
+    'rgba(4, 39, 61, .48)',
+    'rgba(8, 127, 224, .82)',
+    'rgba(34, 199, 236, .88)',
+    'rgba(118, 89, 237, .72)',
+  ],
+  dark: [
+    'rgba(8, 127, 224, .56)',
+    'rgba(34, 199, 236, .9)',
+    'rgba(102, 222, 255, .92)',
+    'rgba(135, 105, 255, .76)',
+  ],
+};
+
+const readTheme = () => (
+  typeof document !== 'undefined' && document.documentElement.dataset.theme === 'dark'
+    ? 'dark'
+    : 'light'
+);
+
 const ChromaticWavesBackground = ({
   frequency = 6,
   speed = 2,
-  bgColor = '#f4f8fa',
-  colors = ['rgba(4, 39, 61, .22)', 'rgba(8, 127, 224, .52)', 'rgba(34, 199, 236, .58)', 'rgba(118, 89, 237, .46)'],
+  bgColor = null,
+  colors = null,
   cellSize = 5,
-  gamma = 3,
-  paletteBias = -2,
+  gamma = 2.6,
+  paletteBias = 0.4,
 }) => {
   const containerRef = useRef(null);
   const [isFallback, setIsFallback] = useState(false);
-  const paletteKey = colors.slice(0, MAX_COLORS).join('|');
+  const [theme, setTheme] = useState(readTheme);
+  const activeColors = colors?.length ? colors : THEME_PALETTES[theme];
+  const paletteKey = activeColors.slice(0, MAX_COLORS).join('|');
   const palette = useMemo(() => createPalette(paletteKey.split('|')), [paletteKey]);
   const settingsRef = useRef({ frequency, speed, cellSize, gamma, paletteBias, palette });
 
   settingsRef.current = { frequency, speed, cellSize, gamma, paletteBias, palette };
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const syncTheme = () => setTheme(readTheme());
+    const observer = new MutationObserver(syncTheme);
+
+    syncTheme();
+    observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -410,7 +443,8 @@ const ChromaticWavesBackground = ({
   return (
     <div
       className={`home-chromatic-waves${isFallback ? ' is-fallback' : ''}`}
-      style={{ backgroundColor: bgColor }}
+      style={{ backgroundColor: bgColor || 'var(--home-mesh-background, #f4f8fa)' }}
+      data-wave-theme={theme}
       aria-hidden="true"
     >
       <div ref={containerRef} className="home-chromatic-waves-canvas" />

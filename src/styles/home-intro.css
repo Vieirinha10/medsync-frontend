@@ -61,16 +61,6 @@ html.medsync-intro-lock .announcement-banner {
   filter: drop-shadow(0 20px 44px rgba(0, 0, 0, .28));
 }
 
-.medsync-intro-logo span {
-  color: var(--intro-cyan);
-  font-family: monospace;
-  font-size: .69rem;
-  font-weight: 800;
-  letter-spacing: .2em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
 .medsync-intro-messages {
   position: absolute;
   bottom: 66px;
@@ -78,12 +68,11 @@ html.medsync-intro-lock .announcement-banner {
   width: 100%;
   transform: translateX(-50%);
   color: var(--intro-cyan);
-  font-family: monospace;
-  font-size: .7rem;
-  font-weight: 750;
-  letter-spacing: .15em;
+  font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: .88rem;
+  font-weight: 600;
+  letter-spacing: .035em;
   text-align: center;
-  text-transform: uppercase;
 }
 
 .medsync-intro-messages span {
@@ -159,11 +148,6 @@ html.medsync-intro-lock .announcement-banner {
     width: 82vw;
   }
 
-  .medsync-intro-logo span {
-    max-width: 86vw;
-    font-size: .52rem;
-    letter-spacing: .14em;
-  }
 
   .medsync-intro-messages {
     bottom: 54px;

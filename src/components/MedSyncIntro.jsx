@@ -54,10 +54,9 @@ const MedSyncIntro = () => {
       <div className="medsync-intro-grid" aria-hidden="true" />
       <div className="medsync-intro-logo">
         <img src="/logo-medsync.png" alt="MedSync" />
-        <span>Raciocínio clínico em movimento</span>
       </div>
       <div className="medsync-intro-messages" aria-hidden="true">
-        <span>Preparando sua experiência</span>
+        <span>Mais preparo. Mais clareza. Melhores decisões.</span>
         <span>Sincronizando conhecimento e prática</span>
       </div>
       <div className="medsync-intro-progress" aria-hidden="true">

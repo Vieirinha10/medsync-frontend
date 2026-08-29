@@ -310,7 +310,7 @@ const HomePage = () => {
     <section className="solid-proof-morph" aria-label="Números do MedSync">
       <StatMorph
         items={[
-          { value: '55', label: 'casos clínicos' },
+          { value: '60', label: 'casos clínicos' },
           { value: '100', label: 'desafios visuais' },
           { value: formattedStudentCount, label: 'estudantes MedSync' },
           { value: '19', label: 'áreas médicas contempladas' },

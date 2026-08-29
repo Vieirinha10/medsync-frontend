@@ -2,6 +2,9 @@
 
 ## Não publicado
 
+### Adicionado
+- Primeiro lote da expansão do catálogo clínico, elevando o total publicado de 55 para 60 casos.
+
 ### Alterado
 - Padronizados e unificados os fundos, gradientes, bordas e animações de órbita dos cards iniciais (heróis) de todas as abas principais (Casos Clínicos, Desafios Visuais, Questões, Central de Revisões, Trilhas e Caderno de Erros), preservando integralmente os painéis e widgets funcionais internos.
 - Padronizados os cards de apresentação e filtros do Banco de Questões (`.questions-setup-card`, `.questions-performance-card`, `.questions-catalog-card`) com o padrão visual escuro translúcido das demais abas.

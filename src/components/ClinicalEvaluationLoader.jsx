@@ -31,12 +31,6 @@ const ClinicalEvaluationLoader = ({ caseTitle }) => {
       aria-live="polite"
       aria-label="Avaliação clínica em andamento"
     >
-      <div className="evaluation-ambient" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </div>
-
       <div className="evaluation-loader-card">
         <div className="evaluation-loader-visual" aria-hidden="true">
           <span className="evaluation-orbit evaluation-orbit-outer" />

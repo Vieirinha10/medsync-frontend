@@ -25,6 +25,7 @@
 - Aprimorado o card "Como usar este treino" (`.visual-guidance`) e ilha de filtros (`.visual-filter-island`) na página de Desafios Visuais.
 
 ### Corrigido
+- Corrigido o visual da tela de carregamento da avaliação clínica (`ClinicalEvaluationLoader`), aplicando o tema escuro padrão com superfície profunda translúcida, tipografia em alto contraste `#ffffff` e removendo as bolinhas flutuantes azuis do fundo.
 - Corrigido o escopo do seletor `.decision-stage` em `src/styles/result-debrief.css` para `.decision-comparison .decision-stage`, eliminando a deformação horizontal e restabelecendo o layout correto dos cards de exames, hipótese e conduta na simulação clínica.
 - Corrigido o hover das alternativas nos Desafios Visuais (`.visual-option:hover`), eliminando o fundo branco indesejado e garantindo destaque escuro com borda verde-lima e texto branco legível.
 - Corrigido o card de explicação do diagnóstico (`.visual-answer`) e achados-chave (`.visual-findings`) nos Desafios Visuais, com fundos escuros temáticos (verde para acerto / vinho para erro) e títulos 100% nítidos.

@@ -19,6 +19,6 @@ describe('ClinicalEvaluationLoader', () => {
       vi.advanceTimersByTime(1350);
     });
 
-    expect(screen.getAllByText('Revisando o valor dos exames')).toHaveLength(2);
+    expect(screen.getAllByText('Revisando avaliações e exames')).toHaveLength(2);
   });
 });

@@ -386,7 +386,7 @@ const ResultadoSimulacaoPage = () => {
           <div>
             <small>QUER ENTENDER MELHOR?</small>
             <h2>Ver análise clínica completa</h2>
-            <p>Abra para conferir a composição da nota, seus acertos, os exames e os pontos de segurança.</p>
+            <p>Abra para conferir a composição da nota, seus acertos, as avaliações e exames e os pontos de segurança.</p>
           </div>
           <FiChevronDown className="details-chevron" />
         </summary>
@@ -399,7 +399,7 @@ const ResultadoSimulacaoPage = () => {
               <p>Cada etapa foi convertida para a mesma escala de 0 a 10.</p>
             </div>
             <div className="score-breakdown">
-              <ScoreCard label="Exames" value={scoreFromSection(result.pontuacao.exames, 40)} total={10} />
+              <ScoreCard label="Avaliações e exames" value={scoreFromSection(result.pontuacao.exames, 40)} total={10} />
               <ScoreCard label="Hipótese" value={scoreFromSection(result.pontuacao.hipotese, 30)} total={10} />
               <ScoreCard label="Conduta" value={scoreFromSection(result.pontuacao.conduta, 30)} total={10} />
             </div>
@@ -441,7 +441,7 @@ const ResultadoSimulacaoPage = () => {
               <FiTarget />
               <div>
                 <span>Valor diagnóstico</span>
-                <h2>Entenda os exames solicitados</h2>
+                <h2>Entenda as avaliações e exames solicitados</h2>
               </div>
             </div>
             <div className="exam-feedback-grid">
@@ -453,15 +453,15 @@ const ResultadoSimulacaoPage = () => {
                 />
               </div>
               <div>
-                <h3>Exames importantes que faltaram</h3>
+                <h3>Avaliações ou exames importantes que faltaram</h3>
                 <FeedbackList
                   items={result.exames.essenciais_ausentes}
-                  emptyText="Você solicitou todos os exames importantes."
+                  emptyText="Você solicitou todas as avaliações e exames importantes."
                   tone="warning"
                 />
               </div>
               <div>
-                <h3>Exames de baixo valor</h3>
+                <h3>Avaliações ou exames de baixo valor</h3>
                 <FeedbackList
                   items={result.exames.desnecessarios}
                   emptyText="Nenhum exame de baixo valor foi solicitado."

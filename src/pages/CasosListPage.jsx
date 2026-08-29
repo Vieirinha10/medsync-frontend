@@ -124,7 +124,7 @@ const CasosListPage = () => {
                                 )}
                             </div>
                             <h3>{caso.titulo}</h3>
-                            <p className="clinical-card-invitation">Analise o cenário, solicite exames e defina a melhor conduta.</p>
+                            <p className="clinical-card-invitation">Analise o cenário, solicite avaliações e exames e defina a melhor conduta.</p>
                             <div className="card-footer">
                                 <span className={`clinical-difficulty difficulty-${difficultyClass}`}>
                                     <FiBarChart2 />

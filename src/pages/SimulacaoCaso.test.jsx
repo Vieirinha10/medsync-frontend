@@ -62,7 +62,7 @@ describe('SimulacaoCaso', () => {
       target: { value: 'Confirmar lesão miocárdica e orientar a estratégia.' },
     });
 
-    fireEvent.click(screen.getByRole('button', { name: /Solicitar exames selecionados/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Solicitar avaliações selecionadas/ }));
     expect(screen.getByText('Elevada.')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: /Avançar para hipótese/ }));

@@ -23,7 +23,7 @@ import { api, ApiError } from '../services/api';
 
 const workflowSteps = [
     { id: 'apresentacao', label: 'Caso clínico', short: 'Conheça o paciente', icon: FiUser },
-    { id: 'exames', label: 'Exames', short: 'Investigue com critério', icon: FiClipboard },
+    { id: 'exames', label: 'Avaliações e exames', short: 'Investigue com critério', icon: FiClipboard },
     { id: 'hipotese', label: 'Hipótese', short: 'Sintetize o diagnóstico', icon: FiTarget },
     { id: 'conduta', label: 'Conduta', short: 'Defina o cuidado', icon: FiActivity },
 ];
@@ -380,8 +380,8 @@ const ExamsStage = ({ caso, selectedExams, onSelect, selectedCount, results, res
     <div className="decision-stage">
         <div className="stage-heading compact">
             <span>02 · INVESTIGAÇÃO</span>
-            <h2>Quais exames mudariam sua decisão?</h2>
-            <p>Escolha com intenção. Exames essenciais, omitidos e de baixo valor serão considerados no feedback.</p>
+            <h2>Quais avaliações e exames mudariam sua decisão?</h2>
+            <p>Escolha com intenção. Avaliações e exames essenciais, omitidos e de baixo valor serão considerados no feedback.</p>
         </div>
         <div className="stage-tip"><FiAlertCircle /><span>Evite pedir tudo. Pense em probabilidade pré-teste, gravidade e impacto sobre a conduta.</span></div>
         <div className="journey-exam-grid">
@@ -419,7 +419,7 @@ const ExamsStage = ({ caso, selectedExams, onSelect, selectedCount, results, res
                 ))}
             </section>
         )}
-        <button type="button" className="release-results-button" onClick={onRelease}><FiClipboard /> Solicitar exames selecionados <b>{selectedCount}</b></button>
+        <button type="button" className="release-results-button" onClick={onRelease}><FiClipboard /> Solicitar avaliações selecionadas <b>{selectedCount}</b></button>
         {statusMessage && <p className="simulation-status" role="status">{statusMessage}</p>}
         {resultsReleased && (
             <section className="released-results">
@@ -471,7 +471,7 @@ const ClinicalMemory = ({ caso, activeStep, results, justifications, hypothesis,
             <p>{caso.historia_clinica}</p><small>{caso.exame_fisico}</small>
         </MemoryBlock>
         {activeStep >= 2 && (
-            <MemoryBlock number="02" title="Exames solicitados" onClick={() => onReview(1)}>
+            <MemoryBlock number="02" title="Avaliações e exames solicitados" onClick={() => onReview(1)}>
                 {results.length ? results.map((item) => <div className="memory-exam" key={item.id}><p><strong>{item.nome}:</strong> {item.resultado}</p>{justifications[item.id] && <small><b>Sua justificativa:</b> {justifications[item.id]}</small>}</div>) : <p>Nenhum resultado liberado.</p>}
             </MemoryBlock>
         )}

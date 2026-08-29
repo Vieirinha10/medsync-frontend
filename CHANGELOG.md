@@ -3,10 +3,12 @@
 ## Não publicado
 
 ### Adicionado
+- Área de Psiquiatria e Saúde Mental integrada ao catálogo, com 15 novos casos e total atualizado para 80 casos clínicos; a meta final passa de 100 para 115 casos.
 - Segundo lote da expansão do catálogo, elevando o total de 60 para 65 casos clínicos.
 - Primeiro lote da expansão do catálogo clínico, elevando o total publicado de 55 para 60 casos.
 
 ### Alterado
+- A etapa clínica de exames agora usa a expressão “avaliações e exames”, contemplando escalas psicológicas e psiquiátricas sem alterar o contrato técnico da API.
 - Padronizados e unificados os fundos, gradientes, bordas e animações de órbita dos cards iniciais (heróis) de todas as abas principais (Casos Clínicos, Desafios Visuais, Questões, Central de Revisões, Trilhas e Caderno de Erros), preservando integralmente os painéis e widgets funcionais internos.
 - Padronizados os cards de apresentação e filtros do Banco de Questões (`.questions-setup-card`, `.questions-performance-card`, `.questions-catalog-card`) com o padrão visual escuro translúcido das demais abas.
 - Aprimorado o card do Plano Rápido de Melhoria (`.study-recommendations.is-standalone`) no resultado dos casos clínicos, com superfície escura gradiente, acento verde-lima e chips de alta legibilidade.

@@ -24,9 +24,9 @@ import MedSyncIntro from '../components/MedSyncIntro';
 
 const SYNAPSE_CAPABILITIES = [
   {
-    label: 'Exames',
+    label: 'Avaliações e exames',
     title: 'Entende o valor de cada exame',
-    description: 'A Synapse diferencia escolhas adequadas, exames essenciais ausentes e solicitações que pouco acrescentariam ao caso.',
+    description: 'A Synapse diferencia escolhas adequadas, avaliações essenciais ausentes e solicitações que pouco acrescentariam ao caso.',
     output: 'O estudante entende por que cada exame ajuda — ou não ajuda — o raciocínio.',
     icon: FiFileText,
   },
@@ -65,14 +65,14 @@ const FEEDBACK_STEPS = [
     label: 'Caso clínico',
     eyebrow: '01 · CONTEXTO',
     title: 'A análise começa pelo caso completo',
-    description: 'História, sinais vitais, exames disponíveis e objetivos de aprendizagem formam o contexto da avaliação.',
+    description: 'História, sinais vitais, avaliações e exames disponíveis e objetivos de aprendizagem formam o contexto da análise.',
     signal: 'Contexto clínico e objetivos do caso',
   },
   {
     label: 'Suas decisões',
     eyebrow: '02 · RACIOCÍNIO',
     title: 'Cada escolha entra na avaliação',
-    description: 'Exames, justificativas, hipótese e conduta são analisados como partes do mesmo raciocínio clínico.',
+    description: 'Avaliações, exames, justificativas, hipótese e conduta são analisados como partes do mesmo raciocínio clínico.',
     signal: 'Decisões registradas por etapa',
   },
   {
@@ -244,7 +244,7 @@ const HomePage = () => {
           conduta.
         </h1>
         <p>
-          Saia do estudo passivo. Analise casos, solicite exames, defina hipóteses
+          Saia do estudo passivo. Analise casos, solicite avaliações e exames, defina hipóteses
           e tome decisões em uma experiência construída para a prática médica.
         </p>
         <div className="solid-hero-actions">
@@ -283,7 +283,7 @@ const HomePage = () => {
           <div className="solid-patient-data">
             <span><small>IDADE</small><strong>32 anos</strong></span>
             <span><small>QUEIXA</small><strong>Dor torácica</strong></span>
-            <span><small>ETAPA</small><strong>Exames</strong></span>
+            <span><small>ETAPA</small><strong>Avaliações e exames</strong></span>
           </div>
           <div className="solid-clinical-track">
             <div className="is-complete">
@@ -292,7 +292,7 @@ const HomePage = () => {
             </div>
             <div className="is-active">
               <span><FiFileText /></span>
-              <p><strong>Solicitar exames</strong><small>Decisão atual</small></p>
+              <p><strong>Solicitar avaliações</strong><small>Decisão atual</small></p>
             </div>
             <div>
               <span>03</span>
@@ -300,7 +300,7 @@ const HomePage = () => {
             </div>
           </div>
           <div className="solid-decision-row">
-            <div><small>PRÓXIMA DECISÃO</small><strong>Quais exames são realmente necessários?</strong></div>
+            <div><small>PRÓXIMA DECISÃO</small><strong>Quais avaliações e exames são realmente necessários?</strong></div>
             <button type="button" aria-label="Avançar na demonstração"><FiArrowRight /></button>
           </div>
         </div>
@@ -310,7 +310,7 @@ const HomePage = () => {
     <section className="solid-proof-morph" aria-label="Números do MedSync">
       <StatMorph
         items={[
-          { value: '65', label: 'casos clínicos' },
+          { value: '80', label: 'casos clínicos' },
           { value: '100', label: 'desafios visuais' },
           { value: formattedStudentCount, label: 'estudantes MedSync' },
           { value: '19', label: 'áreas médicas contempladas' },
@@ -459,7 +459,7 @@ const HomePage = () => {
         <div className="preview-improvement-plan">
           <div><FiTrendingUp /><span><small>SEU PRÓXIMO PASSO</small><strong>Plano rápido de melhoria</strong></span></div>
           <p>Revisar critérios de gravidade</p>
-          <p>Justificar exames essenciais</p>
+          <p>Justificar avaliações essenciais</p>
           <p>Definir critérios de reavaliação</p>
         </div>
       </div>
@@ -517,7 +517,7 @@ const HomePage = () => {
           <span className="solid-feature-icon"><FiActivity /></span>
           <small>SIMULAÇÃO CLÍNICA</small>
           <h3>Casos que exigem decisão, não apenas memória.</h3>
-          <p>Analise o cenário, selecione exames e construa hipótese e conduta por etapas.</p>
+          <p>Analise o cenário, selecione avaliações e exames e construa hipótese e conduta por etapas.</p>
           <Link to="/casos">Conhecer os casos <FiArrowRight /></Link>
           <span className="solid-card-number">01</span>
         </article>
@@ -585,7 +585,7 @@ const HomePage = () => {
           </header>
           <ol>
             <li><span>01</span><div><strong>O diagnóstico fica protegido</strong><p>A resposta de referência aparece somente depois que o estudante conclui sua resolução.</p></div><FiCheck /></li>
-            <li><span>02</span><div><strong>As decisões são avaliadas em conjunto</strong><p>Exames, hipótese, conduta e segurança fazem parte da mesma análise.</p></div><FiCheck /></li>
+            <li><span>02</span><div><strong>As decisões são avaliadas em conjunto</strong><p>Avaliações, exames, hipótese, conduta e segurança fazem parte da mesma análise.</p></div><FiCheck /></li>
             <li><span>03</span><div><strong>A nota pode ser compreendida</strong><p>O resultado explica a composição do desempenho em uma escala simples de 0 a 10.</p></div><FiCheck /></li>
             <li><span>04</span><div><strong>O aprendizado continua</strong><p>O feedback termina com referências e um plano rápido de melhoria.</p></div><FiCheck /></li>
           </ol>

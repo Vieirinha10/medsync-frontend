@@ -24,7 +24,6 @@ Reduzir repetição e rolagem excessiva sem remover conteúdo clínico. Cada inf
 | `src/styles/result-debrief.css` | Layout dark-only, responsividade, estados semânticos e Perfil da decisão clínica. |
 | `src/pages/ResultadoSimulacaoPage.test.jsx` | Fluxo entre abas, teclado, alerta de risco, detalhes clínicos e Synapse. |
 | `src/App.jsx` | Importa o CSS do debriefing depois de `theme.css`. |
-| `.interface-design/system.md` | Registra o padrão visual permanente da página. |
 | `CHANGELOG.md` | Histórico público da mudança ainda não publicada. |
 
 ## Mapeamento dos dados atuais

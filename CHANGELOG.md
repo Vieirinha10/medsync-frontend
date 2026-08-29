@@ -12,6 +12,7 @@
 - Primeiro lote da expansão do catálogo clínico, elevando o total publicado de 55 para 60 casos.
 
 ### Alterado
+- Removidas do projeto as orientações vinculadas à skill externa `interface-design`; futuras decisões visuais passam a considerar somente o código, o histórico e as solicitações específicas do MedSync.
 - Consolidado o feedback anteriormente distribuído em vários cards repetitivos: avaliação por etapa na aba Decisões e prioridades de melhoria, temas, fontes e perguntas à Synapse na aba Como evoluir.
 - A navegação do resultado passou a usar abas acessíveis por teclado, barra fixa durante a leitura e rótulos compactos em telas pequenas.
 - A comparação diagnóstica usa “referência clínica do caso” em vez de “padrão-ouro”, preservando alternativas clinicamente aceitáveis previstas pela rubrica.

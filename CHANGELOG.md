@@ -3,6 +3,7 @@
 ## Não publicado
 
 ### Adicionado
+- Segundo lote da expansão do catálogo, elevando o total de 60 para 65 casos clínicos.
 - Primeiro lote da expansão do catálogo clínico, elevando o total publicado de 55 para 60 casos.
 
 ### Alterado

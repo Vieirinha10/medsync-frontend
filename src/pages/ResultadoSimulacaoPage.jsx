@@ -14,14 +14,16 @@ import {
   FiSend,
   FiShield,
   FiTarget,
+  FiTrendingUp,
+  FiZap,
 } from 'react-icons/fi';
 import { ApiError, api } from '../services/api';
 
 const resultTabs = [
-  { id: 'resultado', label: 'Resultado' },
-  { id: 'decisoes', label: 'Decisões' },
-  { id: 'impacto', label: 'Impacto clínico', mobileLabel: 'Impacto' },
-  { id: 'evoluir', label: 'Como evoluir', mobileLabel: 'Evoluir' },
+  { id: 'resultado', label: 'Resultado', mobileLabel: 'Resultado', icon: FiActivity },
+  { id: 'decisoes', label: 'Decisões', mobileLabel: 'Decisões', icon: FiClipboard },
+  { id: 'impacto', label: 'Impacto clínico', mobileLabel: 'Impacto', icon: FiHeart },
+  { id: 'evoluir', label: 'Como evoluir', mobileLabel: 'Evoluir', icon: FiTrendingUp },
 ];
 
 const suggestedQuestions = [
@@ -249,32 +251,46 @@ const ResultadoSimulacaoPage = () => {
 
   return (
     <div className="page-container simulation-result-page debrief-page">
-      <header className="debrief-heading">
-        <div><span className="simulation-kicker">SYNAPSE · AVALIAÇÃO CONCLUÍDA</span><h1>{result.caso_titulo}</h1></div>
-        <span className="feedback-source">{sourceLabel}</span>
+      <header className="debrief-heading debrief-hero result-hero">
+        <div className="debrief-hero-content">
+          <div className="debrief-hero-kicker">
+            <FiZap /> <span>SYNAPSE · DEBRIEFING CLÍNICO</span>
+          </div>
+          <h1>{result.caso_titulo}</h1>
+          <p>Análise estruturada do seu raciocínio diagnóstico, tomada de decisão e impacto na evolução do paciente.</p>
+        </div>
+        <div className="debrief-hero-side">
+          <span className="feedback-source">
+            <FiShield /> {sourceLabel}
+          </span>
+        </div>
       </header>
 
       <nav className="debrief-tabs" aria-label="Etapas do feedback">
         <div role="tablist" aria-label="Feedback do caso">
-          {resultTabs.map((tab, index) => (
-            <button
-              key={tab.id}
-              ref={(element) => { tabRefs.current[index] = element; }}
-              type="button"
-              role="tab"
-              id={`tab-${tab.id}`}
-              aria-label={tab.label}
-              aria-controls={`panel-${tab.id}`}
-              aria-selected={activeTab === tab.id}
-              tabIndex={activeTab === tab.id ? 0 : -1}
-              className={activeTab === tab.id ? 'is-active' : ''}
-              onClick={() => selectTab(tab.id)}
-              onKeyDown={(event) => handleTabKeyDown(event, index)}
-            >
-              <span className="tab-label-desktop">{tab.label}</span>
-              <span className="tab-label-mobile">{tab.mobileLabel || tab.label}</span>
-            </button>
-          ))}
+          {resultTabs.map((tab, index) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                ref={(element) => { tabRefs.current[index] = element; }}
+                type="button"
+                role="tab"
+                id={`tab-${tab.id}`}
+                aria-label={tab.label}
+                aria-controls={`panel-${tab.id}`}
+                aria-selected={activeTab === tab.id}
+                tabIndex={activeTab === tab.id ? 0 : -1}
+                className={activeTab === tab.id ? 'is-active' : ''}
+                onClick={() => selectTab(tab.id)}
+                onKeyDown={(event) => handleTabKeyDown(event, index)}
+              >
+                <Icon className="tab-icon" />
+                <span className="tab-label-desktop">{tab.label}</span>
+                <span className="tab-label-mobile">{tab.mobileLabel || tab.label}</span>
+              </button>
+            );
+          })}
         </div>
       </nav>
 

@@ -1024,7 +1024,9 @@
   .review-center-hero,
   .learning-paths-hero,
   .learning-path-detail-hero,
-  .error-notebook-hero
+  .error-notebook-hero,
+  .debrief-hero,
+  .result-hero
 ) {
   position: relative;
   isolation: isolate;

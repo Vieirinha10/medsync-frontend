@@ -22,6 +22,7 @@
 - Padronizados os cards de apresentação e filtros do Banco de Questões (`.questions-setup-card`, `.questions-performance-card`, `.questions-catalog-card`) com o padrão visual escuro translúcido das demais abas.
 - Aprimorado o card do Plano Rápido de Melhoria (`.study-recommendations.is-standalone`) no resultado dos casos clínicos, com superfície escura gradiente, acento verde-lima e chips de alta legibilidade.
 - Aprimorados os cards de hipótese diagnóstica e prioridades de conduta (`.clinical-core-card`) na tela de resultado do caso clínico com superfícies escuras, bordas suaves e caixas de referência clínica em alto contraste.
+- Adicionadas animações dinâmicas na tela de resultado do caso clínico: contagem numérica progressiva e suave da nota total (`useAnimatedScore`), desabrochar progressivo do polígono de radar com vértices pulsantes em verde-lima e barras de preenchimento animadas por dimensão (Exames, Hipótese, Conduta).
 - Aprimorada visualmente a nova página de Debriefing Clínico (`ResultadoSimulacaoPage.jsx` e `result-debrief.css`) com o Hero Card oficial em gradiente marinho profundo, ilha de abas com ícones e destaque luminoso, painel de maestria clínica com radar neon de alta precisão, cards diagnósticos estruturados, linha do tempo de impacto do paciente e assistente Synapse com acabamento premium dark.
 - Aprimorado o card "Como usar este treino" (`.visual-guidance`) e ilha de filtros (`.visual-filter-island`) na página de Desafios Visuais.
 

@@ -12,13 +12,7 @@
   overflow: hidden;
   margin: 1.5rem 0;
   padding: clamp(2rem, 5vw, 3.6rem);
-  border: 1px solid rgba(48, 105, 229, 0.14);
-  border-radius: 30px;
-  background:
-    radial-gradient(circle at 82% 20%, rgba(53, 209, 255, 0.24), transparent 28%),
-    radial-gradient(circle at 15% 105%, rgba(118, 77, 223, 0.14), transparent 36%),
-    linear-gradient(128deg, #edf7ff 0%, #f6f2ff 58%, #ecfff8 100%);
-  box-shadow: 0 28px 75px rgba(40, 87, 155, 0.13);
+  border-radius: var(--med-radius-lg, 30px);
 }
 
 .learning-paths-hero > * { position: relative; z-index: 1; }
@@ -28,7 +22,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: #2d6ce7;
+  color: var(--med-lime, #a7f34b);
   font-size: 0.74rem;
   font-weight: 850;
   letter-spacing: 0.11em;
@@ -36,7 +30,7 @@
 
 .learning-paths-hero h1 {
   margin: 0.8rem 0;
-  color: #14213c;
+  color: #ffffff;
   font-size: clamp(2.2rem, 4.5vw, 3.75rem);
   line-height: 1.05;
 }
@@ -44,7 +38,7 @@
 .learning-paths-hero p {
   max-width: 700px;
   margin: 0;
-  color: #58677e;
+  color: rgba(228, 244, 251, 0.78);
   font-size: 1.03rem;
   line-height: 1.72;
 }

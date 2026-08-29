@@ -720,10 +720,19 @@
 
 .visual-findings {
   padding: 15px 17px;
+  border: 1px solid rgba(104, 205, 242, 0.16);
   border-radius: 13px;
-  background: rgba(255, 255, 255, 0.72);
-  color: #42647a;
+  background: rgba(3, 25, 35, 0.78);
+  color: #dcebf1;
   font-size: 0.84rem;
+}
+
+.visual-findings strong {
+  color: #86e9f4;
+}
+
+.visual-findings li {
+  color: #e5f2f7;
 }
 
 .visual-findings ul {

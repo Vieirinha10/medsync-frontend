@@ -232,8 +232,9 @@ body {
   border: 1px solid rgba(34, 199, 236, 0.16);
   border-radius: 18px;
   opacity: 0;
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: 0 22px 55px rgba(4, 39, 61, 0.18);
+  background: rgba(3, 25, 35, 0.98);
+  color: #dcebf1;
+  box-shadow: 0 22px 55px rgba(0, 8, 14, 0.38);
   transform: translateY(-7px) scale(0.98);
   transform-origin: top right;
   transition: opacity 170ms ease, transform 170ms ease, visibility 170ms ease;
@@ -463,7 +464,9 @@ body {
   .simulation-hero,
   .result-hero,
   .visual-challenges-header,
+  .questions-hero,
   .review-header,
+  .review-center-hero,
   .clinical-cases-page .page-header
 ) {
   position: relative;
@@ -489,7 +492,9 @@ body {
   .simulation-hero,
   .result-hero,
   .visual-challenges-header,
+  .questions-hero,
   .review-header,
+  .review-center-hero,
   .clinical-cases-page .page-header
 )::before {
   position: absolute;
@@ -516,7 +521,9 @@ body {
   .simulation-hero,
   .result-hero,
   .visual-challenges-header,
+  .questions-hero,
   .review-header,
+  .review-center-hero,
   .clinical-cases-page .page-header
 )::after {
   position: absolute;
@@ -546,7 +553,9 @@ body {
   .simulation-hero,
   .result-hero,
   .visual-challenges-header,
+  .questions-hero,
   .review-header,
+  .review-center-hero,
   .clinical-cases-page .page-header
 ) :is(h1, h2) {
   color: #fff;
@@ -564,7 +573,9 @@ body {
   .simulation-hero,
   .result-hero,
   .visual-challenges-header,
+  .questions-hero,
   .review-header,
+  .review-center-hero,
   .clinical-cases-page .page-header
 ) p {
   color: rgba(220, 241, 250, 0.76);
@@ -619,24 +630,24 @@ body {
   padding: 11px;
   border: 1px solid var(--med-line);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(7, 39, 55, 0.88);
   box-shadow: var(--med-shadow-sm);
   backdrop-filter: blur(14px);
 }
 
 .clinical-cases-page .toolbar :is(input, select) {
   min-height: 49px;
-  border: 1px solid rgba(12, 90, 133, 0.13);
+  border: 1px solid rgba(104, 205, 242, 0.18);
   border-radius: 12px;
   color: var(--med-ink);
-  background: #f6fafc;
+  background: #041f2c;
   transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
 .clinical-cases-page .toolbar :is(input, select):focus {
   border-color: rgba(34, 199, 236, 0.75);
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(34, 199, 236, 0.12);
+  background: #042738;
+  box-shadow: 0 0 0 4px rgba(34, 199, 236, 0.14);
   outline: none;
 }
 

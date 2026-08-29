@@ -11,23 +11,7 @@
   overflow: hidden;
   margin: 1.5rem 0;
   padding: clamp(1.6rem, 4vw, 3rem);
-  border: 1px solid rgba(39, 110, 241, 0.16);
-  border-radius: 28px;
-  background:
-    radial-gradient(circle at 90% 20%, rgba(0, 201, 255, 0.22), transparent 32%),
-    linear-gradient(130deg, #eef7ff 0%, #f6f2ff 55%, #edfffb 100%);
-  box-shadow: 0 24px 70px rgba(31, 90, 171, 0.12);
-}
-
-.error-notebook-hero::after {
-  position: absolute;
-  right: -70px;
-  bottom: -105px;
-  width: 270px;
-  height: 270px;
-  border: 38px solid rgba(91, 63, 211, 0.08);
-  border-radius: 50%;
-  content: '';
+  border-radius: var(--med-radius-lg, 28px);
 }
 
 .error-notebook-hero > * {
@@ -39,7 +23,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  color: #276ef1;
+  color: var(--med-lime, #a7f34b);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.11em;
@@ -47,7 +31,7 @@
 
 .error-notebook-hero h1 {
   margin: 0.65rem 0 0.7rem;
-  color: #14213d;
+  color: #ffffff;
   font-size: clamp(2rem, 4vw, 3.35rem);
   line-height: 1.04;
 }
@@ -55,7 +39,7 @@
 .error-notebook-hero p {
   max-width: 670px;
   margin: 0;
-  color: #53617a;
+  color: rgba(228, 244, 251, 0.78);
   font-size: 1.02rem;
   line-height: 1.7;
 }
@@ -221,10 +205,10 @@
 .error-notebook-filters select {
   width: 100%;
   padding: 0.72rem 0.8rem;
-  border: 1px solid #d9e0ec;
+  border: 1px solid rgba(104, 205, 242, 0.2);
   border-radius: 12px;
-  color: #29364e;
-  background: #fff;
+  color: #e5f2f7;
+  background: #041f2c;
   font: inherit;
   font-size: 0.86rem;
 }

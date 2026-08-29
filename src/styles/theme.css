@@ -430,8 +430,28 @@
 }
 
 /* Formularios e preenchimento automatico do navegador. */
-:root[data-theme='dark'] :where(input, select, textarea) {
+:root[data-theme='dark'] input,
+:root[data-theme='dark'] select,
+:root[data-theme='dark'] textarea {
+  color: #e5f2f7;
+  background-color: #041f2c;
+  border-color: rgba(104, 205, 242, 0.22);
   caret-color: #22c7ec;
+}
+
+:root[data-theme='dark'] input::placeholder,
+:root[data-theme='dark'] textarea::placeholder {
+  color: #6f8d9b;
+}
+
+:root[data-theme='dark'] input:focus,
+:root[data-theme='dark'] select:focus,
+:root[data-theme='dark'] textarea:focus {
+  color: #ffffff;
+  background-color: #042738;
+  border-color: #22c7ec;
+  box-shadow: 0 0 0 3px rgba(34, 199, 236, 0.2);
+  outline: none;
 }
 
 :root[data-theme='dark'] :where(input, textarea):-webkit-autofill,
@@ -441,11 +461,6 @@
   caret-color: #22c7ec;
   box-shadow: 0 0 0 1000px #041f2c inset;
   transition: background-color 9999s ease-out 0s;
-}
-
-:root[data-theme='dark'] :where(input, select, textarea):focus-visible {
-  outline: 3px solid rgba(34, 199, 236, 0.14);
-  border-color: var(--med-focus);
 }
 
 :root[data-theme='dark'] select option {
@@ -847,11 +862,57 @@
   .admin-question-filters input,
   .admin-question-filters select,
   .admin-question-topic-editor select,
-  .admin-question-reports footer select
+  .admin-question-reports footer select,
+  .questions-filter select,
+  .questions-filter input,
+  .questions-report-form select,
+  .questions-report-form textarea,
+  .review-agenda-filters select,
+  .visual-category-filter select,
+  .error-notebook-filters select
 ) {
   color: #e5f2f7;
   border-color: rgba(104, 205, 242, 0.18);
   background: var(--med-inset);
+}
+
+:root[data-theme='dark'] .exam-checkbox {
+  border-color: rgba(104, 205, 242, 0.35);
+  background: #041f2c;
+  color: transparent;
+}
+
+:root[data-theme='dark'] .exam-option-card.selected .exam-checkbox {
+  border-color: #0786e5;
+  background: #0786e5;
+  color: #ffffff;
+}
+
+:root[data-theme='dark'] :where(
+  .exam-rationale-section textarea,
+  .synapse-follow-up textarea
+) {
+  color: #e5f2f7;
+  border-color: rgba(104, 205, 242, 0.22);
+  background: #041f2c;
+}
+
+:root[data-theme='dark'] .selection-counter {
+  border-color: rgba(34, 199, 236, 0.28);
+  background: rgba(8, 127, 224, 0.18);
+  color: #7fe4ff;
+}
+
+:root[data-theme='dark'] .clinical-sources a {
+  border: 1px solid rgba(104, 205, 242, 0.14);
+  background: rgba(7, 39, 55, 0.8);
+  color: #dcebf1;
+}
+
+:root[data-theme='dark'] .clinical-sources a:hover {
+  border-color: rgba(34, 199, 236, 0.4);
+  background: rgba(8, 127, 224, 0.2);
+  color: #ffffff;
 }
 
 /*
@@ -901,3 +962,106 @@
     opacity: 0.66;
   }
 }
+
+:root[data-theme='dark'] :where(
+  .clinical-core-card,
+  .study-recommendations.is-standalone,
+  .visual-guidance,
+  .visual-filter-island,
+  .visual-answer,
+  .questions-guidance > div,
+  .questions-setup-card,
+  .questions-performance-card,
+  .questions-question-card,
+  .questions-result-card
+) {
+  color: #dcebf1;
+}
+
+:root[data-theme='dark'] :where(
+  .clinical-core-card h2,
+  .study-recommendations.is-standalone h2,
+  .visual-guidance strong,
+  .visual-answer-heading h3,
+  .questions-guidance strong,
+  .questions-section-heading h2,
+  .questions-statement h2,
+  .questions-result-card h2
+) {
+  color: #ffffff !important;
+}
+
+:root[data-theme='dark'] :where(
+  .visual-findings,
+  .diagnosis-reference-inline
+) {
+  color: #dcebf1;
+  background: rgba(3, 25, 35, 0.78);
+  border: 1px solid rgba(104, 205, 242, 0.16);
+}
+
+:root[data-theme='dark'] .visual-findings strong,
+:root[data-theme='dark'] .diagnosis-reference-inline strong {
+  color: #86e9f4;
+}
+
+:root[data-theme='dark'] .visual-option {
+  color: #dcebf1;
+}
+
+:root[data-theme='dark'] .visual-option:hover:not(:disabled) {
+  color: #ffffff;
+  background: rgba(7, 48, 68, 0.96);
+  border-color: var(--med-lime, #a7f34b);
+}
+
+/* Uniformidade dos cards iniciais (heróis) em todas as abas */
+:root[data-theme='dark'] :where(
+  .clinical-cases-page .page-header,
+  .visual-challenges-header,
+  .questions-hero,
+  .review-header,
+  .review-center-hero,
+  .learning-paths-hero,
+  .learning-path-detail-hero,
+  .error-notebook-hero
+) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgba(76, 202, 239, 0.16);
+  background:
+    radial-gradient(circle at 91% 5%, rgba(34, 199, 236, 0.25), transparent 28%),
+    radial-gradient(circle at 18% 112%, rgba(118, 89, 237, 0.2), transparent 33%),
+    linear-gradient(128deg, var(--med-navy-deep, #021d30), var(--med-navy, #032f49) 58%, #075078) !important;
+  box-shadow: var(--med-shadow-dark, 0 28px 72px rgba(3, 38, 60, 0.24)) !important;
+  color: #ffffff;
+}
+
+:root[data-theme='dark'] :where(
+  .clinical-cases-page .page-header,
+  .visual-challenges-header,
+  .questions-hero,
+  .review-header,
+  .review-center-hero,
+  .learning-paths-hero,
+  .learning-path-detail-hero,
+  .error-notebook-hero
+) :is(h1, h2) {
+  color: #ffffff !important;
+}
+
+:root[data-theme='dark'] :where(
+  .clinical-cases-page .page-header,
+  .visual-challenges-header,
+  .questions-hero,
+  .review-header,
+  .review-center-hero,
+  .learning-paths-hero,
+  .learning-path-detail-hero,
+  .error-notebook-hero
+) p {
+  color: rgba(220, 241, 250, 0.76) !important;
+}
+
+

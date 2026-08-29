@@ -1064,4 +1064,19 @@
   color: rgba(220, 241, 250, 0.76) !important;
 }
 
+:root[data-theme='dark'] .evaluation-loader-card {
+  border: 1px solid rgba(76, 202, 239, 0.2);
+  background: linear-gradient(135deg, rgba(8, 38, 54, 0.96), rgba(4, 24, 34, 0.98)) !important;
+  box-shadow: 0 30px 90px rgba(0, 10, 18, 0.55), 0 0 0 1px rgba(34, 199, 236, 0.08) inset !important;
+}
+
+:root[data-theme='dark'] .evaluation-loader-card h1 {
+  color: #ffffff !important;
+}
+
+:root[data-theme='dark'] .evaluation-ambient {
+  display: none !important;
+}
+
+
 

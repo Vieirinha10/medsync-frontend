@@ -209,9 +209,9 @@
   padding: 22px 4px;
   border-bottom: 1px solid var(--debrief-line);
 }
-.decision-stage { display: flex; align-items: flex-start; gap: 9px; color: #69d9f2; }
-.decision-stage svg { flex: 0 0 auto; margin-top: 2px; }
-.decision-stage strong { color: var(--debrief-text); font-size: 0.78rem; line-height: 1.45; }
+.decision-comparison .decision-stage { display: flex; align-items: flex-start; gap: 9px; color: #69d9f2; }
+.decision-comparison .decision-stage svg { flex: 0 0 auto; margin-top: 2px; }
+.decision-comparison .decision-stage strong { color: var(--debrief-text); font-size: 0.78rem; line-height: 1.45; }
 .decision-reading > span,
 .decision-reference > span { color: var(--debrief-meta); font-size: 0.61rem; font-weight: 850; letter-spacing: 0.08em; text-transform: uppercase; }
 .decision-reading p,

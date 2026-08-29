@@ -103,6 +103,45 @@ const friendlyEventTitle = (event) => {
   return event.titulo;
 };
 
+const useAnimatedScore = (targetScore, duration = 800) => {
+  const [displayScore, setDisplayScore] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      setDisplayScore(targetScore);
+      return;
+    }
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (prefersReducedMotion || typeof window.requestAnimationFrame !== 'function') {
+      setDisplayScore(targetScore);
+      return;
+    }
+
+    let startTime = null;
+    let animationFrameId;
+
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      setDisplayScore(easeProgress * targetScore);
+
+      if (progress < 1) {
+        animationFrameId = window.requestAnimationFrame(animate);
+      } else {
+        setDisplayScore(targetScore);
+      }
+    };
+
+    animationFrameId = window.requestAnimationFrame(animate);
+    return () => {
+      if (animationFrameId) window.cancelAnimationFrame(animationFrameId);
+    };
+  }, [targetScore, duration]);
+
+  return displayScore;
+};
+
 const ClinicalDecisionProfile = ({ score }) => {
   const values = [
     sectionPercentage(score.exames, 40),
@@ -142,7 +181,17 @@ const ClinicalDecisionProfile = ({ score }) => {
         </svg>
       </div>
       <ul aria-label="Desempenho por dimensão clínica">
-        {axes.map((axis, index) => <li key={axis.label}><span>{axis.shortLabel}</span><strong>{values[index]}%</strong></li>)}
+        {axes.map((axis, index) => (
+          <li key={axis.label}>
+            <div className="profile-dimension-header">
+              <span>{axis.shortLabel}</span>
+              <strong>{values[index]}%</strong>
+            </div>
+            <div className="profile-bar" aria-hidden="true">
+              <span style={{ width: `${values[index]}%` }} />
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   );
@@ -205,6 +254,7 @@ const ResultadoSimulacaoPage = () => {
     ? 'Feedback personalizado pela Synapse'
     : 'Feedback estruturado pela rubrica clínica';
   const scoreOutOfTen = scoreFromHundred(result.pontuacao_total);
+  const animatedScore = useAnimatedScore(scoreOutOfTen);
   const scoreProfile = getScoreProfile(scoreOutOfTen);
   const patientStatus = getPatientStatus(result);
   const isUnsafe = result.nivel_conduta === 'insegura' || result.consequencias?.estado_paciente === 'deterioracao';
@@ -307,7 +357,7 @@ const ResultadoSimulacaoPage = () => {
           <ClinicalDecisionProfile score={result.pontuacao} />
           <div className="result-overview-copy">
             <span>Nota geral</span>
-            <div className="result-score-line" aria-label={`Pontuação total: ${formatScore(scoreOutOfTen)} de 10`}><strong>{formatScore(scoreOutOfTen)}</strong><small>/10</small></div>
+            <div className="result-score-line" aria-label={`Pontuação total: ${formatScore(scoreOutOfTen)} de 10`}><strong>{formatScore(animatedScore)}</strong><small>/10</small></div>
             <h2>{scoreProfile.label}</h2>
             <p>{result.feedback.sintese_raciocinio || result.feedback.resumo}</p>
             <button type="button" onClick={() => selectTab('decisoes', { focus: true })}>Entender minhas decisões <FiArrowRight /></button>

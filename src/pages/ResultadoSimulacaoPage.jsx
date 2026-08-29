@@ -1,27 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import {
+  FiActivity,
   FiAlertTriangle,
   FiArrowRight,
-  FiAward,
-  FiBookOpen,
   FiCheck,
-  FiChevronDown,
+  FiClipboard,
+  FiClock,
   FiExternalLink,
   FiHeart,
-  FiInfo,
   FiMessageCircle,
   FiRefreshCw,
   FiSend,
+  FiShield,
   FiTarget,
-  FiTrendingUp,
 } from 'react-icons/fi';
 import { ApiError, api } from '../services/api';
 
+const resultTabs = [
+  { id: 'resultado', label: 'Resultado' },
+  { id: 'decisoes', label: 'Decisões' },
+  { id: 'impacto', label: 'Impacto clínico', mobileLabel: 'Impacto' },
+  { id: 'evoluir', label: 'Como evoluir', mobileLabel: 'Evoluir' },
+];
+
 const suggestedQuestions = [
-  'Por que este exame era desnecessário?',
-  'Qual seria a conduta se o paciente estivesse instável?',
-  'Como diferenciar os principais diagnósticos?',
+  'Por que a conduta teve esse peso?',
+  'Qual era a principal prioridade de segurança?',
+  'Como diferenciar os diagnósticos mais prováveis?',
 ];
 
 const formatScore = (value) => Number(value).toLocaleString('pt-BR', {
@@ -31,34 +37,16 @@ const formatScore = (value) => Number(value).toLocaleString('pt-BR', {
 
 const scoreFromHundred = (value) => Math.max(0, Math.min(10, value / 10));
 
-const scoreFromSection = (value, total) => Math.max(0, Math.min(10, (value / total) * 10));
+const sectionPercentage = (value, total) => Math.round(
+  Math.max(0, Math.min(100, (Number(value || 0) / total) * 100)),
+);
 
 const getScoreProfile = (score) => {
-  if (score >= 9) return {
-    label: 'Excelente resultado',
-    message: 'Seu raciocínio está muito bem consolidado neste caso.',
-    tone: 'excellent',
-  };
-  if (score >= 7.5) return {
-    label: 'Muito bom',
-    message: 'Você tomou decisões consistentes e clinicamente seguras.',
-    tone: 'great',
-  };
-  if (score >= 6) return {
-    label: 'Bom raciocínio',
-    message: 'Você construiu uma boa linha clínica e já sabe onde evoluir.',
-    tone: 'good',
-  };
-  if (score >= 4) return {
-    label: 'Em desenvolvimento',
-    message: 'Você identificou parte do caminho. Use o plano para avançar.',
-    tone: 'developing',
-  };
-  return {
-    label: 'Vamos revisar juntos',
-    message: 'Este resultado é um ponto de partida para rever as prioridades com calma.',
-    tone: 'review',
-  };
+  if (score >= 9) return { label: 'Excelente resultado', tone: 'excellent' };
+  if (score >= 7.5) return { label: 'Muito bom', tone: 'great' };
+  if (score >= 6) return { label: 'Bom raciocínio', tone: 'good' };
+  if (score >= 4) return { label: 'Em desenvolvimento', tone: 'developing' };
+  return { label: 'Vamos revisar juntos', tone: 'review' };
 };
 
 const getPatientStatus = (result) => {
@@ -66,104 +54,110 @@ const getPatientStatus = (result) => {
   const clinicalText = [
     result.feedback?.reacao_paciente,
     result.feedback?.desfecho_clinico,
-    ...(result.consequencias?.reavaliacao || []).flatMap((item) => [
-      item.indicador,
-      item.depois,
-    ]),
+    ...(result.consequencias?.reavaliacao || []).flatMap((item) => [item.indicador, item.depois]),
   ].filter(Boolean).join(' ').toLocaleLowerCase('pt-BR');
 
   if (
     state === 'deterioracao'
     && /(risco de (morte|óbito)|óbito|parada card|choque|colapso|estado crítico)/i.test(clinicalText)
   ) {
-    return {
-      emoji: '😵',
-      label: 'Estado crítico',
-      helper: 'A decisão aumenta o risco de uma complicação grave.',
-      tone: 'critical',
-    };
+    return { emoji: '😵', label: 'Estado crítico', helper: 'A decisão aumenta o risco de uma complicação grave.', tone: 'critical' };
   }
-
   if (
     /(febril|febre|temperatura elevada)/i.test(clinicalText)
     && !/(afebril|sem febre|febre (cede|resolve)|temperatura normal)/i.test(clinicalText)
   ) {
-    return {
-      emoji: '🤒',
-      label: 'Paciente febril',
-      helper: 'A febre continua sendo um sinal importante na reavaliação.',
-      tone: 'fever',
-    };
+    return { emoji: '🤒', label: 'Paciente febril', helper: 'A febre continua sendo um sinal importante na reavaliação.', tone: 'fever' };
   }
-
   if (state === 'deterioracao' || result.nivel_conduta === 'insegura') {
-    return {
-      emoji: '😰',
-      label: 'Quadro em deterioração',
-      helper: 'A conduta oferece risco e precisa ser revista com prioridade.',
-      tone: 'danger',
-    };
+    return { emoji: '😰', label: 'Quadro em deterioração', helper: 'A conduta oferece risco e precisa ser revista com prioridade.', tone: 'danger' };
   }
-
   if (state === 'resposta_parcial' || result.nivel_conduta === 'parcial') {
-    return {
-      emoji: '😟',
-      label: 'Resposta parcial',
-      helper: 'O paciente pode melhorar, mas ainda existem cuidados importantes pendentes.',
-      tone: 'partial',
-    };
+    return { emoji: '😟', label: 'Resposta parcial', helper: 'Ainda existem cuidados importantes pendentes.', tone: 'partial' };
   }
-
   if (state === 'estabilizado' || result.nivel_conduta === 'adequada') {
-    return {
-      emoji: '🙂',
-      label: 'Paciente estabilizado',
-      helper: 'As prioridades da conduta favorecem uma evolução clínica segura.',
-      tone: 'stable',
-    };
+    return { emoji: '🙂', label: 'Paciente estabilizado', helper: 'As prioridades favorecem uma evolução clínica segura.', tone: 'stable' };
   }
-
-  return {
-    emoji: '😐',
-    label: 'Estado em observação',
-    helper: 'A evolução depende das próximas decisões e da reavaliação.',
-    tone: 'watching',
-  };
+  return { emoji: '😐', label: 'Estado em observação', helper: 'A evolução depende das próximas decisões e da reavaliação.', tone: 'watching' };
 };
 
+const uniqueItems = (...collections) => {
+  const seen = new Set();
+  return collections.flat().filter((item) => {
+    const value = String(item || '').trim();
+    const key = value.toLocaleLowerCase('pt-BR');
+    if (!value || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
+
+const joinClinicalItems = (items, fallback) => (items?.length ? items.join(', ') : fallback);
+
 const friendlyEventTitle = (event) => {
-  if (event.tipo === 'tempo') return 'Exames de baixo valor desviaram o foco';
-  if (event.tipo === 'atraso') return 'Exames importantes não foram solicitados';
+  if (event.tipo === 'tempo') return 'Tempo consumido por decisões de baixo valor';
+  if (event.tipo === 'atraso') return 'Atraso na investigação prioritária';
+  if (event.tipo === 'seguranca') return 'Repercussão sobre a segurança';
   return event.titulo;
 };
 
-const ScoreCard = ({ label, value, total }) => (
-  <div className="score-breakdown-card">
-    <span>{label}</span>
-    <strong>{formatScore(value)}<small>/{formatScore(total)}</small></strong>
-    <div className="score-progress" aria-hidden="true">
-      <span style={{ width: `${(value / total) * 100}%` }} />
-    </div>
-  </div>
-);
+const ClinicalDecisionProfile = ({ score }) => {
+  const values = [
+    sectionPercentage(score.exames, 40),
+    sectionPercentage(score.hipotese, 30),
+    sectionPercentage(score.conduta, 30),
+  ];
+  const axes = [
+    { label: 'Avaliações e exames', shortLabel: 'Exames', angle: -90 },
+    { label: 'Hipótese', shortLabel: 'Hipótese', angle: 30 },
+    { label: 'Conduta', shortLabel: 'Conduta', angle: 150 },
+  ];
+  const pointAt = (angle, percentage, radius = 68) => {
+    const radians = (angle * Math.PI) / 180;
+    const distance = radius * (percentage / 100);
+    return `${100 + Math.cos(radians) * distance},${92 + Math.sin(radians) * distance}`;
+  };
+  const polygon = (percentage) => axes.map((axis) => pointAt(axis.angle, percentage)).join(' ');
+  const resultPolygon = axes.map((axis, index) => pointAt(axis.angle, values[index])).join(' ');
 
-const FeedbackList = ({ items, emptyText, tone = 'positive' }) => (
-  items.length > 0 ? (
-    <ul className={`feedback-list ${tone}`}>
-      {items.map((item) => (
-        <li key={item}>
-          {tone === 'positive' ? <FiCheck /> : <FiAlertTriangle />}
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-  ) : <p className="feedback-empty">{emptyText}</p>
+  return (
+    <div className="decision-profile">
+      <div className="decision-profile-chart" aria-hidden="true">
+        <svg viewBox="0 0 200 184">
+          {[33, 66, 100].map((level) => <polygon key={level} className="profile-grid" points={polygon(level)} />)}
+          {axes.map((axis) => {
+            const [x2, y2] = pointAt(axis.angle, 100).split(',');
+            return <line key={axis.label} className="profile-axis" x1="100" y1="92" x2={x2} y2={y2} />;
+          })}
+          <polygon className="profile-result" points={resultPolygon} />
+          {axes.map((axis, index) => {
+            const [cx, cy] = pointAt(axis.angle, values[index]).split(',');
+            return <circle key={axis.label} className="profile-point" cx={cx} cy={cy} r="4" />;
+          })}
+          <text x="100" y="12" textAnchor="middle">Exames</text>
+          <text x="177" y="151" textAnchor="end">Hipótese</text>
+          <text x="23" y="151">Conduta</text>
+        </svg>
+      </div>
+      <ul aria-label="Desempenho por dimensão clínica">
+        {axes.map((axis, index) => <li key={axis.label}><span>{axis.shortLabel}</span><strong>{values[index]}%</strong></li>)}
+      </ul>
+    </div>
+  );
+};
+
+const DecisionStatus = ({ tone, children }) => (
+  <span className={`decision-status is-${tone}`}>
+    {tone === 'adequada' ? <FiCheck /> : <FiAlertTriangle />}{children}
+  </span>
 );
 
 const ResultadoSimulacaoPage = () => {
   const { progressoId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const tabRefs = useRef([]);
+  const [activeTab, setActiveTab] = useState('resultado');
   const [result, setResult] = useState(location.state?.result || null);
   const [isLoading, setIsLoading] = useState(!location.state?.result);
   const [error, setError] = useState(null);
@@ -174,12 +168,8 @@ const ResultadoSimulacaoPage = () => {
 
   useEffect(() => {
     if (result) return;
-
     api.getSimulationResult(progressoId)
-      .then((data) => {
-        setResult(data);
-        setIsLoading(false);
-      })
+      .then((data) => { setResult(data); setIsLoading(false); })
       .catch((requestError) => {
         if (requestError instanceof ApiError && requestError.status === 401) {
           navigate('/login', { replace: true });
@@ -196,43 +186,51 @@ const ResultadoSimulacaoPage = () => {
     const pathId = params.get('trilha');
     const activityId = params.get('atividade');
     if (!pathId || !activityId) return;
-
     const storageKey = `medsync:trail-result:${progressoId}:${pathId}:${activityId}`;
     if (window.sessionStorage.getItem(storageKey)) return;
     window.sessionStorage.setItem(storageKey, 'syncing');
-    void api.completeLearningPathActivity(
-      pathId,
-      activityId,
-      result.pontuacao_total,
-    ).then(() => {
-      window.sessionStorage.setItem(storageKey, 'completed');
-    }).catch(() => {
-      window.sessionStorage.removeItem(storageKey);
-    });
+    void api.completeLearningPathActivity(pathId, activityId, result.pontuacao_total)
+      .then(() => window.sessionStorage.setItem(storageKey, 'completed'))
+      .catch(() => window.sessionStorage.removeItem(storageKey));
   }, [progressoId, result]);
 
-  if (isLoading) {
-    return <div className="page-container result-state">Carregando sua avaliação...</div>;
-  }
+  if (isLoading) return <div className="page-container result-state">Carregando sua avaliação...</div>;
   if (error || !result) {
-    return (
-      <div className="page-container result-state">
-        <h1>Não foi possível carregar o resultado</h1>
-        <p>{error}</p>
-        <Link to="/casos">Voltar aos casos</Link>
-      </div>
-    );
+    return <div className="page-container result-state"><h1>Não foi possível carregar o resultado</h1><p>{error}</p><Link to="/casos">Voltar aos casos</Link></div>;
   }
 
   const sourceLabel = result.fonte_feedback === 'openai'
-    ? 'Synapse · feedback personalizado por IA'
-    : 'Synapse · feedback estruturado pela rubrica clínica';
+    ? 'Feedback personalizado pela Synapse'
+    : 'Feedback estruturado pela rubrica clínica';
   const scoreOutOfTen = scoreFromHundred(result.pontuacao_total);
   const scoreProfile = getScoreProfile(scoreOutOfTen);
   const patientStatus = getPatientStatus(result);
-  const relevantConsequences = (result.consequencias?.eventos || []).filter(
-    (event) => event.tipo !== 'resposta' && event.tipo !== 'seguranca',
-  );
+  const isUnsafe = result.nivel_conduta === 'insegura' || result.consequencias?.estado_paciente === 'deterioracao';
+  const examHasGaps = result.exames.essenciais_ausentes?.length > 0 || result.exames.desnecessarios?.length > 0;
+  const hypothesisPercentage = sectionPercentage(result.pontuacao.hipotese, 30);
+  const priorities = uniqueItems(
+    result.feedback.plano_pessoal_melhoria || [],
+    result.feedback.pontos_melhoria || [],
+    result.feedback.omissoes || [],
+  ).slice(0, 3);
+  const studyTopics = uniqueItems(result.feedback.recomendacoes_estudo || []);
+  const impactEvents = (result.consequencias?.eventos || []).filter((event) => event.tipo !== 'resposta');
+
+  const selectTab = (tabId, { focus = false } = {}) => {
+    setActiveTab(tabId);
+    if (focus) window.requestAnimationFrame(() => tabRefs.current[resultTabs.findIndex((tab) => tab.id === tabId)]?.focus());
+  };
+
+  const handleTabKeyDown = (event, currentIndex) => {
+    let nextIndex = currentIndex;
+    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % resultTabs.length;
+    else if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + resultTabs.length) % resultTabs.length;
+    else if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = resultTabs.length - 1;
+    else return;
+    event.preventDefault();
+    selectTab(resultTabs[nextIndex].id, { focus: true });
+  };
 
   const askSynapse = async (selectedQuestion = question) => {
     const cleanQuestion = selectedQuestion.trim();
@@ -250,309 +248,150 @@ const ResultadoSimulacaoPage = () => {
   };
 
   return (
-    <div className="page-container simulation-result-page">
-      <header className="result-hero">
-        <div className="result-heading">
-          <span className="simulation-kicker">SYNAPSE · AVALIAÇÃO CONCLUÍDA</span>
-          <h1>{result.caso_titulo}</h1>
-          <p>{result.feedback.resumo || result.feedback.sintese_raciocinio}</p>
-          <span className="feedback-source">{sourceLabel}</span>
-        </div>
-        <aside
-          className={`score-celebration is-${scoreProfile.tone}`}
-          aria-label={`Pontuação total: ${formatScore(scoreOutOfTen)} de 10`}
-        >
-          <div className="score-card-heading">
-            <FiAward />
-            <span>Seu resultado</span>
-          </div>
-          <div className="score-orbit">
-            <span className="score-orbit-track" aria-hidden="true"><i /><i /></span>
-            <svg viewBox="0 0 128 128" aria-hidden="true">
-              <circle className="score-ring-track" cx="64" cy="64" r="52" />
-              <circle
-                className="score-ring-value"
-                cx="64"
-                cy="64"
-                r="52"
-                style={{ '--score-offset': 326.73 * (1 - scoreOutOfTen / 10) }}
-              />
-            </svg>
-            <div className="score-core">
-              <strong>{formatScore(scoreOutOfTen)}</strong>
-              <span>de 10</span>
-            </div>
-          </div>
-          <div className="score-celebration-copy">
-            <strong>{scoreProfile.label}</strong>
-            <p>{scoreProfile.message}</p>
-          </div>
-        </aside>
+    <div className="page-container simulation-result-page debrief-page">
+      <header className="debrief-heading">
+        <div><span className="simulation-kicker">SYNAPSE · AVALIAÇÃO CONCLUÍDA</span><h1>{result.caso_titulo}</h1></div>
+        <span className="feedback-source">{sourceLabel}</span>
       </header>
 
-      <section className="clinical-core-summary" aria-label="Resumo da hipótese e da conduta">
-        <article className="clinical-core-card hypothesis">
-          <div className="clinical-core-card-title">
-            <span><FiTarget /></span>
-            <div>
-              <small>ENTENDA RAPIDAMENTE</small>
-              <h2>Qual era a hipótese?</h2>
-            </div>
-          </div>
-          <p>{result.feedback.feedback_hipotese}</p>
-          {result.diagnostico_referencia && (
-            <div className="diagnosis-reference-inline">
-              <span>Diagnóstico de referência</span>
-              <strong>{result.diagnostico_referencia}</strong>
-            </div>
-          )}
-        </article>
-
-        <article className="clinical-core-card conduct">
-          <div className="clinical-core-card-title">
-            <span><FiHeart /></span>
-            <div>
-              <small>PRIORIDADES DO CUIDADO</small>
-              <h2>Como conduzir o caso?</h2>
-            </div>
-          </div>
-          <p>{result.feedback.feedback_conduta}</p>
-        </article>
-      </section>
-
-      <section className={`patient-impact-card is-${patientStatus.tone}`} aria-label="Impacto das suas decisões no paciente">
-        <div className="patient-status-summary">
-          <span
-            className="patient-status-emoji"
-            role="img"
-            aria-label={patientStatus.label}
-          >
-            {patientStatus.emoji}
-          </span>
-          <div>
-            <span className="simulation-kicker">IMPACTO DAS SUAS DECISÕES</span>
-            <h2>{patientStatus.label}</h2>
-            <p>{patientStatus.helper}</p>
-            {result.nivel_conduta && (
-              <span className={`conduct-level is-${result.nivel_conduta}`}>
-                {result.nivel_conduta === 'insegura'
-                  ? 'Atenção: esta conduta oferece risco'
-                  : result.nivel_conduta === 'adequada'
-                    ? 'Conduta clinicamente adequada'
-                    : 'Conduta ainda incompleta'}
-              </span>
-            )}
-          </div>
-        </div>
-
-        <div className="patient-impact-grid">
-          <article>
-            <span><FiHeart /></span>
-            <div>
-              <small>O QUE ACONTECE AGORA</small>
-              <h3>Reação imediata</h3>
-              <p>{result.feedback.reacao_paciente || 'A reação do paciente não foi registrada nesta avaliação.'}</p>
-            </div>
-          </article>
-          <article>
-            <span><FiTrendingUp /></span>
-            <div>
-              <small>O QUE ESPERAR DEPOIS</small>
-              <h3>Desfecho clínico</h3>
-              <p>{result.feedback.desfecho_clinico || 'O desfecho clínico não foi registrado nesta avaliação.'}</p>
-            </div>
-          </article>
-        </div>
-
-        {relevantConsequences.length > 0 && (
-          <div className="decision-factors">
-            <div><FiInfo /><h3>O que influenciou esse resultado?</h3></div>
-            <div>
-              {relevantConsequences.map((event, index) => (
-                <article key={`${event.tipo}-${index}`}>
-                  <FiArrowRight />
-                  <div><strong>{friendlyEventTitle(event)}</strong><p>{event.descricao}</p></div>
-                </article>
-              ))}
-            </div>
-          </div>
-        )}
-
-      </section>
-
-      <details className="detailed-clinical-analysis">
-        <summary>
-          <span><FiBookOpen /></span>
-          <div>
-            <small>QUER ENTENDER MELHOR?</small>
-            <h2>Ver análise clínica completa</h2>
-            <p>Abra para conferir a composição da nota, seus acertos, as avaliações e exames e os pontos de segurança.</p>
-          </div>
-          <FiChevronDown className="details-chevron" />
-        </summary>
-
-        <div className="detailed-analysis-body">
-          <section className="section-score-analysis" aria-label="Desempenho em cada etapa">
-            <div>
-              <span className="simulation-kicker">COMO A NOTA FOI FORMADA</span>
-              <h2>Seu desempenho em cada etapa</h2>
-              <p>Cada etapa foi convertida para a mesma escala de 0 a 10.</p>
-            </div>
-            <div className="score-breakdown">
-              <ScoreCard label="Avaliações e exames" value={scoreFromSection(result.pontuacao.exames, 40)} total={10} />
-              <ScoreCard label="Hipótese" value={scoreFromSection(result.pontuacao.hipotese, 30)} total={10} />
-              <ScoreCard label="Conduta" value={scoreFromSection(result.pontuacao.conduta, 30)} total={10} />
-            </div>
-          </section>
-
-          <div className="result-grid">
-            <section className="result-panel">
-              <div className="result-panel-title">
-                <FiTarget />
-                <div>
-                  <span>Análise da Synapse</span>
-                  <h2>O que você fez bem</h2>
-                </div>
-              </div>
-              <FeedbackList
-                items={result.feedback.acertos}
-                emptyText="Nenhum acerto específico foi identificado."
-              />
-            </section>
-
-            <section className="result-panel">
-              <div className="result-panel-title warning">
-                <FiAlertTriangle />
-                <div>
-                  <span>Orientação da Synapse</span>
-                  <h2>Onde você pode evoluir</h2>
-                </div>
-              </div>
-              <FeedbackList
-                items={result.feedback.omissoes?.length ? result.feedback.omissoes : result.feedback.pontos_melhoria}
-                emptyText="Nenhum ponto crítico de melhoria foi identificado."
-                tone="warning"
-              />
-            </section>
-          </div>
-
-          <section className="result-panel exam-analysis">
-            <div className="result-panel-title">
-              <FiTarget />
-              <div>
-                <span>Valor diagnóstico</span>
-                <h2>Entenda as avaliações e exames solicitados</h2>
-              </div>
-            </div>
-            <div className="exam-feedback-grid">
-              <div>
-                <h3>Boas escolhas</h3>
-                <FeedbackList
-                  items={result.exames.adequados}
-                  emptyText="Nenhum exame essencial foi selecionado."
-                />
-              </div>
-              <div>
-                <h3>Avaliações ou exames importantes que faltaram</h3>
-                <FeedbackList
-                  items={result.exames.essenciais_ausentes}
-                  emptyText="Você solicitou todas as avaliações e exames importantes."
-                  tone="warning"
-                />
-              </div>
-              <div>
-                <h3>Avaliações ou exames de baixo valor</h3>
-                <FeedbackList
-                  items={result.exames.desnecessarios}
-                  emptyText="Nenhum exame de baixo valor foi solicitado."
-                  tone="warning"
-                />
-              </div>
-            </div>
-            <p className="exam-comment">{result.exames.comentario}</p>
-            {result.feedback.justificativas_exames?.length > 0 && (
-              <div className="exam-rationale-feedback">
-                <div><span>COMPREENSÃO DA UTILIDADE</span><h3>Suas justificativas</h3></div>
-                {result.feedback.justificativas_exames.map((item) => (
-                  <article key={item.exame_id} className={`is-${item.compreensao}`}>
-                    <header><strong>{item.exame}</strong><span>{item.compreensao === 'nao_justificada' ? 'Opcional não preenchida' : item.compreensao}</span></header>
-                    {item.justificativa_estudante && <p><b>Você escreveu:</b> {item.justificativa_estudante}</p>}
-                    <small>{item.feedback}</small>
-                  </article>
-                ))}
-              </div>
-            )}
-          </section>
-
-          <article className="reasoning-card safety">
-            <span>SEGURANÇA DO PACIENTE</span>
-            <h2>{result.nivel_conduta === 'insegura' ? 'Atenção: revise esta conduta' : 'Ponto de segurança'}</h2>
-            <p>{result.feedback.feedback_seguranca}</p>
-          </article>
-
-          {(result.objetivos_aprendizagem?.length > 0 || result.fontes_clinicas?.length > 0) && (
-            <section className="rubric-evidence-section">
-              <div className="rubric-learning-goals">
-                <div className="result-panel-title">
-                  <FiBookOpen />
-                  <div><span>Rubrica Clínica 2.0</span><h2>Objetivos deste caso</h2></div>
-                </div>
-                <ul>
-                  {(result.objetivos_aprendizagem || []).map((objective) => (
-                    <li key={objective}><FiCheck /><span>{objective}</span></li>
-                  ))}
-                </ul>
-              </div>
-              <div className="clinical-sources">
-                <span>REFERÊNCIAS CLÍNICAS</span>
-                {(result.fontes_clinicas || []).map((source) => (
-                  <a key={source.url} href={source.url} target="_blank" rel="noreferrer">
-                    <div><strong>{source.titulo}</strong><small>{source.organizacao} · {source.ano}</small></div>
-                    <FiExternalLink />
-                  </a>
-                ))}
-              </div>
-            </section>
-          )}
-
-        </div>
-      </details>
-
-      <section className="study-recommendations is-standalone" aria-label="Plano rápido de melhoria">
-        <div>
-          <span className="simulation-kicker">SEU PRÓXIMO PASSO</span>
-          <h2>Plano rápido de melhoria</h2>
-          <p>Leve estes pontos para o próximo caso e transforme o feedback em prática.</p>
-        </div>
-        <div className="study-chips">
-          {(result.feedback.plano_pessoal_melhoria || result.feedback.recomendacoes_estudo).map((topic) => (
-            <span key={topic}>{topic}</span>
+      <nav className="debrief-tabs" aria-label="Etapas do feedback">
+        <div role="tablist" aria-label="Feedback do caso">
+          {resultTabs.map((tab, index) => (
+            <button
+              key={tab.id}
+              ref={(element) => { tabRefs.current[index] = element; }}
+              type="button"
+              role="tab"
+              id={`tab-${tab.id}`}
+              aria-label={tab.label}
+              aria-controls={`panel-${tab.id}`}
+              aria-selected={activeTab === tab.id}
+              tabIndex={activeTab === tab.id ? 0 : -1}
+              className={activeTab === tab.id ? 'is-active' : ''}
+              onClick={() => selectTab(tab.id)}
+              onKeyDown={(event) => handleTabKeyDown(event, index)}
+            >
+              <span className="tab-label-desktop">{tab.label}</span>
+              <span className="tab-label-mobile">{tab.mobileLabel || tab.label}</span>
+            </button>
           ))}
         </div>
-      </section>
+      </nav>
 
-      <section className="synapse-follow-up" aria-label="Pergunte à Synapse">
-        <div className="follow-up-heading"><span><FiMessageCircle /></span><div><small>SYNAPSE · APROFUNDE O CASO</small><h2>Ficou alguma dúvida?</h2><p>A resposta usa somente este caso, sua resolução e a rubrica revisada.</p></div></div>
-        <div className="suggested-questions">
-          {suggestedQuestions.map((item) => <button key={item} type="button" onClick={() => askSynapse(item)} disabled={isAsking}>{item}</button>)}
-        </div>
-        <form onSubmit={(event) => { event.preventDefault(); askSynapse(); }}>
-          <label><span>Sua pergunta sobre o caso</span><textarea rows="3" maxLength="500" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Pergunte sobre exames, hipótese, conduta ou segurança..." /></label>
-          <button type="submit" disabled={isAsking || question.trim().length < 5}>{isAsking ? 'Synapse analisando...' : <><FiSend /> Perguntar</>}</button>
-        </form>
-        {questionError && <p className="follow-up-error" role="alert">{questionError}</p>}
-        {questionAnswer && <article className="synapse-answer"><header><FiMessageCircle /><div><strong>Synapse</strong><small>{questionAnswer.fonte_feedback === 'openai' ? 'Resposta personalizada por IA' : 'Resposta estruturada pela rubrica'}</small></div></header><p>{questionAnswer.resposta}</p><small>{questionAnswer.aviso_educacional}</small></article>}
-      </section>
+      {isUnsafe && (
+        <section className="debrief-safety-alert" role="alert">
+          <FiAlertTriangle />
+          <div><strong>A conduta oferece risco ao paciente</strong><span>Revise o impacto clínico antes de prosseguir para outro caso.</span></div>
+          <button type="button" onClick={() => selectTab('impacto', { focus: true })}>Ver impacto <FiArrowRight /></button>
+        </section>
+      )}
+
+      {activeTab === 'resultado' && (
+        <section id="panel-resultado" role="tabpanel" aria-labelledby="tab-resultado" className="debrief-panel result-overview-panel">
+          <ClinicalDecisionProfile score={result.pontuacao} />
+          <div className="result-overview-copy">
+            <span>Nota geral</span>
+            <div className="result-score-line" aria-label={`Pontuação total: ${formatScore(scoreOutOfTen)} de 10`}><strong>{formatScore(scoreOutOfTen)}</strong><small>/10</small></div>
+            <h2>{scoreProfile.label}</h2>
+            <p>{result.feedback.sintese_raciocinio || result.feedback.resumo}</p>
+            <button type="button" onClick={() => selectTab('decisoes', { focus: true })}>Entender minhas decisões <FiArrowRight /></button>
+          </div>
+        </section>
+      )}
+
+      {activeTab === 'decisoes' && (
+        <section id="panel-decisoes" role="tabpanel" aria-labelledby="tab-decisoes" className="debrief-panel decisions-panel">
+          <header className="debrief-panel-heading">
+            <span><FiClipboard /></span><div><h2>Suas decisões e a referência clínica</h2><p>Cada etapa tem um único lugar de análise, sem repetir o mesmo ponto em vários cards.</p></div>
+          </header>
+          <div className="decision-comparison" aria-label="Comparação clínica por etapa">
+            <article>
+              <div className="decision-stage"><FiActivity /><strong>Avaliações e exames</strong></div>
+              <div className="decision-reading"><span>Leitura da decisão</span><p>Boas escolhas: {joinClinicalItems(result.exames.adequados, 'nenhuma escolha essencial reconhecida')}.</p></div>
+              <div className="decision-reference"><span>Referência do caso</span><p>{result.exames.comentario}</p><DecisionStatus tone={examHasGaps ? 'parcial' : 'adequada'}>{examHasGaps ? 'Requer revisão' : 'Adequada'}</DecisionStatus></div>
+            </article>
+            <article>
+              <div className="decision-stage"><FiTarget /><strong>Hipótese</strong></div>
+              <div className="decision-reading"><span>Análise clínica</span><p>{result.feedback.feedback_hipotese}</p></div>
+              <div className="decision-reference"><span>Diagnóstico de referência</span><p>{result.diagnostico_referencia || 'Não informado nesta versão do caso.'}</p><DecisionStatus tone={hypothesisPercentage >= 80 ? 'adequada' : hypothesisPercentage >= 50 ? 'parcial' : 'insegura'}>{hypothesisPercentage >= 80 ? 'Compatível' : hypothesisPercentage >= 50 ? 'Parcial' : 'Reformular'}</DecisionStatus></div>
+            </article>
+            <article>
+              <div className="decision-stage"><FiHeart /><strong>Conduta</strong></div>
+              <div className="decision-reading"><span>Análise clínica</span><p>{result.feedback.feedback_conduta}</p></div>
+              <div className="decision-reference"><span>Segurança e prioridade</span><p>{result.feedback.feedback_seguranca}</p><DecisionStatus tone={result.nivel_conduta === 'adequada' ? 'adequada' : result.nivel_conduta === 'insegura' ? 'insegura' : 'parcial'}>{result.nivel_conduta === 'adequada' ? 'Adequada' : result.nivel_conduta === 'insegura' ? 'Insegura' : 'Incompleta'}</DecisionStatus></div>
+            </article>
+          </div>
+          <details className="decision-details">
+            <summary>Ver detalhes das avaliações, exames e justificativas</summary>
+            <div className="exam-decision-groups">
+              <div><strong>Boas escolhas</strong><p>{joinClinicalItems(result.exames.adequados, 'Nenhuma identificada.')}</p></div>
+              <div><strong>Essenciais ausentes</strong><p>{joinClinicalItems(result.exames.essenciais_ausentes, 'Nenhum.')}</p></div>
+              <div><strong>Baixo valor</strong><p>{joinClinicalItems(result.exames.desnecessarios, 'Nenhum.')}</p></div>
+            </div>
+            {result.feedback.justificativas_exames?.length > 0 && (
+              <div className="rationale-compact-list">
+                {result.feedback.justificativas_exames.map((item) => (
+                  <article key={item.exame_id}><header><strong>{item.exame}</strong><span>{item.compreensao === 'nao_justificada' ? 'Não justificada' : item.compreensao}</span></header>{item.justificativa_estudante && <p><b>Você escreveu:</b> {item.justificativa_estudante}</p>}<small>{item.feedback}</small></article>
+                ))}
+              </div>
+            )}
+          </details>
+        </section>
+      )}
+
+      {activeTab === 'impacto' && (
+        <section id="panel-impacto" role="tabpanel" aria-labelledby="tab-impacto" className={`debrief-panel impact-panel is-${patientStatus.tone}`}>
+          <header className="impact-summary">
+            <span className="impact-patient-emoji" role="img" aria-label={patientStatus.label}>{patientStatus.emoji}</span>
+            <div><span>IMPACTO CLÍNICO SIMULADO</span><h2>{patientStatus.label}</h2><p>{patientStatus.helper}</p></div>
+          </header>
+          <ol className="clinical-impact-timeline">
+            <li><span><FiHeart /></span><div><strong>Reação imediata</strong><p>{result.feedback.reacao_paciente || 'Não registrada nesta avaliação.'}</p></div></li>
+            {impactEvents.map((event, index) => (
+              <li key={`${event.tipo}-${index}`}><span>{event.tipo === 'tempo' || event.tipo === 'atraso' ? <FiClock /> : <FiShield />}</span><div><strong>{friendlyEventTitle(event)}</strong><p>{event.descricao}</p>{event.minutos > 0 && <small>Impacto educacional: +{event.minutos} min</small>}</div></li>
+            ))}
+            {(result.consequencias?.reavaliacao || []).map((item) => (
+              <li key={`${item.indicador}-${item.depois}`}><span><FiActivity /></span><div><strong>Reavaliação: {item.indicador}</strong><p>{item.antes} → {item.depois}</p><small className={`trend-${item.tendencia}`}>{item.tendencia}</small></div></li>
+            ))}
+            <li><span><FiTarget /></span><div><strong>Desfecho simulado</strong><p>{result.feedback.desfecho_clinico || 'Não registrado nesta avaliação.'}</p></div></li>
+          </ol>
+          <p className="impact-disclaimer"><FiShield /> {result.consequencias?.aviso_tempo || 'Evolução educacional simulada; não representa previsão para um paciente real.'}</p>
+        </section>
+      )}
+
+      {activeTab === 'evoluir' && (
+        <section id="panel-evoluir" role="tabpanel" aria-labelledby="tab-evoluir" className="debrief-panel evolve-panel">
+          <header className="debrief-panel-heading"><span><FiTarget /></span><div><h2>Prioridades para o próximo caso</h2><p>Três ações práticas para transformar o feedback em desempenho.</p></div></header>
+          <ol className="improvement-priorities">
+            {(priorities.length ? priorities : ['Revisar a hipótese, a conduta e os critérios de segurança deste caso.']).map((priority, index) => <li key={priority}><span>{index + 1}</span><p>{priority}</p></li>)}
+          </ol>
+          {studyTopics.length > 0 && <div className="study-topic-tags" aria-label="Temas recomendados para estudo">{studyTopics.map((topic) => <span key={topic}>{topic}</span>)}</div>}
+          {(result.objetivos_aprendizagem?.length > 0 || result.fontes_clinicas?.length > 0) && (
+            <details className="learning-evidence">
+              <summary>Objetivos e referências deste caso</summary>
+              <div>
+                {result.objetivos_aprendizagem?.length > 0 && <ul>{result.objetivos_aprendizagem.map((objective) => <li key={objective}><FiCheck /> {objective}</li>)}</ul>}
+                {result.fontes_clinicas?.length > 0 && <div className="debrief-sources">{result.fontes_clinicas.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noreferrer"><span><strong>{source.titulo}</strong><small>{source.organizacao} · {source.ano}</small></span><FiExternalLink /></a>)}</div>}
+              </div>
+            </details>
+          )}
+          <section className="synapse-follow-up debrief-synapse" aria-label="Pergunte à Synapse">
+            <div className="follow-up-heading"><span><FiMessageCircle /></span><div><small>APROFUNDE COM A SYNAPSE</small><h2>Ficou alguma dúvida?</h2><p>A resposta usa somente este caso, sua resolução e a rubrica revisada.</p></div></div>
+            <div className="suggested-questions">{suggestedQuestions.map((item) => <button key={item} type="button" onClick={() => askSynapse(item)} disabled={isAsking}>{item}</button>)}</div>
+            <form onSubmit={(event) => { event.preventDefault(); askSynapse(); }}>
+              <label><span>Sua pergunta sobre o caso</span><textarea rows="3" maxLength="500" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Pergunte sobre avaliações, exames, hipótese, conduta ou segurança..." /></label>
+              <button type="submit" disabled={isAsking || question.trim().length < 5}>{isAsking ? 'Synapse analisando...' : <><FiSend /> Perguntar</>}</button>
+            </form>
+            {questionError && <p className="follow-up-error" role="alert">{questionError}</p>}
+            {questionAnswer && <article className="synapse-answer"><header><FiMessageCircle /><div><strong>Synapse</strong><small>{questionAnswer.fonte_feedback === 'openai' ? 'Resposta personalizada por IA' : 'Resposta estruturada pela rubrica'}</small></div></header><p>{questionAnswer.resposta}</p><small>{questionAnswer.aviso_educacional}</small></article>}
+          </section>
+        </section>
+      )}
 
       <p className="educational-notice">{result.aviso_educacional}</p>
-
       <div className="result-actions">
-        <Link to={`/casos/${result.caso_id}`} className="secondary-result-action">
-          <FiRefreshCw /> Refazer este caso
-        </Link>
-        <Link to="/casos" className="primary-result-action">
-          Explorar outros casos <FiArrowRight />
-        </Link>
+        <Link to={`/casos/${result.caso_id}`} className="secondary-result-action"><FiRefreshCw /> Refazer este caso</Link>
+        <Link to="/casos" className="primary-result-action">Explorar outros casos <FiArrowRight /></Link>
       </div>
     </div>
   );

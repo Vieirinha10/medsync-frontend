@@ -213,6 +213,18 @@ Elementos aninhados devem respeitar raio concêntrico: o raio externo é o raio 
 - Assinatura oficial: “Mais preparo. Mais clareza. Melhores decisões.”
 - Duração atual: saída iniciada em 2,8 s e remoção em 3,7 s.
 
+### Resultado da simulação — debriefing clínico
+
+- A página é organizada em quatro abas sem numeração decorativa: **Resultado**, **Decisões**, **Impacto clínico** e **Como evoluir**.
+- A ordem narrativa oficial é: resultado obtido → decisões tomadas → impacto clínico simulado → ação para o próximo caso.
+- A aba inicial é sempre Resultado. Em conduta insegura, um alerta vermelho permanece acima do conteúdo e oferece acesso direto a Impacto clínico; a página não troca de aba automaticamente.
+- O “Perfil da decisão clínica” é o elemento de assinatura da tela: triângulo com Avaliações e exames, Hipótese e Conduta normalizados em percentuais a partir dos pesos 40/30/30.
+- Decisões reúne a comparação com a **referência clínica do caso**. Não usar “padrão-ouro”, pois a rubrica pode aceitar alternativas clinicamente válidas.
+- Impacto clínico usa uma linha causal única e a expressão “simulado”. Reação, tempo fictício, atraso, reavaliação e desfecho não devem voltar a ser separados em cards paralelos.
+- Como evoluir exibe no máximo três prioridades deduplicadas, temas de estudo como tags, objetivos e fontes em conteúdo expansível e a Synapse como fechamento.
+- No mobile, a barra de abas permanece em uma linha com rótulos compactos; tabelas se tornam blocos empilhados e os controles preservam alvos mínimos de 44 px.
+- Estilos específicos ficam em `src/styles/result-debrief.css`, carregado após `theme.css`. Evitar recriar regras da nova página nos arquivos legados de simulação.
+
 ## 9. Fundo Chromatic Waves
 
 O campo de ondas pontilhadas é a textura oficial da página inicial.

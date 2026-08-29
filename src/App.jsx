@@ -70,6 +70,7 @@ import './styles/visual-challenges-v2.css';
 import './styles/review-center.css';
 import './styles/questions.css';
 import './styles/theme.css';
+import './styles/result-debrief.css';
 
 
 function App() {

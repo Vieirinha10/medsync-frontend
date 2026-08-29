@@ -3,11 +3,19 @@
 ## Não publicado
 
 ### Adicionado
+- Nova página de resultado organizada como debriefing clínico em quatro abas: Resultado, Decisões, Impacto clínico e Como evoluir.
+- “Perfil da decisão clínica” triangular, com Exames, Hipótese e Conduta normalizados individualmente em percentuais para evitar distorção entre pesos de 40/30/30.
+- Linha causal de impacto clínico simulado, reunindo reação imediata, consequências temporais, reavaliação de sinais vitais e desfecho em uma única sequência.
+- Alerta persistente para conduta insegura, com atalho direto para a aba de impacto clínico.
 - Área de Psiquiatria e Saúde Mental integrada ao catálogo, com 15 novos casos e total atualizado para 80 casos clínicos; a meta final passa de 100 para 115 casos.
 - Segundo lote da expansão do catálogo, elevando o total de 60 para 65 casos clínicos.
 - Primeiro lote da expansão do catálogo clínico, elevando o total publicado de 55 para 60 casos.
 
 ### Alterado
+- Consolidado o feedback anteriormente distribuído em vários cards repetitivos: avaliação por etapa na aba Decisões e prioridades de melhoria, temas, fontes e perguntas à Synapse na aba Como evoluir.
+- A navegação do resultado passou a usar abas acessíveis por teclado, barra fixa durante a leitura e rótulos compactos em telas pequenas.
+- A comparação diagnóstica usa “referência clínica do caso” em vez de “padrão-ouro”, preservando alternativas clinicamente aceitáveis previstas pela rubrica.
+- A área de perguntas à Synapse foi mantida funcional e transferida para o fechamento do debriefing, sem mudanças no contrato da API ou geração de chamadas adicionais.
 - A etapa clínica de exames agora usa a expressão “avaliações e exames”, contemplando escalas psicológicas e psiquiátricas sem alterar o contrato técnico da API.
 - Padronizados e unificados os fundos, gradientes, bordas e animações de órbita dos cards iniciais (heróis) de todas as abas principais (Casos Clínicos, Desafios Visuais, Questões, Central de Revisões, Trilhas e Caderno de Erros), preservando integralmente os painéis e widgets funcionais internos.
 - Padronizados os cards de apresentação e filtros do Banco de Questões (`.questions-setup-card`, `.questions-performance-card`, `.questions-catalog-card`) com o padrão visual escuro translúcido das demais abas.

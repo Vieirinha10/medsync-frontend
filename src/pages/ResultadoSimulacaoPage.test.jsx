@@ -1,6 +1,6 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import ResultadoSimulacaoPage from './ResultadoSimulacaoPage';
 
 vi.mock('../services/api', () => ({
@@ -15,6 +15,8 @@ vi.mock('../services/api', () => ({
   },
   ApiError: class ApiError extends Error {},
 }));
+
+afterEach(cleanup);
 
 const result = {
   progresso_id: 42,
@@ -66,7 +68,7 @@ const result = {
 };
 
 describe('ResultadoSimulacaoPage', () => {
-  it('prioriza nota simplificada, raciocínio e impacto antes da análise completa', async () => {
+  it('organiza o debriefing clínico em quatro abas sem repetir os blocos', async () => {
     render(
       <MemoryRouter initialEntries={[{ pathname: '/resultados/42', state: { result } }]}>
         <Routes>
@@ -75,37 +77,38 @@ describe('ResultadoSimulacaoPage', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getByText('Tromboembolismo pulmonar agudo')).toBeInTheDocument();
-    expect(screen.getByText('Synapse · feedback personalizado por IA')).toBeInTheDocument();
-    expect(screen.getByText('A tendência é melhora progressiva da hipoxemia.')).toBeInTheDocument();
-    expect(screen.getByText('A paciente permanece internada e monitorizada.')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Caso #008 – Dispneia súbita em mulher adulta' })).toBeInTheDocument();
+    expect(screen.getByText('Feedback personalizado pela Synapse')).toBeInTheDocument();
     expect(screen.getByLabelText('Pontuação total: 8,6 de 10')).toBeInTheDocument();
-    expect(screen.getByText('Seu resultado')).toBeInTheDocument();
-    expect(screen.getByText('Você tomou decisões consistentes e clinicamente seguras.')).toBeInTheDocument();
-    expect(screen.getByText('Conduta clinicamente adequada')).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: 'Paciente estabilizado' })).toHaveTextContent('🙂');
-    expect(screen.queryByText('Impacto fictício')).not.toBeInTheDocument();
-    expect(screen.queryByText('Tempo educacional fictício.')).not.toBeInTheDocument();
-    expect(screen.queryByText('REAVALIAÇÃO')).not.toBeInTheDocument();
-    expect(screen.queryByText('Como os sinais podem evoluir')).not.toBeInTheDocument();
+    expect(screen.getByText('Você reconheceu o quadro tromboembólico e priorizou o tratamento.')).toBeInTheDocument();
+    expect(screen.getByLabelText('Desempenho por dimensão clínica')).toHaveTextContent('Exames90%');
+    expect(screen.queryByText('A tendência é melhora progressiva da hipoxemia.')).not.toBeInTheDocument();
     expect(screen.queryByText('Saturação periférica')).not.toBeInTheDocument();
 
-    const detailedAnalysis = screen.getByText('Ver análise clínica completa').closest('details');
-    const improvementPlan = screen.getByRole('region', { name: 'Plano rápido de melhoria' });
-    const synapseQuestions = screen.getByRole('region', { name: 'Pergunte à Synapse' });
-    expect(detailedAnalysis).not.toContainElement(improvementPlan);
-    expect(improvementPlan.previousElementSibling).toBe(detailedAnalysis);
-    expect(improvementPlan.nextElementSibling).toBe(synapseQuestions);
-    expect(screen.getByText('Treinar a estratificação hemodinâmica.')).toBeVisible();
-
-    fireEvent.click(screen.getByText('Ver análise clínica completa'));
-    expect(screen.getByText('Estratificar o risco do TEP')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: 'Decisões' }));
+    expect(screen.getByRole('tabpanel', { name: 'Decisões' })).toBeInTheDocument();
+    expect(screen.getByText('Tromboembolismo pulmonar agudo')).toBeInTheDocument();
+    expect(screen.getByText('Hipótese compatível com o caso.')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Ver detalhes das avaliações, exames e justificativas'));
     expect(screen.getByText('Justificativa alinhada à rubrica.')).toBeInTheDocument();
+
+    fireEvent.keyDown(screen.getByRole('tab', { name: 'Decisões' }), { key: 'ArrowRight' });
+    expect(screen.getByRole('tabpanel', { name: 'Impacto clínico' })).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Paciente estabilizado' })).toHaveTextContent('🙂');
+    expect(screen.getByText('A tendência é melhora progressiva da hipoxemia.')).toBeInTheDocument();
+    expect(screen.getByText(/Reavaliação: Saturação periférica/)).toBeInTheDocument();
+    expect(screen.getByText('A paciente permanece internada e monitorizada.')).toBeInTheDocument();
+    expect(screen.getByText('Tempo educacional fictício.')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('tab', { name: 'Como evoluir' }));
+    expect(screen.getByText('Treinar a estratificação hemodinâmica.')).toBeVisible();
+    fireEvent.click(screen.getByText('Objetivos e referências deste caso'));
+    expect(screen.getByText('Estratificar o risco do TEP')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /ASH Guidelines/ })).toHaveAttribute(
       'href',
       'https://doi.org/10.1182/bloodadvances.2020001830',
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Por que este exame era desnecessário?' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Por que a conduta teve esse peso?' }));
     await waitFor(() => expect(screen.getByText('Neste cenário, o exame não mudaria a conduta inicial.')).toBeInTheDocument());
   });
 
@@ -135,7 +138,9 @@ describe('ResultadoSimulacaoPage', () => {
     );
 
     expect(screen.getByLabelText('Pontuação total: 1,8 de 10')).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent('A conduta oferece risco ao paciente');
+    fireEvent.click(screen.getByRole('button', { name: 'Ver impacto' }));
     expect(screen.getByRole('img', { name: 'Estado crítico' })).toHaveTextContent('😵');
-    expect(screen.getByText('Atenção: esta conduta oferece risco')).toBeInTheDocument();
+    expect(within(screen.getByRole('tabpanel', { name: 'Impacto clínico' })).getByText('IMPACTO CLÍNICO SIMULADO')).toBeInTheDocument();
   });
 });

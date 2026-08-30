@@ -159,6 +159,7 @@ export const api = {
   getPaymentStatus: (orderId) => request(`/pagamentos/pedidos/${orderId}`),
   getAcademicAnalytics: () => request('/admin/analytics/academico'),
   getAdminOverview: () => request('/admin/overview'),
+  getAdminSynapseUsage: (days = 30) => request(`/admin/synapse/consumo?dias=${days}`),
   getAdminFinancial: () => request('/admin/financeiro'),
   getAdminQuestions: (filters = {}) => {
     const query = new URLSearchParams(

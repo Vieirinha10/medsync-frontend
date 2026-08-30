@@ -64,4 +64,18 @@ describe('serviço da API', () => {
     expect(url).toContain('/simulacoes/8/finalizar');
     expect(options.headers['X-Idempotency-Key']).toBe('synapse-request-123456789');
   });
+
+  it('consulta o consumo administrativo da Synapse pelo período escolhido', async () => {
+    setAuthToken('token-admin');
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(JSON.stringify({ periodo_dias: 7 }), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+
+    await api.getAdminSynapseUsage(7);
+
+    expect(fetchMock.mock.calls[0][0]).toContain('/admin/synapse/consumo?dias=7');
+  });
 });

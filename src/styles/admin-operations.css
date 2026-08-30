@@ -240,7 +240,7 @@
 .admin-synapse-periods button:disabled { cursor: wait; opacity: .55; }
 .admin-synapse-periods .is-spinning { animation: admin-synapse-spin .8s linear infinite; }
 @keyframes admin-synapse-spin { to { transform: rotate(360deg); } }
-.admin-synapse-kpis { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+.admin-synapse-kpis { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
 .admin-synapse-kpi { display: flex; align-items: center; gap: 13px; min-width: 0; padding: 18px; border: 1px solid #deebf2; border-radius: 18px; background: #fff; box-shadow: 0 12px 34px rgb(25 78 116 / 7%); }
 .admin-synapse-kpi > span { display: grid; flex: 0 0 auto; width: 43px; height: 43px; border-radius: 13px; color: #fff; background: linear-gradient(135deg,#0878f9,#00a9ce); place-items: center; }
 .admin-synapse-kpi.cyan > span { background: linear-gradient(135deg,#00a9ce,#25c7b6); }

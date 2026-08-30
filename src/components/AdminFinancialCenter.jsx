@@ -4,6 +4,7 @@ import {
   FiCheckCircle,
   FiClock,
   FiCreditCard,
+  FiCpu,
   FiDollarSign,
   FiDownload,
   FiFileText,
@@ -15,12 +16,15 @@ import {
   FiUsers,
 } from 'react-icons/fi';
 
+import AdminSynapseUsage from './AdminSynapseUsage';
+
 const FINANCIAL_TABS = [
   { id: 'summary', label: 'Resumo', icon: FiTrendingUp },
   { id: 'orders', label: 'Pedidos', icon: FiFileText },
   { id: 'payments', label: 'Pagamentos', icon: FiDollarSign },
   { id: 'subscriptions', label: 'Assinaturas', icon: FiRepeat },
   { id: 'failures', label: 'Falhas', icon: FiAlertTriangle },
+  { id: 'synapse', label: 'Synapse', icon: FiCpu },
 ];
 
 const PLAN_LABELS = {
@@ -82,7 +86,7 @@ const downloadCsv = (name, headers, rows) => {
   window.URL.revokeObjectURL(url);
 };
 
-const AdminFinancialCenter = ({ data, onRefresh }) => {
+const AdminFinancialCenter = ({ data, synapseData, onRefresh }) => {
   const [activeTab, setActiveTab] = useState('summary');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('todos');
@@ -142,15 +146,17 @@ const AdminFinancialCenter = ({ data, onRefresh }) => {
             <button type="button" className={activeTab === tab.id ? 'is-active' : ''} onClick={() => { setActiveTab(tab.id); setSearch(''); setStatusFilter('todos'); }} key={tab.id}>
               <Icon /> {tab.label}
               {tab.id === 'orders' && <b>{summary.total_pedidos}</b>}
-              {tab.id === 'payments' && <b>{data.pagamentos.length}</b>}
               {tab.id === 'subscriptions' && <b>{summary.assinaturas_ativas}</b>}
               {tab.id === 'failures' && <b className={summary.falhas_30_dias ? 'has-alert' : ''}>{summary.falhas_30_dias}</b>}
+              {tab.id === 'synapse' && <b>{synapseData.resumo.chamadas}</b>}
             </button>
           );
         })}
       </nav>
 
-      {activeTab === 'summary' ? <FinancialSummary data={data} /> : (
+      {activeTab === 'summary' ? <FinancialSummary data={data} /> : activeTab === 'synapse' ? (
+        <AdminSynapseUsage initialData={synapseData} />
+      ) : (
         <>
           <div className="admin-financial-toolbar">
             <label><FiSearch /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar por estudante, e-mail ou identificador" /></label>

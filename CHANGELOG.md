@@ -3,9 +3,9 @@
 ## Não publicado
 
 ### Adicionado
-- Nova aba administrativa “Synapse” com chamadas, tokens, cache, custo estimado,
-  latência média/p95, distribuição por modelo e operação, tendência diária,
-  usuários com maior consumo e configuração operacional ativa.
+- Nova subseção `Financeiro → Synapse` com custo médio por caso e usuário,
+  chamadas por assinante, tokens em cache, latência média/p95, distribuição por
+  modelo e operação, tendência diária e configuração operacional ativa.
 - Seleção de período de 7, 30 ou 90 dias no painel de consumo, sem criar
   franquia ou bloqueio de perguntas para os estudantes.
 - Nova página de resultado organizada como debriefing clínico em quatro abas: Resultado, Decisões, Impacto clínico e Como evoluir.

@@ -53,8 +53,11 @@ describe('AdminAcademicPage', () => {
       gerado_em: '2026-08-30T12:00:00Z',
       resumo: {
         chamadas: 12, usuarios_ativos: 5, input_tokens: 8000,
+        casos_avaliados: 8, assinantes_ativos: 4, chamadas_assinantes: 10,
         cached_input_tokens: 2000, output_tokens: 1600, total_tokens: 9600,
         custo_estimado_usd: 0.012, custo_completo: true,
+        custo_medio_por_caso_usd: 0.001, custo_medio_por_usuario_usd: 0.0024,
+        chamadas_por_assinante: 2.5,
         duracao_media_ms: 700, duracao_p95_ms: 1100, taxa_cache_percentual: 25,
       },
       por_operacao: [], por_modelo: [], uso_diario: [], usuarios_mais_ativos: [],
@@ -99,14 +102,16 @@ describe('AdminAcademicPage', () => {
     expect(screen.getByText('Tromboembolismo pulmonar')).toBeInTheDocument();
   });
 
-  it('abre o painel agregado de consumo da Synapse', async () => {
+  it('mantém os custos da Synapse dentro da aba Financeiro', async () => {
     render(<MemoryRouter><AdminAcademicPage /></MemoryRouter>);
 
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Administração MedSync' })).toBeInTheDocument());
-    fireEvent.click(screen.getByRole('button', { name: 'Synapse' }));
+    expect(screen.queryByRole('button', { name: 'Synapse' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Financeiro/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Synapse/ }));
 
-    expect(screen.getByRole('heading', { name: 'Consumo, custo e desempenho' })).toBeInTheDocument();
-    expect(screen.getByText('12')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Custo operacional da Synapse' })).toBeInTheDocument();
+    expect(screen.getByText('Custo médio por caso')).toBeInTheDocument();
     expect(screen.getByText('gpt-5.6-terra')).toBeInTheDocument();
   });
 });

@@ -2,9 +2,10 @@
 
 ## Objetivo e escopo
 
-A aba `Administração → Synapse` permite acompanhar eficiência e custo da camada
-de IA sem alterar a experiência do estudante. Esta versão não cria franquia,
-contador individual visível ou bloqueio de perguntas.
+A subseção `Administração → Financeiro → Synapse` permite acompanhar eficiência
+e custo da camada de IA sem alterar a experiência do estudante. A Synapse não
+ocupa uma aba separada na navegação administrativa. Esta versão não cria
+franquia, contador individual visível ou bloqueio de perguntas.
 
 O painel consome a rota administrativa protegida:
 
@@ -18,6 +19,9 @@ para operação. Somente administradores conseguem consultar os dados.
 ## Conteúdo apresentado
 
 - chamadas e usuários ativos;
+- custo médio por caso avaliado;
+- custo médio por usuário que utilizou a Synapse;
+- média de chamadas dos assinantes, dividida pela base Premium ativa inteira;
 - tokens de entrada, cache, saída e total;
 - custo estimado e indicação de chamadas sem preço configurado;
 - latência média e percentil 95;
@@ -52,7 +56,7 @@ como se fosse definitivo.
 
 1. Publicar primeiro a API com `/admin/synapse/consumo` disponível.
 2. Publicar o frontend.
-3. Entrar como administrador e abrir a aba `Synapse`.
+3. Entrar como administrador e abrir `Financeiro → Synapse`.
 4. Conferir os períodos de 7, 30 e 90 dias e o botão de atualização.
 5. Comparar os totais com `ai_usage_records` e confirmar que usuários comuns
    recebem `403` ao tentar consultar a rota.

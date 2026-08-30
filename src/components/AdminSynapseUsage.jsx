@@ -1,4 +1,4 @@
-import { createElement, useMemo, useState } from 'react';
+import { createElement, useEffect, useMemo, useState } from 'react';
 import {
   FiActivity,
   FiClock,
@@ -18,6 +18,7 @@ const OPERATION_LABELS = {
 };
 
 const integer = new Intl.NumberFormat('pt-BR');
+const decimal = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 });
 const usd = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'USD',
@@ -42,7 +43,7 @@ const UsageMetric = ({ icon, label, value, helper, tone = '' }) => (
   </article>
 );
 
-const Breakdown = ({ title, items, type }) => (
+const Breakdown = ({ title, items, type, totalCalls }) => (
   <section className="admin-synapse-panel">
     <header>
       <span>{type === 'model' ? 'MODELOS' : 'OPERAÇÕES'}</span>
@@ -53,7 +54,7 @@ const Breakdown = ({ title, items, type }) => (
         <article key={item.chave}>
           <div>
             <strong>{type === 'operation' ? (OPERATION_LABELS[item.chave] || item.chave) : item.chave}</strong>
-            <small>{integer.format(item.chamadas)} chamadas · {formatDuration(item.duracao_media_ms)} em média</small>
+            <small>{integer.format(item.chamadas)} chamadas · {totalCalls ? decimal.format((item.chamadas / totalCalls) * 100) : 0}% do uso</small>
           </div>
           <p>
             <b>{integer.format(item.total_tokens)}</b>
@@ -75,6 +76,11 @@ const AdminSynapseUsage = ({ initialData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    setData(initialData);
+    setPeriod(initialData.periodo_dias || 30);
+  }, [initialData]);
+
   const maxDailyCalls = useMemo(
     () => Math.max(...data.uso_diario.map((item) => item.chamadas), 1),
     [data.uso_diario],
@@ -95,14 +101,15 @@ const AdminSynapseUsage = ({ initialData }) => {
   };
 
   const { resumo, configuracao } = data;
+  const costCoverage = resumo.custo_completo ? '' : ' · estimativa parcial';
 
   return (
     <div className="admin-synapse-usage">
       <section className="admin-synapse-heading">
         <div>
           <span><FiCpu /> EFICIÊNCIA DA SYNAPSE</span>
-          <h2>Consumo, custo e desempenho</h2>
-          <p>Telemetria agregada das avaliações e perguntas, sem limitar o uso dos estudantes.</p>
+          <h2>Custo operacional da Synapse</h2>
+          <p>Indicadores em USD para acompanhar margem, consumo e desempenho da inteligência clínica.</p>
         </div>
         <div className="admin-synapse-periods" aria-label="Período do relatório">
           {PERIODS.map((days) => (
@@ -126,15 +133,17 @@ const AdminSynapseUsage = ({ initialData }) => {
       {error && <p className="admin-operation-error">{error}</p>}
 
       <section className="admin-synapse-kpis">
-        <UsageMetric icon={FiActivity} label="Chamadas" value={integer.format(resumo.chamadas)} helper={`${integer.format(resumo.usuarios_ativos)} usuários no período`} />
-        <UsageMetric icon={FiZap} label="Tokens totais" value={integer.format(resumo.total_tokens)} helper={`${integer.format(resumo.input_tokens)} entrada · ${integer.format(resumo.output_tokens)} saída`} tone="cyan" />
-        <UsageMetric icon={FiDollarSign} label="Custo estimado" value={usd.format(resumo.custo_estimado_usd)} helper={resumo.custo_completo ? 'todas as chamadas precificadas' : 'há chamadas sem tarifa configurada'} tone="green" />
+        <UsageMetric icon={FiDollarSign} label="Custo médio por caso" value={usd.format(resumo.custo_medio_por_caso_usd)} helper={`${integer.format(resumo.casos_avaliados)} casos avaliados no período${costCoverage}`} tone="green" />
+        <UsageMetric icon={FiUsers} label="Custo médio por usuário" value={usd.format(resumo.custo_medio_por_usuario_usd)} helper={`${integer.format(resumo.usuarios_ativos)} usuários utilizaram a Synapse${costCoverage}`} tone="cyan" />
+        <UsageMetric icon={FiActivity} label="Chamadas por assinante" value={decimal.format(resumo.chamadas_por_assinante)} helper={`${integer.format(resumo.chamadas_assinantes)} chamadas entre ${integer.format(resumo.assinantes_ativos)} assinantes ativos`} />
         <UsageMetric icon={FiClock} label="Latência média" value={formatDuration(resumo.duracao_media_ms)} helper={`p95 em ${formatDuration(resumo.duracao_p95_ms)}`} tone="violet" />
+        <UsageMetric icon={FiZap} label="Tokens em cache" value={`${decimal.format(resumo.taxa_cache_percentual)}%`} helper={`${integer.format(resumo.cached_input_tokens)} de ${integer.format(resumo.input_tokens)} tokens de entrada`} tone="cyan" />
+        <UsageMetric icon={FiDollarSign} label="Custo total estimado" value={usd.format(resumo.custo_estimado_usd)} helper={resumo.custo_completo ? 'todas as chamadas precificadas' : 'há chamadas sem tarifa configurada'} tone="green" />
       </section>
 
       <section className="admin-synapse-telemetry">
-        <span><b>{resumo.taxa_cache_percentual}%</b> de cache na entrada</span>
-        <span><b>{integer.format(resumo.cached_input_tokens)}</b> tokens reaproveitados</span>
+        <span><b>{integer.format(resumo.chamadas)}</b> chamadas totais</span>
+        <span><b>{integer.format(resumo.total_tokens)}</b> tokens consumidos</span>
         <span><b>{integer.format(resumo.output_tokens)}</b> tokens de saída</span>
       </section>
 
@@ -155,8 +164,8 @@ const AdminSynapseUsage = ({ initialData }) => {
       </section>
 
       <div className="admin-synapse-grid">
-        <Breakdown title="Distribuição por modelo" items={data.por_modelo} type="model" />
-        <Breakdown title="Distribuição por tarefa" items={data.por_operacao} type="operation" />
+        <Breakdown title="Distribuição por tarefa" items={data.por_operacao} type="operation" totalCalls={resumo.chamadas} />
+        <Breakdown title="Distribuição por modelo" items={data.por_modelo} type="model" totalCalls={resumo.chamadas} />
       </div>
 
       <div className="admin-synapse-grid admin-synapse-grid-bottom">
@@ -172,7 +181,7 @@ const AdminSynapseUsage = ({ initialData }) => {
                 <span><FiUsers /></span>
                 <div><strong>{user.nome}</strong><small>{user.email}</small></div>
                 <p><b>{integer.format(user.chamadas)}</b><small>chamadas</small></p>
-                <p><b>{integer.format(user.total_tokens)}</b><small>tokens</small></p>
+                <p><b>{usd.format(user.custo_estimado_usd)}</b><small>custo estimado</small></p>
               </article>
             )) : <p className="admin-synapse-empty">Ainda não há consumo individual no período.</p>}
           </div>

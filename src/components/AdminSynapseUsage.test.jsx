@@ -14,11 +14,17 @@ const usage = {
   resumo: {
     chamadas: 18,
     usuarios_ativos: 7,
+    casos_avaliados: 12,
+    assinantes_ativos: 4,
+    chamadas_assinantes: 16,
     input_tokens: 12000,
     cached_input_tokens: 3000,
     output_tokens: 2400,
     total_tokens: 14400,
     custo_estimado_usd: 0.0184,
+    custo_medio_por_caso_usd: 0.0012,
+    custo_medio_por_usuario_usd: 0.00262857,
+    chamadas_por_assinante: 4,
     custo_completo: true,
     duracao_media_ms: 820,
     duracao_p95_ms: 1400,
@@ -60,11 +66,16 @@ describe('AdminSynapseUsage', () => {
 
   afterEach(cleanup);
 
-  it('mostra consumo, modelos, limites e ausência de bloqueio por franquia', () => {
+  it('mostra os seis indicadores financeiros e operacionais da Synapse', () => {
     render(<AdminSynapseUsage initialData={usage} />);
 
-    expect(screen.getByRole('heading', { name: 'Consumo, custo e desempenho' })).toBeInTheDocument();
-    expect(screen.getByText('18')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Custo operacional da Synapse' })).toBeInTheDocument();
+    expect(screen.getByText('Custo médio por caso')).toBeInTheDocument();
+    expect(screen.getByText('Custo médio por usuário')).toBeInTheDocument();
+    expect(screen.getByText('Chamadas por assinante')).toBeInTheDocument();
+    expect(screen.getByText('Latência média')).toBeInTheDocument();
+    expect(screen.getByText('Tokens em cache')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Distribuição por tarefa' })).toBeInTheDocument();
     expect(screen.getAllByText('gpt-5.6-luna')).toHaveLength(2);
     expect(screen.getByText('gpt-5.6-terra')).toBeInTheDocument();
     expect(screen.getByText('low')).toBeInTheDocument();
@@ -84,7 +95,7 @@ describe('AdminSynapseUsage', () => {
     fireEvent.click(screen.getByRole('button', { name: '7 dias' }));
 
     await waitFor(() => expect(api.getAdminSynapseUsage).toHaveBeenCalledWith(7));
-    expect(screen.getByText('4')).toBeInTheDocument();
+    expect(screen.getAllByText('4').length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: '7 dias' })).toHaveAttribute('aria-pressed', 'true');
   });
 });

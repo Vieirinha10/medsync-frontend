@@ -8,7 +8,6 @@ import {
   FiBell,
   FiBookOpen,
   FiCheckCircle,
-  FiCpu,
   FiDownload,
   FiDollarSign,
   FiEdit3,
@@ -28,12 +27,10 @@ import {
 import { ApiError, api } from '../services/api';
 import AdminFinancialCenter from '../components/AdminFinancialCenter';
 import AdminQuestionsManager from '../components/AdminQuestionsManager';
-import AdminSynapseUsage from '../components/AdminSynapseUsage';
 
 const TABS = [
   { id: 'overview', label: 'Visão geral', icon: FiBarChart2 },
   { id: 'financial', label: 'Financeiro', icon: FiDollarSign },
-  { id: 'synapse', label: 'Synapse', icon: FiCpu },
   { id: 'cases', label: 'Casos clínicos', icon: FiBookOpen },
   { id: 'challenges', label: 'Desafios', icon: FiImage },
   { id: 'questions', label: 'Questões', icon: FiHelpCircle },
@@ -84,7 +81,10 @@ const emptyAdminData = {
     gerado_em: null,
     resumo: {
       chamadas: 0, usuarios_ativos: 0, input_tokens: 0, cached_input_tokens: 0,
+      casos_avaliados: 0, assinantes_ativos: 0, chamadas_assinantes: 0,
       output_tokens: 0, total_tokens: 0, custo_estimado_usd: 0,
+      custo_medio_por_caso_usd: 0, custo_medio_por_usuario_usd: 0,
+      chamadas_por_assinante: 0,
       custo_completo: true, duracao_media_ms: 0, duracao_p95_ms: 0,
       taxa_cache_percentual: 0,
     },
@@ -271,8 +271,7 @@ const AdminAcademicPage = () => {
       {error && <p className="admin-operation-error"><FiAlertTriangle /> {error}</p>}
 
       {activeTab === 'overview' && <Overview overview={data.overview} exportReport={() => api.downloadAnonymizedReport().catch((requestError) => setError(requestError.message))} />}
-      {activeTab === 'financial' && <AdminFinancialCenter data={data.financial} onRefresh={load} />}
-      {activeTab === 'synapse' && <AdminSynapseUsage initialData={data.synapse} />}
+      {activeTab === 'financial' && <AdminFinancialCenter data={data.financial} synapseData={data.synapse} onRefresh={load} />}
       {activeTab === 'cases' && <CasesManager items={data.cases} form={caseForm} setForm={setCaseForm} editingId={caseId} cancel={() => { setCaseId(null); setCaseForm(emptyCase); }} save={saveCase} edit={editCase} saving={isSaving} />}
       {activeTab === 'challenges' && <ChallengesManager items={data.challenges} form={challengeForm} setForm={setChallengeForm} editingId={challengeId} cancel={() => { setChallengeId(null); setChallengeForm(emptyChallenge); }} save={saveChallenge} edit={editChallenge} saving={isSaving} />}
       {activeTab === 'questions' && <AdminQuestionsManager initialData={data.questions} />}

@@ -3,6 +3,11 @@
 ## Não publicado
 
 ### Adicionado
+- Nova subseção `Financeiro → Synapse` com custo médio por caso e usuário,
+  chamadas por assinante, tokens em cache, latência média/p95, distribuição por
+  modelo e operação, tendência diária e configuração operacional ativa.
+- Seleção de período de 7, 30 ou 90 dias no painel de consumo, sem criar
+  franquia ou bloqueio de perguntas para os estudantes.
 - Nova página de resultado organizada como debriefing clínico em quatro abas: Resultado, Decisões, Impacto clínico e Como evoluir.
 - “Perfil da decisão clínica” triangular, com Exames, Hipótese e Conduta normalizados individualmente em percentuais para evitar distorção entre pesos de 40/30/30.
 - Linha causal de impacto clínico simulado, reunindo reação imediata, consequências temporais, reavaliação de sinais vitais e desfecho em uma única sequência.

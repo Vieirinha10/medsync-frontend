@@ -1,6 +1,6 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import AdminAcademicPage from './AdminAcademicPage';
 import { api } from '../services/api';
@@ -10,8 +10,11 @@ vi.mock('../services/api', () => ({
   api: {
     getAcademicAnalytics: vi.fn(),
     getAdminOverview: vi.fn(),
+    getAdminFinancial: vi.fn(),
+    getAdminSynapseUsage: vi.fn(),
     getAdminCases: vi.fn(),
     getAdminChallenges: vi.fn(),
+    getAdminQuestions: vi.fn(),
     getAdminAnnouncements: vi.fn(),
     downloadAnonymizedReport: vi.fn(),
   },
@@ -41,10 +44,37 @@ describe('AdminAcademicPage', () => {
       conteudos_populares: [{ tipo: 'caso_clinico', id: '8', titulo: 'Tromboembolismo pulmonar', acessos: 12, conclusoes: 8 }],
       atividade_diaria: [{ data: '2026-08-02', usuarios: 4, eventos: 9 }],
     });
+    api.getAdminFinancial.mockResolvedValue({
+      resumo: {}, pedidos: [], pagamentos: [], assinaturas: [], falhas: [],
+      receita_mensal: [], status_pedidos: {}, planos_ativos: {},
+    });
+    api.getAdminSynapseUsage.mockResolvedValue({
+      periodo_dias: 30,
+      gerado_em: '2026-08-30T12:00:00Z',
+      resumo: {
+        chamadas: 12, usuarios_ativos: 5, input_tokens: 8000,
+        casos_avaliados: 8, assinantes_ativos: 4, chamadas_assinantes: 10,
+        cached_input_tokens: 2000, output_tokens: 1600, total_tokens: 9600,
+        custo_estimado_usd: 0.012, custo_completo: true,
+        custo_medio_por_caso_usd: 0.001, custo_medio_por_usuario_usd: 0.0024,
+        chamadas_por_assinante: 2.5,
+        duracao_media_ms: 700, duracao_p95_ms: 1100, taxa_cache_percentual: 25,
+      },
+      por_operacao: [], por_modelo: [], uso_diario: [], usuarios_mais_ativos: [],
+      configuracao: {
+        modelo_rotina: 'gpt-5.6-luna', modelo_avancado: 'gpt-5.6-terra',
+        modelo_perguntas: 'gpt-5.6-luna', perguntas_com_roteamento_automatico: true,
+        esforco_raciocinio: 'low',
+        limite_saida_feedback: 900, limite_saida_pergunta: 450,
+      },
+    });
     api.getAdminCases.mockResolvedValue([{ id: 8, titulo: 'Tromboembolismo pulmonar', especialidade: 'Pneumologia', nivel_dificuldade: 'Difícil', status: 'publicado', premium: true, avaliacao_2_disponivel: true, exames: [], rubrica: null }]);
     api.getAdminChallenges.mockResolvedValue([]);
+    api.getAdminQuestions.mockResolvedValue({ resumo: {}, questoes: [], relatos: [] });
     api.getAdminAnnouncements.mockResolvedValue([]);
   });
+
+  afterEach(cleanup);
 
   it('apresenta indicadores acadêmicos agregados sem dados pessoais', async () => {
     render(<MemoryRouter><AdminAcademicPage /></MemoryRouter>);
@@ -70,5 +100,18 @@ describe('AdminAcademicPage', () => {
     const caseTabs = screen.getAllByRole('button', { name: /Casos clínicos/ });
     fireEvent.click(caseTabs.at(-1));
     expect(screen.getByText('Tromboembolismo pulmonar')).toBeInTheDocument();
+  });
+
+  it('mantém os custos da Synapse dentro da aba Financeiro', async () => {
+    render(<MemoryRouter><AdminAcademicPage /></MemoryRouter>);
+
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'Administração MedSync' })).toBeInTheDocument());
+    expect(screen.queryByRole('button', { name: 'Synapse' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Financeiro/ }));
+    fireEvent.click(screen.getByRole('button', { name: /Synapse/ }));
+
+    expect(screen.getByRole('heading', { name: 'Custo operacional da Synapse' })).toBeInTheDocument();
+    expect(screen.getByText('Custo médio por caso')).toBeInTheDocument();
+    expect(screen.getByText('gpt-5.6-terra')).toBeInTheDocument();
   });
 });

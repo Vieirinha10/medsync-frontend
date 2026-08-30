@@ -76,6 +76,26 @@ const emptyAdminData = {
     pedidos: [], pagamentos: [], assinaturas: [], falhas: [], receita_mensal: [],
     status_pedidos: {}, planos_ativos: {},
   },
+  synapse: {
+    periodo_dias: 30,
+    gerado_em: null,
+    resumo: {
+      chamadas: 0, usuarios_ativos: 0, input_tokens: 0, cached_input_tokens: 0,
+      casos_avaliados: 0, assinantes_ativos: 0, chamadas_assinantes: 0,
+      output_tokens: 0, total_tokens: 0, custo_estimado_usd: 0,
+      custo_medio_por_caso_usd: 0, custo_medio_por_usuario_usd: 0,
+      chamadas_por_assinante: 0,
+      custo_completo: true, duracao_media_ms: 0, duracao_p95_ms: 0,
+      taxa_cache_percentual: 0,
+    },
+    por_operacao: [], por_modelo: [], uso_diario: [], usuarios_mais_ativos: [],
+    configuracao: {
+      modelo_rotina: 'gpt-5.6-luna', modelo_avancado: 'gpt-5.6-terra',
+      modelo_perguntas: 'gpt-5.6-luna', perguntas_com_roteamento_automatico: true,
+      esforco_raciocinio: 'low',
+      limite_saida_feedback: 900, limite_saida_pergunta: 450,
+    },
+  },
   cases: [],
   challenges: [],
   questions: {
@@ -114,6 +134,7 @@ const AdminAcademicPage = () => {
       ['overview', 'visão geral', api.getAdminOverview],
       ['academic', 'dados dos usuários', api.getAcademicAnalytics],
       ['financial', 'dados financeiros', api.getAdminFinancial],
+      ['synapse', 'consumo da Synapse', () => api.getAdminSynapseUsage(30)],
       ['cases', 'casos clínicos', api.getAdminCases],
       ['challenges', 'desafios', api.getAdminChallenges],
       ['questions', 'questões', api.getAdminQuestions],
@@ -250,7 +271,7 @@ const AdminAcademicPage = () => {
       {error && <p className="admin-operation-error"><FiAlertTriangle /> {error}</p>}
 
       {activeTab === 'overview' && <Overview overview={data.overview} exportReport={() => api.downloadAnonymizedReport().catch((requestError) => setError(requestError.message))} />}
-      {activeTab === 'financial' && <AdminFinancialCenter data={data.financial} onRefresh={load} />}
+      {activeTab === 'financial' && <AdminFinancialCenter data={data.financial} synapseData={data.synapse} onRefresh={load} />}
       {activeTab === 'cases' && <CasesManager items={data.cases} form={caseForm} setForm={setCaseForm} editingId={caseId} cancel={() => { setCaseId(null); setCaseForm(emptyCase); }} save={saveCase} edit={editCase} saving={isSaving} />}
       {activeTab === 'challenges' && <ChallengesManager items={data.challenges} form={challengeForm} setForm={setChallengeForm} editingId={challengeId} cancel={() => { setChallengeId(null); setChallengeForm(emptyChallenge); }} save={saveChallenge} edit={editChallenge} saving={isSaving} />}
       {activeTab === 'questions' && <AdminQuestionsManager initialData={data.questions} />}
@@ -329,4 +350,3 @@ const Empty = ({ text }) => <div className="admin-empty-state"><FiActivity /><st
 const AdminError = ({ error, reload }) => <div className="page-container admin-academic-error"><FiAlertTriangle /><h1>Acesso ao painel indisponível</h1><p>{error}</p><div><Link to="/dashboard"><FiArrowLeft /> Voltar</Link><button type="button" onClick={reload}><FiRefreshCw /> Tentar novamente</button></div></div>;
 
 export default AdminAcademicPage;
-

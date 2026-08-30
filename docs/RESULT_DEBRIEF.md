@@ -55,10 +55,11 @@ O perfil usa percentuais, não os pontos brutos, porque as dimensões têm pesos
 - Foco visível e controles com altura mínima de 42–46 px.
 - Em telas de até 680 px, rótulos compactos, painel em uma coluna e comparações empilhadas.
 - `prefers-reduced-motion` desativa a entrada animada dos painéis.
+- A contagem animada da nota fica isolada em `AnimatedScore`, garantindo que `useAnimatedScore` nunca seja chamado condicionalmente durante a transição entre carregamento e resultado.
 
 ## Verificação realizada
 
-- Testes específicos do resultado: aprovados.
+- Testes específicos do resultado: aprovados, incluindo abertura direta da URL e carregamento do resultado pela API.
 - ESLint: aprovado sem avisos.
 - Build Vite de produção: aprovado.
 - O navegador remoto não conseguiu acessar `localhost` (`ERR_BLOCKED_BY_CLIENT`); portanto, a inspeção visual automatizada desktop/mobile precisa ser repetida quando houver uma URL de preview acessível.

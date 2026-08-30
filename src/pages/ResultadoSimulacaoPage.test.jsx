@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-li
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import ResultadoSimulacaoPage from './ResultadoSimulacaoPage';
+import { api } from '../services/api';
 
 vi.mock('../services/api', () => ({
   api: {
@@ -68,6 +69,23 @@ const result = {
 };
 
 describe('ResultadoSimulacaoPage', () => {
+  it('carrega o resultado ao abrir a URL diretamente', async () => {
+    api.getSimulationResult.mockResolvedValueOnce(result);
+
+    render(
+      <MemoryRouter initialEntries={['/resultados/42']}>
+        <Routes>
+          <Route path="/resultados/:progressoId" element={<ResultadoSimulacaoPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText('Carregando sua avaliação...')).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: result.caso_titulo })).toBeInTheDocument();
+    expect(api.getSimulationResult).toHaveBeenCalledWith('42');
+    expect(screen.getByLabelText('Pontuação total: 8,6 de 10')).toBeInTheDocument();
+  });
+
   it('organiza o debriefing clínico em quatro abas sem repetir os blocos', async () => {
     render(
       <MemoryRouter initialEntries={[{ pathname: '/resultados/42', state: { result } }]}>

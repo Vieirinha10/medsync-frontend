@@ -142,6 +142,11 @@ const useAnimatedScore = (targetScore, duration = 800) => {
   return displayScore;
 };
 
+const AnimatedScore = ({ value }) => {
+  const animatedScore = useAnimatedScore(value);
+  return <strong>{formatScore(animatedScore)}</strong>;
+};
+
 const ClinicalDecisionProfile = ({ score }) => {
   const values = [
     sectionPercentage(score.exames, 40),
@@ -254,7 +259,6 @@ const ResultadoSimulacaoPage = () => {
     ? 'Feedback personalizado pela Synapse'
     : 'Feedback estruturado pela rubrica clínica';
   const scoreOutOfTen = scoreFromHundred(result.pontuacao_total);
-  const animatedScore = useAnimatedScore(scoreOutOfTen);
   const scoreProfile = getScoreProfile(scoreOutOfTen);
   const patientStatus = getPatientStatus(result);
   const isUnsafe = result.nivel_conduta === 'insegura' || result.consequencias?.estado_paciente === 'deterioracao';
@@ -357,7 +361,7 @@ const ResultadoSimulacaoPage = () => {
           <ClinicalDecisionProfile score={result.pontuacao} />
           <div className="result-overview-copy">
             <span>Nota geral</span>
-            <div className="result-score-line" aria-label={`Pontuação total: ${formatScore(scoreOutOfTen)} de 10`}><strong>{formatScore(animatedScore)}</strong><small>/10</small></div>
+            <div className="result-score-line" aria-label={`Pontuação total: ${formatScore(scoreOutOfTen)} de 10`}><AnimatedScore value={scoreOutOfTen} /><small>/10</small></div>
             <h2>{scoreProfile.label}</h2>
             <p>{result.feedback.sintese_raciocinio || result.feedback.resumo}</p>
             <button type="button" onClick={() => selectTab('decisoes', { focus: true })}>Entender minhas decisões <FiArrowRight /></button>

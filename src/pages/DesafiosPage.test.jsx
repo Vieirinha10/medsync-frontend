@@ -129,9 +129,9 @@ describe('DesafiosPage', () => {
 
     const numberedButtons = screen.getAllByRole('button', { name: /Ir para o desafio/i });
     expect(numberedButtons).toHaveLength(9);
-    expect(screen.getByRole('button', { name: /Ir para o desafio 120:/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Ir para o desafio 130:/i })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Ir para o desafio 50:/i })).not.toBeInTheDocument();
-    expect(screen.getByText('1 de 120')).toBeInTheDocument();
+    expect(screen.getByText('1 de 130')).toBeInTheDocument();
   });
 
   it('abre o desafio indicado e registra a conclusão da atividade da trilha', async () => {

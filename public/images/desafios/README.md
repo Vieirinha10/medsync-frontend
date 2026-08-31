@@ -93,4 +93,17 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 - `desafio-visual-119.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
 - `desafio-visual-120.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
 
+## Lote 9 — medicina intensiva e anestesiologia
+
+- `desafio-visual-121.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-122.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-123.webp`: Tinss, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-124.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-125.webp`: Jmh649, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-126.webp`: Jmarchn, via Wikimedia Commons — CC BY-SA 3.0; painel de Mallampati IV recortado sem a identificação da classe.
+- `desafio-visual-127.webp`: Rschiedon, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-128.webp`: Tubus, via Wikimedia Commons — CC BY-SA 3.0; painel de Cormack-Lehane III recortado sem a identificação do grau.
+- `desafio-visual-129.webp`: Michael-Joseph F. Agbayani e Eddieson Gonzales, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-130.webp`: WikiSysop, via Wikimedia Commons — CC BY 3.0.
+
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

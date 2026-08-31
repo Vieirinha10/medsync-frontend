@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { visualChallenges } from './visualChallenges';
 
 describe('visualChallenges', () => {
-  it('mantém 120 desafios nativos completos após o oitavo lote', () => {
-    expect(visualChallenges).toHaveLength(120);
-    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(120);
+  it('mantém 130 desafios nativos completos após o nono lote', () => {
+    expect(visualChallenges).toHaveLength(130);
+    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(130);
 
     visualChallenges.forEach((challenge) => {
       expect(challenge.id).toMatch(/^desafio-visual-\d{3}$/);
@@ -125,5 +125,22 @@ describe('visualChallenges', () => {
     expect(eighthBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(4);
     expect(eighthBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(3);
     expect(eighthBatch.filter(({ category }) => category === 'Nefrologia')).toHaveLength(10);
+  });
+
+  it('preserva a distribuição editorial do nono lote', () => {
+    const ninthBatch = visualChallenges.slice(120, 130);
+
+    expect(ninthBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 10 },
+        (_, index) => `desafio-visual-${String(index + 121).padStart(3, '0')}`,
+      ),
+    );
+    expect(ninthBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(3);
+    expect(ninthBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(4);
+    expect(ninthBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(3);
+    expect(
+      ninthBatch.filter(({ category }) => category === 'Medicina Intensiva e Anestesiologia'),
+    ).toHaveLength(10);
   });
 });

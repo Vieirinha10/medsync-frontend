@@ -80,4 +80,17 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 - `desafio-visual-109.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0.
 - `desafio-visual-110.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
 
+## Lote 8 — nefrologia
+
+- `desafio-visual-111.webp`: Cerevisae, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-112.webp`: Nevit Dilmen, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-113.webp`: Steven Fruitsmaak, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-114.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-115.webp`: Ajay Kumar Chaurasiya, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-116.webp`: Ajay Kumar Chaurasiya, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-117.webp`: Centers for Disease Control and Prevention (CDC), via Wikimedia Commons — domínio público, Governo Federal dos Estados Unidos.
+- `desafio-visual-118.webp`: Arunachalam Ramaswami et al., via Wikimedia Commons — CC BY 2.0.
+- `desafio-visual-119.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-120.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

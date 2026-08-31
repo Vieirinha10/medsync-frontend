@@ -14,3 +14,11 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## MedSync — diretrizes para desafios visuais
+
+Antes de criar ou alterar desafios visuais, consulte a
+[Diretriz Oficial para Criação de Desafios Visuais](docs/DIRETRIZ_DESAFIOS_VISUAIS.md).
+A norma `MEDSYNC-DV-001` define a composição dos novos lotes, os critérios
+clínicos, o uso de imagens licenciadas, a proteção dos gabaritos e o checklist
+obrigatório de validação.

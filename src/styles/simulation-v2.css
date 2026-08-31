@@ -1110,43 +1110,203 @@
   }
 }
 
-/* Simulação 2.2 · justificativas, consequências e tutoria pós-caso */
+/* Simulação 2.2 · justificativas clínicas com botão alternante e seletor por abas */
 .exam-rationale-section {
-  margin: 24px 0;
-  padding: 22px;
-  border: 1px solid rgba(8, 120, 249, 0.15);
-  border-radius: 22px;
-  background: linear-gradient(145deg, rgba(8, 120, 249, 0.06), rgba(94, 255, 102, 0.06));
+  margin: 18px 0 22px;
+  border: 1px solid rgba(76, 202, 239, 0.18);
+  border-radius: 18px;
+  background: rgba(4, 26, 38, 0.6);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: all 200ms ease;
 }
 
-.exam-rationale-section > div span,
-.exam-rationale-feedback > div span {
-  color: #0878f9;
-  font-size: 0.7rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
+.exam-rationale-section:hover {
+  border-color: rgba(76, 202, 239, 0.32);
 }
 
-.exam-rationale-section h3,
-.exam-rationale-feedback h3 { margin: 5px 0; color: #102f46; }
-.exam-rationale-section > div p { margin: 0 0 18px; color: #60798c; }
-.exam-rationale-section label { display: block; margin-top: 13px; }
-.exam-rationale-section label strong { display: block; margin-bottom: 7px; color: #244e69; }
-.exam-rationale-section textarea,
-.synapse-follow-up textarea {
+.exam-rationale-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: background 180ms ease;
+}
+
+.exam-rationale-toggle-btn:hover {
+  background: rgba(34, 199, 236, 0.06);
+}
+
+.toggle-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(34, 199, 236, 0.12);
+  color: #22c7ec;
+  font-size: 1rem;
+  border: 1px solid rgba(76, 202, 239, 0.22);
+}
+
+.toggle-info strong {
+  display: block;
+  color: #e5f4fb;
+  font: 700 0.92rem 'Sora', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.toggle-sub {
+  display: block;
+  font-size: 0.76rem;
+  color: #87a9bc;
+  margin-top: 1px;
+}
+
+.toggle-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toggle-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(167, 243, 75, 0.15);
+  border: 1px solid rgba(167, 243, 75, 0.35);
+  color: #a7f34b;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.toggle-chevron {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  color: #79a7be;
+  font-size: 1.15rem;
+}
+
+.exam-rationale-body {
+  padding: 0 18px 18px;
+  border-top: 1px solid rgba(76, 202, 239, 0.1);
+  animation: rationale-fade-in 220ms ease;
+}
+
+@keyframes rationale-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.exam-rationale-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 12px;
+}
+
+.exam-tab-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(76, 202, 239, 0.16);
+  background: rgba(2, 18, 26, 0.6);
+  color: #8eb3c5;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.exam-tab-chip:hover {
+  border-color: rgba(76, 202, 239, 0.4);
+  color: #e5f4fb;
+  background: rgba(7, 36, 50, 0.7);
+}
+
+.exam-tab-chip.is-active {
+  background: rgba(8, 127, 224, 0.22);
+  border-color: #22c7ec;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(34, 199, 236, 0.2);
+}
+
+.chip-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #a7f34b;
+  font-size: 0.8rem;
+}
+
+.exam-tab-chip:not(.is-filled) .chip-indicator {
+  display: none;
+}
+
+.exam-rationale-active-card {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.active-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.active-card-header strong {
+  color: #92d4ee;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.active-card-header small {
+  color: #6d8e9f;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.exam-rationale-active-card textarea {
   width: 100%;
   resize: vertical;
-  border: 1px solid rgba(25, 85, 125, 0.17);
-  border-radius: 14px;
-  padding: 13px 15px;
-  color: #102f46;
-  background: rgba(255, 255, 255, 0.92);
-  font: inherit;
+  min-height: 56px;
+  border: 1px solid rgba(76, 202, 239, 0.18);
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: #eaf4f8;
+  background: rgba(1, 14, 21, 0.8);
+  font: 450 0.84rem/1.5 'Poppins', sans-serif;
   box-sizing: border-box;
+  transition: all 180ms ease;
 }
-.exam-rationale-section textarea:focus,
-.synapse-follow-up textarea:focus { outline: 3px solid rgba(8, 120, 249, 0.12); border-color: #0878f9; }
-.exam-rationale-section label > small { display: block; margin-top: 4px; text-align: right; color: #7a91a1; }
+
+.exam-rationale-active-card textarea:focus {
+  outline: none;
+  border-color: #22c7ec;
+  background: rgba(2, 19, 29, 0.95);
+  box-shadow: 0 0 0 3px rgba(34, 199, 236, 0.15);
+}
+
 .memory-exam + .memory-exam { margin-top: 12px; }
 .memory-exam small { display: block; padding-left: 9px; border-left: 2px solid #5eff66; color: #60798c; }
 

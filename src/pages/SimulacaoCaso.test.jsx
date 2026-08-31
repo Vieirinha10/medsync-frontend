@@ -58,6 +58,7 @@ describe('SimulacaoCaso', () => {
     fireEvent.click(screen.getByRole('button', { name: /Iniciar investigação/ }));
 
     fireEvent.click(screen.getByRole('checkbox', { name: 'Troponina' }));
+    fireEvent.click(screen.getByRole('button', { name: /Justificativa clínica dos exames/ }));
     fireEvent.change(screen.getByRole('textbox', { name: 'Justificativa para Troponina' }), {
       target: { value: 'Confirmar lesão miocárdica e orientar a estratégia.' },
     });
@@ -123,7 +124,7 @@ describe('SimulacaoCaso', () => {
     expect(screen.queryByText(/Erro:/)).not.toBeInTheDocument();
   });
 
-  it('permite alternar entre múltiplos exames selecionados e colapsar a área de justificativa', async () => {
+  it('inicia com justificativa fechada e permite expandir, alternar abas e colapsar', async () => {
     render(
       <MemoryRouter initialEntries={['/casos/8']}>
         <Routes>
@@ -139,7 +140,12 @@ describe('SimulacaoCaso', () => {
     fireEvent.click(screen.getByRole('checkbox', { name: 'Eletrocardiograma' }));
     fireEvent.click(screen.getByRole('checkbox', { name: 'Troponina' }));
 
-    // Verifica que os chips alternantes aparecem e o primeiro está ativo
+    // Inicialmente está fechado para manter a tela limpa
+    const toggleBtn = screen.getByRole('button', { name: /Justificativa clínica dos exames/ });
+    expect(screen.queryByRole('textbox', { name: 'Justificativa para Eletrocardiograma' })).not.toBeInTheDocument();
+
+    // Expande via botão alternante
+    fireEvent.click(toggleBtn);
     expect(screen.getByRole('tab', { name: /Eletrocardiograma/ })).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: /Troponina/ })).toBeInTheDocument();
     expect(screen.getByRole('textbox', { name: 'Justificativa para Eletrocardiograma' })).toBeInTheDocument();
@@ -154,7 +160,6 @@ describe('SimulacaoCaso', () => {
     expect(screen.getByRole('textbox', { name: 'Justificativa para Troponina' })).toBeInTheDocument();
 
     // Colapsa e reabre o painel com o botão alternante
-    const toggleBtn = screen.getByRole('button', { name: /Justificativa clínica dos exames/ });
     fireEvent.click(toggleBtn);
     expect(screen.queryByRole('textbox', { name: 'Justificativa para Troponina' })).not.toBeInTheDocument();
 

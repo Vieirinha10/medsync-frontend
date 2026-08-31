@@ -119,4 +119,17 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 - `desafio-visual-139.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0.
 - `desafio-visual-140.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 4.0.
 
+## Lote 11 — genética clínica e neonatologia
+
+- `desafio-visual-141.webp`: U.S. Department of Energy Human Genome Program, via Wikimedia Commons — domínio público, Governo Federal dos Estados Unidos.
+- `desafio-visual-142.webp`: The cat, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-143.webp`: The cat, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-144.webp`: Jyothi Idiculla, Shine Pakalomattom, Anasuya Desai e Babu Philip, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-145.webp`: Mikael Häggström, M.D., via Wikimedia Commons — CC0 1.0.
+- `desafio-visual-146.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 4.0; painel pré-operatório recortado da composição original.
+- `desafio-visual-147.webp`: Snich, via Wikimedia Commons — CC0 1.0; radiografia recortada para remover a anotação explicativa.
+- `desafio-visual-148.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-149.webp`: Kinderradiologie Olgahospital, Klinikum Stuttgart, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-150.webp`: Madhero88, via Wikimedia Commons — CC BY-SA 3.0.
+
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

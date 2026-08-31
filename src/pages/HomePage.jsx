@@ -311,7 +311,7 @@ const HomePage = () => {
       <StatMorph
         items={[
           { value: '80', label: 'casos clínicos' },
-          { value: '100', label: 'desafios visuais' },
+          { value: '150', label: 'desafios visuais' },
           { value: formattedStudentCount, label: 'estudantes MedSync' },
           { value: '19', label: 'áreas médicas contempladas' },
         ]}

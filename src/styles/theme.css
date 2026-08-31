@@ -559,10 +559,16 @@
 }
 
 :root[data-theme='dark'] .journey-stepper button > span,
-:root[data-theme='dark'] .journey-exam-grid label > span,
 :root[data-theme='dark'] .reasoning-scaffold b {
   color: #62d5f3;
   background: rgba(19, 91, 121, 0.55);
+}
+
+:root[data-theme='dark'] .journey-exam-grid label > span {
+  color: #8eb3c5;
+  background: rgba(3, 25, 35, 0.7);
+  border: 1px solid rgba(101, 204, 241, 0.18);
+  transition: all 180ms ease;
 }
 
 :root[data-theme='dark'] .journey-stepper button > i,
@@ -575,10 +581,36 @@
   background: rgba(101, 204, 241, 0.16);
 }
 
+:root[data-theme='dark'] .journey-exam-grid label {
+  border-color: rgba(101, 204, 241, 0.16);
+  background: var(--med-panel-soft);
+  transition: all 180ms ease;
+}
+
+:root[data-theme='dark'] .journey-exam-grid label:hover:not(.is-selected) {
+  border-color: rgba(167, 243, 75, 0.5);
+  background: rgba(7, 42, 60, 0.85);
+  transform: translateY(-2px);
+}
+
+:root[data-theme='dark'] .journey-exam-grid label:hover:not(.is-selected) > span {
+  border-color: rgba(167, 243, 75, 0.45);
+  color: #a7f34b;
+}
+
 :root[data-theme='dark'] .journey-exam-grid label.is-selected {
-  color: #b8effb;
-  border-color: rgba(34, 199, 236, 0.48);
-  background: rgba(8, 127, 224, 0.18);
+  color: #ffffff;
+  border-color: #a7f34b;
+  background: rgba(7, 48, 68, 0.96);
+  box-shadow: 0 8px 20px rgba(167, 243, 75, 0.16);
+  transform: translateY(-1px);
+}
+
+:root[data-theme='dark'] .journey-exam-grid label.is-selected > span {
+  background: #a7f34b;
+  border-color: #a7f34b;
+  color: #031923;
+  box-shadow: 0 0 12px rgba(167, 243, 75, 0.4);
 }
 
 :root[data-theme='dark'] .journey-textarea textarea {

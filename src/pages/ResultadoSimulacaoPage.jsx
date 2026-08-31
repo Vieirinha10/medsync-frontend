@@ -43,12 +43,26 @@ const sectionPercentage = (value, total) => Math.round(
   Math.max(0, Math.min(100, (Number(value || 0) / total) * 100)),
 );
 
-const getScoreProfile = (score) => {
+const getScoreProfile = (score, { exams, hypothesis, conduct, unsafe }) => {
+  if (unsafe) return { label: 'Há risco na conduta proposta', tone: 'review' };
+  if (conduct === 0 && hypothesis >= 80) return { label: 'Bom diagnóstico, mas conduta inadequada', tone: 'review' };
+  if (conduct < 50) return { label: 'A conduta precisa de revisão', tone: 'developing' };
+  if (hypothesis < 50) return { label: 'A hipótese precisa ser reformulada', tone: 'developing' };
+  if (exams < 50) return { label: 'A investigação precisa ser revista', tone: 'developing' };
   if (score >= 9) return { label: 'Excelente resultado', tone: 'excellent' };
   if (score >= 7.5) return { label: 'Muito bom', tone: 'great' };
   if (score >= 6) return { label: 'Bom raciocínio', tone: 'good' };
   if (score >= 4) return { label: 'Em desenvolvimento', tone: 'developing' };
   return { label: 'Vamos revisar juntos', tone: 'review' };
+};
+
+const buildExamFeedback = (result) => {
+  if (result.feedback.feedback_exames) return result.feedback.feedback_exames;
+  const parts = [];
+  if (result.exames.adequados?.length) parts.push(`Boas escolhas: ${result.exames.adequados.join(', ')}.`);
+  if (result.exames.essenciais_ausentes?.length) parts.push(`Faltaram exames essenciais: ${result.exames.essenciais_ausentes.join(', ')}.`);
+  if (result.exames.desnecessarios?.length) parts.push(`Tiveram baixo valor neste cenário: ${result.exames.desnecessarios.join(', ')}.`);
+  return parts.join(' ') || result.exames.comentario;
 };
 
 const getPatientStatus = (result) => {
@@ -259,11 +273,23 @@ const ResultadoSimulacaoPage = () => {
     ? 'Feedback personalizado pela Synapse'
     : 'Feedback estruturado pela rubrica clínica';
   const scoreOutOfTen = scoreFromHundred(result.pontuacao_total);
-  const scoreProfile = getScoreProfile(scoreOutOfTen);
   const patientStatus = getPatientStatus(result);
   const isUnsafe = result.nivel_conduta === 'insegura' || result.consequencias?.estado_paciente === 'deterioracao';
   const examHasGaps = result.exames.essenciais_ausentes?.length > 0 || result.exames.desnecessarios?.length > 0;
+  const examsPercentage = sectionPercentage(result.pontuacao.exames, 40);
   const hypothesisPercentage = sectionPercentage(result.pontuacao.hipotese, 30);
+  const conductPercentage = sectionPercentage(result.pontuacao.conduta, 30);
+  const scoreProfile = getScoreProfile(scoreOutOfTen, {
+    exams: examsPercentage,
+    hypothesis: hypothesisPercentage,
+    conduct: conductPercentage,
+    unsafe: isUnsafe,
+  });
+  const mainFeedback = [
+    { label: 'Exames', icon: FiActivity, text: buildExamFeedback(result), percentage: examsPercentage },
+    { label: 'Hipótese', icon: FiTarget, text: result.feedback.feedback_hipotese, percentage: hypothesisPercentage },
+    { label: 'Conduta', icon: FiHeart, text: result.feedback.feedback_conduta, percentage: conductPercentage },
+  ];
   const priorities = uniqueItems(
     result.feedback.plano_pessoal_melhoria || [],
     result.feedback.pontos_melhoria || [],
@@ -363,7 +389,18 @@ const ResultadoSimulacaoPage = () => {
             <span>Nota geral</span>
             <div className="result-score-line" aria-label={`Pontuação total: ${formatScore(scoreOutOfTen)} de 10`}><AnimatedScore value={scoreOutOfTen} /><small>/10</small></div>
             <h2>{scoreProfile.label}</h2>
-            <p>{result.feedback.sintese_raciocinio || result.feedback.resumo}</p>
+            <p className="main-feedback-summary">{result.feedback.resumo || result.feedback.sintese_raciocinio}</p>
+            <div className="main-feedback-axes" aria-label="Síntese personalizada das decisões">
+              {mainFeedback.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <article className={item.percentage < 50 ? 'needs-attention' : ''} key={item.label}>
+                    <strong><Icon /> {item.label} <span>{item.percentage}%</span></strong>
+                    <p>{item.text}</p>
+                  </article>
+                );
+              })}
+            </div>
             <button type="button" onClick={() => selectTab('decisoes', { focus: true })}>Entender minhas decisões <FiArrowRight /></button>
           </div>
         </section>

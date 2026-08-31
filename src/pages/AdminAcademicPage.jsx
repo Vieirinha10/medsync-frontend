@@ -93,7 +93,7 @@ const emptyAdminData = {
       modelo_rotina: 'gpt-5.6-luna', modelo_avancado: 'gpt-5.6-terra',
       modelo_perguntas: 'gpt-5.6-luna', perguntas_com_roteamento_automatico: true,
       esforco_raciocinio: 'low',
-      limite_saida_feedback: 900, limite_saida_pergunta: 450,
+      limite_saida_feedback: 1100, limite_saida_pergunta: 450,
     },
   },
   cases: [],

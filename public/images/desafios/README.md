@@ -67,4 +67,69 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 - `desafio-visual-099.webp`: Madhero88, via Wikimedia Commons — CC BY-SA 3.0.
 - `desafio-visual-100.webp`: Ajay Kumar Chaurasiya, via Wikimedia Commons — CC BY-SA 4.0.
 
+## Lote 7 — reumatologia e imunologia
+
+- `desafio-visual-101.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-102.webp`: Ed Uthman, via Wikimedia Commons — CC BY-SA 2.0.
+- `desafio-visual-103.webp`: Stevenfruitsmaak, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-104.webp`: Elizabeth M. Dugan, Adam M. Huber, Frederick W. Miller e Lisa G. Rider, via Wikimedia Commons — CC BY-SA 3.0; rodapé de crédito recortado e atribuição preservada neste arquivo e na API.
+- `desafio-visual-105.webp`: Maria Sieglinda von Nudeldorf, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-106.webp`: Cecco, via Wikimedia Commons — domínio público.
+- `desafio-visual-107.webp`: Taokinesis; anotação por Mikael Häggström, via Wikimedia Commons — CC0 1.0.
+- `desafio-visual-108.webp`: CNX OpenStax, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-109.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-110.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+
+## Lote 8 — nefrologia
+
+- `desafio-visual-111.webp`: Cerevisae, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-112.webp`: Nevit Dilmen, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-113.webp`: Steven Fruitsmaak, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-114.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-115.webp`: Ajay Kumar Chaurasiya, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-116.webp`: Ajay Kumar Chaurasiya, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-117.webp`: Centers for Disease Control and Prevention (CDC), via Wikimedia Commons — domínio público, Governo Federal dos Estados Unidos.
+- `desafio-visual-118.webp`: Arunachalam Ramaswami et al., via Wikimedia Commons — CC BY 2.0.
+- `desafio-visual-119.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-120.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+
+## Lote 9 — medicina intensiva e anestesiologia
+
+- `desafio-visual-121.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-122.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-123.webp`: Tinss, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-124.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-125.webp`: Jmh649, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-126.webp`: Jmarchn, via Wikimedia Commons — CC BY-SA 3.0; painel de Mallampati IV recortado sem a identificação da classe.
+- `desafio-visual-127.webp`: Rschiedon, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-128.webp`: Tubus, via Wikimedia Commons — CC BY-SA 3.0; painel de Cormack-Lehane III recortado sem a identificação do grau.
+- `desafio-visual-129.webp`: Michael-Joseph F. Agbayani e Eddieson Gonzales, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-130.webp`: WikiSysop, via Wikimedia Commons — CC BY 3.0.
+
+## Lote 10 — oncologia e medicina nuclear
+
+- `desafio-visual-131.webp`: National Cancer Institute; fotógrafo não identificado, via Wikimedia Commons — domínio público, Governo Federal dos Estados Unidos.
+- `desafio-visual-132.webp`: Annemie Snoeckx et al., via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-133.webp`: Kristie Guite, Louis Hinshaw e Fred Lee, via Wikimedia Commons — CC BY 3.0.
+- `desafio-visual-134.webp`: Frank Gaillard, via Wikimedia Commons — CC BY 3.0.
+- `desafio-visual-135.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-136.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-137.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0; cabeçalho e rodapé técnicos recortados.
+- `desafio-visual-138.webp`: Isabel Rauscher et al., via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-139.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-140.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 4.0.
+
+## Lote 11 — genética clínica e neonatologia
+
+- `desafio-visual-141.webp`: U.S. Department of Energy Human Genome Program, via Wikimedia Commons — domínio público, Governo Federal dos Estados Unidos.
+- `desafio-visual-142.webp`: The cat, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-143.webp`: The cat, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-144.webp`: Jyothi Idiculla, Shine Pakalomattom, Anasuya Desai e Babu Philip, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-145.webp`: Mikael Häggström, M.D., via Wikimedia Commons — CC0 1.0.
+- `desafio-visual-146.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 4.0; painel pré-operatório recortado da composição original.
+- `desafio-visual-147.webp`: Snich, via Wikimedia Commons — CC0 1.0; radiografia recortada para remover a anotação explicativa.
+- `desafio-visual-148.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-149.webp`: Kinderradiologie Olgahospital, Klinikum Stuttgart, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-150.webp`: Madhero88, via Wikimedia Commons — CC BY-SA 3.0.
+
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

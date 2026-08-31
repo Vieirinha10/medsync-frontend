@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { visualChallenges } from './visualChallenges';
 
 describe('visualChallenges', () => {
-  it('mantém 100 desafios nativos completos após o sexto lote', () => {
-    expect(visualChallenges).toHaveLength(100);
-    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(100);
+  it('mantém 150 desafios nativos completos após o décimo primeiro lote', () => {
+    expect(visualChallenges).toHaveLength(150);
+    expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(150);
 
     visualChallenges.forEach((challenge) => {
       expect(challenge.id).toMatch(/^desafio-visual-\d{3}$/);
@@ -93,5 +93,86 @@ describe('visualChallenges', () => {
     expect(sixthBatch.filter(({ category }) => category === 'Infectologia')).toHaveLength(2);
     expect(sixthBatch.filter(({ category }) => category === 'Endocrinologia')).toHaveLength(2);
     expect(sixthBatch.filter(({ category }) => category === 'Toxicologia')).toHaveLength(1);
+  });
+
+  it('preserva a distribuição editorial do sétimo lote', () => {
+    const seventhBatch = visualChallenges.slice(100, 110);
+
+    expect(seventhBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 10 },
+        (_, index) => `desafio-visual-${String(index + 101).padStart(3, '0')}`,
+      ),
+    );
+    expect(seventhBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(4);
+    expect(seventhBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(4);
+    expect(seventhBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(2);
+    expect(
+      seventhBatch.filter(({ category }) => category === 'Reumatologia e Imunologia'),
+    ).toHaveLength(10);
+  });
+
+  it('preserva a distribuição editorial do oitavo lote', () => {
+    const eighthBatch = visualChallenges.slice(110, 120);
+
+    expect(eighthBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 10 },
+        (_, index) => `desafio-visual-${String(index + 111).padStart(3, '0')}`,
+      ),
+    );
+    expect(eighthBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(3);
+    expect(eighthBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(4);
+    expect(eighthBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(3);
+    expect(eighthBatch.filter(({ category }) => category === 'Nefrologia')).toHaveLength(10);
+  });
+
+  it('preserva a distribuição editorial do nono lote', () => {
+    const ninthBatch = visualChallenges.slice(120, 130);
+
+    expect(ninthBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 10 },
+        (_, index) => `desafio-visual-${String(index + 121).padStart(3, '0')}`,
+      ),
+    );
+    expect(ninthBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(3);
+    expect(ninthBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(4);
+    expect(ninthBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(3);
+    expect(
+      ninthBatch.filter(({ category }) => category === 'Medicina Intensiva e Anestesiologia'),
+    ).toHaveLength(10);
+  });
+
+  it('preserva a distribuição editorial do décimo lote', () => {
+    const tenthBatch = visualChallenges.slice(130, 140);
+
+    expect(tenthBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 10 },
+        (_, index) => `desafio-visual-${String(index + 131).padStart(3, '0')}`,
+      ),
+    );
+    expect(tenthBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(3);
+    expect(tenthBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(4);
+    expect(tenthBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(3);
+    expect(tenthBatch.filter(({ category }) => category === 'Oncologia')).toHaveLength(6);
+    expect(tenthBatch.filter(({ category }) => category === 'Medicina Nuclear')).toHaveLength(4);
+  });
+
+  it('preserva a distribuição editorial do décimo primeiro lote', () => {
+    const eleventhBatch = visualChallenges.slice(140, 150);
+
+    expect(eleventhBatch.map(({ id }) => id)).toEqual(
+      Array.from(
+        { length: 10 },
+        (_, index) => `desafio-visual-${String(index + 141).padStart(3, '0')}`,
+      ),
+    );
+    expect(eleventhBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(3);
+    expect(eleventhBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(4);
+    expect(eleventhBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(3);
+    expect(eleventhBatch.filter(({ category }) => category === 'Genética Clínica')).toHaveLength(5);
+    expect(eleventhBatch.filter(({ category }) => category === 'Neonatologia')).toHaveLength(5);
   });
 });

@@ -106,4 +106,17 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 - `desafio-visual-129.webp`: Michael-Joseph F. Agbayani e Eddieson Gonzales, via Wikimedia Commons — CC BY 4.0.
 - `desafio-visual-130.webp`: WikiSysop, via Wikimedia Commons — CC BY 3.0.
 
+## Lote 10 — oncologia e medicina nuclear
+
+- `desafio-visual-131.webp`: National Cancer Institute; fotógrafo não identificado, via Wikimedia Commons — domínio público, Governo Federal dos Estados Unidos.
+- `desafio-visual-132.webp`: Annemie Snoeckx et al., via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-133.webp`: Kristie Guite, Louis Hinshaw e Fred Lee, via Wikimedia Commons — CC BY 3.0.
+- `desafio-visual-134.webp`: Frank Gaillard, via Wikimedia Commons — CC BY 3.0.
+- `desafio-visual-135.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-136.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-137.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0; cabeçalho e rodapé técnicos recortados.
+- `desafio-visual-138.webp`: Isabel Rauscher et al., via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-139.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-140.webp`: Hellerhoff, via Wikimedia Commons — CC BY-SA 4.0.
+
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

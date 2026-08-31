@@ -7,6 +7,8 @@ import {
     FiArrowRight,
     FiCheck,
     FiCheckCircle,
+    FiChevronDown,
+    FiChevronUp,
     FiClipboard,
     FiEdit3,
     FiFileText,
@@ -376,61 +378,126 @@ const VitalCard = ({ vital }) => {
     );
 };
 
-const ExamsStage = ({ caso, selectedExams, onSelect, selectedCount, results, resultsReleased, onRelease, statusMessage, justifications, onJustificationChange }) => (
-    <div className="decision-stage">
-        <div className="stage-heading compact">
-            <span>02 · INVESTIGAÇÃO</span>
-            <h2>Quais avaliações e exames mudariam sua decisão?</h2>
-            <p>Escolha com intenção. Avaliações e exames essenciais, omitidos e de baixo valor serão considerados no feedback.</p>
-        </div>
-        <div className="stage-tip"><FiAlertCircle /><span>Evite pedir tudo. Pense em probabilidade pré-teste, gravidade e impacto sobre a conduta.</span></div>
-        <div className="journey-exam-grid">
-            {caso.exames_disponiveis.map((exam) => {
-                const selected = Boolean(selectedExams[exam.id]);
-                return (
-                    <label key={exam.id} className={selected ? 'is-selected' : ''}>
-                        <input type="checkbox" checked={selected} onChange={() => onSelect(exam.id)} />
-                        <span>{selected ? <FiCheck /> : <FiClipboard />}</span>
-                        <strong>{exam.nome}</strong>
-                    </label>
-                );
-            })}
-        </div>
-        {selectedCount > 0 && (
-            <section className="exam-rationale-section">
-                <div>
-                    <span>JUSTIFICATIVA CLÍNICA · OPCIONAL</span>
-                    <h3>O que você espera descobrir com cada exame?</h3>
-                    <p>A Synapse avaliará se você compreendeu a utilidade do exame, sem alterar a pontuação por deixar o campo vazio.</p>
+const ExamRationaleSection = ({ selectedExamsList, justifications, onJustificationChange }) => {
+    const [isOpen, setIsOpen] = useState(true);
+    const [activeExamId, setActiveExamId] = useState(selectedExamsList[0]?.id);
+
+    const activeExam = selectedExamsList.find((exam) => exam.id === activeExamId) || selectedExamsList[0];
+    const filledCount = selectedExamsList.filter((exam) => Boolean(justifications[exam.id]?.trim())).length;
+
+    return (
+        <section className={`exam-rationale-section ${isOpen ? 'is-open' : 'is-collapsed'}`}>
+            <button
+                type="button"
+                className="exam-rationale-toggle-btn"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-expanded={isOpen}
+            >
+                <div className="toggle-info">
+                    <span className="toggle-icon"><FiEdit3 /></span>
+                    <div>
+                        <strong>Justificativa clínica dos exames</strong>
+                        <span className="toggle-sub">Opcional · A Synapse analisa seu raciocínio</span>
+                    </div>
                 </div>
-                {caso.exames_disponiveis.filter((exam) => selectedExams[exam.id]).map((exam) => (
-                    <label key={exam.id}>
-                        <strong>{exam.nome}</strong>
-                        <textarea
-                            aria-label={`Justificativa para ${exam.nome}`}
-                            rows="2"
-                            maxLength="600"
-                            value={justifications[exam.id] || ''}
-                            onChange={(event) => onJustificationChange(String(exam.id), event.target.value)}
-                            placeholder="Ex.: este resultado ajudaria a confirmar, excluir ou estratificar..."
-                        />
-                        <small>{(justifications[exam.id] || '').length}/600</small>
-                    </label>
-                ))}
-            </section>
-        )}
-        <button type="button" className="release-results-button" onClick={onRelease}><FiClipboard /> Solicitar avaliações selecionadas <b>{selectedCount}</b></button>
-        {statusMessage && <p className="simulation-status" role="status">{statusMessage}</p>}
-        {resultsReleased && (
-            <section className="released-results">
-                <div><span>RESULTADOS LIBERADOS</span><strong>{results.length} novo(s) dado(s) no prontuário</strong></div>
-                {results.map((result, index) => (
-                    <article key={result.id} style={{ '--delay': `${index * 80}ms` }}><FiCheckCircle /><div><strong>{result.nome}</strong><p>{result.resultado}</p></div></article>
-                ))}
-            </section>
-        )}
-    </div>
-);
+                <div className="toggle-action">
+                    {filledCount > 0 && (
+                        <span className="toggle-badge">
+                            <FiCheck /> {filledCount} de {selectedExamsList.length}
+                        </span>
+                    )}
+                    <span className="toggle-chevron">{isOpen ? <FiChevronUp /> : <FiChevronDown />}</span>
+                </div>
+            </button>
+
+            {isOpen && (
+                <div className="exam-rationale-body">
+                    {selectedExamsList.length > 1 && (
+                        <div className="exam-rationale-tabs" role="tablist" aria-label="Exames selecionados para justificar">
+                            {selectedExamsList.map((exam) => {
+                                const isFilled = Boolean(justifications[exam.id]?.trim());
+                                const isActive = exam.id === activeExam?.id;
+                                return (
+                                    <button
+                                        key={exam.id}
+                                        type="button"
+                                        role="tab"
+                                        aria-selected={isActive}
+                                        className={`exam-tab-chip ${isActive ? 'is-active' : ''} ${isFilled ? 'is-filled' : ''}`}
+                                        onClick={() => setActiveExamId(exam.id)}
+                                    >
+                                        <span className="chip-indicator"><FiCheck /></span>
+                                        <span>{exam.nome}</span>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    {activeExam && (
+                        <div className="exam-rationale-active-card">
+                            <div className="active-card-header">
+                                <strong>{activeExam.nome}</strong>
+                                <small>{(justifications[activeExam.id] || '').length}/600</small>
+                            </div>
+                            <textarea
+                                aria-label={`Justificativa para ${activeExam.nome}`}
+                                rows="2"
+                                maxLength="600"
+                                value={justifications[activeExam.id] || ''}
+                                onChange={(event) => onJustificationChange(String(activeExam.id), event.target.value)}
+                                placeholder="Ex.: este resultado ajudaria a confirmar, excluir ou estratificar..."
+                            />
+                        </div>
+                    )}
+                </div>
+            )}
+        </section>
+    );
+};
+
+const ExamsStage = ({ caso, selectedExams, onSelect, selectedCount, results, resultsReleased, onRelease, statusMessage, justifications, onJustificationChange }) => {
+    const selectedExamsList = caso.exames_disponiveis.filter((exam) => selectedExams[exam.id]);
+    return (
+        <div className="decision-stage">
+            <div className="stage-heading compact">
+                <span>02 · INVESTIGAÇÃO</span>
+                <h2>Quais avaliações e exames mudariam sua decisão?</h2>
+                <p>Escolha com intenção. Avaliações e exames essenciais, omitidos e de baixo valor serão considerados no feedback.</p>
+            </div>
+            <div className="stage-tip"><FiAlertCircle /><span>Evite pedir tudo. Pense em probabilidade pré-teste, gravidade e impacto sobre a conduta.</span></div>
+            <div className="journey-exam-grid">
+                {caso.exames_disponiveis.map((exam) => {
+                    const selected = Boolean(selectedExams[exam.id]);
+                    return (
+                        <label key={exam.id} className={selected ? 'is-selected' : ''}>
+                            <input type="checkbox" checked={selected} onChange={() => onSelect(exam.id)} />
+                            <span>{selected ? <FiCheck /> : <FiClipboard />}</span>
+                            <strong>{exam.nome}</strong>
+                        </label>
+                    );
+                })}
+            </div>
+            {selectedCount > 0 && (
+                <ExamRationaleSection
+                    selectedExamsList={selectedExamsList}
+                    justifications={justifications}
+                    onJustificationChange={onJustificationChange}
+                />
+            )}
+            <button type="button" className="release-results-button" onClick={onRelease}><FiClipboard /> Solicitar avaliações selecionadas <b>{selectedCount}</b></button>
+            {statusMessage && <p className="simulation-status" role="status">{statusMessage}</p>}
+            {resultsReleased && (
+                <section className="released-results">
+                    <div><span>RESULTADOS LIBERADOS</span><strong>{results.length} novo(s) dado(s) no prontuário</strong></div>
+                    {results.map((result, index) => (
+                        <article key={result.id} style={{ '--delay': `${index * 80}ms` }}><FiCheckCircle /><div><strong>{result.nome}</strong><p>{result.resultado}</p></div></article>
+                    ))}
+                </section>
+            )}
+        </div>
+    );
+};
 
 const ReasoningStage = ({ kind, value, onChange }) => {
     const hypothesis = kind === 'hypothesis';

@@ -122,4 +122,43 @@ describe('SimulacaoCaso', () => {
     );
     expect(screen.queryByText(/Erro:/)).not.toBeInTheDocument();
   });
+
+  it('permite alternar entre múltiplos exames selecionados e colapsar a área de justificativa', async () => {
+    render(
+      <MemoryRouter initialEntries={['/casos/8']}>
+        <Routes>
+          <Route path="/casos/:casoId" element={<SimulacaoCaso />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(await screen.findByRole('heading', { name: 'Dor torácica de início súbito' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /Iniciar investigação/ }));
+
+    // Seleciona ambos os exames
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Eletrocardiograma' }));
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Troponina' }));
+
+    // Verifica que os chips alternantes aparecem e o primeiro está ativo
+    expect(screen.getByRole('tab', { name: /Eletrocardiograma/ })).toBeInTheDocument();
+    expect(screen.getByRole('tab', { name: /Troponina/ })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Justificativa para Eletrocardiograma' })).toBeInTheDocument();
+
+    // Digita no primeiro exame
+    fireEvent.change(screen.getByRole('textbox', { name: 'Justificativa para Eletrocardiograma' }), {
+      target: { value: 'Identificar alteração isquêmica aguda.' },
+    });
+
+    // Alterna para o segundo exame via chip
+    fireEvent.click(screen.getByRole('tab', { name: /Troponina/ }));
+    expect(screen.getByRole('textbox', { name: 'Justificativa para Troponina' })).toBeInTheDocument();
+
+    // Colapsa e reabre o painel com o botão alternante
+    const toggleBtn = screen.getByRole('button', { name: /Justificativa clínica dos exames/ });
+    fireEvent.click(toggleBtn);
+    expect(screen.queryByRole('textbox', { name: 'Justificativa para Troponina' })).not.toBeInTheDocument();
+
+    fireEvent.click(toggleBtn);
+    expect(screen.getByRole('textbox', { name: 'Justificativa para Troponina' })).toBeInTheDocument();
+  });
 });

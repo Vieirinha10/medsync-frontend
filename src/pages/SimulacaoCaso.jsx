@@ -379,7 +379,7 @@ const VitalCard = ({ vital }) => {
 };
 
 const ExamRationaleSection = ({ selectedExamsList, justifications, onJustificationChange }) => {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     const [activeExamId, setActiveExamId] = useState(selectedExamsList[0]?.id);
 
     const activeExam = selectedExamsList.find((exam) => exam.id === activeExamId) || selectedExamsList[0];

@@ -2570,12 +2570,12 @@
 .stage-tip { display: flex; gap: 10px; padding: 13px 15px; margin-bottom: 20px; border-radius: 13px; background: #f0f8fe; color: #4a718b; font-size: 0.78rem; }
 .stage-tip svg { flex: 0 0 auto; color: #0786cc; }
 .journey-exam-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.journey-exam-grid label { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid #dce9f0; border-radius: 14px; color: #365a72; cursor: pointer; transition: 180ms ease; }
-.journey-exam-grid label:hover { border-color: rgba(0, 137, 229, 0.35); transform: translateY(-2px); }
-.journey-exam-grid label.is-selected { border-color: #0786e5; background: #eff8ff; color: #0869ba; box-shadow: 0 8px 18px rgba(0, 119, 255, 0.08); }
+.journey-exam-grid label { display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid rgba(76, 202, 239, 0.16); border-radius: 14px; color: #dcebf1; cursor: pointer; transition: 180ms ease; }
+.journey-exam-grid label:hover { border-color: rgba(167, 243, 75, 0.45); transform: translateY(-2px); }
+.journey-exam-grid label.is-selected { border-color: #a7f34b; background: rgba(7, 48, 68, 0.96); color: #ffffff; box-shadow: 0 8px 20px rgba(167, 243, 75, 0.16); }
 .journey-exam-grid input { position: absolute; opacity: 0; }
-.journey-exam-grid label > span { display: grid; flex: 0 0 34px; width: 34px; height: 34px; border-radius: 10px; background: #edf4f7; place-items: center; }
-.journey-exam-grid label.is-selected > span { background: #0786e5; color: #fff; }
+.journey-exam-grid label > span { display: grid; flex: 0 0 34px; width: 34px; height: 34px; border-radius: 10px; background: rgba(3, 25, 35, 0.7); border: 1px solid rgba(101, 204, 241, 0.18); color: #8eb3c5; place-items: center; transition: all 180ms ease; }
+.journey-exam-grid label.is-selected > span { background: #a7f34b; border-color: #a7f34b; color: #031923; box-shadow: 0 0 12px rgba(167, 243, 75, 0.4); }
 .release-results-button { display: flex; align-items: center; gap: 8px; padding: 13px 16px; margin-top: 18px; border: 0; border-radius: 12px; background: var(--journey-navy); color: #fff; font-weight: 750; cursor: pointer; }
 .release-results-button b { display: grid; min-width: 22px; height: 22px; border-radius: 999px; background: var(--journey-green); color: #193c1b; place-items: center; }
 .released-results { padding: 20px; margin-top: 20px; border: 1px solid #d9eadf; border-radius: 18px; background: #f7fcf9; }

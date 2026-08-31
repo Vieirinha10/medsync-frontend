@@ -17,6 +17,12 @@
 - Primeiro lote da expansão do catálogo clínico, elevando o total publicado de 55 para 60 casos.
 
 ### Alterado
+- O feedback principal agora apresenta uma síntese personalizada e explícita de
+  Exames, Hipótese e Conduta, com destaque visual para qualquer eixo abaixo de
+  50% e sem esconder uma conduta zerada atrás da nota geral.
+- O título do resultado passou a considerar falhas críticas por dimensão; um
+  diagnóstico correto com conduta zerada é identificado como “Bom diagnóstico,
+  mas conduta inadequada”.
 - Removidas do projeto as orientações vinculadas à skill externa `interface-design`; futuras decisões visuais passam a considerar somente o código, o histórico e as solicitações específicas do MedSync.
 - Consolidado o feedback anteriormente distribuído em vários cards repetitivos: avaliação por etapa na aba Decisões e prioridades de melhoria, temas, fontes e perguntas à Synapse na aba Como evoluir.
 - A navegação do resultado passou a usar abas acessíveis por teclado, barra fixa durante a leitura e rótulos compactos em telas pequenas.

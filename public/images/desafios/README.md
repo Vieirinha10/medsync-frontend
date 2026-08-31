@@ -67,4 +67,17 @@ As imagens foram convertidas para WebP, sem alteração do conteúdo clínico.
 - `desafio-visual-099.webp`: Madhero88, via Wikimedia Commons — CC BY-SA 3.0.
 - `desafio-visual-100.webp`: Ajay Kumar Chaurasiya, via Wikimedia Commons — CC BY-SA 4.0.
 
+## Lote 7 — reumatologia e imunologia
+
+- `desafio-visual-101.webp`: James Heilman, MD, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-102.webp`: Ed Uthman, via Wikimedia Commons — CC BY-SA 2.0.
+- `desafio-visual-103.webp`: Stevenfruitsmaak, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-104.webp`: Elizabeth M. Dugan, Adam M. Huber, Frederick W. Miller e Lisa G. Rider, via Wikimedia Commons — CC BY-SA 3.0; rodapé de crédito recortado e atribuição preservada neste arquivo e na API.
+- `desafio-visual-105.webp`: Maria Sieglinda von Nudeldorf, via Wikimedia Commons — CC BY-SA 4.0.
+- `desafio-visual-106.webp`: Cecco, via Wikimedia Commons — domínio público.
+- `desafio-visual-107.webp`: Taokinesis; anotação por Mikael Häggström, via Wikimedia Commons — CC0 1.0.
+- `desafio-visual-108.webp`: CNX OpenStax, via Wikimedia Commons — CC BY 4.0.
+- `desafio-visual-109.webp`: Drahreg01, via Wikimedia Commons — CC BY-SA 3.0.
+- `desafio-visual-110.webp`: Nephron, via Wikimedia Commons — CC BY-SA 3.0.
+
 Os links para as páginas de origem e licenças são exibidos após cada resposta.

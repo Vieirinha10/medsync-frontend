@@ -38,6 +38,7 @@ const result = {
     acertos: ['A hipótese foi bem sustentada.'],
     omissoes: ['Explicite os critérios de reavaliação.'],
     pontos_melhoria: ['Explicite os critérios de reavaliação.'],
+    feedback_exames: 'Os exames escolhidos confirmaram a hipótese e avaliaram a gravidade.',
     feedback_hipotese: 'Hipótese compatível com o caso.',
     feedback_conduta: 'Conduta adequada, com oportunidade de detalhar monitorização.',
     feedback_seguranca: 'Mantenha vigilância hemodinâmica.',
@@ -98,7 +99,12 @@ describe('ResultadoSimulacaoPage', () => {
     expect(screen.getByRole('heading', { name: 'Caso #008 – Dispneia súbita em mulher adulta' })).toBeInTheDocument();
     expect(screen.getByText('Feedback personalizado pela Synapse')).toBeInTheDocument();
     expect(screen.getByLabelText('Pontuação total: 8,6 de 10')).toBeInTheDocument();
-    expect(screen.getByText('Você reconheceu o quadro tromboembólico e priorizou o tratamento.')).toBeInTheDocument();
+    expect(screen.getByText('Bom raciocínio clínico global.')).toBeInTheDocument();
+    expect(screen.getByLabelText('Síntese personalizada das decisões')).toHaveTextContent('Exames 90%');
+    expect(screen.getByLabelText('Síntese personalizada das decisões')).toHaveTextContent('Hipótese 83%');
+    expect(screen.getByLabelText('Síntese personalizada das decisões')).toHaveTextContent('Conduta 83%');
+    expect(screen.getByText('Os exames escolhidos confirmaram a hipótese e avaliaram a gravidade.')).toBeInTheDocument();
+    expect(screen.getByText('Conduta adequada, com oportunidade de detalhar monitorização.')).toBeInTheDocument();
     expect(screen.getByLabelText('Desempenho por dimensão clínica')).toHaveTextContent('Exames90%');
     expect(screen.queryByText('A tendência é melhora progressiva da hipoxemia.')).not.toBeInTheDocument();
     expect(screen.queryByText('Saturação periférica')).not.toBeInTheDocument();
@@ -128,6 +134,36 @@ describe('ResultadoSimulacaoPage', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'Por que a conduta teve esse peso?' }));
     await waitFor(() => expect(screen.getByText('Neste cenário, o exame não mudaria a conduta inicial.')).toBeInTheDocument());
+  });
+
+  it('destaca a conduta zerada no título e no feedback principal', () => {
+    const zeroConductResult = {
+      ...result,
+      pontuacao_total: 70,
+      pontuacao: { exames: 40, hipotese: 30, conduta: 0 },
+      nivel_conduta: 'parcial',
+      feedback: {
+        ...result.feedback,
+        resumo: 'A investigação e a hipótese foram adequadas, mas o plano terapêutico precisa ser refeito.',
+        feedback_conduta: 'A conduta recebeu pontuação zero porque não contemplou nenhum critério pontuado para este caso.',
+      },
+      consequencias: { ...result.consequencias, estado_paciente: 'resposta_parcial' },
+    };
+
+    render(
+      <MemoryRouter initialEntries={[{ pathname: '/resultados/42', state: { result: zeroConductResult } }]}>
+        <Routes>
+          <Route path="/resultados/:progressoId" element={<ResultadoSimulacaoPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByRole('heading', { name: 'Bom diagnóstico, mas conduta inadequada' })).toBeInTheDocument();
+    const synthesis = screen.getByLabelText('Síntese personalizada das decisões');
+    expect(synthesis).toHaveTextContent('Exames 100%');
+    expect(synthesis).toHaveTextContent('Hipótese 100%');
+    expect(synthesis).toHaveTextContent('Conduta 0%');
+    expect(synthesis).toHaveTextContent('A conduta recebeu pontuação zero');
   });
 
   it('reserva o emoji de olhos em X para risco grave explícito', () => {

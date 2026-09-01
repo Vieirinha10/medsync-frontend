@@ -1,5 +1,22 @@
 node_modules/
 dist/
+__pycache__/
 .env
 .env.local
 .env.*.local
+
+# Skill proprietária instalada localmente pelo script de configuração.
+.agents/skills/frontend-design/
+
+# Estado local do Graphify. O grafo, o relatório, a análise e o manifesto são
+# versionados; cache, caminhos absolutos e custos permanecem locais.
+graphify-out/cache/
+graphify-out/cost.json
+graphify-out/.graphify_root
+graphify-out/.graphify_python
+graphify-out/.graphify_chunk_*.json
+graphify-out/.graphify_cached.json
+graphify-out/memory/
+graphify-out/graph.html
+graphify-out/.rebuild.lock
+graphify-out/20??-??-??/

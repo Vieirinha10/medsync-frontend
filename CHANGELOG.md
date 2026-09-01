@@ -3,6 +3,15 @@
 ## Não publicado
 
 ### Adicionado
+- Repertório compartilhado de IA em `.agents/`, compatível com Codex e
+  Google Antigravity, com Graphify 0.9.53, Copywriting 2.0.2 e Humanizer
+  2.11.2 preservados em suas versões auditadas.
+- Configuração local verificável da skill proprietária Frontend Design 1.1.0,
+  baixada do commit fixado da Anthropic sem redistribuição no repositório.
+- Regras de acionamento, contexto de produto, lock de versões e script de
+  instalação com validação por Git blob SHA-1.
+- Grafo arquitetural local do frontend, gerado sem LLM a partir do código, com
+  regra e workflow oficiais do Graphify para o Antigravity.
 - Nova subseção `Financeiro → Synapse` com custo médio por caso e usuário,
   chamadas por assinante, tokens em cache, latência média/p95, distribuição por
   modelo e operação, tendência diária e configuração operacional ativa.

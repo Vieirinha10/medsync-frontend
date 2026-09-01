@@ -44,14 +44,14 @@ describe('DesafiosPage', () => {
 
     expect(screen.getByText('Qual é o diagnóstico mais provável nesta radiografia?')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /^A\s*Pneumonia lobar$/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^[A-D]\s*Pneumonia lobar$/ }));
 
     expect(await screen.findByText('Ainda não. Observe os achados-chave')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Pneumotórax hipertensivo à esquerda' })).toBeInTheDocument();
     expect(screen.getByText(/ausência de trama vascular periférica/)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /^A\s*Pneumonia lobar$/ })).toHaveClass('is-incorrect');
+    expect(screen.getByRole('button', { name: /^[A-D]\s*Pneumonia lobar$/ })).toHaveClass('is-incorrect');
     expect(screen.getByRole('button', {
-      name: /^C\s*Pneumotórax hipertensivo à esquerda$/,
+      name: /^[A-D]\s*Pneumotórax hipertensivo à esquerda$/,
     })).toHaveClass('is-correct');
 
     fireEvent.click(screen.getByRole('button', { name: 'Próximo desafio' }));
@@ -94,7 +94,7 @@ describe('DesafiosPage', () => {
     });
     render(<DesafiosPage />);
 
-    fireEvent.click(screen.getByRole('button', { name: /^A\s*Pneumonia lobar$/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^[A-D]\s*Pneumonia lobar$/ }));
 
     await waitFor(() => expect(api.recordVisualChallengeAttempt).toHaveBeenCalledWith(expect.objectContaining({
       desafio_id: 'desafio-visual-001',
@@ -112,7 +112,7 @@ describe('DesafiosPage', () => {
     }));
     render(<DesafiosPage />);
 
-    fireEvent.click(screen.getByRole('button', { name: /^A\s*Pneumonia lobar$/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^[A-D]\s*Pneumonia lobar$/ }));
     await screen.findByText('Ainda não. Observe os achados-chave');
     fireEvent.click(screen.getByRole('button', { name: 'Próximo desafio' }));
 
@@ -145,7 +145,7 @@ describe('DesafiosPage', () => {
     render(<DesafiosPage />);
     expect(screen.getByText('Qual ritmo está representado neste eletrocardiograma?')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /^C\s*Fibrilação atrial$/ }));
+    fireEvent.click(screen.getByRole('button', { name: /^[A-D]\s*Fibrilação atrial$/ }));
     await waitFor(() => expect(completeActivity).toHaveBeenCalledWith(
       'cardiopulmonar-na-pratica',
       'cardiopulmonar-fa',

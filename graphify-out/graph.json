@@ -1529,6 +1529,66 @@
       "source_location": "L19"
     },
     {
+      "id": "scripts_audit_visual_challenge_distribution_audit",
+      "label": "audit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "audit",
+      "file_type": "code",
+      "norm_label": "audit()",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L54"
+    },
+    {
+      "id": "scripts_audit_visual_challenge_distribution_format_counts",
+      "label": "format_counts()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "audit",
+      "file_type": "code",
+      "norm_label": "format_counts()",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L47"
+    },
+    {
+      "id": "scripts_audit_visual_challenge_distribution_load_answers",
+      "label": "load_answers()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "audit",
+      "file_type": "code",
+      "norm_label": "load_answers()",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L20"
+    },
+    {
+      "id": "scripts_audit_visual_challenge_distribution_load_option_orders",
+      "label": "load_option_orders()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "audit",
+      "file_type": "code",
+      "norm_label": "load_option_orders()",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L39"
+    },
+    {
+      "id": "scripts_audit_visual_challenge_distribution_main",
+      "label": "main()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "audit",
+      "file_type": "code",
+      "norm_label": "main()",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L91"
+    },
+    {
       "id": "src_components_clinicalevaluationloader_clinicalevaluationloader",
       "label": "ClinicalEvaluationLoader()",
       "_callable": true,
@@ -2371,17 +2431,6 @@
       "source_location": "L12"
     },
     {
-      "id": "src_pages_desafiospage_test",
-      "label": "DesafiosPage.test.jsx",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "App.jsx",
-      "file_type": "code",
-      "norm_label": "desafiospage.test.jsx",
-      "source_file": "src/pages/DesafiosPage.test.jsx",
-      "source_location": "L1"
-    },
-    {
       "id": "src_pages_loginpage",
       "label": "LoginPage.jsx",
       "_origin": "ast",
@@ -2899,6 +2948,17 @@
       "source_location": "L26"
     },
     {
+      "id": "src_pages_desafiospage_test",
+      "label": "DesafiosPage.test.jsx",
+      "_origin": "ast",
+      "community": 10,
+      "community_name": "DesafiosPage.jsx",
+      "file_type": "code",
+      "norm_label": "desafiospage.test.jsx",
+      "source_file": "src/pages/DesafiosPage.test.jsx",
+      "source_location": "L1"
+    },
+    {
       "id": "src_app_dashboardpage",
       "label": "DashboardPage",
       "_origin": "ast",
@@ -3228,7 +3288,7 @@
       "node_kind": "heading",
       "norm_label": "10. regras para a explicacao",
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L158"
+      "source_location": "L164"
     },
     {
       "id": "docs_diretriz_desafios_visuais_11_achados_chave",
@@ -3240,7 +3300,7 @@
       "node_kind": "heading",
       "norm_label": "11. achados-chave",
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L170"
+      "source_location": "L176"
     },
     {
       "id": "docs_diretriz_desafios_visuais_12_regras_para_imagens_e_licen\u00e7as",
@@ -3252,7 +3312,7 @@
       "node_kind": "heading",
       "norm_label": "12. regras para imagens e licencas",
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L176"
+      "source_location": "L182"
     },
     {
       "id": "docs_diretriz_desafios_visuais_13_limites_de_infer\u00eancia_cl\u00ednica",
@@ -3264,7 +3324,7 @@
       "node_kind": "heading",
       "norm_label": "13. limites de inferencia clinica",
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L189"
+      "source_location": "L195"
     },
     {
       "id": "docs_diretriz_desafios_visuais_14_diversidade_dentro_do_lote",
@@ -3276,7 +3336,7 @@
       "node_kind": "heading",
       "norm_label": "14. diversidade dentro do lote",
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L200"
+      "source_location": "L206"
     },
     {
       "id": "docs_diretriz_desafios_visuais_15_prote\u00e7\u00e3o_do_gabarito",
@@ -3288,7 +3348,7 @@
       "node_kind": "heading",
       "norm_label": "15. protecao do gabarito",
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L213"
+      "source_location": "L219"
     },
     {
       "id": "docs_diretriz_desafios_visuais_16_checklist_de_aprova\u00e7\u00e3o_do_lote",
@@ -3300,7 +3360,7 @@
       "node_kind": "heading",
       "norm_label": "16. checklist de aprovacao do lote",
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L219"
+      "source_location": "L225"
     },
     {
       "id": "docs_diretriz_desafios_visuais_17_instru\u00e7\u00e3o_pronta_para_outras_ias",
@@ -3312,7 +3372,7 @@
       "node_kind": "heading",
       "norm_label": "17. instrucao pronta para outras ias",
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L242"
+      "source_location": "L249"
     },
     {
       "id": "docs_diretriz_desafios_visuais_18_controle_de_altera\u00e7\u00f5es",
@@ -3324,7 +3384,7 @@
       "node_kind": "heading",
       "norm_label": "18. controle de alteracoes",
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L274"
+      "source_location": "L282"
     },
     {
       "id": "docs_diretriz_desafios_visuais_1_finalidade",
@@ -3900,7 +3960,7 @@
       "node_kind": "heading",
       "norm_label": "antigravity",
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L106"
+      "source_location": "L107"
     },
     {
       "id": "docs_ai_skills_configura\u00e7\u00e3o_local",
@@ -3924,7 +3984,7 @@
       "node_kind": "heading",
       "norm_label": "copywriting",
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L79"
+      "source_location": "L80"
     },
     {
       "id": "docs_ai_skills_fontes_fixadas",
@@ -3936,7 +3996,7 @@
       "node_kind": "heading",
       "norm_label": "fontes fixadas",
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L143"
+      "source_location": "L144"
     },
     {
       "id": "docs_ai_skills_frontend_design",
@@ -3948,7 +4008,7 @@
       "node_kind": "heading",
       "norm_label": "frontend design",
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L73"
+      "source_location": "L74"
     },
     {
       "id": "docs_ai_skills_graphify",
@@ -3972,7 +4032,7 @@
       "node_kind": "heading",
       "norm_label": "humanizer",
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L85"
+      "source_location": "L86"
     },
     {
       "id": "docs_ai_skills_o_que_est\u00e1_instalado",
@@ -3996,7 +4056,7 @@
       "node_kind": "heading",
       "norm_label": "ordem em tarefas combinadas",
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L91"
+      "source_location": "L92"
     },
     {
       "id": "docs_ai_skills_repert\u00f3rio_de_ia_do_medsync_frontend",
@@ -4020,7 +4080,7 @@
       "node_kind": "heading",
       "norm_label": "repositorios do medsync",
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L123"
+      "source_location": "L124"
     },
     {
       "id": "docs_ai_skills_roteamento_obrigat\u00f3rio",
@@ -4044,7 +4104,7 @@
       "node_kind": "heading",
       "norm_label": "seguranca e atualizacao",
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L133"
+      "source_location": "L134"
     },
     {
       "id": "docs_result_debrief",
@@ -4309,7 +4369,7 @@
       "node_kind": "heading",
       "norm_label": "0.1.0 \u2014 29/08/2026",
       "source_file": "CHANGELOG.md",
-      "source_location": "L66"
+      "source_location": "L70"
     },
     {
       "id": "changelog_adicionado",
@@ -4336,7 +4396,7 @@
       "source_location": "L28"
     },
     {
-      "id": "changelog_alterado_68",
+      "id": "changelog_alterado_72",
       "label": "Alterado",
       "_origin": "ast",
       "community": 31,
@@ -4345,7 +4405,7 @@
       "node_kind": "heading",
       "norm_label": "alterado",
       "source_file": "CHANGELOG.md",
-      "source_location": "L68"
+      "source_location": "L72"
     },
     {
       "id": "changelog_corrigido",
@@ -4360,7 +4420,7 @@
       "source_location": "L51"
     },
     {
-      "id": "changelog_corrigido_71",
+      "id": "changelog_corrigido_75",
       "label": "Corrigido",
       "_origin": "ast",
       "community": 31,
@@ -4369,7 +4429,7 @@
       "node_kind": "heading",
       "norm_label": "corrigido",
       "source_file": "CHANGELOG.md",
-      "source_location": "L71"
+      "source_location": "L75"
     },
     {
       "id": "changelog_hist\u00f3rico_de_altera\u00e7\u00f5es",
@@ -4692,6 +4752,72 @@
       "source_location": "L5"
     },
     {
+      "id": "package",
+      "label": "package.json",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "package.json",
+      "source_file": "package.json",
+      "source_location": "L1"
+    },
+    {
+      "id": "package_dependencies",
+      "label": "dependencies",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "dependencies",
+      "source_file": "package.json",
+      "source_location": "L13"
+    },
+    {
+      "id": "package_dependencies_react",
+      "label": "react",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "react",
+      "source_file": "package.json",
+      "source_location": "L14"
+    },
+    {
+      "id": "package_dependencies_react_dom",
+      "label": "react-dom",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "react-dom",
+      "source_file": "package.json",
+      "source_location": "L15"
+    },
+    {
+      "id": "package_dependencies_react_icons",
+      "label": "react-icons",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "react-icons",
+      "source_file": "package.json",
+      "source_location": "L16"
+    },
+    {
+      "id": "package_dependencies_react_router_dom",
+      "label": "react-router-dom",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "react-router-dom",
+      "source_file": "package.json",
+      "source_location": "L17"
+    },
+    {
       "id": "package_devdependencies",
       "label": "devDependencies",
       "_origin": "ast",
@@ -4835,6 +4961,116 @@
       "source_location": "L31"
     },
     {
+      "id": "package_name",
+      "label": "name",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "name",
+      "source_file": "package.json",
+      "source_location": "L2"
+    },
+    {
+      "id": "package_private",
+      "label": "private",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "private",
+      "source_file": "package.json",
+      "source_location": "L3"
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "scripts",
+      "source_file": "package.json",
+      "source_location": "L6"
+    },
+    {
+      "id": "package_scripts_build",
+      "label": "build",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "build",
+      "source_file": "package.json",
+      "source_location": "L8"
+    },
+    {
+      "id": "package_scripts_dev",
+      "label": "dev",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "dev",
+      "source_file": "package.json",
+      "source_location": "L7"
+    },
+    {
+      "id": "package_scripts_lint",
+      "label": "lint",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "lint",
+      "source_file": "package.json",
+      "source_location": "L9"
+    },
+    {
+      "id": "package_scripts_preview",
+      "label": "preview",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "preview",
+      "source_file": "package.json",
+      "source_location": "L11"
+    },
+    {
+      "id": "package_scripts_test",
+      "label": "test",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "test",
+      "source_file": "package.json",
+      "source_location": "L10"
+    },
+    {
+      "id": "package_type",
+      "label": "type",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "type",
+      "source_file": "package.json",
+      "source_location": "L5"
+    },
+    {
+      "id": "package_version",
+      "label": "version",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "code",
+      "norm_label": "version",
+      "source_file": "package.json",
+      "source_location": "L4"
+    },
+    {
       "id": "eslint",
       "label": "eslint",
       "_origin": "ast",
@@ -4888,6 +5124,50 @@
       "norm_label": "jsdom",
       "source_file": "package.json",
       "source_location": "L29"
+    },
+    {
+      "id": "react",
+      "label": "react",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "concept",
+      "norm_label": "react",
+      "source_file": "package.json",
+      "source_location": "L14"
+    },
+    {
+      "id": "react_dom",
+      "label": "react-dom",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "concept",
+      "norm_label": "react-dom",
+      "source_file": "package.json",
+      "source_location": "L15"
+    },
+    {
+      "id": "react_icons",
+      "label": "react-icons",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "concept",
+      "norm_label": "react-icons",
+      "source_file": "package.json",
+      "source_location": "L16"
+    },
+    {
+      "id": "react_router_dom",
+      "label": "react-router-dom",
+      "_origin": "ast",
+      "community": 5,
+      "community_name": "devDependencies",
+      "file_type": "concept",
+      "norm_label": "react-router-dom",
+      "source_file": "package.json",
+      "source_location": "L17"
     },
     {
       "id": "testing_library_jest_dom",
@@ -4967,224 +5247,37 @@
       "source_location": "L31"
     },
     {
-      "id": "package",
-      "label": "package.json",
+      "id": "counter",
+      "label": "Counter",
       "_origin": "ast",
       "community": 6,
-      "community_name": "package.json",
+      "community_name": "audit",
       "file_type": "code",
-      "norm_label": "package.json",
-      "source_file": "package.json",
+      "norm_label": "counter",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "path",
+      "label": "Path",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "audit",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "scripts_audit_visual_challenge_distribution",
+      "label": "audit_visual_challenge_distribution.py",
+      "_origin": "ast",
+      "community": 6,
+      "community_name": "audit",
+      "file_type": "code",
+      "norm_label": "audit_visual_challenge_distribution.py",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
       "source_location": "L1"
-    },
-    {
-      "id": "package_dependencies",
-      "label": "dependencies",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "dependencies",
-      "source_file": "package.json",
-      "source_location": "L13"
-    },
-    {
-      "id": "package_dependencies_react",
-      "label": "react",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "react",
-      "source_file": "package.json",
-      "source_location": "L14"
-    },
-    {
-      "id": "package_dependencies_react_dom",
-      "label": "react-dom",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "react-dom",
-      "source_file": "package.json",
-      "source_location": "L15"
-    },
-    {
-      "id": "package_dependencies_react_icons",
-      "label": "react-icons",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "react-icons",
-      "source_file": "package.json",
-      "source_location": "L16"
-    },
-    {
-      "id": "package_dependencies_react_router_dom",
-      "label": "react-router-dom",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "react-router-dom",
-      "source_file": "package.json",
-      "source_location": "L17"
-    },
-    {
-      "id": "package_name",
-      "label": "name",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "name",
-      "source_file": "package.json",
-      "source_location": "L2"
-    },
-    {
-      "id": "package_private",
-      "label": "private",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "private",
-      "source_file": "package.json",
-      "source_location": "L3"
-    },
-    {
-      "id": "package_scripts",
-      "label": "scripts",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "scripts",
-      "source_file": "package.json",
-      "source_location": "L6"
-    },
-    {
-      "id": "package_scripts_build",
-      "label": "build",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "build",
-      "source_file": "package.json",
-      "source_location": "L8"
-    },
-    {
-      "id": "package_scripts_dev",
-      "label": "dev",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "dev",
-      "source_file": "package.json",
-      "source_location": "L7"
-    },
-    {
-      "id": "package_scripts_lint",
-      "label": "lint",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "lint",
-      "source_file": "package.json",
-      "source_location": "L9"
-    },
-    {
-      "id": "package_scripts_preview",
-      "label": "preview",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "preview",
-      "source_file": "package.json",
-      "source_location": "L11"
-    },
-    {
-      "id": "package_scripts_test",
-      "label": "test",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "test",
-      "source_file": "package.json",
-      "source_location": "L10"
-    },
-    {
-      "id": "package_type",
-      "label": "type",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "type",
-      "source_file": "package.json",
-      "source_location": "L5"
-    },
-    {
-      "id": "package_version",
-      "label": "version",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "code",
-      "norm_label": "version",
-      "source_file": "package.json",
-      "source_location": "L4"
-    },
-    {
-      "id": "react",
-      "label": "react",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "concept",
-      "norm_label": "react",
-      "source_file": "package.json",
-      "source_location": "L14"
-    },
-    {
-      "id": "react_dom",
-      "label": "react-dom",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "concept",
-      "norm_label": "react-dom",
-      "source_file": "package.json",
-      "source_location": "L15"
-    },
-    {
-      "id": "react_icons",
-      "label": "react-icons",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "concept",
-      "norm_label": "react-icons",
-      "source_file": "package.json",
-      "source_location": "L16"
-    },
-    {
-      "id": "react_router_dom",
-      "label": "react-router-dom",
-      "_origin": "ast",
-      "community": 6,
-      "community_name": "package.json",
-      "file_type": "concept",
-      "norm_label": "react-router-dom",
-      "source_file": "package.json",
-      "source_location": "L17"
     },
     {
       "id": "src_app_simulacaocaso",
@@ -5397,6 +5490,78 @@
     }
   ],
   "links": [
+    {
+      "source": "scripts_audit_visual_challenge_distribution_audit",
+      "target": "scripts_audit_visual_challenge_distribution_load_answers",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution_audit",
+      "target": "scripts_audit_visual_challenge_distribution_load_option_orders",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution_audit",
+      "target": "counter",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L73",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution_audit",
+      "target": "scripts_audit_visual_challenge_distribution_format_counts",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution_main",
+      "target": "scripts_audit_visual_challenge_distribution_audit",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L100",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution_main",
+      "target": "path",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L96",
+      "weight": 1.0
+    },
     {
       "source": "scripts_setup_agent_skills_download_local_files",
       "target": "scripts_setup_agent_skills_git_blob_sha1",
@@ -9522,6 +9687,54 @@
       "weight": 1.0
     },
     {
+      "source": "scripts_audit_visual_challenge_distribution_audit",
+      "target": "path",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution_format_counts",
+      "target": "counter",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution_load_answers",
+      "target": "path",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution_load_option_orders",
+      "target": "path",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
       "source": "agents",
       "target": "agents_instru\u00e7\u00f5es_para_agentes_e_colaboradores",
       "relation": "contains",
@@ -9556,24 +9769,24 @@
     },
     {
       "source": "changelog_0_1_0_29_08_2026",
-      "target": "changelog_alterado_68",
+      "target": "changelog_alterado_72",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "CHANGELOG.md",
-      "source_location": "L68",
+      "source_location": "L72",
       "weight": 1.0
     },
     {
       "source": "changelog_0_1_0_29_08_2026",
-      "target": "changelog_corrigido_71",
+      "target": "changelog_corrigido_75",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "CHANGELOG.md",
-      "source_location": "L71",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -9595,7 +9808,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "CHANGELOG.md",
-      "source_location": "L66",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -9650,7 +9863,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L106",
+      "source_location": "L107",
       "weight": 1.0
     },
     {
@@ -9661,7 +9874,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L123",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
@@ -9672,7 +9885,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L133",
+      "source_location": "L134",
       "weight": 1.0
     },
     {
@@ -9683,7 +9896,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L143",
+      "source_location": "L144",
       "weight": 1.0
     },
     {
@@ -9727,7 +9940,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L91",
+      "source_location": "L92",
       "weight": 1.0
     },
     {
@@ -9749,7 +9962,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L73",
+      "source_location": "L74",
       "weight": 1.0
     },
     {
@@ -9760,7 +9973,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L79",
+      "source_location": "L80",
       "weight": 1.0
     },
     {
@@ -9771,7 +9984,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ai/SKILLS.md",
-      "source_location": "L85",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -9925,7 +10138,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L158",
+      "source_location": "L164",
       "weight": 1.0
     },
     {
@@ -9947,7 +10160,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L170",
+      "source_location": "L176",
       "weight": 1.0
     },
     {
@@ -9958,7 +10171,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L176",
+      "source_location": "L182",
       "weight": 1.0
     },
     {
@@ -9969,7 +10182,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L189",
+      "source_location": "L195",
       "weight": 1.0
     },
     {
@@ -9980,7 +10193,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L200",
+      "source_location": "L206",
       "weight": 1.0
     },
     {
@@ -9991,7 +10204,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L213",
+      "source_location": "L219",
       "weight": 1.0
     },
     {
@@ -10002,7 +10215,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L219",
+      "source_location": "L225",
       "weight": 1.0
     },
     {
@@ -10013,7 +10226,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L242",
+      "source_location": "L249",
       "weight": 1.0
     },
     {
@@ -10035,7 +10248,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DIRETRIZ_DESAFIOS_VISUAIS.md",
-      "source_location": "L274",
+      "source_location": "L282",
       "weight": 1.0
     },
     {
@@ -10597,6 +10810,61 @@
       "confidence_score": 1.0,
       "source_file": "README.md",
       "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution",
+      "target": "scripts_audit_visual_challenge_distribution_load_answers",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution",
+      "target": "scripts_audit_visual_challenge_distribution_load_option_orders",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution",
+      "target": "scripts_audit_visual_challenge_distribution_format_counts",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution",
+      "target": "scripts_audit_visual_challenge_distribution_audit",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_audit_visual_challenge_distribution",
+      "target": "scripts_audit_visual_challenge_distribution_main",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/audit_visual_challenge_distribution.py",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -13838,5 +14106,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "11cee9dc7eeac376ce123131662476598bdbbaa6"
+  "built_at_commit": "77240ee42f5dbf87bcc8dee218695d25292a3fb1"
 }

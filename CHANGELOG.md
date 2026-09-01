@@ -49,6 +49,10 @@
 - Aprimorado o card "Como usar este treino" (`.visual-guidance`) e ilha de filtros (`.visual-filter-island`) na página de Desafios Visuais.
 
 ### Corrigido
+- Redistribuídas as respostas corretas dos 150 desafios visuais entre A, B, C
+  e D, eliminando a concentração previsível na primeira alternativa.
+- Adicionada auditoria cruzada entre frontend e API para validar gabaritos e
+  exigir equilíbrio global e por blocos consecutivos de dez desafios.
 - Corrigida a ordem dos Hooks na animação da nota do debriefing: `useAnimatedScore` foi encapsulado em um componente próprio, evitando a falha `Rendered more hooks than during the previous render` ao atualizar ou abrir diretamente a página de resultado.
 - Adicionado teste de regressão para o carregamento de `/resultados/:progressoId` sem dados no estado de navegação, cobrindo a recuperação do resultado pela API.
 - Corrigido o visual da tela de carregamento da avaliação clínica (`ClinicalEvaluationLoader`), aplicando o tema escuro padrão com superfície profunda translúcida, tipografia em alto contraste `#ffffff` e removendo as bolinhas flutuantes azuis do fundo.

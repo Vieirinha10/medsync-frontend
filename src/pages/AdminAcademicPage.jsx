@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../styles/admin-academic.css';
+import '../styles/admin-operations.css';
 import {
   FiActivity,
   FiAlertTriangle,

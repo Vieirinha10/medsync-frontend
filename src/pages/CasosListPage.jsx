@@ -1,5 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../styles/simulation-v2.css';
+import '../styles/challenge-cards.css';
+import '../styles/clinical-cards.css';
 import {
     FiActivity,
     FiArrowRight,

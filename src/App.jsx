@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import {
   Routes,
   Route,
@@ -19,58 +19,45 @@ import {
   FiX,
 } from 'react-icons/fi';
 
-// Importação de todas as nossas páginas e componentes
 import HomePage from './pages/HomePage';
-import CasosListPage from './pages/CasosListPage';
-import SimulacaoCaso from './pages/SimulacaoCaso';
-import DashboardPage from './pages/DashboardPage';
-import CadastroPage from './pages/CadastroPage';
-import LoginPage from './pages/LoginPage';
-import VerificarEmailPage from './pages/VerificarEmailPage';
-import RecuperarSenhaPage from './pages/RecuperarSenhaPage';
-import RedefinirSenhaPage from './pages/RedefinirSenhaPage';
-import PlanosPage from './pages/PlanosPage';
-import PagamentoRetornoPage from './pages/PagamentoRetornoPage';
-import CheckoutPage from './pages/CheckoutPage';
-import DesafiosPage from './pages/DesafiosPage'; // 1. Importar a nova página
-import ResultadoSimulacaoPage from './pages/ResultadoSimulacaoPage';
-import AdminAcademicPage from './pages/AdminAcademicPage';
-import CadernoErrosPage from './pages/CadernoErrosPage';
-import TrilhasPage from './pages/TrilhasPage';
-import RevisoesPage from './pages/RevisoesPage';
-import QuestoesPage from './pages/QuestoesPage';
-import { InstitutionalPage, LegalPage } from './pages/InstitutionalPage';
 import SiteFooter from './components/SiteFooter';
 import ProtectedRoute from './components/ProtectedRoute';
 import AnnouncementBanner from './components/AnnouncementBanner';
 import { clearAuthToken, getAuthToken } from './services/api';
 
+const CasosListPage = lazy(() => import('./pages/CasosListPage'));
+const SimulacaoCaso = lazy(() => import('./pages/SimulacaoCaso'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const CadastroPage = lazy(() => import('./pages/CadastroPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const VerificarEmailPage = lazy(() => import('./pages/VerificarEmailPage'));
+const RecuperarSenhaPage = lazy(() => import('./pages/RecuperarSenhaPage'));
+const RedefinirSenhaPage = lazy(() => import('./pages/RedefinirSenhaPage'));
+const PlanosPage = lazy(() => import('./pages/PlanosPage'));
+const PagamentoRetornoPage = lazy(() => import('./pages/PagamentoRetornoPage'));
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
+const DesafiosPage = lazy(() => import('./pages/DesafiosPage'));
+const ResultadoSimulacaoPage = lazy(() => import('./pages/ResultadoSimulacaoPage'));
+const AdminAcademicPage = lazy(() => import('./pages/AdminAcademicPage'));
+const CadernoErrosPage = lazy(() => import('./pages/CadernoErrosPage'));
+const TrilhasPage = lazy(() => import('./pages/TrilhasPage'));
+const RevisoesPage = lazy(() => import('./pages/RevisoesPage'));
+const QuestoesPage = lazy(() => import('./pages/QuestoesPage'));
+const InstitutionalPage = lazy(() => import('./pages/InstitutionalPage').then((module) => ({
+  default: module.InstitutionalPage,
+})));
+const LegalPage = lazy(() => import('./pages/InstitutionalPage').then((module) => ({
+  default: module.LegalPage,
+})));
+
 // Importa o arquivo de estilo principal
 import './App.css';
 import './styles/refresh.css';
 import './styles/vibrance.css';
-import './styles/simulation-v2.css';
-import './styles/challenges.css';
-import './styles/dashboard.css';
 import './styles/footer.css';
-import './styles/institutional.css';
-import './styles/pricing.css';
-import './styles/admin-academic.css';
 import './styles/atmosphere.css';
-import './styles/error-notebook.css';
-import './styles/learning-paths.css';
-import './styles/spaced-review.css';
-import './styles/clinical-cards.css';
-import './styles/admin-operations.css';
-import './styles/challenge-cards.css';
-import './styles/home-solid.css';
 import './styles/platform-solid.css';
-import './styles/checkout.css';
-import './styles/visual-challenges-v2.css';
-import './styles/review-center.css';
-import './styles/questions.css';
 import './styles/theme.css';
-import './styles/result-debrief.css';
 
 
 function App() {
@@ -220,7 +207,13 @@ function App() {
       <AnnouncementBanner />
 
       <main className="App-main">
-        <Routes>
+        <Suspense fallback={(
+          <div className="route-loading" role="status" aria-live="polite">
+            <img src="/logo-medsync.png" alt="" />
+            <span>Carregando experiência MedSync…</span>
+          </div>
+        )}>
+          <Routes>
           {/* --- Rotas Públicas --- */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -242,7 +235,7 @@ function App() {
           <Route path="/casos" element={<ProtectedRoute><CasosListPage /></ProtectedRoute>} />
           <Route path="/casos/:casoId" element={<ProtectedRoute><SimulacaoCaso /></ProtectedRoute>} />
           <Route path="/resultados/:progressoId" element={<ProtectedRoute><ResultadoSimulacaoPage /></ProtectedRoute>} />
-          <Route path="/desafios" element={<ProtectedRoute><DesafiosPage /></ProtectedRoute>} /> {/* 3. Adicionar a nova rota */}
+          <Route path="/desafios" element={<ProtectedRoute><DesafiosPage /></ProtectedRoute>} />
           <Route path="/questoes" element={<ProtectedRoute><QuestoesPage /></ProtectedRoute>} />
           <Route path="/caderno-erros" element={<ProtectedRoute><CadernoErrosPage /></ProtectedRoute>} />
           <Route path="/trilhas" element={<ProtectedRoute><TrilhasPage /></ProtectedRoute>} />
@@ -250,7 +243,8 @@ function App() {
           <Route path="/revisoes" element={<ProtectedRoute><RevisoesPage /></ProtectedRoute>} />
           <Route path="/admin/academico" element={<ProtectedRoute><AdminAcademicPage /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute><AdminAcademicPage /></ProtectedRoute>} />
-        </Routes>
+          </Routes>
+        </Suspense>
       </main>
 
       <SiteFooter />

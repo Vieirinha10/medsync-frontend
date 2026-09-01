@@ -15,6 +15,7 @@ import {
   FiTrendingUp,
   FiZap,
 } from 'react-icons/fi';
+import '../styles/pricing.css';
 import {
   FREE_PLAN,
   MONTHLY_RECURRING_PLAN,

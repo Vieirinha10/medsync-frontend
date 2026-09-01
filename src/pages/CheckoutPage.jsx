@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
+import '../styles/checkout.css';
 import {
   FiArrowLeft,
   FiCheck,

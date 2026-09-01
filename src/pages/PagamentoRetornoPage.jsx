@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import '../styles/pricing.css';
 import {
   FiAlertCircle,
   FiCheckCircle,

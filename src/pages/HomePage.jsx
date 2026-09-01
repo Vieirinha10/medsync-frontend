@@ -13,6 +13,7 @@ import {
   SYNAPSE_PROCESS_STEPS,
   TRUST_PILLARS,
 } from '../components/home/homeContent';
+import '../styles/home-solid.css';
 
 
 const HomePage = () => {

@@ -54,28 +54,10 @@ const LegalPage = lazy(() => import('./pages/InstitutionalPage').then((module) =
 import './App.css';
 import './styles/refresh.css';
 import './styles/vibrance.css';
-import './styles/simulation-v2.css';
-import './styles/challenges.css';
-import './styles/dashboard.css';
 import './styles/footer.css';
-import './styles/institutional.css';
-import './styles/pricing.css';
-import './styles/admin-academic.css';
 import './styles/atmosphere.css';
-import './styles/error-notebook.css';
-import './styles/learning-paths.css';
-import './styles/spaced-review.css';
-import './styles/clinical-cards.css';
-import './styles/admin-operations.css';
-import './styles/challenge-cards.css';
-import './styles/home-solid.css';
 import './styles/platform-solid.css';
-import './styles/checkout.css';
-import './styles/visual-challenges-v2.css';
-import './styles/review-center.css';
-import './styles/questions.css';
 import './styles/theme.css';
-import './styles/result-debrief.css';
 
 
 function App() {

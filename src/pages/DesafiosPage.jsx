@@ -1,4 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import '../styles/challenges.css';
+import '../styles/challenge-cards.css';
+import '../styles/visual-challenges-v2.css';
 import {
   FiArrowLeft,
   FiArrowRight,

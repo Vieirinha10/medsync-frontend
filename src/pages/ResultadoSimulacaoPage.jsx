@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import '../styles/simulation-v2.css';
+import '../styles/result-debrief.css';
 import {
   FiActivity,
   FiAlertTriangle,

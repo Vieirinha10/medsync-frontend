@@ -14,6 +14,7 @@ import {
   FiZap,
 } from 'react-icons/fi';
 import { enhancedLegalPages } from '../content/legalContent';
+import '../styles/institutional.css';
 
 const companyName = 'MEDSYNC TECNOLOGIA EM SAUDE INOVA SIMPLES I.S. - ME';
 const companyCnpj = '63.108.735/0001-53';

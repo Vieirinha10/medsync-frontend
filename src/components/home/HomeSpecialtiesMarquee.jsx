@@ -1,0 +1,14 @@
+const HomeSpecialtiesMarquee = ({ specialties }) => (
+  <section className="specialty-marquee-section" aria-label="Especialidades médicas disponíveis">
+    <div className="specialty-marquee-track">
+      {[...specialties, ...specialties].map((specialty, index) => (
+        <span className="specialty-marquee-item" key={`spec-${specialty}-${index}`}>
+          <strong>{specialty}</strong>
+          <span className="specialty-divider">/</span>
+        </span>
+      ))}
+    </div>
+  </section>
+);
+
+export default HomeSpecialtiesMarquee;

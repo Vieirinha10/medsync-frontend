@@ -53,11 +53,16 @@ describe('HomePage', () => {
     fireEvent.click(screen.getByRole('tab', { name: /DEVOLUTIVA PERSONALIZADA/i }));
     expect(within(terminal).getByText('Feedback personalizado pronto')).toBeInTheDocument();
 
-    // Testa etapas do feedback
-    const feedbackSystem = document.querySelector('.home-feedback-system');
-    expect(feedbackSystem).not.toBeNull();
-    fireEvent.click(within(feedbackSystem).getByRole('tab', { name: /Rubrica clínica/i }));
-    expect(screen.getByRole('heading', { name: 'A comparação segue uma estrutura clínica' })).toBeInTheDocument();
+    expect(document.querySelector('.home-feedback-system')).toBeNull();
+    const integratedResult = document.querySelector('.synapse-integrated-result');
+    expect(integratedResult).not.toBeNull();
+    expect(within(integratedResult).getByRole('heading', { name: 'É assim que suas decisões voltam para você.' })).toBeInTheDocument();
+    expect(within(integratedResult).getByLabelText('Nota geral 8,4 de 10')).toBeInTheDocument();
+    expect(within(integratedResult).getByText('O QUE VOCÊ FEZ BEM')).toBeInTheDocument();
+    expect(within(integratedResult).getByText('ONDE PODE EVOLUIR')).toBeInTheDocument();
+    expect(within(integratedResult).getByText('ANÁLISE DOS EXAMES')).toBeInTheDocument();
+    expect(within(integratedResult).getByText('SEGURANÇA DO PACIENTE')).toBeInTheDocument();
+    expect(within(integratedResult).getByText('PLANO RÁPIDO DE MELHORIA')).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Robustez que o estudante consegue enxergar.' })).toBeInTheDocument();
   });
 

@@ -8,7 +8,6 @@ import HomeSpecialtiesMarquee from '../components/home/HomeSpecialtiesMarquee';
 import HomeSynapseProcess from '../components/home/HomeSynapseProcess';
 import {
   ACADEMIC_INSTITUTIONS,
-  FEEDBACK_STEPS,
   HERO_SIMULATION_STEPS,
   MEDICAL_SPECIALTIES,
   REAL_TESTIMONIALS,
@@ -52,7 +51,6 @@ const HomePage = () => {
       observers.forEach((obs) => obs.disconnect());
     };
   }, []);
-  const [activeFeedbackStep, setActiveFeedbackStep] = useState(0);
   const homeRef = useRef(null);
 
   useEffect(() => {
@@ -110,8 +108,6 @@ const HomePage = () => {
     ? '—'
     : studentCount.toLocaleString('pt-BR');
 
-  const activeFeedback = FEEDBACK_STEPS[activeFeedbackStep];
-
   return (
     <div className="home-container home-solid" ref={homeRef}>
       <MedSyncIntro />
@@ -128,7 +124,7 @@ const HomePage = () => {
       {/* BLOCO 2: DIVISOR CONECTOR — ESTEIRA DE ESPECIALIDADES */}
       <HomeSpecialtiesMarquee specialties={MEDICAL_SPECIALTIES} />
 
-      {/* BLOCO 3: SYNAPSE IA · A BANCA MÉDICA (ARENA ORBITAL DOS 5 MODELOS DE IA) */}
+      {/* BLOCO 3: SYNAPSE IA · PROCESSO EDUCACIONAL E FEEDBACK */}
       <HomeSynapseProcess
         activeStep={activeSynapseStep}
         setActiveStep={setActiveSynapseStep}
@@ -138,10 +134,6 @@ const HomePage = () => {
 
       <HomeLowerSections
         formattedStudentCount={formattedStudentCount}
-        activeFeedbackStep={activeFeedbackStep}
-        setActiveFeedbackStep={setActiveFeedbackStep}
-        activeFeedback={activeFeedback}
-        FEEDBACK_STEPS={FEEDBACK_STEPS}
         REAL_TESTIMONIALS={REAL_TESTIMONIALS}
         ACADEMIC_INSTITUTIONS={ACADEMIC_INSTITUTIONS}
         TRUST_PILLARS={TRUST_PILLARS}

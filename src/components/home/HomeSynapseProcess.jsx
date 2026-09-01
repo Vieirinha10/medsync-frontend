@@ -2,6 +2,7 @@ import {
   FiActivity,
   FiCheckCircle,
   FiCpu,
+  FiFileText,
   FiLayers,
   FiShield,
   FiTarget,
@@ -213,6 +214,97 @@ const HomeSynapseProcess = ({
               </div>
             </div>
           </article>
+        </div>
+      </div>
+
+      <div className="synapse-integrated-result" aria-labelledby="synapse-result-title">
+        <header className="synapse-result-intro">
+          <span className="section-eyebrow-tag">
+            <FiCheckCircle aria-hidden="true" />
+            RESULTADO ORGANIZADO PARA EVOLUIR
+          </span>
+          <h2 id="synapse-result-title">É assim que suas decisões voltam para você.</h2>
+          <p>
+            A devolutiva reúne desempenho, justificativa clínica e próximos passos em uma única
+            leitura — sem esconder uma conduta incompleta atrás de uma boa hipótese.
+          </p>
+        </header>
+
+        <div className="result-preview-shell">
+          <span className="result-preview-label">SYNAPSE · PRÉVIA DO FEEDBACK PERSONALIZADO</span>
+
+          <div className="result-preview-main">
+            <article className="preview-score-card">
+              <small>NOTA GERAL</small>
+              <div className="preview-score-ring" aria-label="Nota geral 8,4 de 10">
+                <strong>8,4</strong>
+                <span>DE 10</span>
+              </div>
+              <h3>Bom raciocínio, com uma prioridade a corrigir.</h3>
+              <p>A hipótese foi bem construída; a conduta precisa explicitar reavaliação e critérios de deterioração.</p>
+            </article>
+
+            <div className="preview-clinical-cards">
+              <article>
+                <span><FiCheckCircle aria-hidden="true" /></span>
+                <div>
+                  <small>O QUE VOCÊ FEZ BEM</small>
+                  <h3>Reconheceu o padrão clínico e investigou com intenção.</h3>
+                  <p>Você relacionou dor pós-prandial, febre e sinal de Murphy, priorizando ultrassonografia e hipótese de colecistite aguda.</p>
+                </div>
+              </article>
+
+              <article>
+                <span><FiTrendingUp aria-hidden="true" /></span>
+                <div>
+                  <small>ONDE PODE EVOLUIR</small>
+                  <h3>Complete a sequência de cuidado após a conduta inicial.</h3>
+                  <p>Inclua monitorização, reavaliação clínica e critérios objetivos para reconhecer deterioração ou necessidade de escalonamento.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div className="synapse-result-detail-grid">
+            <article className="synapse-result-exams">
+              <header>
+                <FiFileText aria-hidden="true" />
+                <div>
+                  <small>ANÁLISE DOS EXAMES</small>
+                  <strong>Cada solicitação recebe uma justificativa.</strong>
+                </div>
+              </header>
+              <div className="synapse-exam-groups">
+                <span className="is-good"><small>Bons</small>Hemograma · PCR · Ultrassonografia</span>
+                <span className="is-missing"><small>Faltante</small>Provas de função hepática</span>
+                <span className="is-low-value"><small>Baixo valor inicial</small>Tomografia abdominal</span>
+              </div>
+            </article>
+
+            <article className="synapse-result-safety">
+              <header>
+                <FiShield aria-hidden="true" />
+                <div>
+                  <small>SEGURANÇA DO PACIENTE</small>
+                  <strong>Reavaliação precisa fazer parte da conduta.</strong>
+                </div>
+              </header>
+              <p>Sem monitorização e critérios de piora, uma evolução desfavorável pode ser reconhecida tarde.</p>
+            </article>
+          </div>
+
+          <div className="preview-improvement-plan">
+            <div>
+              <FiTarget aria-hidden="true" />
+              <span>
+                <small>PLANO RÁPIDO DE MELHORIA</small>
+                <strong>Próximos pontos para revisar</strong>
+              </span>
+            </div>
+            <p>1. Reavaliação seriada</p>
+            <p>2. Critérios de deterioração</p>
+            <p>3. Sequência terapêutica</p>
+          </div>
         </div>
       </div>
     </section>

@@ -134,43 +134,6 @@ export const SYNAPSE_PROCESS_STEPS = [
   },
 ];
 
-export const FEEDBACK_STEPS = [
-  {
-    label: 'Caso clínico',
-    eyebrow: '01 · CONTEXTO',
-    title: 'A análise começa pelo caso completo',
-    description: 'História, sinais vitais, avaliações e exames disponíveis e objetivos de aprendizagem formam o contexto da análise.',
-    signal: 'Contexto clínico e objetivos do caso',
-  },
-  {
-    label: 'Suas decisões',
-    eyebrow: '02 · RACIOCÍNIO',
-    title: 'Cada escolha entra na avaliação',
-    description: 'Avaliações, exames, justificativas, hipótese e conduta são analisados como partes do mesmo raciocínio clínico.',
-    signal: 'Decisões registradas por etapa',
-  },
-  {
-    label: 'Rubrica clínica',
-    eyebrow: '03 · CRITÉRIOS',
-    title: 'A comparação segue uma estrutura clínica',
-    description: 'A Synapse usa a rubrica específica do caso para reconhecer acertos, omissões e prioridades esperadas.',
-    signal: 'Critérios definidos para o caso',
-  },
-  {
-    label: 'Segurança',
-    eyebrow: '04 · IMPACTO',
-    title: 'O paciente continua no centro',
-    description: 'A avaliação considera riscos, reação imediata e desfecho clínico das decisões tomadas durante a simulação.',
-    signal: 'Consequências e segurança do paciente',
-  },
-  {
-    label: 'Seu feedback',
-    eyebrow: '05 · EVOLUÇÃO',
-    title: 'O resultado vira um próximo passo',
-    description: 'A resposta final organiza a nota, a explicação clínica e um plano de melhoria adequado ao desempenho.',
-    signal: 'Feedback individual e plano de melhoria',
-  },
-];
 
 export const REAL_TESTIMONIALS = [
   {

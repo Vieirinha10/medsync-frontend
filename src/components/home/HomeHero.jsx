@@ -57,6 +57,10 @@ const HomeHero = ({
           aria-label="Demonstração interativa de um caso clínico no MedSync"
           onMouseEnter={() => setIsHeroPaused(true)}
           onMouseLeave={() => setIsHeroPaused(false)}
+          onFocusCapture={() => setIsHeroPaused(true)}
+          onBlurCapture={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setIsHeroPaused(false);
+          }}
         >
           <div className="hero-real-case-window">
             {/* Top Bar com os 5 passos interativos */}

@@ -34,6 +34,9 @@ body {
 .App-header { background-color: var(--card-bg); padding: 0 40px; box-shadow: var(--shadow-sm); position: sticky; top: 0; z-index: 1000; }
 .App-nav { display: flex; justify-content: space-between; align-items: center; height: 70px; max-width: 1200px; margin: 0 auto; }
 .App-main { flex-grow: 1; }
+.route-loading { display: grid; min-height: min(56vh, 540px); place-content: center; justify-items: center; gap: 14px; color: #9cc3d3; background: #031a2a; }
+.route-loading img { width: min(240px, 56vw); height: auto; }
+.route-loading span { font-size: .78rem; font-weight: 600; letter-spacing: .06em; }
 .App-footer { background-color: var(--dark-blue); color: #ccc; text-align: center; padding: 20px; font-size: 0.9rem; }
 
 .logo-link { display: flex; align-items: center; }

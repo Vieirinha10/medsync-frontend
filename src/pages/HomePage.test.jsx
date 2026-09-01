@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { api } from '../services/api';
@@ -17,6 +17,7 @@ describe('HomePage', () => {
 
   afterEach(() => {
     cleanup();
+    vi.useRealTimers();
   });
 
   it('apresenta prova social e abrangência médica com dados reais', async () => {
@@ -98,5 +99,30 @@ describe('HomePage', () => {
     expect(screen.getAllByText('Feedback clínico personalizado da Synapse')).toHaveLength(3);
     expect(screen.queryByText(/Synapse 5-Core com Junta Médica/i)).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Estude com método.Decida com confiança.' })).toBeInTheDocument();
+  });
+
+  it('pausa a demonstração automática quando a página não está visível', () => {
+    api.getPublicStats.mockResolvedValue({ estudantes_medsync: 127 });
+    vi.useFakeTimers();
+    const visibilityDescriptor = Object.getOwnPropertyDescriptor(document, 'visibilityState');
+    Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
+
+    render(<MemoryRouter><HomePage /></MemoryRouter>);
+    const patientTab = screen.getByRole('tab', { name: '01 · Paciente' });
+    const examsTab = screen.getByRole('tab', { name: '02 · Exames' });
+
+    act(() => vi.advanceTimersByTime(6000));
+    expect(patientTab).toHaveAttribute('aria-selected', 'true');
+
+    Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'visible' });
+    act(() => document.dispatchEvent(new Event('visibilitychange')));
+    act(() => vi.advanceTimersByTime(5000));
+    expect(examsTab).toHaveAttribute('aria-selected', 'true');
+
+    if (visibilityDescriptor) {
+      Object.defineProperty(document, 'visibilityState', visibilityDescriptor);
+    } else {
+      delete document.visibilityState;
+    }
   });
 });

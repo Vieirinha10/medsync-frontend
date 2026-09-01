@@ -19,36 +19,35 @@ const HomePage = () => {
   const [studentCount, setStudentCount] = useState(null);
   const [activeHeroStep, setActiveHeroStep] = useState(0);
   const [isHeroPaused, setIsHeroPaused] = useState(false);
+  const [isPageVisible, setIsPageVisible] = useState(() => document.visibilityState !== 'hidden');
   const [activeSynapseStep, setActiveSynapseStep] = useState(0);
   const synapseStepRefs = useRef([]);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
 
-    const observers = [];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSynapseStep(Number(entry.target.dataset.synapseStep));
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '-25% 0px -35% 0px',
+        threshold: 0.15,
+      }
+    );
+
     synapseStepRefs.current.forEach((el, index) => {
       if (!el) return;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActiveSynapseStep(index);
-            }
-          });
-        },
-        {
-          root: null,
-          rootMargin: '-25% 0px -35% 0px',
-          threshold: 0.15,
-        }
-      );
+      el.dataset.synapseStep = String(index);
       observer.observe(el);
-      observers.push(observer);
     });
 
-    return () => {
-      observers.forEach((obs) => obs.disconnect());
-    };
+    return () => observer.disconnect();
   }, []);
   const homeRef = useRef(null);
 
@@ -68,16 +67,22 @@ const HomePage = () => {
     };
   }, []);
 
-  // Timer automático para alternar os 5 cards da simulação a cada 5 segundos
   useEffect(() => {
-    if (isHeroPaused) return undefined;
+    const handleVisibilityChange = () => setIsPageVisible(document.visibilityState !== 'hidden');
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (isHeroPaused || !isPageVisible || prefersReducedMotion) return undefined;
 
     const timer = setInterval(() => {
       setActiveHeroStep((prev) => (prev + 1) % HERO_SIMULATION_STEPS.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [isHeroPaused]);
+  }, [activeHeroStep, isHeroPaused, isPageVisible]);
 
   useEffect(() => {
     const root = homeRef.current;

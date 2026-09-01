@@ -26,7 +26,7 @@ describe('HomePage', () => {
     render(<MemoryRouter><HomePage /></MemoryRouter>);
 
     const stats = screen.getByRole('region', { name: 'Números do MedSync' });
-    expect(within(stats).getByText('19 áreas médicas contempladas')).toBeInTheDocument();
+    expect(within(stats).getByText('41 áreas e especialidades contempladas')).toBeInTheDocument();
     expect(within(stats).getAllByRole('listitem')).toHaveLength(4);
 
     const specialties = screen.getByRole('region', { name: 'Especialidades médicas disponíveis' });
@@ -157,5 +157,11 @@ describe('HomePage', () => {
     fireEvent.keyDown(responseTab, { key: 'ArrowRight' });
     expect(contextTab).toHaveAttribute('aria-selected', 'true');
     expect(contextTab).toHaveFocus();
+
+    const documentIds = [...document.querySelectorAll('[id]')].map(({ id }) => id);
+    expect(new Set(documentIds).size).toBe(documentIds.length);
+    screen.getAllByRole('tab').forEach((tab) => {
+      expect(document.getElementById(tab.getAttribute('aria-controls'))).not.toBeNull();
+    });
   });
 });

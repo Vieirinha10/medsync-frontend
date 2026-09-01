@@ -142,6 +142,7 @@ const HomePage = () => {
 
       <HomeLowerSections
         formattedStudentCount={formattedStudentCount}
+        medicalSpecialtyCount={MEDICAL_SPECIALTIES.length}
         ACADEMIC_INSTITUTIONS={ACADEMIC_INSTITUTIONS}
         TRUST_PILLARS={TRUST_PILLARS}
       />

@@ -105,10 +105,8 @@
 :root[data-theme='dark'] :where(
   .solid-proof-morph,
   .home-synapse-section,
-  .home-result-preview,
   .home-academic-network,
   .solid-features,
-  .solid-process,
   .solid-value-section
 ) {
   color: #dcebf1;
@@ -118,10 +116,8 @@
 
 :root[data-theme='dark'] :where(
   .home-synapse-section,
-  .home-result-preview,
   .home-academic-network,
   .solid-features,
-  .solid-process,
   .solid-value-section
 ) :where(h2, h3, strong) {
   color: #eef9fc;
@@ -129,24 +125,19 @@
 
 :root[data-theme='dark'] :where(
   .home-synapse-section,
-  .home-result-preview,
   .home-academic-network,
   .solid-features,
-  .solid-process,
   .solid-value-section
 ) p {
   color: #9cb7c3;
 }
 
 :root[data-theme='dark'] :where(
-  .solid-clinical-window,
-  .synapse-capability-panel,
   .result-preview-shell,
   .preview-score-card,
   .preview-clinical-cards article,
   .academic-institution-card,
   .solid-feature-card.is-light,
-  .solid-process-list li,
   .solid-plan-card
 ) {
   color: #dcebf1;
@@ -156,9 +147,6 @@
 }
 
 :root[data-theme='dark'] :where(
-  .solid-window-bar,
-  .solid-patient-data,
-  .solid-clinical-track > div,
   .preview-improvement-plan
 ) {
   color: #dcebf1;
@@ -166,30 +154,7 @@
   background: rgba(11, 53, 72, 0.72);
 }
 
-:root[data-theme='dark'] :where(
-  .solid-patient-heading h2,
-  .solid-patient-data strong,
-  .solid-clinical-track strong,
-  .solid-window-bar small
-) {
-  color: #eaf6fa;
-}
-
-:root[data-theme='dark'] :where(
-  .solid-patient-heading small,
-  .solid-patient-data small,
-  .solid-clinical-track small,
-  .solid-case-level
-) {
-  color: #8eabb8;
-}
-
-:root[data-theme='dark'] .solid-clinical-track .is-active {
-  border-color: rgba(51, 181, 232, 0.34);
-  background: rgba(8, 91, 127, 0.3);
-}
-
-:root[data-theme='dark'] :where(.synapse-network, .academic-network-stage) {
+:root[data-theme='dark'] .academic-network-stage {
   border-color: rgba(91, 195, 235, 0.12);
   background: rgba(4, 30, 42, 0.56);
 }
@@ -1098,4 +1063,3 @@
 :root[data-theme='dark'] .evaluation-ambient {
   display: none !important;
 }
-

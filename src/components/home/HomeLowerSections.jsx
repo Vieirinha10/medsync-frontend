@@ -4,12 +4,14 @@ import HomePricingSections from './HomePricingSections';
 
 const HomeLowerSections = ({
   formattedStudentCount,
+  medicalSpecialtyCount,
   ACADEMIC_INSTITUTIONS,
   TRUST_PILLARS,
 }) => (
   <>
     <HomeCommunitySections
       formattedStudentCount={formattedStudentCount}
+      medicalSpecialtyCount={medicalSpecialtyCount}
       ACADEMIC_INSTITUTIONS={ACADEMIC_INSTITUTIONS}
     />
     <HomeEcosystemSections TRUST_PILLARS={TRUST_PILLARS} />

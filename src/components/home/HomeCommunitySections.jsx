@@ -20,6 +20,7 @@ const AcademicInstitutionCard = ({ institution }) => (
 
 const HomeCommunitySections = ({
   formattedStudentCount,
+  medicalSpecialtyCount,
   ACADEMIC_INSTITUTIONS,
 }) => {
   const reversedInstitutions = [...ACADEMIC_INSTITUTIONS].reverse();
@@ -33,7 +34,7 @@ const HomeCommunitySections = ({
             { value: '80', label: 'casos clínicos' },
             { value: '150', label: 'desafios visuais' },
             { value: formattedStudentCount, label: 'estudantes MedSync' },
-            { value: '19', label: 'áreas médicas contempladas' },
+            { value: String(medicalSpecialtyCount), label: 'áreas e especialidades contempladas' },
           ]}
         />
       </section>

@@ -8,9 +8,9 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de tórax para interpretação diagnóstica',
     question: 'Qual é o diagnóstico mais provável nesta radiografia?',
     options: [
+      { id: 'pneumotorax', label: 'Pneumotórax hipertensivo à esquerda' },
       { id: 'pneumonia', label: 'Pneumonia lobar' },
       { id: 'derrame', label: 'Derrame pleural volumoso' },
-      { id: 'pneumotorax', label: 'Pneumotórax hipertensivo à esquerda' },
       { id: 'atelectasia', label: 'Atelectasia total do pulmão esquerdo' },
     ],
   },
@@ -23,9 +23,9 @@ export const visualChallenges = [
     imageAlt: 'Traçado eletrocardiográfico para interpretação diagnóstica',
     question: 'Qual ritmo está representado neste eletrocardiograma?',
     options: [
+      { id: 'fibrilacao', label: 'Fibrilação atrial' },
       { id: 'taquicardia-sinusal', label: 'Taquicardia sinusal' },
       { id: 'flutter', label: 'Flutter atrial' },
-      { id: 'fibrilacao', label: 'Fibrilação atrial' },
       { id: 'taquicardia-ventricular', label: 'Taquicardia ventricular' },
     ],
   },
@@ -39,9 +39,9 @@ export const visualChallenges = [
     question: 'Qual lesão intracraniana aparece nesta tomografia?',
     options: [
       { id: 'subdural', label: 'Hematoma subdural agudo' },
-      { id: 'epidural', label: 'Hematoma epidural' },
       { id: 'subaracnoide', label: 'Hemorragia subaracnóidea' },
       { id: 'isquemia', label: 'Acidente vascular cerebral isquêmico' },
+      { id: 'epidural', label: 'Hematoma epidural' },
     ],
   },
   {
@@ -69,9 +69,9 @@ export const visualChallenges = [
     question: 'Qual condição explica melhor os achados desta fundoscopia?',
     options: [
       { id: 'oclusao', label: 'Oclusão da artéria central da retina' },
+      { id: 'diabetica', label: 'Retinopatia diabética' },
       { id: 'degeneracao', label: 'Degeneração macular relacionada à idade' },
       { id: 'hipertensiva', label: 'Retinopatia hipertensiva isolada' },
-      { id: 'diabetica', label: 'Retinopatia diabética' },
     ],
   },
   {
@@ -84,8 +84,8 @@ export const visualChallenges = [
     question: 'Qual diagnóstico é sugerido pela morfologia das hemácias?',
     options: [
       { id: 'ferropriva', label: 'Anemia ferropriva' },
-      { id: 'esferocitose', label: 'Esferocitose hereditária' },
       { id: 'falciforme', label: 'Doença falciforme' },
+      { id: 'esferocitose', label: 'Esferocitose hereditária' },
       { id: 'microangiopatica', label: 'Anemia hemolítica microangiopática' },
     ],
   },
@@ -98,10 +98,10 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de tórax para interpretação diagnóstica',
     question: 'Qual diagnóstico explica melhor a opacidade observada nesta radiografia?',
     options: [
-      { id: 'pneumonia-lobar', label: 'Pneumonia lobar' },
       { id: 'pneumotorax-simples', label: 'Pneumotórax simples' },
       { id: 'edema-pulmonar', label: 'Edema agudo de pulmão' },
       { id: 'derrame-pleural', label: 'Derrame pleural' },
+      { id: 'pneumonia-lobar', label: 'Pneumonia lobar' },
     ],
   },
   {
@@ -114,8 +114,8 @@ export const visualChallenges = [
     question: 'Qual hipótese é mais compatível com esta ultrassonografia abdominal?',
     options: [
       { id: 'colecistite', label: 'Colecistite aguda' },
-      { id: 'apendicite', label: 'Apendicite aguda' },
       { id: 'diverticulite', label: 'Diverticulite aguda' },
+      { id: 'apendicite', label: 'Apendicite aguda' },
       { id: 'adenite', label: 'Adenite mesentérica' },
     ],
   },
@@ -188,8 +188,8 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de tórax com alterações predominantes nos campos pulmonares superiores',
     question: 'Qual diagnóstico deve ser considerado diante deste padrão radiográfico?',
     options: [
-      { id: 'tuberculose-pulmonar', label: 'Tuberculose pulmonar' },
       { id: 'edema-pulmonar', label: 'Edema agudo de pulmão' },
+      { id: 'tuberculose-pulmonar', label: 'Tuberculose pulmonar' },
       { id: 'pneumonia-lobar', label: 'Pneumonia lobar típica' },
       { id: 'derrame-pleural', label: 'Derrame pleural simples' },
     ],
@@ -218,9 +218,9 @@ export const visualChallenges = [
     imageAlt: 'Eletrocardiograma com bradicardia e dissociação entre ondas P e complexos QRS',
     question: 'Qual distúrbio de condução está presente neste eletrocardiograma?',
     options: [
+      { id: 'bav-total', label: 'Bloqueio atrioventricular total' },
       { id: 'bradicardia-sinusal', label: 'Bradicardia sinusal' },
       { id: 'mobitz-i', label: 'Bloqueio atrioventricular de segundo grau Mobitz I' },
-      { id: 'bav-total', label: 'Bloqueio atrioventricular total' },
       { id: 'fibrilacao-lenta', label: 'Fibrilação atrial com resposta lenta' },
     ],
   },
@@ -234,8 +234,8 @@ export const visualChallenges = [
     question: 'Qual diagnóstico é mais compatível com a morfologia desta lesão?',
     options: [
       { id: 'eczema-numular', label: 'Eczema numular' },
-      { id: 'tinea-corporis', label: 'Tínea corporis' },
       { id: 'psoriase', label: 'Psoríase em placas' },
+      { id: 'tinea-corporis', label: 'Tínea corporis' },
       { id: 'pitiriase-rosea', label: 'Pitiríase rósea' },
     ],
   },
@@ -250,8 +250,8 @@ export const visualChallenges = [
     options: [
       { id: 'dermatite-contato', label: 'Dermatite de contato' },
       { id: 'impetigo', label: 'Impetigo' },
-      { id: 'herpes-zoster', label: 'Herpes-zóster' },
       { id: 'urticaria', label: 'Urticária' },
+      { id: 'herpes-zoster', label: 'Herpes-zóster' },
     ],
   },
   {
@@ -263,9 +263,9 @@ export const visualChallenges = [
     imageAlt: 'Fotografia clínica de lesões superficiais crostosas na região cervical',
     question: 'Qual infecção superficial da pele é mais provável?',
     options: [
+      { id: 'impetigo', label: 'Impetigo' },
       { id: 'tinea-corporis', label: 'Tínea corporis' },
       { id: 'herpes-zoster', label: 'Herpes-zóster' },
-      { id: 'impetigo', label: 'Impetigo' },
       { id: 'psoriase-gutata', label: 'Psoríase gutata' },
     ],
   },
@@ -280,8 +280,8 @@ export const visualChallenges = [
     options: [
       { id: 'hemorragia-subconjuntival', label: 'Hemorragia subconjuntival' },
       { id: 'glaucoma-agudo', label: 'Glaucoma agudo de ângulo fechado' },
-      { id: 'conjuntivite', label: 'Conjuntivite' },
       { id: 'uveite-anterior', label: 'Uveíte anterior' },
+      { id: 'conjuntivite', label: 'Conjuntivite' },
     ],
   },
   {
@@ -293,8 +293,8 @@ export const visualChallenges = [
     imageAlt: 'Otoscopia com membrana timpânica opaca e inflamada',
     question: 'Qual diagnóstico é mais compatível com esta otoscopia?',
     options: [
-      { id: 'otite-externa', label: 'Otite externa aguda' },
       { id: 'otite-media', label: 'Otite média aguda' },
+      { id: 'otite-externa', label: 'Otite externa aguda' },
       { id: 'perfuracao-timpanica', label: 'Perfuração timpânica traumática' },
       { id: 'otosclerose', label: 'Otosclerose' },
     ],
@@ -325,8 +325,8 @@ export const visualChallenges = [
     options: [
       { id: 'polipo-vesicular', label: 'Pólipo da vesícula biliar' },
       { id: 'lama-biliar', label: 'Lama biliar' },
-      { id: 'colelitiase', label: 'Colelitíase' },
       { id: 'cisto-hepatico', label: 'Cisto hepático simples' },
+      { id: 'colelitiase', label: 'Colelitíase' },
     ],
   },
   {
@@ -385,8 +385,8 @@ export const visualChallenges = [
     options: [
       { id: 'fibrilacao-atrial', label: 'Fibrilação atrial' },
       { id: 'taquicardia-sinusal', label: 'Taquicardia sinusal' },
-      { id: 'flutter-atrial', label: 'Flutter atrial' },
       { id: 'taquicardia-atrial', label: 'Taquicardia atrial focal' },
+      { id: 'flutter-atrial', label: 'Flutter atrial' },
     ],
   },
   {
@@ -430,8 +430,8 @@ export const visualChallenges = [
     options: [
       { id: 'iam-inferior', label: 'Infarto agudo de parede inferior' },
       { id: 'repolarizacao-precoce', label: 'Repolarização precoce' },
-      { id: 'pericardite-aguda', label: 'Pericardite aguda' },
       { id: 'hipercalemia', label: 'Hipercalemia' },
+      { id: 'pericardite-aguda', label: 'Pericardite aguda' },
     ],
   },
   {
@@ -443,8 +443,8 @@ export const visualChallenges = [
     imageAlt: 'Eletrocardiograma de doze derivações com intervalo PR curto e onda delta',
     question: 'Qual síndrome de pré-excitação está representada neste eletrocardiograma?',
     options: [
-      { id: 'bloqueio-ramo-esquerdo', label: 'Bloqueio de ramo esquerdo' },
       { id: 'wpw', label: 'Síndrome de Wolff-Parkinson-White' },
+      { id: 'bloqueio-ramo-esquerdo', label: 'Bloqueio de ramo esquerdo' },
       { id: 'bloqueio-ramo-direito', label: 'Bloqueio de ramo direito' },
       { id: 'bav-primeiro-grau', label: 'Bloqueio atrioventricular de primeiro grau' },
     ],
@@ -458,9 +458,9 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de tórax com aumento acentuado da silhueta cardíaca',
     question: 'Qual é o principal achado cardiovascular nesta radiografia?',
     options: [
-      { id: 'cardiomegalia', label: 'Cardiomegalia' },
       { id: 'pneumopericardio', label: 'Pneumopericárdio' },
       { id: 'alargamento-mediastinal', label: 'Alargamento isolado do mediastino' },
+      { id: 'cardiomegalia', label: 'Cardiomegalia' },
       { id: 'dextrocardia', label: 'Dextrocardia' },
     ],
   },
@@ -473,9 +473,9 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de tórax com hiperinsuflação e retificação dos diafragmas',
     question: 'Qual doença explica melhor o padrão de hiperinsuflação pulmonar?',
     options: [
+      { id: 'enfisema', label: 'Enfisema pulmonar' },
       { id: 'edema-pulmonar', label: 'Edema pulmonar cardiogênico' },
       { id: 'fibrose-pulmonar', label: 'Fibrose pulmonar' },
-      { id: 'enfisema', label: 'Enfisema pulmonar' },
       { id: 'atelectasia', label: 'Atelectasia lobar' },
     ],
   },
@@ -489,9 +489,9 @@ export const visualChallenges = [
     question: 'Qual processo explica melhor a opacidade associada à perda de volume?',
     options: [
       { id: 'derrame-pleural', label: 'Derrame pleural volumoso' },
-      { id: 'atelectasia-direita', label: 'Atelectasia do pulmão direito' },
       { id: 'pneumonia', label: 'Pneumonia sem atelectasia' },
       { id: 'pneumotorax', label: 'Pneumotórax hipertensivo' },
+      { id: 'atelectasia-direita', label: 'Atelectasia do pulmão direito' },
     ],
   },
   {
@@ -503,8 +503,8 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de tórax com aumento bilateral e relativamente simétrico dos hilos pulmonares',
     question: 'Qual diagnóstico é favorecido pelo padrão de adenopatia hilar bilateral?',
     options: [
-      { id: 'tuberculose', label: 'Tuberculose pulmonar cavitária' },
       { id: 'sarcoidose', label: 'Sarcoidose pulmonar' },
+      { id: 'tuberculose', label: 'Tuberculose pulmonar cavitária' },
       { id: 'linfoma', label: 'Linfoma mediastinal isolado' },
       { id: 'edema-pulmonar', label: 'Edema agudo de pulmão' },
     ],
@@ -534,8 +534,8 @@ export const visualChallenges = [
     question: 'Qual diagnóstico vascular é indicado pela presença de duas luzes na aorta?',
     options: [
       { id: 'embolia-pulmonar', label: 'Embolia pulmonar' },
-      { id: 'aneurisma-sem-disseccao', label: 'Aneurisma de aorta sem dissecção' },
       { id: 'disseccao-aortica', label: 'Dissecção aguda da aorta' },
+      { id: 'aneurisma-sem-disseccao', label: 'Aneurisma de aorta sem dissecção' },
       { id: 'massa-mediastinal', label: 'Massa mediastinal' },
     ],
   },
@@ -548,10 +548,10 @@ export const visualChallenges = [
     imageAlt: 'Ecocardiografia com coleção anecoica envolvendo o coração',
     question: 'Qual achado é demonstrado pela coleção anecoica pericárdica?',
     options: [
-      { id: 'derrame-pericardico', label: 'Derrame pericárdico volumoso' },
       { id: 'derrame-pleural', label: 'Derrame pleural esquerdo' },
       { id: 'trombo-ventricular', label: 'Trombo intraventricular' },
       { id: 'hipertrofia-ventricular', label: 'Hipertrofia ventricular esquerda' },
+      { id: 'derrame-pericardico', label: 'Derrame pericárdico volumoso' },
     ],
   },
   {
@@ -564,8 +564,8 @@ export const visualChallenges = [
     question: 'Qual artefato ultrassonográfico pulmonar está presente?',
     options: [
       { id: 'linhas-a', label: 'Linhas A predominantes' },
-      { id: 'linhas-b', label: 'Múltiplas linhas B' },
       { id: 'consolidacao', label: 'Consolidação com broncogramas aéreos' },
+      { id: 'linhas-b', label: 'Múltiplas linhas B' },
       { id: 'ponto-pulmonar', label: 'Ponto pulmonar' },
     ],
   },
@@ -579,8 +579,8 @@ export const visualChallenges = [
     question: 'Qual diagnóstico é sugerido pelo trombo visualizado na veia femoral?',
     options: [
       { id: 'trombose-arterial', label: 'Trombose arterial aguda' },
-      { id: 'tvp', label: 'Trombose venosa profunda' },
       { id: 'cisto-baker', label: 'Cisto de Baker' },
+      { id: 'tvp', label: 'Trombose venosa profunda' },
       { id: 'linfonodo', label: 'Linfonodomegalia inguinal' },
     ],
   },
@@ -594,9 +594,9 @@ export const visualChallenges = [
     question: 'Qual padrão ventilatório é indicado pela curva fluxo-volume?',
     options: [
       { id: 'restritivo', label: 'Distúrbio ventilatório restritivo' },
-      { id: 'obstrutivo', label: 'Distúrbio ventilatório obstrutivo' },
       { id: 'normal', label: 'Curva fluxo-volume normal' },
       { id: 'obstrucao-alta', label: 'Obstrução fixa de via aérea superior' },
+      { id: 'obstrutivo', label: 'Distúrbio ventilatório obstrutivo' },
     ],
   },
   {
@@ -608,9 +608,9 @@ export const visualChallenges = [
     imageAlt: 'Tomografia de crânio com coleção extra-axial hiperdensa de formato biconvexo',
     question: 'Qual tipo de hemorragia intracraniana apresenta este formato biconvexo?',
     options: [
-      { id: 'hematoma-epidural', label: 'Hematoma epidural' },
       { id: 'hematoma-subdural', label: 'Hematoma subdural' },
       { id: 'hemorragia-subaracnoidea', label: 'Hemorragia subaracnóidea' },
+      { id: 'hematoma-epidural', label: 'Hematoma epidural' },
       { id: 'contusao-cerebral', label: 'Contusão cerebral' },
     ],
   },
@@ -624,8 +624,8 @@ export const visualChallenges = [
     question: 'Qual diagnóstico corresponde à coleção hiperdensa em formato de crescente?',
     options: [
       { id: 'hematoma-epidural', label: 'Hematoma epidural' },
-      { id: 'hematoma-subdural', label: 'Hematoma subdural agudo' },
       { id: 'avc-hemorragico', label: 'Hemorragia intraparenquimatosa' },
+      { id: 'hematoma-subdural', label: 'Hematoma subdural agudo' },
       { id: 'higroma-subdural', label: 'Higroma subdural' },
     ],
   },
@@ -638,10 +638,10 @@ export const visualChallenges = [
     imageAlt: 'Tomografia de crânio com hipodensidade extensa no território da artéria cerebral média',
     question: 'Qual processo vascular explica melhor a hipodensidade territorial observada?',
     options: [
-      { id: 'avc-isquemico-acm', label: 'Infarto isquêmico no território da cerebral média' },
       { id: 'hematoma-epidural', label: 'Hematoma epidural' },
       { id: 'meningioma', label: 'Meningioma com edema vasogênico' },
       { id: 'hemorragia-subaracnoidea', label: 'Hemorragia subaracnóidea' },
+      { id: 'avc-isquemico-acm', label: 'Infarto isquêmico no território da cerebral média' },
     ],
   },
   {
@@ -653,10 +653,10 @@ export const visualChallenges = [
     imageAlt: 'Ressonância magnética em sequência SWI com múltiplos focos puntiformes de suscetibilidade',
     question: 'Após trauma de alta energia, qual lesão é sugerida pelos múltiplos focos hemorrágicos puntiformes?',
     options: [
-      { id: 'lesao-axonal-difusa', label: 'Lesão axonal difusa' },
       { id: 'esclerose-multipla', label: 'Esclerose múltipla' },
       { id: 'abscessos-cerebrais', label: 'Abscessos cerebrais múltiplos' },
       { id: 'trombose-seio-venoso', label: 'Trombose de seio venoso' },
+      { id: 'lesao-axonal-difusa', label: 'Lesão axonal difusa' },
     ],
   },
   {
@@ -683,10 +683,10 @@ export const visualChallenges = [
     imageAlt: 'Radiografias do ombro antes e após redução, com deslocamento anteroinferior inicial da cabeça umeral',
     question: 'No painel anterior à redução, qual alteração do alinhamento glenoumeral está presente?',
     options: [
-      { id: 'luxacao-anterior-ombro', label: 'Luxação anterior do ombro' },
       { id: 'luxacao-posterior-ombro', label: 'Luxação posterior do ombro' },
       { id: 'fratura-colo-umeral', label: 'Fratura do colo do úmero' },
       { id: 'separacao-acromioclavicular', label: 'Separação acromioclavicular' },
+      { id: 'luxacao-anterior-ombro', label: 'Luxação anterior do ombro' },
     ],
   },
   {
@@ -698,8 +698,8 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de pelve com descontinuidade do colo femoral direito',
     question: 'Qual lesão traumática está demonstrada no quadril direito?',
     options: [
-      { id: 'fratura-colo-femur', label: 'Fratura do colo do fêmur' },
       { id: 'luxacao-posterior-quadril', label: 'Luxação posterior do quadril' },
+      { id: 'fratura-colo-femur', label: 'Fratura do colo do fêmur' },
       { id: 'fratura-acetabulo', label: 'Fratura isolada do acetábulo' },
       { id: 'necrose-avascular', label: 'Necrose avascular da cabeça femoral' },
     ],
@@ -728,8 +728,8 @@ export const visualChallenges = [
     imageAlt: 'Ilustração de equimose na região mastoidea atrás da orelha',
     question: 'Como é denominado este sinal associado à fratura da base do crânio?',
     options: [
-      { id: 'sinal-battle', label: 'Sinal de Battle' },
       { id: 'olhos-guaxinim', label: 'Olhos de guaxinim' },
+      { id: 'sinal-battle', label: 'Sinal de Battle' },
       { id: 'sinal-hutchinson', label: 'Sinal de Hutchinson' },
       { id: 'sinal-nikolsky', label: 'Sinal de Nikolsky' },
     ],
@@ -743,9 +743,9 @@ export const visualChallenges = [
     imageAlt: 'Mão com hiperextensão metacarpofalângica e flexão das interfalângicas do quarto e quinto dedos',
     question: 'A deformidade em garra do quarto e quinto dedos sugere lesão predominante de qual nervo?',
     options: [
-      { id: 'nervo-ulnar', label: 'Nervo ulnar' },
       { id: 'nervo-mediano', label: 'Nervo mediano' },
       { id: 'nervo-radial', label: 'Nervo radial' },
+      { id: 'nervo-ulnar', label: 'Nervo ulnar' },
       { id: 'nervo-musculocutaneo', label: 'Nervo musculocutâneo' },
     ],
   },
@@ -758,9 +758,9 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia do recesso hepatorrenal com faixa anecoica entre fígado e rim',
     question: 'Em um trauma abdominal fechado, o que representa a faixa anecoica no espaço hepatorrenal?',
     options: [
-      { id: 'liquido-livre-morrison', label: 'Líquido livre no recesso de Morrison' },
       { id: 'hidronefrose', label: 'Hidronefrose' },
       { id: 'cisto-hepatico', label: 'Cisto hepático simples' },
+      { id: 'liquido-livre-morrison', label: 'Líquido livre no recesso de Morrison' },
       { id: 'derrame-pleural', label: 'Derrame pleural direito' },
     ],
   },
@@ -788,8 +788,8 @@ export const visualChallenges = [
     imageAlt: 'Fundoscopia com disco óptico elevado, hiperemiado e de margens apagadas',
     question: 'Qual alteração do disco óptico é mostrada nesta fundoscopia?',
     options: [
-      { id: 'papiledema', label: 'Papiledema' },
       { id: 'atrofia-optica', label: 'Atrofia óptica' },
+      { id: 'papiledema', label: 'Papiledema' },
       { id: 'escavacao-glaucomatosa', label: 'Escavação glaucomatosa' },
       { id: 'oclusao-veia-central', label: 'Oclusão da veia central da retina' },
     ],
@@ -819,9 +819,9 @@ export const visualChallenges = [
     question: 'Qual profundidade de queimadura é mais compatível com eritema e formação de bolha?',
     options: [
       { id: 'superficial', label: 'Queimadura superficial' },
-      { id: 'espessura-parcial-superficial', label: 'Queimadura de espessura parcial superficial' },
       { id: 'espessura-total', label: 'Queimadura de espessura total' },
       { id: 'quarto-grau', label: 'Queimadura de quarto grau' },
+      { id: 'espessura-parcial-superficial', label: 'Queimadura de espessura parcial superficial' },
     ],
   },
   {
@@ -833,10 +833,10 @@ export const visualChallenges = [
     imageAlt: 'Fotografia clínica da face com comedões, pápulas e pústulas',
     question: 'Qual diagnóstico é mais compatível com este conjunto de lesões faciais?',
     options: [
-      { id: 'acne-vulgar', label: 'Acne vulgar' },
       { id: 'rosacea', label: 'Rosácea papulopustulosa' },
       { id: 'dermatite-seborreica', label: 'Dermatite seborreica' },
       { id: 'foliculite', label: 'Foliculite bacteriana isolada' },
+      { id: 'acne-vulgar', label: 'Acne vulgar' },
     ],
   },
   {
@@ -848,8 +848,8 @@ export const visualChallenges = [
     imageAlt: 'Fotografia clínica de placas eritematosas e eczematosas em área flexural do braço',
     question: 'Qual dermatose crônica é mais compatível com este padrão eczematoso flexural?',
     options: [
-      { id: 'dermatite-atopica', label: 'Dermatite atópica' },
       { id: 'psoriase', label: 'Psoríase em placas' },
+      { id: 'dermatite-atopica', label: 'Dermatite atópica' },
       { id: 'tinea-corporis', label: 'Tínea corporis' },
       { id: 'urticaria', label: 'Urticária aguda' },
     ],
@@ -863,8 +863,8 @@ export const visualChallenges = [
     imageAlt: 'Histopatologia cutânea com múltiplos ninhos dérmicos de células basaloides',
     question: 'Qual neoplasia cutânea é sugerida pelos ninhos de células basaloides na derme?',
     options: [
-      { id: 'carcinoma-basocelular', label: 'Carcinoma basocelular' },
       { id: 'carcinoma-espinocelular', label: 'Carcinoma espinocelular' },
+      { id: 'carcinoma-basocelular', label: 'Carcinoma basocelular' },
       { id: 'melanoma', label: 'Melanoma invasivo' },
       { id: 'queratoacantoma', label: 'Queratoacantoma' },
     ],
@@ -878,10 +878,10 @@ export const visualChallenges = [
     imageAlt: 'Fotografia clínica com erosões extensas, crostas e comprometimento mucocutâneo da face',
     question: 'Qual reação mucocutânea grave deve ser priorizada diante deste aspecto?',
     options: [
-      { id: 'stevens-johnson', label: 'Síndrome de Stevens-Johnson' },
       { id: 'impetigo-bolhoso', label: 'Impetigo bolhoso' },
       { id: 'herpes-zoster-disseminado', label: 'Herpes-zóster disseminado' },
       { id: 'dermatite-contato', label: 'Dermatite de contato alérgica' },
+      { id: 'stevens-johnson', label: 'Síndrome de Stevens-Johnson' },
     ],
   },
   {
@@ -893,9 +893,9 @@ export const visualChallenges = [
     imageAlt: 'Fotografia clínica de placa oval eritematosa com descamação fina em colarete',
     question: 'Qual diagnóstico é sugerido pela placa oval com descamação em colarete?',
     options: [
-      { id: 'pitiriase-rosea', label: 'Pitiríase rósea' },
       { id: 'tinea-corporis', label: 'Tínea corporis' },
       { id: 'eczema-numular', label: 'Eczema numular' },
+      { id: 'pitiriase-rosea', label: 'Pitiríase rósea' },
       { id: 'psoriase-gutata', label: 'Psoríase gutata' },
     ],
   },
@@ -923,10 +923,10 @@ export const visualChallenges = [
     imageAlt: 'Fundoscopia com escavação aumentada e afinamento do anel neurorretiniano',
     question: 'Qual neuropatia óptica é sugerida pela escavação aumentada do disco?',
     options: [
-      { id: 'glaucoma', label: 'Neuropatia óptica glaucomatosa' },
       { id: 'papiledema', label: 'Papiledema' },
       { id: 'neurite-optica', label: 'Neurite óptica' },
       { id: 'retinopatia-hipertensiva', label: 'Retinopatia hipertensiva' },
+      { id: 'glaucoma', label: 'Neuropatia óptica glaucomatosa' },
     ],
   },
   {
@@ -953,8 +953,8 @@ export const visualChallenges = [
     imageAlt: 'Otoscopia com bolsa de retração atical preenchida por detritos queratínicos esbranquiçados',
     question: 'Qual doença da orelha média é sugerida pelo acúmulo de queratina na região atical?',
     options: [
-      { id: 'colesteatoma', label: 'Colesteatoma' },
       { id: 'otite-media-aguda', label: 'Otite média aguda' },
+      { id: 'colesteatoma', label: 'Colesteatoma' },
       { id: 'otosclerose', label: 'Otosclerose' },
       { id: 'otite-externa', label: 'Otite externa difusa' },
     ],
@@ -968,10 +968,10 @@ export const visualChallenges = [
     imageAlt: 'Rinoscopia com massa lisa, pálida e translúcida ocupando a cavidade nasal',
     question: 'Qual alteração é mais compatível com esta massa nasal pálida e translúcida?',
     options: [
-      { id: 'polipo-nasal', label: 'Pólipo nasal' },
       { id: 'hipertrofia-corneto', label: 'Hipertrofia de corneto inferior' },
       { id: 'hematoma-septal', label: 'Hematoma de septo nasal' },
       { id: 'carcinoma-nasal', label: 'Carcinoma da cavidade nasal' },
+      { id: 'polipo-nasal', label: 'Pólipo nasal' },
     ],
   },
   {
@@ -983,9 +983,9 @@ export const visualChallenges = [
     imageAlt: 'Fotografia da cavidade oral com placas brancas multifocais sobre mucosa eritematosa',
     question: 'Qual diagnóstico é mais provável diante destas placas brancas orais?',
     options: [
-      { id: 'candidiase-oral', label: 'Candidíase oral pseudomembranosa' },
       { id: 'leucoplasia', label: 'Leucoplasia oral' },
       { id: 'liquen-plano', label: 'Líquen plano oral' },
+      { id: 'candidiase-oral', label: 'Candidíase oral pseudomembranosa' },
       { id: 'herpangina', label: 'Herpangina' },
     ],
   },
@@ -998,10 +998,10 @@ export const visualChallenges = [
     imageAlt: 'Fotografia clínica de úlcera pequena, arredondada e rasa na mucosa labial inferior',
     question: 'Qual lesão benigna recorrente apresenta este aspecto ulcerado?',
     options: [
-      { id: 'afta-menor', label: 'Úlcera aftosa menor' },
       { id: 'cancro-sifilitico', label: 'Cancro sifilítico' },
       { id: 'carcinoma-espinocelular', label: 'Carcinoma espinocelular' },
       { id: 'herpes-labial', label: 'Herpes labial' },
+      { id: 'afta-menor', label: 'Úlcera aftosa menor' },
     ],
   },
   {
@@ -1013,9 +1013,9 @@ export const visualChallenges = [
     imageAlt: 'Microscopia com cocos roxos agrupados em cachos após coloração de Gram',
     question: 'Qual grupo bacteriano corresponde a estes cocos Gram-positivos em cachos?',
     options: [
-      { id: 'staphylococcus', label: 'Staphylococcus spp.' },
       { id: 'streptococcus', label: 'Streptococcus spp.' },
       { id: 'neisseria', label: 'Neisseria spp.' },
+      { id: 'staphylococcus', label: 'Staphylococcus spp.' },
       { id: 'bacillus', label: 'Bacillus spp.' },
     ],
   },
@@ -1028,8 +1028,8 @@ export const visualChallenges = [
     imageAlt: 'Baciloscopia de escarro com bacilos finos avermelhados em fundo azul',
     question: 'Qual microrganismo deve ser investigado diante destes bacilos álcool-ácido resistentes?',
     options: [
-      { id: 'mycobacterium-tuberculosis', label: 'Mycobacterium tuberculosis' },
       { id: 'klebsiella-pneumoniae', label: 'Klebsiella pneumoniae' },
+      { id: 'mycobacterium-tuberculosis', label: 'Mycobacterium tuberculosis' },
       { id: 'streptococcus-pneumoniae', label: 'Streptococcus pneumoniae' },
       { id: 'pseudomonas-aeruginosa', label: 'Pseudomonas aeruginosa' },
     ],
@@ -1058,10 +1058,10 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de abdome em ortostase com alças centrais dilatadas e múltiplos níveis hidroaéreos',
     question: 'Qual diagnóstico explica melhor este padrão na radiografia de abdome?',
     options: [
-      { id: 'obstrucao-intestino-delgado', label: 'Obstrução do intestino delgado' },
       { id: 'ileo-paralitico', label: 'Íleo paralítico difuso' },
       { id: 'megacolon-toxico', label: 'Megacólon tóxico' },
       { id: 'pneumoperitonio', label: 'Pneumoperitônio' },
+      { id: 'obstrucao-intestino-delgado', label: 'Obstrução do intestino delgado' },
     ],
   },
   {
@@ -1103,8 +1103,8 @@ export const visualChallenges = [
     imageAlt: 'Tomografia axial do abdome com gás na parede intestinal e pequenas imagens gasosas no sistema venoso portal',
     question: 'Qual emergência vascular deve ser priorizada diante deste conjunto de achados?',
     options: [
-      { id: 'isquemia-mesenterica-aguda', label: 'Isquemia mesentérica aguda' },
       { id: 'doenca-crohn', label: 'Doença de Crohn' },
+      { id: 'isquemia-mesenterica-aguda', label: 'Isquemia mesentérica aguda' },
       { id: 'pancreatite-necrosante', label: 'Pancreatite necrosante' },
       { id: 'obstrucao-biliar', label: 'Obstrução biliar' },
     ],
@@ -1118,9 +1118,9 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia da vesícula com cálculo, parede espessada e líquido perivesicular',
     question: 'Qual diagnóstico combina estes achados ultrassonográficos da vesícula?',
     options: [
-      { id: 'colecistite-aguda', label: 'Colecistite aguda calculosa' },
       { id: 'polipo-vesicular', label: 'Pólipo da vesícula biliar' },
       { id: 'adenomiomatose', label: 'Adenomiomatose vesicular' },
+      { id: 'colecistite-aguda', label: 'Colecistite aguda calculosa' },
       { id: 'hepatite-aguda', label: 'Hepatite aguda' },
     ],
   },
@@ -1133,8 +1133,8 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia do fígado com ecogenicidade difusamente aumentada e atenuação posterior',
     question: 'Qual alteração difusa do fígado produz este padrão ultrassonográfico?',
     options: [
-      { id: 'esteatose-hepatica', label: 'Esteatose hepática' },
       { id: 'hepatite-aguda', label: 'Hepatite aguda' },
+      { id: 'esteatose-hepatica', label: 'Esteatose hepática' },
       { id: 'congestao-hepatica', label: 'Congestão hepática' },
       { id: 'abscesso-hepatico', label: 'Abscesso hepático' },
     ],
@@ -1148,10 +1148,10 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia longitudinal do baço com eixo máximo aumentado e medição eletrônica',
     question: 'Qual achado organométrico está demonstrado nesta imagem?',
     options: [
-      { id: 'esplenomegalia', label: 'Esplenomegalia' },
       { id: 'hepatomegalia', label: 'Hepatomegalia' },
       { id: 'hidronefrose', label: 'Hidronefrose' },
       { id: 'ascite', label: 'Ascite' },
+      { id: 'esplenomegalia', label: 'Esplenomegalia' },
     ],
   },
   {
@@ -1178,9 +1178,9 @@ export const visualChallenges = [
     imageAlt: 'Cistoscopia comparativa sob luz branca e luz azul, com área plana fluorescente em rosa',
     question: 'Qual lesão vesical é evidenciada pela fluorescência sob luz azul?',
     options: [
-      { id: 'tumor-urotelial-bexiga', label: 'Tumor urotelial da bexiga' },
       { id: 'cistite-intersticial', label: 'Cistite intersticial' },
       { id: 'calculo-vesical', label: 'Cálculo vesical' },
+      { id: 'tumor-urotelial-bexiga', label: 'Tumor urotelial da bexiga' },
       { id: 'ureterocele', label: 'Ureterocele' },
     ],
   },
@@ -1193,10 +1193,10 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia escrotal comparativa com testículo aumentado e ausência de fluxo ao Doppler colorido',
     question: 'Qual emergência urológica corresponde à ausência unilateral de fluxo?',
     options: [
-      { id: 'torcao-testicular', label: 'Torção testicular' },
       { id: 'epididimite', label: 'Epididimite aguda' },
       { id: 'varicocele', label: 'Varicocele' },
       { id: 'hidrocele', label: 'Hidrocele' },
+      { id: 'torcao-testicular', label: 'Torção testicular' },
     ],
   },
   {
@@ -1208,8 +1208,8 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia transvaginal com saco gestacional e vesícula vitelínica em topografia anexial',
     question: 'Qual diagnóstico deve ser considerado diante deste saco gestacional anexial?',
     options: [
-      { id: 'gravidez-ectopica', label: 'Gravidez ectópica tubária' },
       { id: 'cisto-hemorragico', label: 'Cisto ovariano hemorrágico' },
+      { id: 'gravidez-ectopica', label: 'Gravidez ectópica tubária' },
       { id: 'gestacao-intrauterina', label: 'Gestação intrauterina inicial' },
       { id: 'mola-hidatiforme', label: 'Mola hidatiforme' },
     ],
@@ -1238,9 +1238,9 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia pélvica com ovário aumentado, folículos periféricos e fluxo venoso reduzido',
     question: 'Qual diagnóstico reúne o aumento ovariano e os folículos deslocados para a periferia?',
     options: [
-      { id: 'torcao-ovariana', label: 'Torção ovariana' },
       { id: 'sindrome-ovarios-policisticos', label: 'Síndrome dos ovários policísticos' },
       { id: 'endometrioma', label: 'Endometrioma' },
+      { id: 'torcao-ovariana', label: 'Torção ovariana' },
       { id: 'abscesso-tubo-ovariano', label: 'Abscesso tubo-ovariano' },
     ],
   },
@@ -1268,8 +1268,8 @@ export const visualChallenges = [
     imageAlt: 'Endoscopia do esôfago com cordões venosos dilatados e tortuosos e marcas vermelhas longitudinais',
     question: 'Qual manifestação da hipertensão portal apresenta este aspecto endoscópico?',
     options: [
-      { id: 'varizes-esofagicas', label: 'Varizes esofágicas' },
       { id: 'esofagite-erosiva', label: 'Esofagite erosiva' },
+      { id: 'varizes-esofagicas', label: 'Varizes esofágicas' },
       { id: 'esofago-barrett', label: 'Esôfago de Barrett' },
       { id: 'candidiase-esofagica', label: 'Candidíase esofágica' },
     ],
@@ -1283,10 +1283,10 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de tórax de lactente com infiltrados pulmonares bilaterais e atelectasia no lobo superior direito',
     question: 'Qual diagnóstico é mais compatível com este padrão radiográfico em um lactente febril e taquipneico?',
     options: [
-      { id: 'pneumonia-viral', label: 'Pneumonia viral' },
       { id: 'pneumotorax', label: 'Pneumotórax' },
       { id: 'derrame-pleural', label: 'Derrame pleural' },
       { id: 'hernia-diafragmatica', label: 'Hérnia diafragmática' },
+      { id: 'pneumonia-viral', label: 'Pneumonia viral' },
     ],
   },
   {
@@ -1298,10 +1298,10 @@ export const visualChallenges = [
     imageAlt: 'Palmas de uma criança com múltiplas máculas e pequenas vesículas eritematosas',
     question: 'Qual doença exantemática infantil apresenta este padrão palmar associado a lesões orais?',
     options: [
-      { id: 'doenca-mao-pe-boca', label: 'Doença mão-pé-boca' },
       { id: 'varicela', label: 'Varicela' },
       { id: 'escarlatina', label: 'Escarlatina' },
       { id: 'impetigo', label: 'Impetigo' },
+      { id: 'doenca-mao-pe-boca', label: 'Doença mão-pé-boca' },
     ],
   },
   {
@@ -1313,10 +1313,10 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia abdominal transversal mostrando anéis concêntricos de parede intestinal',
     question: 'Em uma criança com dor abdominal em cólicas e episódios de palidez, qual diagnóstico explica o sinal em alvo?',
     options: [
-      { id: 'invaginacao-intestinal', label: 'Invaginação intestinal' },
       { id: 'apendicite-aguda', label: 'Apendicite aguda' },
       { id: 'estenose-pilorica', label: 'Estenose hipertrófica do piloro' },
       { id: 'volvo-intestinal', label: 'Volvo intestinal' },
+      { id: 'invaginacao-intestinal', label: 'Invaginação intestinal' },
     ],
   },
   {
@@ -1328,9 +1328,9 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia longitudinal do piloro mostrando canal alongado e espessamento muscular',
     question: 'Qual diagnóstico deve ser suspeitado em um lactente com vômitos em jato não biliosos e este achado?',
     options: [
-      { id: 'estenose-pilorica', label: 'Estenose hipertrófica do piloro' },
       { id: 'refluxo-gastroesofagico', label: 'Refluxo gastroesofágico fisiológico' },
       { id: 'atresia-duodenal', label: 'Atresia duodenal' },
+      { id: 'estenose-pilorica', label: 'Estenose hipertrófica do piloro' },
       { id: 'invaginacao-intestinal', label: 'Invaginação intestinal' },
     ],
   },
@@ -1343,8 +1343,8 @@ export const visualChallenges = [
     imageAlt: 'Esfregaço periférico com hemácias pequenas, pálidas e de tamanhos variados',
     question: 'Qual anemia é mais compatível com a microcitose e hipocromia demonstradas?',
     options: [
-      { id: 'anemia-ferropriva', label: 'Anemia ferropriva' },
       { id: 'anemia-megaloblastica', label: 'Anemia megaloblástica' },
+      { id: 'anemia-ferropriva', label: 'Anemia ferropriva' },
       { id: 'anemia-hemolitica-autoimune', label: 'Anemia hemolítica autoimune' },
       { id: 'aplasia-medular', label: 'Aplasia medular' },
     ],
@@ -1373,9 +1373,9 @@ export const visualChallenges = [
     imageAlt: 'Esfregaço periférico com promielócitos anormais grandes e núcleos irregulares',
     question: 'Qual neoplasia hematológica deve ser reconhecida com urgência diante destes promielócitos anormais?',
     options: [
-      { id: 'leucemia-promielocitica-aguda', label: 'Leucemia promielocítica aguda' },
       { id: 'leucemia-linfoblastica-aguda', label: 'Leucemia linfoblástica aguda' },
       { id: 'leucemia-mieloide-cronica', label: 'Leucemia mieloide crônica' },
+      { id: 'leucemia-promielocitica-aguda', label: 'Leucemia promielocítica aguda' },
       { id: 'linfoma-burkitt', label: 'Linfoma de Burkitt' },
     ],
   },
@@ -1388,8 +1388,8 @@ export const visualChallenges = [
     imageAlt: 'Citologia de tireoide com agrupamentos papilíferos de células nucleadas e sobreposição celular',
     question: 'Qual neoplasia da tireoide é sugerida por este padrão citológico papilífero?',
     options: [
-      { id: 'carcinoma-papilifero-tireoide', label: 'Carcinoma papilífero da tireoide' },
       { id: 'carcinoma-medular-tireoide', label: 'Carcinoma medular da tireoide' },
+      { id: 'carcinoma-papilifero-tireoide', label: 'Carcinoma papilífero da tireoide' },
       { id: 'adenoma-folicular', label: 'Adenoma folicular' },
       { id: 'tireoidite-hashimoto', label: 'Tireoidite de Hashimoto' },
     ],
@@ -1403,10 +1403,10 @@ export const visualChallenges = [
     imageAlt: 'Lâmina de cólon com glândulas neoplásicas irregulares infiltrando estroma desmoplásico',
     question: 'Qual diagnóstico corresponde às glândulas atípicas invasivas nesta lâmina de cólon?',
     options: [
-      { id: 'adenocarcinoma-colorretal', label: 'Adenocarcinoma colorretal' },
       { id: 'adenoma-tubular', label: 'Adenoma tubular' },
       { id: 'colite-ulcerativa', label: 'Colite ulcerativa' },
       { id: 'tumor-neuroendocrino', label: 'Tumor neuroendócrino' },
+      { id: 'adenocarcinoma-colorretal', label: 'Adenocarcinoma colorretal' },
     ],
   },
   {
@@ -1418,8 +1418,8 @@ export const visualChallenges = [
     imageAlt: 'Lâmina de linfonodo com célula gigante binucleada e nucléolos proeminentes em fundo inflamatório',
     question: 'A célula binucleada com nucléolos proeminentes é clássica de qual doença?',
     options: [
-      { id: 'linfoma-hodgkin-classico', label: 'Linfoma de Hodgkin clássico' },
       { id: 'linfoma-folicular', label: 'Linfoma folicular' },
+      { id: 'linfoma-hodgkin-classico', label: 'Linfoma de Hodgkin clássico' },
       { id: 'linfoma-burkitt', label: 'Linfoma de Burkitt' },
       { id: 'mieloma-multiplo', label: 'Mieloma múltiplo' },
     ],
@@ -1463,9 +1463,9 @@ export const visualChallenges = [
     imageAlt: 'Olhos com proptose bilateral e retração palpebral, expondo esclera acima e abaixo da íris',
     question: 'Qual doença endócrina está classicamente associada à proptose e retração palpebral bilaterais?',
     options: [
-      { id: 'doenca-graves', label: 'Doença de Graves' },
       { id: 'tireoidite-hashimoto', label: 'Tireoidite de Hashimoto' },
       { id: 'sindrome-cushing', label: 'Síndrome de Cushing' },
+      { id: 'doenca-graves', label: 'Doença de Graves' },
       { id: 'acromegalia', label: 'Acromegalia' },
     ],
   },
@@ -1478,10 +1478,10 @@ export const visualChallenges = [
     imageAlt: 'Região axilar com placa hiperpigmentada, espessada e de superfície aveludada',
     question: 'Qual achado cutâneo está associado à resistência insulínica?',
     options: [
-      { id: 'acantose-nigricans', label: 'Acantose nigricans' },
       { id: 'vitiligo', label: 'Vitiligo' },
       { id: 'melasma', label: 'Melasma' },
       { id: 'pitiriase-versicolor', label: 'Pitiríase versicolor' },
+      { id: 'acantose-nigricans', label: 'Acantose nigricans' },
     ],
   },
   {
@@ -1493,9 +1493,9 @@ export const visualChallenges = [
     imageAlt: 'Microscopia de urina com cristais quadrangulares em forma de envelope',
     question: 'Em um paciente com acidose metabólica e lesão renal aguda, estes cristais sugerem intoxicação por qual substância?',
     options: [
-      { id: 'etilenoglicol', label: 'Etilenoglicol' },
       { id: 'metanol', label: 'Metanol' },
       { id: 'paracetamol', label: 'Paracetamol' },
+      { id: 'etilenoglicol', label: 'Etilenoglicol' },
       { id: 'monoxido-carbono', label: 'Monóxido de carbono' },
     ],
   },
@@ -1508,10 +1508,10 @@ export const visualChallenges = [
     imageAlt: 'Mão com desvio ulnar dos dedos, deformidades articulares e subluxações metacarpofalângicas',
     question: 'Em uma pessoa com poliartrite crônica e simétrica, qual doença explica melhor este padrão de deformidade da mão?',
     options: [
-      { id: 'artrite-reumatoide', label: 'Artrite reumatoide' },
       { id: 'osteoartrite-maos', label: 'Osteoartrite das mãos' },
       { id: 'artrite-psoriasica', label: 'Artrite psoriásica' },
       { id: 'esclerose-sistemica', label: 'Esclerose sistêmica' },
+      { id: 'artrite-reumatoide', label: 'Artrite reumatoide' },
     ],
   },
   {
@@ -1523,9 +1523,9 @@ export const visualChallenges = [
     imageAlt: 'Microscopia sob luz polarizada mostrando cristal fino e alongado em líquido sinovial',
     question: 'Qual artropatia é sugerida por cristais aciculares com birrefringência negativa no líquido sinovial?',
     options: [
-      { id: 'gota', label: 'Gota por urato monossódico' },
       { id: 'cppd', label: 'Doença por deposição de pirofosfato de cálcio' },
       { id: 'artrite-septica', label: 'Artrite séptica' },
+      { id: 'gota', label: 'Gota por urato monossódico' },
       { id: 'hidroxiapatita', label: 'Deposição de hidroxiapatita' },
     ],
   },
@@ -1538,8 +1538,8 @@ export const visualChallenges = [
     imageAlt: 'Radiografia anteroposterior da coluna com pontes ósseas marginais e aspecto contínuo entre as vértebras',
     question: 'Qual espondiloartrite produz o aspecto de coluna em bambu observado nesta radiografia?',
     options: [
-      { id: 'espondilite-anquilosante', label: 'Espondilite anquilosante' },
       { id: 'hiperostose-esqueletica', label: 'Hiperostose esquelética idiopática difusa' },
+      { id: 'espondilite-anquilosante', label: 'Espondilite anquilosante' },
       { id: 'espondilose-degenerativa', label: 'Espondilose degenerativa' },
       { id: 'espondilodiscite-tuberculosa', label: 'Espondilodiscite tuberculosa' },
     ],
@@ -1553,8 +1553,8 @@ export const visualChallenges = [
     imageAlt: 'Dorso das mãos com pápulas eritematovioláceas sobre articulações metacarpofalângicas e interfalângicas',
     question: 'Estas pápulas sobre as articulações dos dedos são um achado cutâneo clássico de qual doença?',
     options: [
-      { id: 'dermatomiosite', label: 'Dermatomiosite' },
       { id: 'lupus-eritematoso', label: 'Lúpus eritematoso sistêmico' },
+      { id: 'dermatomiosite', label: 'Dermatomiosite' },
       { id: 'psoriase', label: 'Psoríase em placas' },
       { id: 'dermatite-atopica', label: 'Dermatite atópica' },
     ],
@@ -1568,9 +1568,9 @@ export const visualChallenges = [
     imageAlt: 'Mãos com pele distal bilateral espessada, brilhante e pouco pregueada',
     question: 'Qual doença do tecido conjuntivo está mais associada à esclerodactilia bilateral mostrada?',
     options: [
-      { id: 'esclerose-sistemica', label: 'Esclerose sistêmica' },
       { id: 'artrite-reumatoide', label: 'Artrite reumatoide' },
       { id: 'acromegalia', label: 'Acromegalia' },
+      { id: 'esclerose-sistemica', label: 'Esclerose sistêmica' },
       { id: 'hipotireoidismo', label: 'Hipotireoidismo' },
     ],
   },
@@ -1613,8 +1613,8 @@ export const visualChallenges = [
     imageAlt: 'Face com eritema bilateral sobre as regiões malares e a ponte nasal',
     question: 'Em paciente com fotossensibilidade, artralgias e proteinúria, qual diagnóstico é sugerido por este eritema malar?',
     options: [
-      { id: 'lupus-eritematoso-sistemico', label: 'Lúpus eritematoso sistêmico' },
       { id: 'rosacea', label: 'Rosácea' },
+      { id: 'lupus-eritematoso-sistemico', label: 'Lúpus eritematoso sistêmico' },
       { id: 'dermatomiosite', label: 'Dermatomiosite' },
       { id: 'dermatite-seborreica', label: 'Dermatite seborreica' },
     ],
@@ -1628,10 +1628,10 @@ export const visualChallenges = [
     imageAlt: 'Dedos com aumentos nodulares firmes nas articulações interfalângicas distais',
     question: 'Os nódulos ósseos nas articulações interfalângicas distais são mais característicos de qual condição?',
     options: [
-      { id: 'osteoartrite-maos', label: 'Osteoartrite das mãos' },
       { id: 'artrite-reumatoide', label: 'Artrite reumatoide' },
       { id: 'artrite-psoriasica', label: 'Artrite psoriásica' },
       { id: 'gota-tofacea', label: 'Gota tofácea' },
+      { id: 'osteoartrite-maos', label: 'Osteoartrite das mãos' },
     ],
   },
   {
@@ -1658,8 +1658,8 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia renal com dilatação anecoica da pelve e dos cálices',
     question: 'Qual alteração do trato urinário é demonstrada pela dilatação da pelve e dos cálices renais?',
     options: [
-      { id: 'hidronefrose', label: 'Hidronefrose' },
       { id: 'cisto-renal-simples', label: 'Cisto renal simples' },
+      { id: 'hidronefrose', label: 'Hidronefrose' },
       { id: 'necrose-cortical', label: 'Necrose cortical renal' },
       { id: 'pielonefrite-aguda', label: 'Pielonefrite aguda' },
     ],
@@ -1673,10 +1673,10 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de abdome com cálculo radiopaco ramificado ocupando a pelve e os cálices renais',
     question: 'Como é denominado o cálculo ramificado que molda a pelve e os cálices renais nesta radiografia?',
     options: [
-      { id: 'calculo-coraliforme', label: 'Cálculo coraliforme' },
       { id: 'calculo-ureteral-distal', label: 'Cálculo ureteral distal' },
       { id: 'nefrocalcinose-medular', label: 'Nefrocalcinose medular' },
       { id: 'flebolito-pelvico', label: 'Flebolito pélvico' },
+      { id: 'calculo-coraliforme', label: 'Cálculo coraliforme' },
     ],
   },
   {
@@ -1703,9 +1703,9 @@ export const visualChallenges = [
     imageAlt: 'Tomografia contrastada com área periférica triangular hipodensa no rim esquerdo',
     question: 'Em paciente com fibrilação atrial, dor súbita no flanco e LDH elevada, qual diagnóstico explica esta área renal sem realce?',
     options: [
-      { id: 'infarto-renal', label: 'Infarto renal' },
       { id: 'pielonefrite-aguda', label: 'Pielonefrite aguda' },
       { id: 'carcinoma-celulas-renais', label: 'Carcinoma de células renais' },
+      { id: 'infarto-renal', label: 'Infarto renal' },
       { id: 'hematoma-subcapsular', label: 'Hematoma subcapsular renal' },
     ],
   },
@@ -1718,9 +1718,9 @@ export const visualChallenges = [
     imageAlt: 'Sedimento urinário com cilindros de conteúdo granular e aspecto grosseiro',
     question: 'Em paciente com lesão renal aguda após choque, qual etiologia é sugerida por cilindros granulosos grosseiros abundantes?',
     options: [
-      { id: 'lesao-tubular-aguda', label: 'Lesão tubular aguda' },
       { id: 'azotemia-pre-renal', label: 'Azotemia pré-renal' },
       { id: 'glomerulonefrite', label: 'Glomerulonefrite' },
+      { id: 'lesao-tubular-aguda', label: 'Lesão tubular aguda' },
       { id: 'nefrite-intersticial-aguda', label: 'Nefrite intersticial aguda' },
     ],
   },
@@ -1748,8 +1748,8 @@ export const visualChallenges = [
     imageAlt: 'Biópsia renal com expansão mesangial nodular em múltiplos glomérulos',
     question: 'Em paciente com diabetes de longa duração e proteinúria, qual nefropatia produz esta glomeruloesclerose nodular?',
     options: [
-      { id: 'nefropatia-diabetica', label: 'Nefropatia diabética' },
       { id: 'glomeruloesclerose-segmentar-focal', label: 'Glomeruloesclerose segmentar e focal' },
+      { id: 'nefropatia-diabetica', label: 'Nefropatia diabética' },
       { id: 'nefropatia-membranosa', label: 'Nefropatia membranosa' },
       { id: 'doenca-lesoes-minimas', label: 'Doença por lesões mínimas' },
     ],
@@ -1763,9 +1763,9 @@ export const visualChallenges = [
     imageAlt: 'Biópsia renal com crescente fibrocelular comprimindo o tufo glomerular',
     question: 'Em paciente com hematúria e perda rápida da função renal, qual padrão de glomerulonefrite corresponde à formação de crescentes?',
     options: [
-      { id: 'glomerulonefrite-rapidamente-progressiva', label: 'Glomerulonefrite rapidamente progressiva' },
       { id: 'glomerulonefrite-membranoproliferativa', label: 'Glomerulonefrite membranoproliferativa' },
       { id: 'nefropatia-iga', label: 'Nefropatia por IgA' },
+      { id: 'glomerulonefrite-rapidamente-progressiva', label: 'Glomerulonefrite rapidamente progressiva' },
       { id: 'glomeruloesclerose-segmentar-focal', label: 'Glomeruloesclerose segmentar e focal' },
     ],
   },
@@ -1793,10 +1793,10 @@ export const visualChallenges = [
     imageAlt: 'Biópsia renal com infiltrado neutrofílico intenso no interstício e no interior dos túbulos',
     question: 'Em paciente com febre, dor no flanco e piúria, qual diagnóstico corresponde a este infiltrado neutrofílico tubulointersticial?',
     options: [
-      { id: 'pielonefrite-aguda', label: 'Pielonefrite aguda' },
       { id: 'nefrite-intersticial-cronica', label: 'Nefrite intersticial crônica' },
       { id: 'necrose-cortical', label: 'Necrose cortical renal' },
       { id: 'nefropatia-membranosa', label: 'Nefropatia membranosa' },
+      { id: 'pielonefrite-aguda', label: 'Pielonefrite aguda' },
     ],
   },
   {
@@ -1823,9 +1823,9 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de tórax portátil com opacidades alveolares difusas bilaterais',
     question: 'Paciente com sepse evolui com hipoxemia grave e opacidades bilaterais difusas, sem evidência de origem cardiogênica. Qual síndrome é mais provável?',
     options: [
-      { id: 'sdra', label: 'Síndrome do desconforto respiratório agudo' },
       { id: 'edema-pulmonar-cardiogenico', label: 'Edema pulmonar cardiogênico' },
       { id: 'pneumonia-bilateral', label: 'Pneumonia bilateral' },
+      { id: 'sdra', label: 'Síndrome do desconforto respiratório agudo' },
       { id: 'hemorragia-alveolar-difusa', label: 'Hemorragia alveolar difusa' },
     ],
   },
@@ -1838,8 +1838,8 @@ export const visualChallenges = [
     imageAlt: 'Ultrassonografia pulmonar com artefatos verticais hiperecogênicos originados na linha pleural',
     question: 'Como são chamados os artefatos verticais que se originam na pleura e alcançam o fundo da tela sem desaparecer?',
     options: [
-      { id: 'linhas-b', label: 'Linhas B' },
       { id: 'linhas-a', label: 'Linhas A' },
+      { id: 'linhas-b', label: 'Linhas B' },
       { id: 'ponto-pulmonar', label: 'Ponto pulmonar' },
       { id: 'sinal-codigo-barras', label: 'Sinal do código de barras' },
     ],
@@ -1868,8 +1868,8 @@ export const visualChallenges = [
     imageAlt: 'Ecocardiografia com volumosa coleção anecoica ao redor do coração',
     question: 'Paciente apresenta hipotensão, turgência jugular e bulhas hipofonéticas. Qual diagnóstico integra o contexto clínico e o grande derrame pericárdico mostrado?',
     options: [
-      { id: 'tamponamento-cardiaco', label: 'Tamponamento cardíaco' },
       { id: 'embolia-pulmonar-macica', label: 'Embolia pulmonar maciça' },
+      { id: 'tamponamento-cardiaco', label: 'Tamponamento cardíaco' },
       { id: 'choque-cardiogenico', label: 'Choque cardiogênico por infarto' },
       { id: 'disseccao-aguda-aorta', label: 'Dissecção aguda de aorta' },
     ],
@@ -1883,10 +1883,10 @@ export const visualChallenges = [
     imageAlt: 'Ilustração de boca aberta em que somente o palato duro é visível acima da língua',
     question: 'Na avaliação pré-anestésica, o paciente abre a boca e protrui a língua; somente o palato duro é visível. Qual classe de Mallampati corresponde ao achado?',
     options: [
-      { id: 'mallampati-iv', label: 'Classe IV' },
       { id: 'mallampati-i', label: 'Classe I' },
       { id: 'mallampati-ii', label: 'Classe II' },
       { id: 'mallampati-iii', label: 'Classe III' },
+      { id: 'mallampati-iv', label: 'Classe IV' },
     ],
   },
   {
@@ -1913,9 +1913,9 @@ export const visualChallenges = [
     imageAlt: 'Ilustração da visão laringoscópica em que a epiglote é visível, mas a abertura glótica não',
     question: 'Na laringoscopia direta, visualiza-se a epiglote, mas nenhuma parte da glote. Qual grau de Cormack-Lehane corresponde a essa visão?',
     options: [
-      { id: 'cormack-lehane-iii', label: 'Grau III' },
       { id: 'cormack-lehane-i', label: 'Grau I' },
       { id: 'cormack-lehane-ii', label: 'Grau II' },
+      { id: 'cormack-lehane-iii', label: 'Grau III' },
       { id: 'cormack-lehane-iv', label: 'Grau IV' },
     ],
   },
@@ -1928,9 +1928,9 @@ export const visualChallenges = [
     imageAlt: 'Eletrocardiograma de doze derivações com ondas T altas, estreitas e apiculadas',
     question: 'Paciente com doença renal apresenta fraqueza e bradicardia. Qual distúrbio eletrolítico é sugerido pelas ondas T altas e apiculadas?',
     options: [
-      { id: 'hipercalemia', label: 'Hipercalemia' },
       { id: 'hipocalemia', label: 'Hipocalemia' },
       { id: 'hipocalcemia', label: 'Hipocalcemia' },
+      { id: 'hipercalemia', label: 'Hipercalemia' },
       { id: 'hipomagnesemia', label: 'Hipomagnesemia' },
     ],
   },
@@ -1943,10 +1943,10 @@ export const visualChallenges = [
     imageAlt: 'Eletrocardiograma com deflexão positiva no final do complexo QRS compatível com onda J',
     question: 'Após exposição prolongada ao frio, paciente chega com temperatura de 30 °C e bradicardia. Qual alteração explica a onda J de Osborn no ECG?',
     options: [
-      { id: 'hipotermia', label: 'Hipotermia' },
       { id: 'hipercalemia', label: 'Hipercalemia' },
       { id: 'infarto-agudo-miocardio', label: 'Infarto agudo do miocárdio' },
       { id: 'intoxicacao-digitalica', label: 'Intoxicação digitálica' },
+      { id: 'hipotermia', label: 'Hipotermia' },
     ],
   },
   {
@@ -1958,8 +1958,8 @@ export const visualChallenges = [
     imageAlt: 'Mamografia com pequena lesão irregular assinalada no quadrante superior da mama',
     question: 'Na mamografia de rastreamento, a seta indica uma pequena lesão irregular. Qual interpretação é a mais apropriada?',
     options: [
-      { id: 'lesao-suspeita-malignidade', label: 'Lesão suspeita para malignidade' },
       { id: 'cisto-simples', label: 'Cisto mamário simples' },
+      { id: 'lesao-suspeita-malignidade', label: 'Lesão suspeita para malignidade' },
       { id: 'lipoma', label: 'Lipoma benigno' },
       { id: 'linfonodo-intramamario-normal', label: 'Linfonodo intramamário normal' },
     ],
@@ -1973,9 +1973,9 @@ export const visualChallenges = [
     imageAlt: 'Tomografia de tórax em janela pulmonar com nódulo periférico de margens espiculadas',
     question: 'Em fumante de 61 anos, qual interpretação é mais adequada para este nódulo pulmonar espiculado?',
     options: [
-      { id: 'nodulo-suspeito-malignidade', label: 'Nódulo suspeito para malignidade' },
       { id: 'hamartoma-pulmonar', label: 'Hamartoma pulmonar' },
       { id: 'granuloma-calcificado', label: 'Granuloma calcificado' },
+      { id: 'nodulo-suspeito-malignidade', label: 'Nódulo suspeito para malignidade' },
       { id: 'cisto-broncogenico', label: 'Cisto broncogênico' },
     ],
   },
@@ -1988,8 +1988,8 @@ export const visualChallenges = [
     imageAlt: 'Tomografias hepáticas nas fases arterial e portal mostrando nódulo com realce arterial e washout',
     question: 'Em paciente cirrótico, um nódulo hepático apresenta hiper-realce arterial e washout na fase portal. Qual diagnóstico é mais provável?',
     options: [
-      { id: 'carcinoma-hepatocelular', label: 'Carcinoma hepatocelular' },
       { id: 'hemangioma-hepatico', label: 'Hemangioma hepático' },
+      { id: 'carcinoma-hepatocelular', label: 'Carcinoma hepatocelular' },
       { id: 'colangiocarcinoma', label: 'Colangiocarcinoma intra-hepático' },
       { id: 'cisto-hepatico', label: 'Cisto hepático simples' },
     ],
@@ -2003,8 +2003,8 @@ export const visualChallenges = [
     imageAlt: 'Tomografia de crânio com lesão expansiva cerebral e edema vasogênico extenso',
     question: 'Paciente com câncer de mama e metástases sistêmicas desenvolve cefaleia e déficit focal. Qual diagnóstico é mais provável para a lesão cerebral com edema vasogênico?',
     options: [
-      { id: 'metastase-cerebral', label: 'Metástase cerebral' },
       { id: 'glioblastoma', label: 'Glioblastoma' },
+      { id: 'metastase-cerebral', label: 'Metástase cerebral' },
       { id: 'abscesso-cerebral', label: 'Abscesso cerebral' },
       { id: 'meningioma', label: 'Meningioma' },
     ],
@@ -2018,9 +2018,9 @@ export const visualChallenges = [
     imageAlt: 'Histopatologia renal com células tumorais de citoplasma claro organizadas em ninhos',
     question: 'Em paciente com hematúria e massa renal, qual subtipo tumoral é sugerido por células de citoplasma claro dispostas em ninhos delicadamente vascularizados?',
     options: [
-      { id: 'carcinoma-renal-celulas-claras', label: 'Carcinoma renal de células claras' },
       { id: 'carcinoma-renal-papilifero', label: 'Carcinoma renal papilífero' },
       { id: 'oncocitoma-renal', label: 'Oncocitoma renal' },
+      { id: 'carcinoma-renal-celulas-claras', label: 'Carcinoma renal de células claras' },
       { id: 'angiomiolipoma', label: 'Angiomiolipoma' },
     ],
   },
@@ -2048,9 +2048,9 @@ export const visualChallenges = [
     imageAlt: 'Cintilografia óssea de corpo inteiro com múltiplos focos de hipercaptação no esqueleto axial',
     question: 'Em paciente com câncer de próstata e PSA elevado, o que representam os múltiplos focos de hipercaptação no esqueleto axial?',
     options: [
-      { id: 'metastases-osseas-osteoblasticas', label: 'Metástases ósseas osteoblásticas' },
       { id: 'osteoporose-difusa', label: 'Osteoporose difusa' },
       { id: 'mieloma-multiplo', label: 'Mieloma múltiplo' },
+      { id: 'metastases-osseas-osteoblasticas', label: 'Metástases ósseas osteoblásticas' },
       { id: 'osteomalacia', label: 'Osteomalacia' },
     ],
   },
@@ -2063,10 +2063,10 @@ export const visualChallenges = [
     imageAlt: 'PET/CT com PSMA mostrando focos anormais de captação em vértebra e osso ilíaco',
     question: 'No PET/CT com PSMA de paciente com câncer de próstata, focos concordantes em vértebra e osso ilíaco indicam qual achado?',
     options: [
-      { id: 'metastases-osseas-prostata', label: 'Metástases ósseas do câncer de próstata' },
       { id: 'captacao-fisiologica-ossea', label: 'Captação óssea fisiológica' },
       { id: 'doenca-paget', label: 'Doença de Paget' },
       { id: 'osteomielite-multifocal', label: 'Osteomielite multifocal' },
+      { id: 'metastases-osseas-prostata', label: 'Metástases ósseas do câncer de próstata' },
     ],
   },
   {
@@ -2093,10 +2093,10 @@ export const visualChallenges = [
     imageAlt: 'Cintilografia pulmonar com ventilação preservada e defeitos segmentares de perfusão',
     question: 'Em paciente com dispneia súbita, a cintilografia mostra ventilação preservada e defeitos segmentares de perfusão. Qual diagnóstico explica esse mismatch?',
     options: [
-      { id: 'embolia-pulmonar', label: 'Embolia pulmonar' },
       { id: 'pneumonia-lobar', label: 'Pneumonia lobar' },
       { id: 'edema-pulmonar', label: 'Edema pulmonar' },
       { id: 'asma', label: 'Asma' },
+      { id: 'embolia-pulmonar', label: 'Embolia pulmonar' },
     ],
   },
   {
@@ -2108,10 +2108,10 @@ export const visualChallenges = [
     imageAlt: 'Cariograma humano masculino com três cópias do cromossomo 21',
     question: 'Recém-nascido com hipotonia, prega palmar única e cardiopatia congênita apresenta este cariograma. Qual alteração cromossômica está demonstrada?',
     options: [
-      { id: 'trissomia-21', label: 'Trissomia livre do cromossomo 21' },
       { id: 'trissomia-18', label: 'Trissomia do cromossomo 18' },
       { id: 'trissomia-13', label: 'Trissomia do cromossomo 13' },
       { id: 'monossomia-x', label: 'Monossomia do cromossomo X' },
+      { id: 'trissomia-21', label: 'Trissomia livre do cromossomo 21' },
     ],
   },
   {
@@ -2123,9 +2123,9 @@ export const visualChallenges = [
     imageAlt: 'Cariograma humano com apenas um cromossomo X e ausência de segundo cromossomo sexual',
     question: 'Adolescente com baixa estatura, pescoço alado e amenorreia primária apresenta este cariograma. Qual é o diagnóstico?',
     options: [
-      { id: 'sindrome-turner', label: 'Síndrome de Turner' },
       { id: 'sindrome-klinefelter', label: 'Síndrome de Klinefelter' },
       { id: 'sindrome-triplo-x', label: 'Síndrome do triplo X' },
+      { id: 'sindrome-turner', label: 'Síndrome de Turner' },
       { id: 'sindrome-down', label: 'Síndrome de Down' },
     ],
   },
@@ -2138,10 +2138,10 @@ export const visualChallenges = [
     imageAlt: 'Cariograma humano com dois cromossomos X e um cromossomo Y',
     question: 'Homem alto, com testículos pequenos e firmes, ginecomastia e infertilidade apresenta este cariograma. Qual síndrome explica os achados?',
     options: [
-      { id: 'sindrome-klinefelter', label: 'Síndrome de Klinefelter' },
       { id: 'sindrome-x-y-y', label: 'Síndrome 47,XYY' },
       { id: 'insensibilidade-androgenica', label: 'Síndrome de insensibilidade aos andrógenos' },
       { id: 'sindrome-turner', label: 'Síndrome de Turner' },
+      { id: 'sindrome-klinefelter', label: 'Síndrome de Klinefelter' },
     ],
   },
   {
@@ -2153,9 +2153,9 @@ export const visualChallenges = [
     imageAlt: 'Mácula hiperpigmentada homogênea de contornos regulares no abdome, compatível com mancha café com leite',
     question: 'Criança apresenta seis manchas café com leite maiores que 5 mm, efélides axilares e mãe com quadro semelhante. Qual diagnóstico é mais provável?',
     options: [
-      { id: 'neurofibromatose-tipo-1', label: 'Neurofibromatose tipo 1' },
       { id: 'esclerose-tuberosa', label: 'Esclerose tuberosa' },
       { id: 'sindrome-sturge-weber', label: 'Síndrome de Sturge-Weber' },
+      { id: 'neurofibromatose-tipo-1', label: 'Neurofibromatose tipo 1' },
       { id: 'vitiligo', label: 'Vitiligo' },
     ],
   },
@@ -2168,8 +2168,8 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de membro superior de recém-nascido com arqueamento de ossos longos e alteração da modelagem óssea',
     question: 'Recém-nascido com fraturas após traumas mínimos, arqueamento de ossos longos e escleras azuladas apresenta esta radiografia. Qual diagnóstico deve ser considerado?',
     options: [
-      { id: 'osteogenese-imperfeita', label: 'Osteogênese imperfeita' },
       { id: 'trauma-nao-acidental', label: 'Trauma não acidental' },
+      { id: 'osteogenese-imperfeita', label: 'Osteogênese imperfeita' },
       { id: 'raquitismo', label: 'Raquitismo' },
       { id: 'hipofosfatasia', label: 'Hipofosfatasia' },
     ],
@@ -2198,8 +2198,8 @@ export const visualChallenges = [
     imageAlt: 'Radiografia de tórax neonatal com baixo volume pulmonar e opacidades reticulogranulares difusas',
     question: 'Prematuro de 29 semanas desenvolve desconforto respiratório logo após o nascimento. A radiografia mostra baixo volume pulmonar, padrão reticulogranular difuso e broncogramas aéreos. Qual é o diagnóstico?',
     options: [
-      { id: 'doenca-membrana-hialina', label: 'Síndrome do desconforto respiratório neonatal' },
       { id: 'taquipneia-transitoria', label: 'Taquipneia transitória do recém-nascido' },
+      { id: 'doenca-membrana-hialina', label: 'Síndrome do desconforto respiratório neonatal' },
       { id: 'aspiracao-meconial', label: 'Síndrome de aspiração meconial' },
       { id: 'pneumonia-neonatal', label: 'Pneumonia neonatal' },
     ],
@@ -2228,8 +2228,8 @@ export const visualChallenges = [
     imageAlt: 'Radiografia neonatal com hiperinsuflação e opacidades pulmonares grosseiras e assimétricas',
     question: 'Recém-nascido pós-termo, exposto a líquido amniótico meconial, apresenta desconforto respiratório e opacidades grosseiras assimétricas com hiperinsuflação. Qual é o diagnóstico?',
     options: [
-      { id: 'sindrome-aspiracao-meconial', label: 'Síndrome de aspiração meconial' },
       { id: 'doenca-membrana-hialina', label: 'Síndrome do desconforto respiratório neonatal' },
+      { id: 'sindrome-aspiracao-meconial', label: 'Síndrome de aspiração meconial' },
       { id: 'taquipneia-transitoria', label: 'Taquipneia transitória do recém-nascido' },
       { id: 'pneumonia-neonatal', label: 'Pneumonia neonatal' },
     ],

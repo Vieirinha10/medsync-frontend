@@ -1,15 +1,16 @@
 # Graph Report - medsync-frontend-ai-skills  (2026-09-01)
 
 ## Corpus Check
-- cluster-only mode — file stats not available
+- 87 files · ~65,085 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 468 nodes · 737 edges · 28 communities (23 shown, 2 thin omitted)
+- 476 nodes · 752 edges · 28 communities (23 shown, 2 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 8 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `11cee9dc`
+- Built from commit: `77240ee4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -20,7 +21,7 @@
 - AdminAcademicPage.jsx
 - HomePage.jsx
 - devDependencies
-- package.json
+- audit
 - SimulacaoCaso.jsx
 - RevisoesPage.jsx
 - ResultadoSimulacaoPage.jsx
@@ -47,10 +48,10 @@
 4. `RevisoesPage()` - 11 edges
 5. `ApiError` - 11 edges
 6. `getAuthToken()` - 11 edges
-7. `Repertório de IA do MedSync — frontend` - 9 edges
-8. `Debriefing clínico da página de resultado` - 9 edges
+7. `Debriefing clínico da página de resultado` - 9 edges
+8. `Repertório de IA do MedSync — frontend` - 9 edges
 9. `ChromaticWavesBackground()` - 8 edges
-10. `CheckoutPage()` - 7 edges
+10. `audit()` - 7 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `AdminAcademicPage()` --calls--> `request()`  [EXTRACTED]
@@ -90,12 +91,12 @@ Cohesion: 0.11
 Nodes (15): HomeCommunitySections(), ACADEMIC_INSTITUTIONS, HERO_SIMULATION_STEPS, MEDICAL_SPECIALTIES, SYNAPSE_PROCESS_STEPS, TRUST_PILLARS, HomeEcosystemSections(), HomeHero() (+7 more)
 
 ### Community 5 - "devDependencies"
-Cohesion: 0.08
-Nodes (25): eslint, eslint-plugin-react, eslint-plugin-react-hooks, eslint-plugin-react-refresh, jsdom, devDependencies, eslint, eslint-plugin-react (+17 more)
+Cohesion: 0.04
+Nodes (44): eslint, eslint-plugin-react, eslint-plugin-react-hooks, eslint-plugin-react-refresh, jsdom, dependencies, react, react-dom (+36 more)
 
-### Community 6 - "package.json"
-Cohesion: 0.10
-Nodes (19): dependencies, react, react-dom, react-icons, react-router-dom, name, private, scripts (+11 more)
+### Community 6 - "audit"
+Cohesion: 0.54
+Nodes (7): Counter, Path, audit(), format_counts(), load_answers(), load_option_orders(), main()
 
 ### Community 7 - "SimulacaoCaso.jsx"
 Cohesion: 0.12
@@ -162,7 +163,7 @@ Cohesion: 0.29
 Nodes (6): Arquivos envolvidos, Conteúdo apresentado, Estados e interação, Objetivo e escopo, Painel administrativo de consumo da Synapse, Publicação e verificação
 
 ## Knowledge Gaps
-- **152 isolated node(s):** `10. Regras para a explicação`, `11. Achados-chave`, `12. Regras para imagens e licenças`, `13. Limites de inferência clínica`, `14. Diversidade dentro do lote` (+147 more)
+- **152 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+147 more)
   These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 203 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -170,16 +171,16 @@ Nodes (6): Arquivos envolvidos, Conteúdo apresentado, Estados e interação, Ob
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `api` connect `App.jsx` to `PlanosPage.jsx`, `AdminFinancialCenter.jsx`, `AdminAcademicPage.jsx`, `HomePage.jsx`, `SimulacaoCaso.jsx`, `RevisoesPage.jsx`, `ResultadoSimulacaoPage.jsx`, `DesafiosPage.jsx`, `DashboardPage.jsx`, `QuestoesPage.jsx`, `TrilhasPage.jsx`?**
-  _High betweenness centrality (0.108) - this node is a cross-community bridge._
+  _High betweenness centrality (0.105) - this node is a cross-community bridge._
 - **Why does `ApiError` connect `App.jsx` to `AdminAcademicPage.jsx`, `SimulacaoCaso.jsx`, `RevisoesPage.jsx`, `ResultadoSimulacaoPage.jsx`, `DashboardPage.jsx`, `TrilhasPage.jsx`?**
-  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+  _High betweenness centrality (0.013) - this node is a cross-community bridge._
 - **Why does `ChromaticWavesBackground()` connect `ChromaticWavesBackground.jsx` to `HomePage.jsx`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `RevisoesPage()` (e.g. with `isDue()` and `sortByNextReview()`) actually correct?**
   _`RevisoesPage()` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `10. Regras para a explicação`, `11. Achados-chave`, `12. Regras para imagens e licenças` to the rest of the system?**
+- **What connects `name`, `private`, `version` to the rest of the system?**
   _152 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `App.jsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.06265984654731457 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0636523266022827 - nodes in this community are weakly interconnected._
 - **Should `PlanosPage.jsx` be split into smaller, more focused modules?**
   _Cohesion score 0.1053763440860215 - nodes in this community are weakly interconnected._

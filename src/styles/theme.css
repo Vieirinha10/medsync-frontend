@@ -108,7 +108,6 @@
   .home-result-preview,
   .home-academic-network,
   .solid-features,
-  .home-credibility,
   .solid-process,
   .solid-value-section
 ) {
@@ -122,7 +121,6 @@
   .home-result-preview,
   .home-academic-network,
   .solid-features,
-  .home-credibility,
   .solid-process,
   .solid-value-section
 ) :where(h2, h3, strong) {
@@ -134,7 +132,6 @@
   .home-result-preview,
   .home-academic-network,
   .solid-features,
-  .home-credibility,
   .solid-process,
   .solid-value-section
 ) p {
@@ -149,8 +146,6 @@
   .preview-clinical-cards article,
   .academic-institution-card,
   .solid-feature-card.is-light,
-  .credibility-ledger,
-  .credibility-pillar-grid article,
   .solid-process-list li,
   .solid-plan-card
 ) {
@@ -164,8 +159,7 @@
   .solid-window-bar,
   .solid-patient-data,
   .solid-clinical-track > div,
-  .preview-improvement-plan,
-  .credibility-ledger li
+  .preview-improvement-plan
 ) {
   color: #dcebf1;
   border-color: rgba(98, 199, 237, 0.14);
@@ -1104,5 +1098,4 @@
 :root[data-theme='dark'] .evaluation-ambient {
   display: none !important;
 }
-
 

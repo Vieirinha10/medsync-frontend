@@ -63,7 +63,7 @@ describe('HomePage', () => {
     expect(within(integratedResult).getByText('ANÁLISE DOS EXAMES')).toBeInTheDocument();
     expect(within(integratedResult).getByText('SEGURANÇA DO PACIENTE')).toBeInTheDocument();
     expect(within(integratedResult).getByText('PLANO RÁPIDO DE MELHORIA')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Robustez que o estudante consegue enxergar.' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Critérios visíveis em cada resultado.' })).toBeInTheDocument();
   });
 
   it('apresenta duas esteiras acadêmicas sem depoimentos ou sugestão de parceria institucional', () => {
@@ -78,5 +78,25 @@ describe('HomePage', () => {
     expect(document.querySelector('.academic-marquee-row.is-reverse')).not.toBeNull();
     expect(screen.queryByText('Aluno verificado')).not.toBeInTheDocument();
     expect(screen.queryByText('Lucas Martins')).not.toBeInTheDocument();
+  });
+
+  it('resume o ecossistema e apresenta os planos sem repetir etapas ou expor as cinco redes', () => {
+    api.getPublicStats.mockResolvedValue({ estudantes_medsync: 127 });
+
+    render(<MemoryRouter><HomePage /></MemoryRouter>);
+
+    expect(screen.getByRole('heading', { name: 'Tudo o que você precisa para praticar, revisar e evoluir.' })).toBeInTheDocument();
+    expect(document.querySelectorAll('.solid-feature-card')).toHaveLength(6);
+    expect(document.querySelector('.solid-card-number')).toBeNull();
+    expect(screen.queryByText(/ETAPA 01 · IDENTIFICAÇÃO/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Robustez que o estudante consegue enxergar.' })).not.toBeInTheDocument();
+
+    expect(screen.getByRole('heading', { name: 'Comece gratuito. Avance quando fizer sentido.' })).toBeInTheDocument();
+    expect(screen.getByText('R$ 25,90')).toBeInTheDocument();
+    expect(screen.getByText('R$ 23,90')).toBeInTheDocument();
+    expect(screen.getByText('R$ 65,90')).toBeInTheDocument();
+    expect(screen.getAllByText('Feedback clínico personalizado da Synapse')).toHaveLength(3);
+    expect(screen.queryByText(/Synapse 5-Core com Junta Médica/i)).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Estude com método.Decida com confiança.' })).toBeInTheDocument();
   });
 });

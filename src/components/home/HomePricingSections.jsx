@@ -1,18 +1,19 @@
 import { Link } from 'react-router-dom';
-import { FiArrowRight, FiCheck, FiCompass, FiShield, FiUsers } from 'react-icons/fi';
+import { FiArrowRight, FiCheck, FiShield, FiUsers } from 'react-icons/fi';
 import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../../config/pricing';
+
+const PREMIUM_ACCESS_HIGHLIGHTS = [
+  '80 casos clínicos',
+  '150 desafios visuais',
+  'Feedback clínico personalizado da Synapse',
+];
 
 const HomePricingSections = () => (
   <>
-      {/* BLOCO 11: TABELA DE PLANOS (GRATUITO + 3 PREMIUMS) */}
       <section className="solid-value-section home-reveal" data-home-reveal aria-labelledby="pricing-title">
         <header className="solid-section-heading">
-          <span className="section-eyebrow-tag">
-            <FiCompass aria-hidden="true" />
-            ACESSO TRANSPARENTE
-          </span>
           <h2 id="pricing-title">Comece gratuito. Avance quando fizer sentido.</h2>
-          <p>Experimente o método sem compromisso e escolha o plano que acompanha o seu ritmo de internato e estudos.</p>
+          <p>Conheça o método sem compromisso e escolha a forma de acesso que acompanha o seu ritmo.</p>
         </header>
 
         <div className="solid-plan-grid">
@@ -20,7 +21,7 @@ const HomePricingSections = () => (
             <span>PARA CONHECER</span>
             <h3>{FREE_PLAN.name}</h3>
             <div className="solid-price">{FREE_PLAN.price}</div>
-            <p>Uma porta de entrada para experimentar a prática clínica interativa.</p>
+            <p>Experimente a prática clínica interativa antes de escolher um plano.</p>
             <ul>
               <li><FiCheck /> 5 casos clínicos por mês</li>
               <li><FiCheck /> 10 questões de provas por dia</li>
@@ -43,9 +44,9 @@ const HomePricingSections = () => (
                 {plan.highlights.map((highlight) => (
                   <li key={highlight}><FiCheck /> {highlight}</li>
                 ))}
-                <li><FiCheck /> 80 Casos Clínicos desbloqueados</li>
-                <li><FiCheck /> 150 Desafios Visuais ilimitados</li>
-                <li><FiCheck /> Synapse 5-Core com Junta Médica</li>
+                {PREMIUM_ACCESS_HIGHLIGHTS.map((highlight) => (
+                  <li key={highlight}><FiCheck /> {highlight}</li>
+                ))}
               </ul>
               <Link to="/assinatura">Ver esta opção <FiArrowRight /></Link>
             </article>
@@ -53,7 +54,6 @@ const HomePricingSections = () => (
         </div>
       </section>
 
-      {/* BLOCO 12: CTA FINAL DE FECHAMENTO */}
       <section className="solid-trust home-reveal" data-home-reveal>
         <div>
           <FiShield aria-hidden="true" />

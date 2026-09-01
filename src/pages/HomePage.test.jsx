@@ -30,32 +30,33 @@ describe('HomePage', () => {
     await waitFor(() => expect(within(stats).getByText('127 estudantes MedSync')).toBeInTheDocument());
   });
 
-  it('explica a Synapse 5-Core e permite explorar todos os 5 examinadores e o consenso orbital', () => {
+  it('explica o processo educacional da Synapse sem apresentar individualmente as cinco redes', () => {
     api.getPublicStats.mockResolvedValue({ estudantes_medsync: 127 });
 
     render(<MemoryRouter><HomePage /></MemoryRouter>);
 
     expect(screen.getByRole('heading', { name: /Synapse IA, a inteligência educativa do MedSync/i })).toBeInTheDocument();
-    
-    // Testa alternância de cada examinador da banca
-    fireEvent.click(screen.getByRole('tab', { name: /O Professor/i }));
-    expect(screen.getByRole('heading', { name: /Didática, empatia, fisiopatologia/i })).toBeInTheDocument();
+    expect(screen.getByText('ARQUITETURA MULTI-LLM · O CONCEITO DA BANCA MÉDICA')).toBeInTheDocument();
+    expect(screen.queryByText(/DeepSeek-R1|Claude 3\.5|GPT-4o|Gemini 2\.0|Grok 2/)).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('tab', { name: /O Avaliador Técnico/i }));
-    expect(screen.getByRole('heading', { name: /Rubricas e critérios de pontuação/i })).toBeInTheDocument();
+    const terminal = document.querySelector('.synapse-process-terminal');
+    expect(terminal).not.toBeNull();
+    expect(within(terminal).getByLabelText('Processamento atual: RESPOSTA CLÍNICA')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('tab', { name: /O Analista/i }));
-    expect(screen.getByRole('heading', { name: /Velocidade, cruzamento de dados/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /RUBRICA CLÍNICA 2\.0/i }));
+    expect(within(terminal).getByLabelText('Processamento atual: RUBRICA CLÍNICA 2.0')).toBeInTheDocument();
+    expect(within(terminal).getByText('Critérios e pesos aplicados')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('tab', { name: /O Auditor/i }));
-    expect(screen.getByRole('heading', { name: /Segurança, diagnósticos raros/i })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /SEGURANÇA DO PACIENTE/i }));
+    expect(within(terminal).getByText('Riscos e prioridades verificados')).toBeInTheDocument();
 
-    // Testa a 6ª etapa (Consenso Integral)
-    fireEvent.click(screen.getByRole('tab', { name: /CONSENSO INTEGRAL/i }));
-    expect(screen.getByText('CONSENSO UNÂNIME CONSOLIDADO')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('tab', { name: /DEVOLUTIVA PERSONALIZADA/i }));
+    expect(within(terminal).getByText('Feedback personalizado pronto')).toBeInTheDocument();
 
     // Testa etapas do feedback
-    fireEvent.click(screen.getByRole('tab', { name: /Rubrica clínica/i }));
+    const feedbackSystem = document.querySelector('.home-feedback-system');
+    expect(feedbackSystem).not.toBeNull();
+    fireEvent.click(within(feedbackSystem).getByRole('tab', { name: /Rubrica clínica/i }));
     expect(screen.getByRole('heading', { name: 'A comparação segue uma estrutura clínica' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Robustez que o estudante consegue enxergar.' })).toBeInTheDocument();
   });

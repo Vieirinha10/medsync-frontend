@@ -5,14 +5,14 @@ import MedSyncIntro from '../components/MedSyncIntro';
 import HomeHero from '../components/home/HomeHero';
 import HomeLowerSections from '../components/home/HomeLowerSections';
 import HomeSpecialtiesMarquee from '../components/home/HomeSpecialtiesMarquee';
-import HomeSynapseBoard from '../components/home/HomeSynapseBoard';
+import HomeSynapseProcess from '../components/home/HomeSynapseProcess';
 import {
   ACADEMIC_INSTITUTIONS,
   FEEDBACK_STEPS,
   HERO_SIMULATION_STEPS,
-  MEDICAL_BOARD_EXAMINERS,
   MEDICAL_SPECIALTIES,
   REAL_TESTIMONIALS,
+  SYNAPSE_PROCESS_STEPS,
   TRUST_PILLARS,
 } from '../components/home/homeContent';
 
@@ -21,20 +21,20 @@ const HomePage = () => {
   const [studentCount, setStudentCount] = useState(null);
   const [activeHeroStep, setActiveHeroStep] = useState(0);
   const [isHeroPaused, setIsHeroPaused] = useState(false);
-  const [activeSynapsePillar, setActiveSynapsePillar] = useState(0);
-  const scrollyStepRefs = useRef([]);
+  const [activeSynapseStep, setActiveSynapseStep] = useState(0);
+  const synapseStepRefs = useRef([]);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
 
     const observers = [];
-    scrollyStepRefs.current.forEach((el, index) => {
+    synapseStepRefs.current.forEach((el, index) => {
       if (!el) return;
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              setActiveSynapsePillar(index);
+              setActiveSynapseStep(index);
             }
           });
         },
@@ -129,11 +129,11 @@ const HomePage = () => {
       <HomeSpecialtiesMarquee specialties={MEDICAL_SPECIALTIES} />
 
       {/* BLOCO 3: SYNAPSE IA · A BANCA MÉDICA (ARENA ORBITAL DOS 5 MODELOS DE IA) */}
-      <HomeSynapseBoard
-        activeSynapsePillar={activeSynapsePillar}
-        setActiveSynapsePillar={setActiveSynapsePillar}
-        scrollyStepRefs={scrollyStepRefs}
-        MEDICAL_BOARD_EXAMINERS={MEDICAL_BOARD_EXAMINERS}
+      <HomeSynapseProcess
+        activeStep={activeSynapseStep}
+        setActiveStep={setActiveSynapseStep}
+        stepRefs={synapseStepRefs}
+        steps={SYNAPSE_PROCESS_STEPS}
       />
 
       <HomeLowerSections

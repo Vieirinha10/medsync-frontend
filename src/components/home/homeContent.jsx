@@ -8,13 +8,6 @@ import {
   FiTarget,
   FiZap,
 } from 'react-icons/fi';
-import {
-  ClaudeLogo,
-  DeepSeekLogo,
-  GeminiLogo,
-  GrokLogo,
-  OpenAILogo,
-} from './HomeModelLogos';
 
 export const MEDICAL_SPECIALTIES = [
   'CARDIOLOGIA',
@@ -60,91 +53,84 @@ export const MEDICAL_SPECIALTIES = [
   'UROLOGIA',
 ];
 
-export const MEDICAL_BOARD_EXAMINERS = [
+export const SYNAPSE_PROCESS_STEPS = [
   {
-    id: 'deepseek',
+    id: 'response',
     code: '01',
-    model: 'DeepSeek-R1',
-    org: 'DeepSeek AI',
+    label: 'RESPOSTA CLÍNICA',
+    title: 'Seu raciocínio entra por inteiro.',
+    subtitle: 'A Synapse recebe decisões, não apenas um diagnóstico.',
+    description:
+      'Avaliações, exames solicitados, justificativas, hipótese e conduta são reunidos como partes da mesma resolução clínica.',
+    signal: 'Resposta clínica registrada',
+    sample: 'Hipótese, prioridades e plano de cuidado organizados para análise.',
     color: '#22c7ec',
-    role: 'O Racionalista',
-    tagline: 'Raciocínio causa-efeito, não aceita achismo',
-    description:
-      'Audita a cadeia lógica de inferência. Confronta cada queixa e sinal vital com a hipótese formulada, garantindo que não houve saltos diagnósticos ou deduções sem sustentação real.',
-    verdictSample:
-      'A hipótese de colecistite está bem fundamentada na dor pós-prandial e febre, mas a solicitação de tomografia inicial foi improcedente diante da indicação de ultrassom.',
-    focusArea: 'Lógica e Dedutibilidade Clínica',
-    logo: DeepSeekLogo,
-    icon: FiActivity,
-    orbitPos: { x: 170, y: 44, angle: -90 },
-  },
-  {
-    id: 'claude',
-    code: '02',
-    model: 'Claude 3.5 Sonnet',
-    org: 'Anthropic',
-    color: '#f59e0b',
-    role: 'O Professor',
-    tagline: 'Didática, empatia, fisiopatologia — explica o porquê',
-    description:
-      'Aprofunda o mecanismo biológico de base. Traduz as decisões em aprendizado clínico sólido, explicando a relação fisiopatológica de cada acerto e mostrando com clareza a evolução esperada da doença.',
-    verdictSample:
-      'A dor em hipocôndrio decorre do aumento de pressão intravesicular por obstrução do ducto cístico. A antibioticoterapia venosa precoce bloqueia a translocação bacteriana.',
-    focusArea: 'Fisiopatologia e Raciocínio Formativo',
-    logo: ClaudeLogo,
     icon: FiFileText,
-    orbitPos: { x: 284, y: 126, angle: -18 },
   },
   {
-    id: 'openai',
-    code: '03',
-    model: 'ChatGPT (GPT-4o)',
-    org: 'OpenAI',
-    color: '#10a37f',
-    role: 'O Avaliador Técnico',
-    tagline: 'Rubricas e critérios de pontuação, como numa prova real',
+    id: 'context',
+    code: '02',
+    label: 'CONTEXTO DO CASO',
+    title: 'O caso define o que realmente importa.',
+    subtitle: 'História, sinais vitais e objetivos orientam a leitura.',
     description:
-      'Aplica a régua rigorosa das provas práticas (OSCE) e concursos de residência médica. Verifica checklists essenciais, pesos por conduta crítica e penalidades objetivas por omissão de cuidados.',
-    verdictSample:
-      'Checklist Oficial: Estabilização volêmica (100%), Solicitação de exames essenciais (100%), Parecer cirúrgico precoce (100%). Nota na rubrica: 9,4/10.',
-    focusArea: 'Rubricas e Padrões de Prova Prática',
-    logo: OpenAILogo,
-    icon: FiTarget,
-    orbitPos: { x: 240, y: 262, angle: 54 },
-  },
-  {
-    id: 'gemini',
-    code: '04',
-    model: 'Gemini 2.0 Flash',
-    org: 'Google',
+      'A análise considera a gravidade, o momento clínico e as informações disponíveis para distinguir escolhas pertinentes de decisões sem valor.',
+    signal: 'Contexto e prioridades reconhecidos',
+    sample: 'Dor, febre e sinal de Murphy tornam a investigação biliar prioritária.',
     color: '#38bdf8',
-    role: 'O Analista',
-    tagline: 'Velocidade, cruzamento de dados e exames',
-    description:
-      'Processa em alta velocidade correlações laboratoriais, curvas de sinais vitais e achados de imagem, identificando discrepâncias sutis e garantindo sincronia perfeita entre exames e quadro clínico.',
-    verdictSample:
-      'Cruzamento temporal: PCR 48 mg/L associada a leucocitose com desvio à esquerda valida processo inflamatório agudo em sincronia com espessamento parietal ao USG.',
-    focusArea: 'Integração Multimodal e Laboratorial',
-    logo: GeminiLogo,
-    icon: FiZap,
-    orbitPos: { x: 100, y: 262, angle: 126 },
+    icon: FiActivity,
   },
   {
-    id: 'grok',
-    code: '05',
-    model: 'Grok 2',
-    org: 'xAI',
-    color: '#f1f5f9',
-    role: 'O Auditor',
-    tagline: 'Segurança, diagnósticos raros, o que passaria despercebido',
+    id: 'rubric',
+    code: '03',
+    label: 'RUBRICA CLÍNICA 2.0',
+    title: 'A comparação segue critérios do próprio caso.',
+    subtitle: 'Cada decisão é confrontada com objetivos clínicos definidos.',
     description:
-      'Vigia riscos fatais ocultos e armadilhas que passariam despercebidas na rotina acelerada do pronto-socorro. Alerta para contraindicações graves, interações medicamentosas e diagnósticos atípicos.',
-    verdictSample:
-      'Auditoria de Segurança: A analgesia rápida não mascarou a peritonite localizada porque a indicação cirúrgica foi firmada em tempo hábil. Risco de perfuração neutralizado.',
-    focusArea: 'Segurança do Paciente e Red Flags',
-    logo: GrokLogo,
+      'A rubrica identifica acertos, omissões, exames de baixo valor e condutas esperadas sem reduzir o raciocínio a uma resposta única.',
+    signal: 'Critérios e pesos aplicados',
+    sample: 'Exames essenciais, hipótese e prioridades terapêuticas comparados.',
+    color: '#6ad6f3',
+    icon: FiLayers,
+  },
+  {
+    id: 'dimensions',
+    code: '04',
+    label: 'TRÊS EIXOS',
+    title: 'Exames, hipótese e conduta ganham leituras próprias.',
+    subtitle: 'O estudante entende onde acertou e onde perdeu precisão.',
+    description:
+      'As três dimensões recebem notas separadas para que uma boa hipótese não esconda uma investigação incompleta ou uma conduta insegura.',
+    signal: 'Avaliação dimensional concluída',
+    sample: 'Exames 8,7 · Hipótese 9,2 · Conduta 7,4',
+    color: '#a7f34b',
+    icon: FiTarget,
+  },
+  {
+    id: 'safety',
+    code: '05',
+    label: 'SEGURANÇA DO PACIENTE',
+    title: 'O impacto clínico não passa despercebido.',
+    subtitle: 'Omissões e condutas perigosas recebem destaque explícito.',
+    description:
+      'A Synapse identifica riscos, explica possíveis consequências e mostra a sequência de cuidado mais segura para o cenário apresentado.',
+    signal: 'Riscos e prioridades verificados',
+    sample: 'Reavaliação e critérios de deterioração devem acompanhar a conduta.',
+    color: '#f6c453',
     icon: FiShield,
-    orbitPos: { x: 56, y: 126, angle: 198 },
+  },
+  {
+    id: 'feedback',
+    code: '06',
+    label: 'DEVOLUTIVA PERSONALIZADA',
+    title: 'O resultado se transforma em próximo passo.',
+    subtitle: 'Nota, explicação e plano de melhoria chegam organizados.',
+    description:
+      'O feedback final reúne o que foi bem executado, o que precisa evoluir e uma orientação prática para o próximo caso.',
+    signal: 'Feedback educacional pronto',
+    sample: 'Reforce a sequência estabilização, investigação dirigida e reavaliação.',
+    color: '#a7f34b',
+    icon: FiZap,
   },
 ];
 

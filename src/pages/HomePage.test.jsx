@@ -66,7 +66,7 @@ describe('HomePage', () => {
     expect(screen.getByRole('heading', { name: 'Robustez que o estudante consegue enxergar.' })).toBeInTheDocument();
   });
 
-  it('apresenta a comunidade acadêmica sem sugerir parceria institucional', () => {
+  it('apresenta duas esteiras acadêmicas sem depoimentos ou sugestão de parceria institucional', () => {
     api.getPublicStats.mockResolvedValue({ estudantes_medsync: 127 });
 
     render(<MemoryRouter><HomePage /></MemoryRouter>);
@@ -74,5 +74,9 @@ describe('HomePage', () => {
     expect(screen.getByRole('heading', { name: 'Uma comunidade médica em formação.' })).toBeInTheDocument();
     expect(screen.getByText(/Instituições representadas: UFMA, CEUMA, UFPI/)).toBeInTheDocument();
     expect(screen.getByText(/não representa vínculo ou parceria institucional/i)).toBeInTheDocument();
+    expect(document.querySelectorAll('.academic-marquee-row')).toHaveLength(2);
+    expect(document.querySelector('.academic-marquee-row.is-reverse')).not.toBeNull();
+    expect(screen.queryByText('Aluno verificado')).not.toBeInTheDocument();
+    expect(screen.queryByText('Lucas Martins')).not.toBeInTheDocument();
   });
 });

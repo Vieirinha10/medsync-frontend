@@ -135,35 +135,6 @@ export const SYNAPSE_PROCESS_STEPS = [
 ];
 
 
-export const REAL_TESTIMONIALS = [
-  {
-    initials: 'LM',
-    name: 'Lucas Martins',
-    role: 'Internato Médico · 11º Período',
-    institution: 'UFMA',
-    quote:
-      'O que mais me impressionou foi a Synapse apontar exames que eu pedi por vício e esquecer a conduta de estabilização imediata. Ter esse feedback antes de entrar no plantão de emergência muda completamente a segurança.',
-    tag: 'Simulação Clínica & Debriefing',
-  },
-  {
-    initials: 'BA',
-    name: 'Beatriz Albuquerque',
-    role: 'Estudante de Medicina · 8º Período',
-    institution: 'UFPI',
-    quote:
-      'Os 150 desafios visuais viraram minha rotina diária no trajeto do hospital. Interpretar ECGs e tomografias com gabarito comentado em menos de 1 minuto me fez fixar padrões que nenhuma apostila conseguia me passar.',
-    tag: 'Desafios Visuais Rápidos',
-  },
-  {
-    initials: 'RV',
-    name: 'Rodrigo Vasconcelos',
-    role: 'Estudante de Medicina · 6º Período',
-    institution: 'CEUMA',
-    quote:
-      'O caderno de erros automático é genial. Em vez de acumular anotações soltas, eu sei exatamente em quais especialidades meu raciocínio falhou e o sistema agenda a revisão no dia certo antes da prova.',
-    tag: 'Caderno de Erros & Retenção',
-  },
-];
 
 export const TRUST_PILLARS = [
   { icon: FiLayers, title: 'Rubrica específica', text: 'Cada caso possui objetivos e critérios próprios de avaliação médica.' },

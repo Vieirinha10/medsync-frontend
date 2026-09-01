@@ -10,7 +10,6 @@ import {
   ACADEMIC_INSTITUTIONS,
   HERO_SIMULATION_STEPS,
   MEDICAL_SPECIALTIES,
-  REAL_TESTIMONIALS,
   SYNAPSE_PROCESS_STEPS,
   TRUST_PILLARS,
 } from '../components/home/homeContent';
@@ -134,7 +133,6 @@ const HomePage = () => {
 
       <HomeLowerSections
         formattedStudentCount={formattedStudentCount}
-        REAL_TESTIMONIALS={REAL_TESTIMONIALS}
         ACADEMIC_INSTITUTIONS={ACADEMIC_INSTITUTIONS}
         TRUST_PILLARS={TRUST_PILLARS}
       />

@@ -125,4 +125,32 @@ describe('HomePage', () => {
       delete document.visibilityState;
     }
   });
+
+  it('permite pausar a demonstração e navegar pelas etapas com o teclado', () => {
+    api.getPublicStats.mockResolvedValue({ estudantes_medsync: 127 });
+    vi.useFakeTimers();
+
+    render(<MemoryRouter><HomePage /></MemoryRouter>);
+
+    const patientTab = screen.getByRole('tab', { name: '01 · Paciente' });
+    const examsTab = screen.getByRole('tab', { name: '02 · Exames' });
+    const pauseButton = screen.getByRole('button', { name: 'Pausar demonstração automática' });
+
+    fireEvent.click(pauseButton);
+    act(() => vi.advanceTimersByTime(6000));
+    expect(patientTab).toHaveAttribute('aria-selected', 'true');
+    expect(screen.getByRole('button', { name: 'Retomar demonstração automática' })).toBeInTheDocument();
+
+    patientTab.focus();
+    fireEvent.keyDown(patientTab, { key: 'ArrowRight' });
+    expect(examsTab).toHaveAttribute('aria-selected', 'true');
+    expect(examsTab).toHaveFocus();
+
+    const responseTab = screen.getByRole('tab', { name: /RESPOSTA CLÍNICA/i });
+    const contextTab = screen.getByRole('tab', { name: /CONTEXTO DO CASO/i });
+    responseTab.focus();
+    fireEvent.keyDown(responseTab, { key: 'ArrowRight' });
+    expect(contextTab).toHaveAttribute('aria-selected', 'true');
+    expect(contextTab).toHaveFocus();
+  });
 });

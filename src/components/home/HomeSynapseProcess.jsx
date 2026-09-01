@@ -20,6 +20,23 @@ const HomeSynapseProcess = ({
   const CurrentIcon = currentStep.icon;
   const progress = ((activeStep + 1) / steps.length) * 100;
 
+  const handleTabKeyDown = (event, currentIndex) => {
+    const lastIndex = steps.length - 1;
+    const destinationByKey = {
+      ArrowLeft: currentIndex === 0 ? lastIndex : currentIndex - 1,
+      ArrowRight: currentIndex === lastIndex ? 0 : currentIndex + 1,
+      Home: 0,
+      End: lastIndex,
+    };
+    const nextIndex = destinationByKey[event.key];
+
+    if (nextIndex === undefined) return;
+
+    event.preventDefault();
+    setActiveStep(nextIndex);
+    event.currentTarget.parentElement?.querySelectorAll('[role="tab"]')[nextIndex]?.focus();
+  };
+
   return (
     <section
       id="synapse-engine"
@@ -45,7 +62,11 @@ const HomeSynapseProcess = ({
         </p>
       </header>
 
-      <nav className="synapse-process-nav" aria-label="Etapas da análise educacional da Synapse">
+      <div
+        className="synapse-process-nav"
+        role="tablist"
+        aria-label="Etapas da análise educacional da Synapse"
+      >
         {steps.map((step, index) => {
           const StepIcon = step.icon;
           const isActive = activeStep === index;
@@ -54,10 +75,15 @@ const HomeSynapseProcess = ({
           return (
             <button
               type="button"
+              role="tab"
               key={step.id}
+              id={`synapse-process-tab-${step.id}`}
               className={`synapse-process-nav-item${isActive ? ' is-active' : ''}${isComplete ? ' is-complete' : ''}`}
-              aria-current={isActive ? 'step' : undefined}
+              aria-selected={isActive}
+              aria-controls="synapse-process-panel"
+              tabIndex={isActive ? 0 : -1}
               onClick={() => setActiveStep(index)}
+              onKeyDown={(event) => handleTabKeyDown(event, index)}
             >
               <span className="synapse-process-nav-icon">
                 {isComplete ? <FiCheckCircle aria-hidden="true" /> : <StepIcon aria-hidden="true" />}
@@ -69,14 +95,10 @@ const HomeSynapseProcess = ({
             </button>
           );
         })}
-      </nav>
+      </div>
 
       <div className="synapse-process-layout">
-        <div
-          className="synapse-process-story"
-          role="tablist"
-          aria-label="Como a Synapse transforma decisões em feedback"
-        >
+        <div className="synapse-process-story">
           <div className="synapse-process-rail" aria-hidden="true">
             <span style={{ height: `${progress}%` }} />
           </div>
@@ -89,18 +111,9 @@ const HomeSynapseProcess = ({
               <article
                 key={step.id}
                 ref={(element) => (stepRefs.current[index] = element)}
-                role="tab"
-                tabIndex={0}
-                aria-selected={isActive}
+                aria-current={isActive ? 'step' : undefined}
                 className={`synapse-process-step${isActive ? ' is-active' : ''}`}
                 style={{ '--step-color': step.color }}
-                onClick={() => setActiveStep(index)}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    setActiveStep(index);
-                  }
-                }}
               >
                 <span className="synapse-process-node" aria-hidden="true">
                   <StepIcon />
@@ -122,7 +135,13 @@ const HomeSynapseProcess = ({
         </div>
 
         <div className="synapse-process-sticky">
-          <article className="synapse-process-terminal" aria-live="polite">
+          <article
+            id="synapse-process-panel"
+            className="synapse-process-terminal"
+            role="tabpanel"
+            aria-labelledby={`synapse-process-tab-${currentStep.id}`}
+            tabIndex={0}
+          >
             <header className="synapse-terminal-header">
               <span className="synapse-terminal-status">
                 <i aria-hidden="true" />

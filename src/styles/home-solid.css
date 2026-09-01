@@ -2182,6 +2182,11 @@
   background: rgba(255, 255, 255, 0.05);
 }
 
+.real-case-step-btn:focus-visible {
+  outline: 2px solid var(--home-cyan);
+  outline-offset: 2px;
+}
+
 .step-btn-title {
   font-family: 'Poppins', sans-serif;
   font-size: 0.68rem;
@@ -2969,6 +2974,28 @@
   font-size: 0.65rem;
   color: var(--home-lime);
   font-weight: 700;
+}
+
+.case-playback-toggle {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(34, 199, 236, 0.35);
+  border-radius: 50%;
+  background: rgba(34, 199, 236, 0.1);
+  color: var(--home-cyan);
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.case-playback-toggle:hover,
+.case-playback-toggle:focus-visible {
+  border-color: var(--home-lime);
+  background: rgba(167, 243, 75, 0.12);
+  color: var(--home-lime);
+  outline: none;
 }
 
 .radar-bar-track {

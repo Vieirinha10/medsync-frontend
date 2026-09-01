@@ -20,6 +20,7 @@ const HomePage = () => {
   const [studentCount, setStudentCount] = useState(null);
   const [activeHeroStep, setActiveHeroStep] = useState(0);
   const [isHeroPaused, setIsHeroPaused] = useState(false);
+  const [isHeroInteracting, setIsHeroInteracting] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(() => document.visibilityState !== 'hidden');
   const [activeSynapseStep, setActiveSynapseStep] = useState(0);
   const synapseStepRefs = useRef([]);
@@ -76,14 +77,14 @@ const HomePage = () => {
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-    if (isHeroPaused || !isPageVisible || prefersReducedMotion) return undefined;
+    if (isHeroPaused || isHeroInteracting || !isPageVisible || prefersReducedMotion) return undefined;
 
     const timer = setInterval(() => {
       setActiveHeroStep((prev) => (prev + 1) % HERO_SIMULATION_STEPS.length);
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [activeHeroStep, isHeroPaused, isPageVisible]);
+  }, [activeHeroStep, isHeroInteracting, isHeroPaused, isPageVisible]);
 
   useEffect(() => {
     const root = homeRef.current;
@@ -122,7 +123,9 @@ const HomePage = () => {
       <HomeHero
         activeHeroStep={activeHeroStep}
         setActiveHeroStep={setActiveHeroStep}
+        isHeroPaused={isHeroPaused}
         setIsHeroPaused={setIsHeroPaused}
+        setIsHeroInteracting={setIsHeroInteracting}
         HERO_SIMULATION_STEPS={HERO_SIMULATION_STEPS}
       />
 

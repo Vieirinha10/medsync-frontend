@@ -8,6 +8,8 @@ import {
   FiFileText,
   FiHeart,
   FiLayers,
+  FiPause,
+  FiPlay,
   FiTarget,
   FiTrendingUp,
   FiUsers,
@@ -16,9 +18,29 @@ import {
 const HomeHero = ({
   activeHeroStep,
   setActiveHeroStep,
+  isHeroPaused,
   setIsHeroPaused,
+  setIsHeroInteracting,
   HERO_SIMULATION_STEPS,
-}) => (
+}) => {
+  const handleTabKeyDown = (event, currentIndex) => {
+    const lastIndex = HERO_SIMULATION_STEPS.length - 1;
+    const destinationByKey = {
+      ArrowLeft: currentIndex === 0 ? lastIndex : currentIndex - 1,
+      ArrowRight: currentIndex === lastIndex ? 0 : currentIndex + 1,
+      Home: 0,
+      End: lastIndex,
+    };
+    const nextIndex = destinationByKey[event.key];
+
+    if (nextIndex === undefined) return;
+
+    event.preventDefault();
+    setActiveHeroStep(HERO_SIMULATION_STEPS[nextIndex].id);
+    event.currentTarget.parentElement?.querySelectorAll('[role="tab"]')[nextIndex]?.focus();
+  };
+
+  return (
       <section className="solid-hero" aria-label="Apresentação do MedSync">
         <div className="solid-hero-glow solid-hero-glow-one" aria-hidden="true" />
         <div className="solid-hero-glow solid-hero-glow-two" aria-hidden="true" />
@@ -55,11 +77,11 @@ const HomeHero = ({
         <div
           className="solid-hero-stage"
           aria-label="Demonstração interativa de um caso clínico no MedSync"
-          onMouseEnter={() => setIsHeroPaused(true)}
-          onMouseLeave={() => setIsHeroPaused(false)}
-          onFocusCapture={() => setIsHeroPaused(true)}
+          onMouseEnter={() => setIsHeroInteracting(true)}
+          onMouseLeave={() => setIsHeroInteracting(false)}
+          onFocusCapture={() => setIsHeroInteracting(true)}
           onBlurCapture={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget)) setIsHeroPaused(false);
+            if (!event.currentTarget.contains(event.relatedTarget)) setIsHeroInteracting(false);
           }}
         >
           <div className="hero-real-case-window">
@@ -70,9 +92,13 @@ const HomeHero = ({
                   type="button"
                   role="tab"
                   key={step.id}
+                  id={`hero-case-tab-${step.id}`}
                   className={`real-case-step-btn${activeHeroStep === step.id ? ' is-active' : ''}`}
                   aria-selected={activeHeroStep === step.id}
+                  aria-controls="hero-case-panel"
+                  tabIndex={activeHeroStep === step.id ? 0 : -1}
                   onClick={() => setActiveHeroStep(step.id)}
+                  onKeyDown={(event) => handleTabKeyDown(event, step.id)}
                 >
                   <span className="step-btn-title">{step.label}</span>
                   <div className="step-progress-indicator" />
@@ -85,10 +111,27 @@ const HomeHero = ({
               <span className="case-specialty-badge">CIRURGIA</span>
               <span className="case-title-line">Caso #062 – Dor no hipocôndrio direito pós-prandial</span>
               <span className="case-step-counter">{String(activeHeroStep + 1).padStart(2, '0')}/05</span>
+              <button
+                type="button"
+                className="case-playback-toggle"
+                aria-pressed={isHeroPaused}
+                aria-label={isHeroPaused
+                  ? 'Retomar demonstração automática'
+                  : 'Pausar demonstração automática'}
+                onClick={() => setIsHeroPaused((current) => !current)}
+              >
+                {isHeroPaused ? <FiPlay aria-hidden="true" /> : <FiPause aria-hidden="true" />}
+              </button>
             </div>
 
             {/* CONTEÚDOS DAS 5 TELAS REAIS */}
-            <div className="real-case-stage-screen" aria-live="polite">
+            <div
+              id="hero-case-panel"
+              className="real-case-stage-screen"
+              role="tabpanel"
+              aria-labelledby={`hero-case-tab-${activeHeroStep}`}
+              tabIndex={0}
+            >
               {/* TELA 1: APRESENTAÇÃO DO PACIENTE */}
               {activeHeroStep === 0 && (
                 <div className="case-screen-view screen-paciente">
@@ -381,6 +424,7 @@ const HomeHero = ({
           </div>
         </div>
       </section>
-);
+  );
+};
 
 export default HomeHero;

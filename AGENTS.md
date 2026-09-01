@@ -2,6 +2,39 @@
 
 Estas instruções abrangem todo o repositório.
 
+## Repertório de IA do MedSync
+
+Antes de alterar código, conteúdo ou interface, leia
+`docs/ai/SKILLS.md` e identifique as skills aplicáveis. Informe ao usuário,
+em uma atualização curta, quais skills serão usadas e por quê.
+
+- Use `graphify` antes de mudanças arquiteturais, fluxos que atravessam vários
+  arquivos ou integrações entre frontend e API. Não o exija para correções
+  pequenas e já localizadas.
+- Use `frontend-design` para criar ou reformular páginas, componentes,
+  hierarquia visual, tipografia, responsividade ou movimento. Essa skill é
+  instalada localmente pelo script documentado e não é redistribuída neste
+  repositório.
+- Use `copywriting` para criar ou revisar textos de marketing, páginas
+  institucionais, planos, propostas de valor e chamadas para ação.
+- Use `humanizer` como revisão final de textos destinados ao público, depois
+  de `copywriting` quando ambas forem necessárias. Não a aplique
+  automaticamente a textos clínicos, jurídicos, contratuais ou regulatórios.
+
+As skills externas devem permanecer idênticas às versões registradas em
+`docs/ai/skills-lock.json`. As regras próprias do MedSync ficam em
+`AGENTS.md`, `.agents/rules/`, `.agents/product-marketing.md` e
+`docs/ai/`; não edite o conteúdo das skills para inserir preferências locais.
+
+Quando `graphify-out/graph.json` existir, consulte o grafo antes de uma
+investigação arquitetural ampla. Depois de alterações em código, atualize o
+grafo com `graphify update .` ou registre claramente por que a atualização não
+pôde ser executada.
+
+Não instale, atualize, envie código, abra PR, faça merge ou publique em produção
+sem a autorização correspondente. Uma autorização de implementação não implica
+autorização de publicação.
+
 Antes de criar, editar, importar ou revisar desafios visuais, leia integralmente
 `docs/DIRETRIZ_DESAFIOS_VISUAIS.md`.
 

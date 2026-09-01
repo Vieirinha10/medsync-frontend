@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "audited_at": "2026-09-01",
+  "skills": {
+    "graphify": {
+      "repository": "https://github.com/Graphify-Labs/graphify",
+      "commit": "33362d969292b57eda82f3fbd9eb5f3f5bc9bbc2",
+      "version": "0.9.53",
+      "license": "Apache-2.0 AND MIT",
+      "installation": "repository-skill-and-local-cli",
+      "local_tool": "graphifyy==0.9.53",
+      "files": {
+        ".agents/skills/graphify/LICENSE": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+        ".agents/skills/graphify/LICENSE-MIT": "b1d9746fb5c6c39fd502e2ebe432a12ad9a097f3",
+        ".agents/skills/graphify/NOTICE": "791bf88bb1e50572902dbbe9228153ea29846adf",
+        ".agents/skills/graphify/SKILL.md": "190827d9ace989750d2722691e555061cd805927",
+        ".agents/skills/graphify/references/add-watch.md": "77844343e140553b7f1bf419e32640568c2014ff",
+        ".agents/skills/graphify/references/exports.md": "242ff868e015b158504dda3ea1992e4cd9686843",
+        ".agents/skills/graphify/references/extraction-spec.md": "388df7674f2d25e83f87041864bbe7635aa15e75",
+        ".agents/skills/graphify/references/github-and-merge.md": "a41ea06e17c1676483356a2a06504a1bfb0870e4",
+        ".agents/skills/graphify/references/hooks.md": "3fb74d1545394154c30ee052f24da8dd07dd9e9f",
+        ".agents/skills/graphify/references/query.md": "56565eb782951a1f0e1279f851b8a022292f3ac3",
+        ".agents/skills/graphify/references/transcribe.md": "b967f8379998b890945706b3c95fef23b2ec402f",
+        ".agents/skills/graphify/references/update.md": "3632fd41266964bdcf04b58d4359f9364cedfbce"
+      }
+    },
+    "frontend-design": {
+      "repository": "https://github.com/anthropics/claude-code",
+      "commit": "423563cfe38c90fdf3b428cff0ee7f51cfec3ca7",
+      "version": "1.1.0",
+      "license": "Anthropic commercial terms; not redistributed",
+      "installation": "local-untracked",
+      "local_files": {
+        ".agents/skills/frontend-design/SKILL.md": {
+          "url": "https://raw.githubusercontent.com/anthropics/claude-code/423563cfe38c90fdf3b428cff0ee7f51cfec3ca7/plugins/frontend-design/skills/frontend-design/SKILL.md",
+          "git_blob_sha1": "decdff43d05908b4c1fc2cfd2d80fc5743440934"
+        }
+      }
+    },
+    "copywriting": {
+      "repository": "https://github.com/coreyhaines31/marketingskills",
+      "commit": "e55de886fe7580ec75cdb7ded5092b33f7d4ed58",
+      "version": "2.0.2",
+      "license": "MIT",
+      "installation": "repository",
+      "files": {
+        ".agents/skills/copywriting/LICENSE": "7c48dd638a9ebed49a8ef0c0c4eea90105381cdf",
+        ".agents/skills/copywriting/SKILL.md": "349426d7f1874815401194d642fa59a0bb5b1842",
+        ".agents/skills/copywriting/references/copy-frameworks.md": "3db7fd593cb124d0ed584f713f8de08bc04d6cd6",
+        ".agents/skills/copywriting/references/natural-transitions.md": "ee72faa54b24714ceb9b75269834a5c80888c90f"
+      }
+    },
+    "humanizer": {
+      "repository": "https://github.com/blader/humanizer",
+      "commit": "e2e92e7b4b8229253ed5c8e81dc65463fdeddda5",
+      "version": "2.11.2",
+      "license": "MIT",
+      "installation": "repository",
+      "files": {
+        ".agents/skills/humanizer/LICENSE": "625297fb778f32eb39d3a5b97e3e3b611b7304d6",
+        ".agents/skills/humanizer/SKILL.md": "c9c22422f822f07767ad1b6e79eedccbfe4e9f63"
+      }
+    }
+  }
+}

@@ -28,6 +28,11 @@ describe('HomePage', () => {
     const stats = screen.getByRole('region', { name: 'Números do MedSync' });
     expect(within(stats).getByText('19 áreas médicas contempladas')).toBeInTheDocument();
     expect(within(stats).getAllByRole('listitem')).toHaveLength(4);
+
+    const specialties = screen.getByRole('region', { name: 'Especialidades médicas disponíveis' });
+    expect(within(specialties).getByText(/Especialidades disponíveis: CARDIOLOGIA/)).toBeInTheDocument();
+    expect(specialties.querySelector('.specialty-marquee-track')).toHaveAttribute('aria-hidden', 'true');
+
     await waitFor(() => expect(within(stats).getByText('127 estudantes MedSync')).toBeInTheDocument());
   });
 

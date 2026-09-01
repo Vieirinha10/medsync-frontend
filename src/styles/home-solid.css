@@ -4057,3 +4057,326 @@
     transition: none !important;
   }
 }
+
+/* ==========================================================================
+   REFINAMENTO RESPONSIVO FINAL · HERO, SYNAPSE E CONVERSÃO
+   ========================================================================== */
+
+.specialty-marquee-accessible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  border: 0;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.home-solid a:focus-visible,
+.home-solid button:focus-visible {
+  outline: 3px solid var(--home-cyan);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1080px) {
+  .solid-hero-stage {
+    width: min(820px, 100%);
+  }
+
+  .hero-real-case-window {
+    width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  .solid-hero {
+    margin: 8px !important;
+    padding: 50px 18px 58px !important;
+    gap: 34px !important;
+    border-radius: 22px !important;
+  }
+
+  .solid-hero h1 {
+    font-size: clamp(2.45rem, 12vw, 3.45rem) !important;
+    line-height: 1.04 !important;
+  }
+
+  .hero-highlight-wrapper,
+  .hero-highlight-green {
+    padding-right: 4px;
+  }
+
+  .solid-hero-copy > p.hero-lead-text {
+    margin: 20px 0 24px !important;
+  }
+
+  .solid-hero-proof {
+    display: grid;
+    gap: 10px;
+  }
+
+  .hero-real-case-window {
+    min-height: 0;
+    padding: 15px !important;
+    gap: 12px !important;
+    border-radius: 17px !important;
+  }
+
+  .real-case-tabs-bar {
+    grid-template-columns: repeat(5, minmax(78px, 1fr));
+    gap: 4px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+  }
+
+  .real-case-tabs-bar::-webkit-scrollbar,
+  .debriefing-subtabs-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .real-case-step-btn {
+    min-height: 44px;
+  }
+
+  .step-btn-title {
+    font-size: 0.7rem !important;
+  }
+
+  .real-case-subhead {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    gap: 8px;
+  }
+
+  .case-title-line {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .case-playback-toggle {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .screen-footer-actions {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .screen-btn-primary {
+    min-height: 44px;
+  }
+
+  .home-synapse-section {
+    padding: 34px 18px 66px !important;
+  }
+
+  .home-synapse-heading {
+    margin-bottom: 46px !important;
+  }
+
+  .home-synapse-heading .section-eyebrow-tag {
+    max-width: 100%;
+    font-size: 0.64rem !important;
+    line-height: 1.35;
+    white-space: normal;
+  }
+
+  .home-synapse-heading h2 {
+    font-size: clamp(2.3rem, 11vw, 3.35rem) !important;
+    line-height: 1.05 !important;
+  }
+
+  .synapse-process-nav-item {
+    min-height: 52px;
+  }
+
+  .synapse-process-story {
+    gap: 24px;
+    padding-bottom: 34px;
+  }
+
+  .synapse-process-rail {
+    bottom: 50px;
+  }
+
+  .synapse-process-step {
+    min-height: 0;
+  }
+
+  .synapse-integrated-result {
+    margin-top: 72px;
+    padding-top: 54px;
+  }
+
+  .synapse-result-intro h2 {
+    font-size: clamp(2.25rem, 10vw, 3.5rem);
+  }
+
+  .solid-features,
+  .solid-value-section {
+    padding: 72px 18px;
+  }
+
+  .solid-feature-card,
+  .solid-feature-card.is-wide {
+    min-height: 0;
+    padding: 28px 24px;
+    border-radius: 22px;
+  }
+
+  .solid-feature-icon {
+    margin-bottom: 25px;
+  }
+
+  .solid-plan-card {
+    padding: 28px 24px;
+    border-radius: 22px;
+  }
+
+  .solid-trust {
+    padding: 88px 20px;
+  }
+
+  .solid-trust h2 {
+    font-size: clamp(2.65rem, 13vw, 4.4rem);
+  }
+}
+
+@media (max-width: 520px) {
+  .solid-hero {
+    padding-inline: 14px !important;
+  }
+
+  .hero-real-case-window {
+    padding: 13px !important;
+  }
+
+  .real-case-subhead {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .case-title-line {
+    grid-row: 2;
+    grid-column: 1 / -1;
+  }
+
+  .case-step-counter {
+    margin-left: auto;
+  }
+
+  .patient-cards-dual,
+  .exam-selection-grid,
+  .debriefing-real-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vitals-grid-mini {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .screen-footer-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .screen-footer-actions .screen-btn-primary,
+  .debriefing-footer-action .screen-btn-primary {
+    width: 100%;
+  }
+
+  .synapse-audit-banner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .synapse-audit-banner .screen-btn-primary {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .debriefing-subtabs-bar {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+  }
+
+  .subtab-item {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .synapse-process-nav {
+    gap: 7px;
+  }
+
+  .synapse-process-nav-icon {
+    width: 27px;
+    height: 27px;
+    flex-basis: 27px;
+  }
+
+  .synapse-process-nav-item strong {
+    font-size: 0.6rem;
+  }
+
+  .synapse-terminal-step-label {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .synapse-terminal-step-label small {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .synapse-data-morph-nodes {
+    gap: 4px;
+  }
+
+  .synapse-morph-node {
+    width: 29px;
+    height: 29px;
+  }
+
+  .synapse-morph-source {
+    grid-template-columns: auto 1fr;
+  }
+
+  .synapse-result-intro {
+    margin-bottom: 28px;
+  }
+
+  .result-preview-shell {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .preview-score-card {
+    min-height: 310px;
+    padding: 22px 18px;
+  }
+
+  .preview-clinical-cards article {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-clinical-cards article > span {
+    width: 44px;
+    height: 44px;
+  }
+
+  .academic-network-heading h2 {
+    font-size: clamp(2.35rem, 12vw, 3.4rem);
+  }
+
+  .ecosystem-trust-strip {
+    padding: 24px 20px;
+  }
+}

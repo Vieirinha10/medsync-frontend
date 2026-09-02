@@ -31,18 +31,6 @@ const metadataV2 = {
   restantes_hoje: null,
 };
 
-const metadataV1 = {
-  total_questoes: 2811,
-  especialidades: [{ valor: 'Ginecologia', total: 600 }],
-  assuntos: [{ valor: 'Obstetrícia', total: 400 }],
-  anos: [{ valor: '2022', total: 500 }],
-  instituicoes: [{ valor: 'SUS-SP', total: 700 }],
-  premium_ativo: true,
-  limite_diario: null,
-  respondidas_hoje: 5,
-  restantes_hoje: null,
-};
-
 const realQuestionV2 = {
   id: 439600,
   source_id: '4000000002',
@@ -81,7 +69,7 @@ const realAnswerV2 = {
   explanation_status: 'PENDING',
 };
 
-describe('QuestoesPage - Catálogo v2 (Piloto 100 Corretivo)', () => {
+describe('QuestoesPage - Catálogo Ativo (Piloto 100 v1.2)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     api.getQuestionMetadata.mockResolvedValue(metadataV2);
@@ -100,7 +88,7 @@ describe('QuestoesPage - Catálogo v2 (Piloto 100 Corretivo)', () => {
 
   afterEach(cleanup);
 
-  it('exibe questão v2 com rótulo ENUNCIADO e sem vazamento de gabarito antes da resposta', async () => {
+  it('exibe questão com rótulo ENUNCIADO e sem vazamento de gabarito antes da resposta', async () => {
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
 
     expect(await screen.findByRole('heading', { name: 'Questões de provas' })).toBeInTheDocument();
@@ -117,27 +105,17 @@ describe('QuestoesPage - Catálogo v2 (Piloto 100 Corretivo)', () => {
     expect(screen.queryByText(/Comentário detalhado em preparação/i)).not.toBeInTheDocument();
   });
 
-  it('permite alternar entre o Catálogo Clássico (v1) e o Novo Catálogo (v2) sem mostrar tela vazia', async () => {
+  it('não expõe seletores de versão técnica de catálogo ao estudante na interface', async () => {
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
     await screen.findByRole('heading', { name: 'Questões de provas' });
 
-    // Clicar em Catálogo Clássico (v1)
-    api.getQuestionMetadata.mockResolvedValueOnce(metadataV1);
-    const btnV1 = screen.getByRole('button', { name: 'Catálogo Clássico (v1)' });
-    fireEvent.click(btnV1);
+    // Garante que botões de versão técnica não estão presentes para o aluno
+    expect(screen.queryByRole('button', { name: /Novo Catálogo \(Piloto v2\)/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /Catálogo Clássico \(v1\)/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/VERSÃO DO CATÁLOGO/i)).not.toBeInTheDocument();
 
-    await waitFor(() => {
-      expect(api.getQuestionMetadata).toHaveBeenCalledWith('v1');
-    });
-
-    // Clicar de volta em Novo Catálogo (Piloto v2)
-    api.getQuestionMetadata.mockResolvedValueOnce(metadataV2);
-    const btnV2 = screen.getByRole('button', { name: 'Novo Catálogo (Piloto v2)' });
-    fireEvent.click(btnV2);
-
-    await waitFor(() => {
-      expect(api.getQuestionMetadata).toHaveBeenCalledWith('v2');
-    });
+    // Metadados são carregados da versão ativa sem parâmetros técnicos do cliente
+    expect(api.getQuestionMetadata).toHaveBeenCalledWith();
   });
 
   it('corrige com acerto imediato, exibe banner editorial pendente e ZERO menção à Synapse', async () => {

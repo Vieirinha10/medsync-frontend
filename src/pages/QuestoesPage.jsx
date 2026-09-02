@@ -32,7 +32,6 @@ const INITIAL_FILTERS = {
   ano: '',
   instituicao: '',
   quantidade: 10,
-  catalog_version: 'v2',
 };
 
 const REPORT_REASONS = {
@@ -73,12 +72,12 @@ const QuestoesPage = () => {
   const [reportDescription, setReportDescription] = useState('');
   const [reportMessage, setReportMessage] = useState('');
 
-  const loadOverview = useCallback(async (catalogVersion = filters.catalog_version) => {
+  const loadOverview = useCallback(async () => {
     setIsLoading(true);
     setError('');
     try {
       const [meta, stats] = await Promise.all([
-        api.getQuestionMetadata(catalogVersion),
+        api.getQuestionMetadata(),
         api.getQuestionPerformance(),
       ]);
       setMetadata(meta);
@@ -88,7 +87,7 @@ const QuestoesPage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [filters.catalog_version]);
+  }, []);
 
   useEffect(() => { loadOverview(); }, [loadOverview]);
 
@@ -210,33 +209,6 @@ const QuestoesPage = () => {
         <div className="questions-home-grid">
           <section className="questions-setup-card">
             <div className="questions-section-heading"><span><FiFilter /></span><div><small>MONTE SEU TREINO</small><h2>Escolha como deseja praticar</h2><p>As questões serão sorteadas dentro dos filtros selecionados.</p></div></div>
-            <div className="questions-size-picker" style={{ marginBottom: '16px' }}>
-              <span>VERSÃO DO CATÁLOGO</span>
-              <div>
-                <button
-                  type="button"
-                  className={filters.catalog_version === 'v2' ? 'is-active' : ''}
-                  onClick={() => {
-                    const next = { ...filters, catalog_version: 'v2', especialidade: '', assunto: '', ano: '', instituicao: '' };
-                    setFilters(next);
-                    loadOverview('v2');
-                  }}
-                >
-                  Novo Catálogo (Piloto v2)
-                </button>
-                <button
-                  type="button"
-                  className={filters.catalog_version === 'v1' ? 'is-active' : ''}
-                  onClick={() => {
-                    const next = { ...filters, catalog_version: 'v1', especialidade: '', assunto: '', ano: '', instituicao: '' };
-                    setFilters(next);
-                    loadOverview('v1');
-                  }}
-                >
-                  Catálogo Clássico (v1)
-                </button>
-              </div>
-            </div>
             <div className="questions-filter-grid">
               <FilterSelect label="Especialidade" value={filters.especialidade} onChange={(value) => setFilters({ ...filters, especialidade: value })} items={metadata.especialidades} allLabel="Todas as especialidades" />
               <FilterSelect label="Assunto" value={filters.assunto} onChange={(value) => setFilters({ ...filters, assunto: value })} items={availableTopics} allLabel="Todos os assuntos" />

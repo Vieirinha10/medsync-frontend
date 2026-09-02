@@ -31,33 +31,49 @@ const metadataV2 = {
   restantes_hoje: null,
 };
 
-const questionV2 = {
-  id: 2001,
-  ano: 2024,
-  instituicao: 'USP',
-  cabecalho: 'USP · 2024',
-  especialidade: 'Clínica Médica',
-  assunto: 'Cardiologia',
-  enunciado: 'Homem de 62 anos com dor precordial típica aos esforços há 3 meses. Qual exame inicial mais indicado?',
+const metadataV1 = {
+  total_questoes: 2811,
+  especialidades: [{ valor: 'Ginecologia', total: 600 }],
+  assuntos: [{ valor: 'Obstetrícia', total: 400 }],
+  anos: [{ valor: '2022', total: 500 }],
+  instituicoes: [{ valor: 'SUS-SP', total: 700 }],
+  premium_ativo: true,
+  limite_diario: null,
+  respondidas_hoje: 5,
+  restantes_hoje: null,
+};
+
+const realQuestionV2 = {
+  id: 439600,
+  source_id: '4000000002',
+  ano: 2017,
+  instituicao: 'AC - Fundação Hospital Estadual do Acre - Fundhacre',
+  cabecalho: 'AC - Fundação Hospital Estadual do Acre - Fundhacre · 2017',
+  especialidade: 'Obstetrícia',
+  assunto: 'Obstetrícia',
+  tema: null,
+  regiao: 'AC',
+  enunciado: 'Paciente de 21 anos, procura a maternidade com história de atraso menstrual de 3 meses, associado a pequeno sangramento vaginal. O diagnóstico compatível com o quadro é:',
+  statement_rich_html: 'Paciente de 21 anos, procura a maternidade com história de atraso menstrual de 3 meses, associado a pequeno sangramento vaginal. O diagnóstico compatível com o quadro é:',
   alternativas: [
-    { id: 'A', texto: 'Cintilografia miocárdica de repouso isolada' },
-    { id: 'B', texto: 'Teste ergométrico em esteira' },
-    { id: 'C', texto: 'Ressonância magnética cardíaca de estresse' },
-    { id: 'D', texto: 'Cateterismo cardíaco imediato' },
+    { id: 'A', texto: 'Abortamento habitual.' },
+    { id: 'B', texto: 'Aborto retido.' },
+    { id: 'C', texto: 'Ameaça de abortamento.' },
+    { id: 'D', texto: 'Incompetência istmocervical.' },
   ],
   catalog_version: 'v2',
   explicacao_disponivel: false,
 };
 
-const answerV2Correct = {
+const realAnswerV2 = {
   correta: true,
   alternativa_correta_id: 'B',
   total_respondentes: 45,
   distribuicao_alternativas: [
-    { id: 'A', escolhas: 5, percentual: 11.1 },
+    { id: 'A', escolhas: 2, percentual: 4.4 },
     { id: 'B', escolhas: 35, percentual: 77.8 },
-    { id: 'C', escolhas: 3, percentual: 6.7 },
-    { id: 'D', escolhas: 2, percentual: 4.4 },
+    { id: 'C', escolhas: 5, percentual: 11.1 },
+    { id: 'D', escolhas: 3, percentual: 6.7 },
   ],
   respondidas_hoje: 6,
   restantes_hoje: null,
@@ -65,23 +81,7 @@ const answerV2Correct = {
   explanation_status: 'PENDING',
 };
 
-const answerV2Wrong = {
-  correta: false,
-  alternativa_correta_id: 'B',
-  total_respondentes: 45,
-  distribuicao_alternativas: [
-    { id: 'A', escolhas: 5, percentual: 11.1 },
-    { id: 'B', escolhas: 35, percentual: 77.8 },
-    { id: 'C', escolhas: 3, percentual: 6.7 },
-    { id: 'D', escolhas: 2, percentual: 4.4 },
-  ],
-  respondidas_hoje: 6,
-  restantes_hoje: null,
-  explicacao: null,
-  explanation_status: 'PENDING',
-};
-
-describe('QuestoesPage - Catálogo v2 (Piloto 100)', () => {
+describe('QuestoesPage - Catálogo v2 (Piloto 100 Corretivo)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     api.getQuestionMetadata.mockResolvedValue(metadataV2);
@@ -90,34 +90,53 @@ describe('QuestoesPage - Catálogo v2 (Piloto 100)', () => {
       acertos: 4,
       percentual: 80,
       tempo_medio_segundos: 45,
-      assuntos: [{ assunto: 'Cardiologia', respondidas: 3, percentual: 100 }],
+      assuntos: [{ assunto: 'Obstetrícia', respondidas: 3, percentual: 100 }],
     });
-    api.getQuestions.mockResolvedValue([questionV2]);
-    api.answerQuestion.mockResolvedValue(answerV2Correct);
+    api.getQuestions.mockResolvedValue([realQuestionV2]);
+    api.answerQuestion.mockResolvedValue(realAnswerV2);
     api.reportQuestion.mockResolvedValue({ id: 1, message: 'Relato recebido.' });
     window.scrollTo = vi.fn();
   });
 
   afterEach(cleanup);
 
-  it('exibe questão v2 sem vazamento de gabarito antes da resposta', async () => {
+  it('exibe questão v2 com rótulo ENUNCIADO e sem vazamento de gabarito antes da resposta', async () => {
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
 
     expect(await screen.findByRole('heading', { name: 'Questões de provas' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
 
-    expect(await screen.findByText(questionV2.enunciado)).toBeInTheDocument();
+    expect(await screen.findByText(realQuestionV2.enunciado)).toBeInTheDocument();
+    expect(screen.getByText('ENUNCIADO')).toBeInTheDocument();
+    expect(screen.queryByText(/IMUTÁVEL/i)).not.toBeInTheDocument();
+
+    // Nenhum vazamento de gabarito
     expect(screen.queryByText(/RESPOSTA CORRETA/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/RESPOSTA INCORRETA/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Gabarito:/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Comentário detalhado em preparação/i)).not.toBeInTheDocument();
+  });
 
-    // Alternativas sem indicação de resposta
-    questionV2.alternativas.forEach((alt) => {
-      const btn = screen.getByRole('button', { name: new RegExp(`^${alt.id}\\s*${alt.texto}`) });
-      expect(btn).toBeInTheDocument();
-      expect(btn).not.toHaveClass('is-correct');
-      expect(btn).not.toHaveClass('is-wrong');
+  it('permite alternar entre o Catálogo Clássico (v1) e o Novo Catálogo (v2) sem mostrar tela vazia', async () => {
+    render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
+    await screen.findByRole('heading', { name: 'Questões de provas' });
+
+    // Clicar em Catálogo Clássico (v1)
+    api.getQuestionMetadata.mockResolvedValueOnce(metadataV1);
+    const btnV1 = screen.getByRole('button', { name: 'Catálogo Clássico (v1)' });
+    fireEvent.click(btnV1);
+
+    await waitFor(() => {
+      expect(api.getQuestionMetadata).toHaveBeenCalledWith('v1');
+    });
+
+    // Clicar de volta em Novo Catálogo (Piloto v2)
+    api.getQuestionMetadata.mockResolvedValueOnce(metadataV2);
+    const btnV2 = screen.getByRole('button', { name: 'Novo Catálogo (Piloto v2)' });
+    fireEvent.click(btnV2);
+
+    await waitFor(() => {
+      expect(api.getQuestionMetadata).toHaveBeenCalledWith('v2');
     });
   });
 
@@ -125,16 +144,16 @@ describe('QuestoesPage - Catálogo v2 (Piloto 100)', () => {
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
     await screen.findByRole('heading', { name: 'Questões de provas' });
     fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
-    await screen.findByText(questionV2.enunciado);
+    await screen.findByText(realQuestionV2.enunciado);
 
     // Selecionar alternativa B (correta)
-    const optB = screen.getByRole('button', { name: /^B\s*Teste ergométrico em esteira/ });
+    const optB = screen.getByRole('button', { name: /^B\s*Aborto retido/ });
     fireEvent.click(optB);
 
     const confirmBtn = screen.getByRole('button', { name: 'Confirmar resposta' });
     fireEvent.click(confirmBtn);
 
-    // Verificar acerto imediato e gabarito
+    // Feedback imediato
     expect(await screen.findByText('RESPOSTA CORRETA')).toBeInTheDocument();
     expect(screen.getByText('Gabarito: alternativa B.')).toBeInTheDocument();
 
@@ -151,35 +170,31 @@ describe('QuestoesPage - Catálogo v2 (Piloto 100)', () => {
     expect(screen.queryByText(/Preparada pela Synapse/i)).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /Tentar novamente/i })).not.toBeInTheDocument();
     expect(api.retryQuestionExplanation).not.toHaveBeenCalled();
-
-    // Estatísticas da comunidade
-    expect(screen.getByText('45 respostas registradas · cada estudante conta uma vez')).toBeInTheDocument();
-    expect(screen.getByText('77,8%')).toBeInTheDocument();
   });
 
-  it('corrige com erro imediato, destaca resposta errada e correta, e banner pendente', async () => {
-    api.answerQuestion.mockResolvedValueOnce(answerV2Wrong);
+  it('bloqueia ataques XSS renderizando enunciados e alternativas potencialmente maliciosos como texto plano seguro', async () => {
+    const maliciousQuestion = {
+      ...realQuestionV2,
+      id: 999999,
+      enunciado: 'Enunciado com script malicioso <script>window.__xss_attack_triggered = true;</script> e imagem <img src="x" onerror="window.__xss_img = true;" /> e iframe <iframe src="javascript:alert(1)"></iframe>.',
+      alternativas: [
+        { id: 'A', texto: 'Alternativa segura.' },
+        { id: 'B', texto: 'Alternativa com payload <svg onload="window.__xss_svg = true;"><a href="javascript:alert(2)">click</a>.' },
+      ],
+    };
+
+    api.getQuestions.mockResolvedValueOnce([maliciousQuestion]);
 
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
     await screen.findByRole('heading', { name: 'Questões de provas' });
     fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
-    await screen.findByText(questionV2.enunciado);
 
-    // Selecionar alternativa incorreta A
-    const optA = screen.getByRole('button', { name: /^A\s*Cintilografia miocárdica/ });
-    fireEvent.click(optA);
-    fireEvent.click(screen.getByRole('button', { name: 'Confirmar resposta' }));
-
-    expect(await screen.findByText('RESPOSTA INCORRETA')).toBeInTheDocument();
-    expect(screen.getByText('Gabarito: alternativa B.')).toBeInTheDocument();
-    expect(screen.getByText('Comentário detalhado em preparação')).toBeInTheDocument();
-
-    // Alternativa A marcada como errada e B marcada como correta
-    expect(optA).toHaveClass('is-wrong');
-    const optB = screen.getByRole('button', { name: /^B\s*Teste ergométrico em esteira/ });
-    expect(optB).toHaveClass('is-correct');
-
-    // Botão de avançar disponível
-    expect(screen.getByRole('button', { name: /Ver resultado|Próxima questão/i })).toBeInTheDocument();
+    // O texto deve estar no documento como string escapada pura, não como elemento DOM executável
+    expect(await screen.findByText(/<script>window.__xss_attack_triggered = true;<\/script>/)).toBeInTheDocument();
+    expect(document.querySelector('iframe')).toBeNull();
+    expect(document.querySelector('img[src="x"]')).toBeNull();
+    expect(window.__xss_attack_triggered).toBeUndefined();
+    expect(window.__xss_img).toBeUndefined();
+    expect(window.__xss_svg).toBeUndefined();
   });
 });

@@ -200,7 +200,10 @@ export const api = {
     { method: 'POST', body: { alternativa_id: optionId } },
   ),
   getAnnouncements: () => request('/avisos'),
-  getQuestionMetadata: () => request('/questoes/meta'),
+  getQuestionMetadata: (catalogVersion = '') => {
+    const qs = catalogVersion ? `?catalog_version=${catalogVersion}` : '';
+    return request(`/questoes/meta${qs}`);
+  },
   getQuestions: (filters = {}) => {
     const query = new URLSearchParams(
       Object.entries(filters).filter(([, value]) => value !== '' && value != null),

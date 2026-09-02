@@ -32,6 +32,7 @@ const INITIAL_FILTERS = {
   ano: '',
   instituicao: '',
   quantidade: 10,
+  catalog_version: 'v2',
 };
 
 const REPORT_REASONS = {
@@ -72,12 +73,12 @@ const QuestoesPage = () => {
   const [reportDescription, setReportDescription] = useState('');
   const [reportMessage, setReportMessage] = useState('');
 
-  const loadOverview = useCallback(async () => {
+  const loadOverview = useCallback(async (catalogVersion = filters.catalog_version) => {
     setIsLoading(true);
     setError('');
     try {
       const [meta, stats] = await Promise.all([
-        api.getQuestionMetadata(),
+        api.getQuestionMetadata(catalogVersion),
         api.getQuestionPerformance(),
       ]);
       setMetadata(meta);
@@ -87,7 +88,7 @@ const QuestoesPage = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [filters.catalog_version]);
 
   useEffect(() => { loadOverview(); }, [loadOverview]);
 
@@ -192,14 +193,14 @@ const QuestoesPage = () => {
           <span className="questions-kicker"><FiBookOpen /> TREINO COMPLEMENTAR</span>
           <h1>Questões de provas</h1>
           <p>Pratique questões de residência e concursos sem desviar do foco principal: desenvolver raciocínio clínico.</p>
-          <div className="questions-hero-tags"><span><FiCheckCircle /> Itens completos e sem repetição</span><span><FiLayers /> Organizado por assunto</span><span><FiZap /> Explicações próprias</span></div>
+          <div className="questions-hero-tags"><span><FiCheckCircle /> Itens completos e sem repetição</span><span><FiLayers /> Organizado por assunto</span><span><FiZap /> Gabarito e correção imediata</span></div>
         </div>
         <div className="questions-catalog-card" aria-label={`${metadata?.respondidas_hoje || 0} questões realizadas hoje`}><small>QUESTÕES REALIZADAS HOJE</small><strong>{metadata?.respondidas_hoje || 0}</strong><span>respondidas neste dia</span></div>
       </header>
 
       <section className="questions-guidance">
         <div><span><FiTarget /></span><p><strong>Um recurso complementar</strong><small>As respostas ficam somente nesta área e não alimentam revisões nem o caderno de erros.</small></p></div>
-        <div><span><FiCheck /></span><p><strong>Gabarito só após responder</strong><small>Escolha com calma, confirme e então compare seu raciocínio com a explicação.</small></p></div>
+        <div><span><FiCheck /></span><p><strong>Gabarito só após responder</strong><small>Escolha com calma, confirme e então veja o acerto/erro e o gabarito oficial.</small></p></div>
         <div><span><FiFlag /></span><p><strong>Revisão colaborativa</strong><small>Encontrou algo duvidoso? Envie um relato diretamente à equipe editorial.</small></p></div>
       </section>
 
@@ -271,7 +272,7 @@ const QuestoesPage = () => {
                 );
               })}
             </div>
-            {!currentAnswer ? <button type="button" className={`questions-confirm-button ${isAnswering ? 'is-loading' : ''}`} onClick={submitAnswer} disabled={!selectedId || isAnswering}>{isAnswering ? <><FiRefreshCw /> A Synapse está preparando a explicação...</> : <><FiCheck /> Confirmar resposta</>}</button> : <QuestionFeedback answer={currentAnswer} questionId={currentQuestion.id} />}
+            {!currentAnswer ? <button type="button" className={`questions-confirm-button ${isAnswering ? 'is-loading' : ''}`} onClick={submitAnswer} disabled={!selectedId || isAnswering}>{isAnswering ? <><FiRefreshCw className="spinning" /> Confirmando resposta...</> : <><FiCheck /> Confirmar resposta</>}</button> : <QuestionFeedback answer={currentAnswer} questionId={currentQuestion.id} />}
           </article>
 
           {currentAnswer && <div className="questions-after-answer"><button type="button" className="questions-report-trigger" onClick={() => setReportOpen((value) => !value)}><FiFlag /> Reportar problema</button><button type="button" className="questions-next-button" onClick={nextQuestion}>{currentIndex === questions.length - 1 ? 'Ver resultado' : 'Próxima questão'} <FiArrowRight /></button></div>}
@@ -300,7 +301,9 @@ const QuestionFeedback = ({ answer, questionId }) => {
   const [explanation, setExplanation] = useState(answer.explicacao);
   const [isRetrying, setIsRetrying] = useState(false);
   const [retryError, setRetryError] = useState('');
-  const explanationUnavailable = explanation.fonte === 'resumo_automatico';
+
+  const isPending = !explanation || answer.explanation_status === 'PENDING';
+  const explanationUnavailable = !isPending && explanation?.fonte === 'resumo_automatico';
 
   useEffect(() => {
     setExplanation(answer.explicacao);
@@ -325,11 +328,25 @@ const QuestionFeedback = ({ answer, questionId }) => {
         <span>{answer.correta ? <FiCheckCircle /> : <FiAlertCircle />}</span>
         <div>
           <small>{answer.correta ? 'RESPOSTA CORRETA' : 'RESPOSTA INCORRETA'}</small>
-          <h3>{explanationUnavailable ? `Gabarito: alternativa ${answer.alternativa_correta_id}.` : explanation.resumo}</h3>
+          <h3>
+            {isPending
+              ? `Gabarito: alternativa ${answer.alternativa_correta_id}.`
+              : explanationUnavailable
+                ? `Gabarito: alternativa ${answer.alternativa_correta_id}.`
+                : explanation.resumo}
+          </h3>
         </div>
       </header>
 
-      {explanationUnavailable ? (
+      {isPending ? (
+        <div className="questions-explanation-pending" role="status" aria-live="polite">
+          <FiClock />
+          <div>
+            <strong>Comentário detalhado em preparação</strong>
+            <p>Comentário detalhado em preparação pela equipe editorial do MedSync.</p>
+          </div>
+        </div>
+      ) : explanationUnavailable ? (
         <div className="questions-explanation-unavailable">
           <FiRefreshCw />
           <div>
@@ -349,15 +366,22 @@ const QuestionFeedback = ({ answer, questionId }) => {
           </div>
           <div className="questions-option-analysis">
             <strong>Análise das alternativas</strong>
-            {explanation.analise_alternativas.map((item) => (
+            {explanation.analise_alternativas?.map((item) => (
               <article key={item.id} className={item.correta ? 'is-correct' : ''}>
                 <b>{item.id}</b>
                 <p>{item.explicacao}</p>
               </article>
             ))}
           </div>
-          {explanation.alerta_atualizacao && <div className="questions-update-alert"><FiClock /><p><strong>Atenção à atualização</strong><span>{explanation.alerta_atualizacao}</span></p></div>}
-          <footer>Explicação educacional própria do MedSync · {explanation.fonte === 'synapse' ? 'Preparada pela Synapse' : 'Revisada pela equipe MedSync'}</footer>
+          {explanation.alerta_atualizacao && (
+            <div className="questions-update-alert">
+              <FiClock />
+              <p><strong>Atenção à atualização</strong><span>{explanation.alerta_atualizacao}</span></p>
+            </div>
+          )}
+          <footer>
+            Explicação educacional própria do MedSync · {explanation.fonte === 'synapse' ? 'Preparada pela Synapse' : 'Revisada pela equipe MedSync'}
+          </footer>
         </>
       )}
     </section>

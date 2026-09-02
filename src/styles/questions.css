@@ -144,6 +144,11 @@
 .questions-explanation-unavailable small { color: #ff9dae; }
 .questions-explanation-unavailable button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; justify-self: start; min-height: 37px; padding: 0 13px; border: 0; border-radius: 10px; color: #073b2c; background: #a7f34b; cursor: pointer; font: inherit; font-size: .65rem; font-weight: 850; }
 .questions-explanation-unavailable button:disabled { cursor: wait; opacity: .7; }
+.questions-explanation-pending { display: flex; gap: 13px; margin: 20px; padding: 17px; border: 1px solid rgba(86,204,242,.3); border-radius: 14px; color: #7cdff9; background: rgba(14,52,75,.45); }
+.questions-explanation-pending > svg { flex: 0 0 auto; margin-top: 2px; font-size: 1.25rem; }
+.questions-explanation-pending > div { display: grid; gap: 6px; }
+.questions-explanation-pending strong { font-size: .82rem; color: #ffffff; font-weight: 700; }
+.questions-explanation-pending p { margin: 0; font-size: .74rem; line-height: 1.55; color: #c9e7f5; }
 .questions-feedback footer { padding: 15px 21px 18px; color: #8aa6b5; font-size: .54rem; }
 .questions-after-answer { display: flex; justify-content: space-between; gap: 12px; }
 .questions-report-trigger,.questions-next-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 45px; padding: 0 16px; border-radius: 12px; cursor: pointer; font: inherit; font-size: .7rem; font-weight: 800; }

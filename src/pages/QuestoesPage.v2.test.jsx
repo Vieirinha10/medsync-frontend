@@ -31,8 +31,8 @@ const metadataV2 = {
   restantes_hoje: null,
 };
 
-const realQuestionV2 = {
-  id: 439600,
+const canonicalQuestionV2_4000000002 = {
+  id: 1,
   source_id: '4000000002',
   ano: 2017,
   instituicao: 'AC - Fundação Hospital Estadual do Acre - Fundhacre',
@@ -41,13 +41,13 @@ const realQuestionV2 = {
   assunto: 'Obstetrícia',
   tema: null,
   regiao: 'AC',
-  enunciado: 'Paciente de 21 anos, procura a maternidade com história de atraso menstrual de 3 meses, associado a pequeno sangramento vaginal. O diagnóstico compatível com o quadro é:',
-  statement_rich_html: 'Paciente de 21 anos, procura a maternidade com história de atraso menstrual de 3 meses, associado a pequeno sangramento vaginal. O diagnóstico compatível com o quadro é:',
+  enunciado: 'Paciente de 21 anos, procura a maternidade com história de atraso menstrual de 3 meses, associado a pequeno sangramento vaginal. Refere ainda que os enjoos cessaram. Ao exame físico: paciente encontra-se em bom estado geral, PA = 100 x 70 mmHg. Ao toque vaginal: colo fechado, útero amolecido e 3 cm acima da sínfise púbica. A ultrassonografia revelou presença de embrião com comprimento cabeça nádegas (CCN) de 31 mm, ausência de batimentos cardíacos fetais em gestação de 10 semanas. O diagnóstico compatível com o quadro é:',
+  statement_rich_html: 'Paciente de 21 anos, procura a maternidade com história de atraso menstrual de 3 meses, associado a pequeno sangramento vaginal. Refere ainda que os enjoos cessaram. Ao exame físico: paciente encontra-se em bom estado geral, PA = 100 x 70 mmHg. Ao toque vaginal: colo fechado, útero amolecido e 3 cm acima da sínfise púbica. A ultrassonografia revelou presença de embrião com comprimento cabeça nádegas (CCN) de 31 mm, ausência de batimentos cardíacos fetais em gestação de 10 semanas. O diagnóstico compatível com o quadro é:',
   alternativas: [
     { id: 'A', texto: 'Abortamento habitual.' },
     { id: 'B', texto: 'Aborto retido.' },
-    { id: 'C', texto: 'Ameaça de abortamento.' },
-    { id: 'D', texto: 'Incompetência istmocervical.' },
+    { id: 'C', texto: 'Abortamento incompleto.' },
+    { id: 'D', texto: 'Pode tratar-se de uma gestação incipiente.' },
   ],
   catalog_version: 'v2',
   explicacao_disponivel: false,
@@ -80,7 +80,7 @@ describe('QuestoesPage - Catálogo Ativo (Piloto 100 v1.2)', () => {
       tempo_medio_segundos: 45,
       assuntos: [{ assunto: 'Obstetrícia', respondidas: 3, percentual: 100 }],
     });
-    api.getQuestions.mockResolvedValue([realQuestionV2]);
+    api.getQuestions.mockResolvedValue([canonicalQuestionV2_4000000002]);
     api.answerQuestion.mockResolvedValue(realAnswerV2);
     api.reportQuestion.mockResolvedValue({ id: 1, message: 'Relato recebido.' });
     window.scrollTo = vi.fn();
@@ -94,7 +94,7 @@ describe('QuestoesPage - Catálogo Ativo (Piloto 100 v1.2)', () => {
     expect(await screen.findByRole('heading', { name: 'Questões de provas' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
 
-    expect(await screen.findByText(realQuestionV2.enunciado)).toBeInTheDocument();
+    expect(await screen.findByText(canonicalQuestionV2_4000000002.enunciado)).toBeInTheDocument();
     expect(screen.getByText('ENUNCIADO')).toBeInTheDocument();
     expect(screen.queryByText(/IMUTÁVEL/i)).not.toBeInTheDocument();
 
@@ -122,7 +122,7 @@ describe('QuestoesPage - Catálogo Ativo (Piloto 100 v1.2)', () => {
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
     await screen.findByRole('heading', { name: 'Questões de provas' });
     fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
-    await screen.findByText(realQuestionV2.enunciado);
+    await screen.findByText(canonicalQuestionV2_4000000002.enunciado);
 
     // Selecionar alternativa B (correta)
     const optB = screen.getByRole('button', { name: /^B\s*Aborto retido/ });
@@ -152,7 +152,7 @@ describe('QuestoesPage - Catálogo Ativo (Piloto 100 v1.2)', () => {
 
   it('bloqueia ataques XSS renderizando enunciados e alternativas potencialmente maliciosos como texto plano seguro', async () => {
     const maliciousQuestion = {
-      ...realQuestionV2,
+      ...canonicalQuestionV2_4000000002,
       id: 999999,
       enunciado: 'Enunciado com script malicioso <script>window.__xss_attack_triggered = true;</script> e imagem <img src="x" onerror="window.__xss_img = true;" /> e iframe <iframe src="javascript:alert(1)"></iframe>.',
       alternativas: [

@@ -1,3 +1,13 @@
+/**
+ * QuestoesPage - Contrato Visual e Teste de Componente com Payload Canônico Reconciliado (v1.4)
+ * 
+ * Classificação formal do teste:
+ * - Teste de componente React com mock de camada de serviços (vi.mock('../services/api'));
+ * - Validação de contrato visual do frontend e conformidade do payload canônico;
+ * - NÃO constitui teste de integração E2E de navegador (automação completa ponta a ponta
+ *   será validada em ambiente de Staging com API, frontend e PostgreSQL ativos).
+ */
+
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -74,7 +84,7 @@ const canonicalApiResponseIncorrect = {
   explanation_status: 'PENDING',
 };
 
-describe('QuestoesPage - Teste de Integração Frontend/API (v1.3)', () => {
+describe('QuestoesPage - Contrato Visual e Teste de Componente com Payload Canônico Reconciliado (v1.4)', () => {
   beforeEach(() => {
     vi.resetAllMocks();
     api.getQuestionMetadata.mockResolvedValue({
@@ -100,7 +110,7 @@ describe('QuestoesPage - Teste de Integração Frontend/API (v1.3)', () => {
 
   afterEach(cleanup);
 
-  it('integração completa: consome questão canônica sem gabarito, submete resposta correta e renderiza feedback com zero IA', async () => {
+  it('contrato visual e renderização de componente: consome payload canônico sem gabarito, submete resposta correta e renderiza feedback com zero IA', async () => {
     api.answerQuestion.mockResolvedValueOnce(canonicalApiResponseCorrect);
 
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
@@ -159,7 +169,7 @@ describe('QuestoesPage - Teste de Integração Frontend/API (v1.3)', () => {
     expect(api.retryQuestionExplanation).not.toHaveBeenCalled();
   });
 
-  it('integração adversa: submete alternativa incorreta e revela gabarito com explicação nula', async () => {
+  it('contrato visual em resposta incorreta: submete alternativa incorreta e revela gabarito com explicação nula e comentário pendente', async () => {
     api.answerQuestion.mockResolvedValueOnce(canonicalApiResponseIncorrect);
 
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);

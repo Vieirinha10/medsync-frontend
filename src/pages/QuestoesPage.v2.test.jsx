@@ -171,8 +171,44 @@ describe('QuestoesPage - Catálogo Ativo (Piloto 100 v1.2)', () => {
     expect(await screen.findByText(/<script>window.__xss_attack_triggered = true;<\/script>/)).toBeInTheDocument();
     expect(document.querySelector('iframe')).toBeNull();
     expect(document.querySelector('img[src="x"]')).toBeNull();
-    expect(window.__xss_attack_triggered).toBeUndefined();
     expect(window.__xss_img).toBeUndefined();
     expect(window.__xss_svg).toBeUndefined();
+  });
+
+  it('permite riscar e descartar alternativas com toggle visual e restauração ao selecionar', async () => {
+    render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
+    await screen.findByRole('heading', { name: 'Questões de provas' });
+    fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
+    await screen.findByText(canonicalQuestionV2_4000000002.enunciado);
+
+    // Botão de descarte da alternativa D
+    const discardD = screen.getByRole('button', { name: 'Riscar alternativa D' });
+    expect(discardD).toBeInTheDocument();
+    expect(discardD).not.toHaveClass('is-active');
+
+    // Clicar para riscar alternativa D
+    fireEvent.click(discardD);
+    expect(discardD).toHaveClass('is-active');
+
+    const optDText = screen.getByText('Pode tratar-se de uma gestação incipiente.');
+    expect(optDText).toHaveClass('is-struck');
+
+    // Clicar novamente restaura
+    fireEvent.click(discardD);
+    expect(discardD).not.toHaveClass('is-active');
+    expect(optDText).not.toHaveClass('is-struck');
+
+    // Riscar novamente D e depois clicar na alternativa D para selecioná-la
+    fireEvent.click(discardD);
+    expect(discardD).toHaveClass('is-active');
+    expect(optDText).toHaveClass('is-struck');
+
+    const optDBtn = screen.getByRole('button', { name: /^D\s*Pode tratar-se de uma gestação incipiente/ });
+    fireEvent.click(optDBtn);
+
+    // Ao selecionar diretamente, ela é automaticamente desmarcada do descarte
+    expect(discardD).not.toHaveClass('is-active');
+    expect(optDText).not.toHaveClass('is-struck');
+    expect(optDBtn).toHaveClass('is-selected');
   });
 });

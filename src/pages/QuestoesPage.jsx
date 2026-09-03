@@ -61,6 +61,7 @@ const QuestoesPage = () => {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedId, setSelectedId] = useState('');
+  const [eliminatedIds, setEliminatedIds] = useState([]);
   const [answers, setAnswers] = useState({});
   const [stage, setStage] = useState('setup');
   const [startedAt, setStartedAt] = useState(null);
@@ -71,6 +72,20 @@ const QuestoesPage = () => {
   const [reportReason, setReportReason] = useState('gabarito');
   const [reportDescription, setReportDescription] = useState('');
   const [reportMessage, setReportMessage] = useState('');
+
+  const toggleEliminate = (e, altId) => {
+    e.stopPropagation();
+    setEliminatedIds((prev) =>
+      prev.includes(altId) ? prev.filter((id) => id !== altId) : [...prev, altId]
+    );
+  };
+
+  const handleSelectAlternative = (altId) => {
+    if (eliminatedIds.includes(altId)) {
+      setEliminatedIds((prev) => prev.filter((id) => id !== altId));
+    }
+    setSelectedId(altId);
+  };
 
   const loadOverview = useCallback(async () => {
     setIsLoading(true);
@@ -100,17 +115,24 @@ const QuestoesPage = () => {
     setIsLoading(true);
     setError('');
     try {
-      const items = await api.getQuestions(filters);
-      if (!items.length) {
+      const list = await api.getQuestions({
+        quantidade: Number(filters.quantidade),
+        especialidade: filters.especialidade || undefined,
+        assunto: filters.assunto || undefined,
+        ano: filters.ano ? Number(filters.ano) : undefined,
+        instituicao: filters.instituicao || undefined,
+      });
+      if (!list.length) {
         setError(metadata?.restantes_hoje === 0
           ? 'Você concluiu as questões gratuitas de hoje. O Premium libera novas listas sem limite diário.'
           : 'Não encontramos questões inéditas com estes filtros. Tente ampliar sua seleção.');
         return;
       }
-      setQuestions(items);
+      setQuestions(list);
       setAnswers({});
       setCurrentIndex(0);
       setSelectedId('');
+      setEliminatedIds([]);
       setStartedAt(Date.now());
       setStage('session');
       setReportMessage('');
@@ -149,6 +171,7 @@ const QuestoesPage = () => {
     }
     setCurrentIndex((index) => index + 1);
     setSelectedId('');
+    setEliminatedIds([]);
     setStartedAt(Date.now());
     setReportOpen(false);
     setReportMessage('');
@@ -177,6 +200,7 @@ const QuestoesPage = () => {
     setAnswers({});
     setCurrentIndex(0);
     setSelectedId('');
+    setEliminatedIds([]);
     setError('');
     void loadOverview();
   };
@@ -258,16 +282,35 @@ const QuestoesPage = () => {
                   && selectionStats?.percentual > 0
                   && selectionStats.percentual === highestDistractorPercentage,
                 );
+                const isEliminated = eliminatedIds.includes(alternative.id);
                 return (
-                  <button type="button" key={alternative.id} aria-pressed={isSelected} disabled={Boolean(currentAnswer)} onClick={() => setSelectedId(alternative.id)} className={`${isSelected ? 'is-selected' : ''} ${isCorrect ? 'is-correct' : ''} ${isWrongSelection ? 'is-wrong' : ''}`}>
-                    <b>{alternative.id}</b>
-                    <div className="questions-alternative-copy">
-                      <span>{alternative.texto}</span>
-                      {selectionStats && <div className="questions-selection-share"><i><em style={{ width: `${selectionStats.percentual}%` }} /></i><small><strong>{formatPercentage(selectionStats.percentual)}</strong> escolheram esta alternativa{isMostSelectedDistractor ? <mark>Distrator mais escolhido</mark> : null}</small></div>}
-                    </div>
-                    {isCorrect && <FiCheckCircle />}
-                    {isWrongSelection && <FiX />}
-                  </button>
+                  <div className="questions-alternative-row" key={alternative.id}>
+                    <button
+                      type="button"
+                      className={`questions-discard-btn ${isEliminated ? 'is-active' : ''}`}
+                      onClick={(e) => toggleEliminate(e, alternative.id)}
+                      title={isEliminated ? `Restaurar alternativa ${alternative.id}` : `Riscar alternativa ${alternative.id}`}
+                      aria-label={isEliminated ? `Restaurar alternativa ${alternative.id}` : `Riscar alternativa ${alternative.id}`}
+                      disabled={Boolean(currentAnswer)}
+                    >
+                      <span aria-hidden="true">--</span>
+                    </button>
+                    <button
+                      type="button"
+                      aria-pressed={isSelected}
+                      disabled={Boolean(currentAnswer)}
+                      onClick={() => handleSelectAlternative(alternative.id)}
+                      className={`questions-alternative-btn ${isSelected ? 'is-selected' : ''} ${isCorrect ? 'is-correct' : ''} ${isWrongSelection ? 'is-wrong' : ''} ${isEliminated ? 'is-eliminated' : ''}`}
+                    >
+                      <b>{alternative.id}</b>
+                      <div className="questions-alternative-copy">
+                        <span className={isEliminated ? 'is-struck' : ''}>{alternative.texto}</span>
+                        {selectionStats && <div className="questions-selection-share"><i><em style={{ width: `${selectionStats.percentual}%` }} /></i><small><strong>{formatPercentage(selectionStats.percentual)}</strong> escolheram esta alternativa{isMostSelectedDistractor ? <mark>Distrator mais escolhido</mark> : null}</small></div>}
+                      </div>
+                      {isCorrect && <FiCheckCircle />}
+                      {isWrongSelection && <FiX />}
+                    </button>
+                  </div>
                 );
               })}
             </div>

@@ -9,6 +9,7 @@ import {
   FiCheckCircle,
   FiEye,
   FiFilter,
+  FiFlag,
   FiHelpCircle,
   FiImage,
   FiInfo,
@@ -86,6 +87,17 @@ const DesafiosPage = () => {
   const [modalityFilter, setModalityFilter] = useState(ALL_MODALITIES);
   const [notebookMessages, setNotebookMessages] = useState({});
   const [answeringId, setAnsweringId] = useState(null);
+  const [flaggedIds, setFlaggedIds] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('medsync_flagged_visual_challenges') || '[]');
+    } catch {
+      return [];
+    }
+  });
+  const [isFlagModalOpen, setIsFlagModalOpen] = useState(false);
+  const [quickFlagReason, setQuickFlagReason] = useState('gabarito');
+  const [quickFlagNote, setQuickFlagNote] = useState('');
+  const [quickFlagFeedback, setQuickFlagFeedback] = useState('');
   const touchStartX = useRef(null);
   const trailContext = useMemo(getTrailContext, []);
 
@@ -303,6 +315,40 @@ const DesafiosPage = () => {
     if (distance < -55) goToNext();
   };
 
+  const openFlagModal = () => {
+    setQuickFlagReason('gabarito');
+    setQuickFlagNote('');
+    setQuickFlagFeedback('');
+    setIsFlagModalOpen(true);
+  };
+
+  const handleConfirmFlag = async (e) => {
+    if (e) e.preventDefault();
+    if (!currentChallenge) return;
+    try {
+      await api.reportVisualChallenge(currentChallenge.id, {
+        motivo: quickFlagReason,
+        descricao: quickFlagNote ? `[FLAG DESAFIO] ${quickFlagNote}` : '[FLAG DESAFIO] Sinalizado pelo usuário para revisão de erro.',
+      });
+      setFlaggedIds((prev) => {
+        const updated = Array.from(new Set([...prev, currentChallenge.id]));
+        try {
+          localStorage.setItem('medsync_flagged_visual_challenges', JSON.stringify(updated));
+        } catch {
+          // ignore
+        }
+        return updated;
+      });
+      setQuickFlagFeedback('Desafio sinalizado com sucesso! O assistente tem o registro para corrigir.');
+      setTimeout(() => {
+        setIsFlagModalOpen(false);
+        setQuickFlagFeedback('');
+      }, 1000);
+    } catch (err) {
+      setQuickFlagFeedback(err.message || 'Erro ao registrar sinalização.');
+    }
+  };
+
   const restartChallenges = () => {
     setAnswers({});
     setNotebookMessages({});
@@ -502,9 +548,20 @@ const DesafiosPage = () => {
                 </div>
 
                 <div className="visual-challenge-body">
-                  <span className="visual-challenge-eyebrow">
-                    DESAFIO {String(currentIndex + 1).padStart(2, '0')}
-                  </span>
+                  <div className="visual-challenge-top-row">
+                    <span className="visual-challenge-eyebrow">
+                      DESAFIO {String(currentIndex + 1).padStart(2, '0')}
+                    </span>
+                    <button
+                      type="button"
+                      className={`visual-quick-flag-btn ${flaggedIds.includes(currentChallenge.id) ? 'is-flagged' : ''}`}
+                      onClick={openFlagModal}
+                      title={flaggedIds.includes(currentChallenge.id) ? 'Desafio já sinalizado para correção' : 'Sinalizar erro neste desafio'}
+                      aria-label={flaggedIds.includes(currentChallenge.id) ? 'Desafio sinalizado' : 'Sinalizar erro neste desafio'}
+                    >
+                      <FiFlag aria-hidden="true" /> {flaggedIds.includes(currentChallenge.id) ? 'Sinalizado' : 'Sinalizar erro'}
+                    </button>
+                  </div>
                   <div className="visual-challenge-meta">
                     <span><FiLayers aria-hidden="true" /> {currentChallenge.examClass}</span>
                     <strong>Desafio {currentIndex + 1} de {filteredChallenges.length}</strong>
@@ -668,6 +725,64 @@ const DesafiosPage = () => {
               <p>Não há desafios com essa combinação de tipo de exame, especialidade e dificuldade.</p>
               <button type="button" onClick={clearFilters}>Ver todos os desafios</button>
             </section>
+          )}
+
+          {isFlagModalOpen && currentChallenge && (
+            <div className="questions-flag-modal-backdrop" onClick={() => setIsFlagModalOpen(false)}>
+              <div className="questions-flag-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="flag-visual-modal-title">
+                <div className="questions-flag-modal-header">
+                  <div>
+                    <span className="questions-flag-kicker"><FiFlag /> SINALIZAR ERRO</span>
+                    <h3 id="flag-visual-modal-title">Revisar Desafio {currentChallenge.id}</h3>
+                  </div>
+                  <button type="button" aria-label="Fechar" onClick={() => setIsFlagModalOpen(false)}>
+                    <FiX />
+                  </button>
+                </div>
+                <p className="questions-flag-modal-desc">
+                  Sinalize o problema identificado neste desafio visual. O assistente usará esse registro para auditar e corrigir o diagnóstico, a imagem ou as opções.
+                </p>
+                <form onSubmit={handleConfirmFlag}>
+                  <div className="questions-flag-preset-chips">
+                    {[
+                      { id: 'gabarito', label: 'Diagnóstico/Gabarito incorreto' },
+                      { id: 'enunciado', label: 'Erro na pergunta/texto' },
+                      { id: 'imagem', label: 'Problema na imagem' },
+                      { id: 'explicacao', label: 'Problema na explicação' },
+                      { id: 'outro', label: 'Outro problema' },
+                    ].map((preset) => (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        className={`questions-flag-chip ${quickFlagReason === preset.id ? 'is-active' : ''}`}
+                        onClick={() => setQuickFlagReason(preset.id)}
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+                  <label className="questions-flag-textarea-label">
+                    <span>Descreva o que está errado (opcional):</span>
+                    <textarea
+                      value={quickFlagNote}
+                      onChange={(e) => setQuickFlagNote(e.target.value)}
+                      placeholder="Ex: O ECG evidencia IAM de parede inferior e o gabarito marca BRE; ou a alternativa B tem erro..."
+                      maxLength={1000}
+                      rows={3}
+                    />
+                  </label>
+                  {quickFlagFeedback && <p className="questions-flag-feedback">{quickFlagFeedback}</p>}
+                  <div className="questions-flag-modal-actions">
+                    <button type="button" className="questions-flag-btn-cancel" onClick={() => setIsFlagModalOpen(false)}>
+                      Cancelar
+                    </button>
+                    <button type="submit" className="questions-flag-btn-confirm">
+                      <FiCheck /> Confirmar Sinalização
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
           )}
         </section>
       </div>

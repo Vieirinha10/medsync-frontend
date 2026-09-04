@@ -34,14 +34,6 @@ const INITIAL_FILTERS = {
   quantidade: 10,
 };
 
-const REPORT_REASONS = {
-  gabarito: 'Possível erro no gabarito',
-  enunciado: 'Problema no enunciado',
-  explicacao: 'Problema na explicação',
-  desatualizada: 'Conteúdo possivelmente desatualizado',
-  outro: 'Outro problema',
-};
-
 const formatSeconds = (value) => {
   if (value == null) return '—';
   const minutes = Math.floor(value / 60);
@@ -68,10 +60,17 @@ const QuestoesPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAnswering, setIsAnswering] = useState(false);
   const [error, setError] = useState('');
-  const [reportOpen, setReportOpen] = useState(false);
-  const [reportReason, setReportReason] = useState('gabarito');
-  const [reportDescription, setReportDescription] = useState('');
-  const [reportMessage, setReportMessage] = useState('');
+  const [flaggedIds, setFlaggedIds] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('medsync_flagged_question_ids') || '[]');
+    } catch {
+      return [];
+    }
+  });
+  const [isFlagModalOpen, setIsFlagModalOpen] = useState(false);
+  const [quickFlagReason, setQuickFlagReason] = useState('gabarito');
+  const [quickFlagNote, setQuickFlagNote] = useState('');
+  const [quickFlagFeedback, setQuickFlagFeedback] = useState('');
 
   const toggleEliminate = (e, altId) => {
     e.stopPropagation();
@@ -135,7 +134,6 @@ const QuestoesPage = () => {
       setEliminatedIds([]);
       setStartedAt(Date.now());
       setStage('session');
-      setReportMessage('');
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -173,24 +171,40 @@ const QuestoesPage = () => {
     setSelectedId('');
     setEliminatedIds([]);
     setStartedAt(Date.now());
-    setReportOpen(false);
-    setReportMessage('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const sendReport = async (event) => {
-    event.preventDefault();
+  const openFlagModal = () => {
+    setQuickFlagReason('gabarito');
+    setQuickFlagNote('');
+    setQuickFlagFeedback('');
+    setIsFlagModalOpen(true);
+  };
+
+  const handleConfirmFlag = async (e) => {
+    if (e) e.preventDefault();
     if (!currentQuestion) return;
     try {
       await api.reportQuestion(currentQuestion.id, {
-        motivo: reportReason,
-        descricao: reportDescription || null,
+        motivo: quickFlagReason,
+        descricao: quickFlagNote ? `[FLAG TEMPORÁRIO] ${quickFlagNote}` : '[FLAG TEMPORÁRIO] Sinalizada pelo usuário para revisão de erro.',
       });
-      setReportMessage('Relato enviado. A questão será revisada pela equipe MedSync.');
-      setReportOpen(false);
-      setReportDescription('');
-    } catch (requestError) {
-      setReportMessage(requestError.message);
+      setFlaggedIds((prev) => {
+        const updated = Array.from(new Set([...prev, currentQuestion.id]));
+        try {
+          localStorage.setItem('medsync_flagged_question_ids', JSON.stringify(updated));
+        } catch {
+          // ignore
+        }
+        return updated;
+      });
+      setQuickFlagFeedback('Questão sinalizada com sucesso! O assistente tem o registro para corrigir.');
+      setTimeout(() => {
+        setIsFlagModalOpen(false);
+        setQuickFlagFeedback('');
+      }, 1000);
+    } catch (err) {
+      setQuickFlagFeedback(err.message || 'Erro ao registrar sinalização.');
     }
   };
 
@@ -260,8 +274,32 @@ const QuestoesPage = () => {
         <section className="questions-session">
           <div className="questions-session-topbar"><button type="button" onClick={resetSession}><FiArrowLeft /> Sair da lista</button><div><span>Questão {currentIndex + 1} de {questions.length}</span><i><em style={{ width: `${((currentIndex + (currentAnswer ? 1 : 0)) / questions.length) * 100}%` }} /></i></div><strong>{correctCount} acerto(s)</strong></div>
           <article className="questions-question-card">
-            <header><div><span>{currentQuestion.especialidade}</span><span>{currentQuestion.assunto}</span></div><p><strong>{currentQuestion.instituicao}</strong><small>{currentQuestion.ano}</small></p></header>
-            <div className="questions-statement"><small>ENUNCIADO</small><h2>{currentQuestion.enunciado}</h2></div>
+            <header>
+              <div><span>{currentQuestion.especialidade}</span><span>{currentQuestion.assunto}</span></div>
+              <div className="questions-card-header-actions">
+                <p><strong>{currentQuestion.instituicao}</strong><small>{currentQuestion.ano}</small></p>
+                <button
+                  type="button"
+                  className={`questions-quick-flag-btn ${flaggedIds.includes(currentQuestion.id) ? 'is-flagged' : ''}`}
+                  onClick={openFlagModal}
+                  title={flaggedIds.includes(currentQuestion.id) ? 'Questão já sinalizada para correção' : 'Sinalizar erro nesta questão'}
+                  aria-label={flaggedIds.includes(currentQuestion.id) ? 'Questão sinalizada' : 'Sinalizar erro nesta questão'}
+                >
+                  <FiFlag /> {flaggedIds.includes(currentQuestion.id) ? 'Sinalizada' : 'Sinalizar erro'}
+                </button>
+              </div>
+            </header>
+            <div className="questions-statement">
+              <small>ENUNCIADO</small>
+              {currentQuestion.statement_rich_html && currentQuestion.statement_rich_html.includes('<') ? (
+                <div
+                  className="questions-statement-rich"
+                  dangerouslySetInnerHTML={{ __html: currentQuestion.statement_rich_html }}
+                />
+              ) : (
+                <h2>{currentQuestion.enunciado}</h2>
+              )}
+            </div>
             <div className="questions-alternatives">
               {currentAnswer && <div className="questions-community-distribution"><FiBarChart2 /><p><strong>Como os estudantes responderam</strong><span>{currentAnswer.total_respondentes === 1 ? '1 resposta registrada' : `${currentAnswer.total_respondentes || 0} respostas registradas`} · cada estudante conta uma vez</span></p></div>}
               {currentQuestion.alternativas.map((alternative) => {
@@ -304,7 +342,14 @@ const QuestoesPage = () => {
                     >
                       <b>{alternative.id}</b>
                       <div className="questions-alternative-copy">
-                        <span className={isEliminated ? 'is-struck' : ''}>{alternative.texto}</span>
+                        {alternative.html && alternative.html.includes('<img') ? (
+                          <span
+                            className={isEliminated ? 'is-struck' : ''}
+                            dangerouslySetInnerHTML={{ __html: alternative.html }}
+                          />
+                        ) : (
+                          <span className={isEliminated ? 'is-struck' : ''}>{alternative.texto}</span>
+                        )}
                         {selectionStats && <div className="questions-selection-share"><i><em style={{ width: `${selectionStats.percentual}%` }} /></i><small><strong>{formatPercentage(selectionStats.percentual)}</strong> escolheram esta alternativa{isMostSelectedDistractor ? <mark>Distrator mais escolhido</mark> : null}</small></div>}
                       </div>
                       {isCorrect && <FiCheckCircle />}
@@ -317,9 +362,75 @@ const QuestoesPage = () => {
             {!currentAnswer ? <button type="button" className={`questions-confirm-button ${isAnswering ? 'is-loading' : ''}`} onClick={submitAnswer} disabled={!selectedId || isAnswering}>{isAnswering ? <><FiRefreshCw className="spinning" /> Confirmando resposta...</> : <><FiCheck /> Confirmar resposta</>}</button> : <QuestionFeedback answer={currentAnswer} questionId={currentQuestion.id} />}
           </article>
 
-          {currentAnswer && <div className="questions-after-answer"><button type="button" className="questions-report-trigger" onClick={() => setReportOpen((value) => !value)}><FiFlag /> Reportar problema</button><button type="button" className="questions-next-button" onClick={nextQuestion}>{currentIndex === questions.length - 1 ? 'Ver resultado' : 'Próxima questão'} <FiArrowRight /></button></div>}
-          {reportOpen && <form className="questions-report-form" onSubmit={sendReport}><div><strong>Ajude a manter o banco confiável</strong><button type="button" aria-label="Fechar relato" onClick={() => setReportOpen(false)}><FiX /></button></div><select aria-label="Motivo do relato" value={reportReason} onChange={(event) => setReportReason(event.target.value)}>{Object.entries(REPORT_REASONS).map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select><textarea aria-label="Detalhes do relato" value={reportDescription} onChange={(event) => setReportDescription(event.target.value)} placeholder="Descreva o que precisa ser revisado (opcional)" maxLength="1000" /><button type="submit"><FiFlag /> Enviar relato</button></form>}
-          {reportMessage && <p className="questions-report-message">{reportMessage}</p>}
+          {currentAnswer && (
+            <div className="questions-after-answer">
+              <button
+                type="button"
+                className="questions-next-button"
+                onClick={nextQuestion}
+              >
+                {currentIndex === questions.length - 1 ? 'Ver resultado' : 'Próxima questão'} <FiArrowRight />
+              </button>
+            </div>
+          )}
+
+          {isFlagModalOpen && (
+            <div className="questions-flag-modal-backdrop" onClick={() => setIsFlagModalOpen(false)}>
+              <div className="questions-flag-modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="flag-modal-title">
+                <div className="questions-flag-modal-header">
+                  <div>
+                    <span className="questions-flag-kicker"><FiFlag /> SINALIZAR ERRO</span>
+                    <h3 id="flag-modal-title">Revisar Questão #{currentQuestion.id}</h3>
+                  </div>
+                  <button type="button" aria-label="Fechar" onClick={() => setIsFlagModalOpen(false)}>
+                    <FiX />
+                  </button>
+                </div>
+                <p className="questions-flag-modal-desc">
+                  Sinalize o problema identificado nesta questão. O assistente usará esse registro para auditar e corrigir o banco.
+                </p>
+                <form onSubmit={handleConfirmFlag}>
+                  <div className="questions-flag-preset-chips">
+                    {[
+                      { id: 'gabarito', label: 'Gabarito incorreto' },
+                      { id: 'enunciado', label: 'Erro no enunciado' },
+                      { id: 'explicacao', label: 'Problema na explicação' },
+                      { id: 'desatualizada', label: 'Possivelmente desatualizada' },
+                      { id: 'outro', label: 'Outro problema' },
+                    ].map((preset) => (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        className={`questions-flag-chip ${quickFlagReason === preset.id ? 'is-active' : ''}`}
+                        onClick={() => setQuickFlagReason(preset.id)}
+                      >
+                        {preset.label}
+                      </button>
+                    ))}
+                  </div>
+                  <label className="questions-flag-textarea-label">
+                    <span>Descreva o que está errado (opcional):</span>
+                    <textarea
+                      value={quickFlagNote}
+                      onChange={(e) => setQuickFlagNote(e.target.value)}
+                      placeholder="Ex: A resposta correta deveria ser C; ou falta o texto final..."
+                      maxLength={1000}
+                      rows={3}
+                    />
+                  </label>
+                  {quickFlagFeedback && <p className="questions-flag-feedback">{quickFlagFeedback}</p>}
+                  <div className="questions-flag-modal-actions">
+                    <button type="button" className="questions-flag-btn-cancel" onClick={() => setIsFlagModalOpen(false)}>
+                      Cancelar
+                    </button>
+                    <button type="submit" className="questions-flag-btn-confirm">
+                      <FiCheck /> Confirmar Sinalização
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
         </section>
       )}
 
@@ -332,7 +443,33 @@ const QuestoesPage = () => {
   );
 };
 
-const FilterSelect = ({ label, value, onChange, items, allLabel }) => <label className="questions-filter"><span>{label}</span><select value={value} onChange={(event) => onChange(event.target.value)}><option value="">{allLabel}</option>{items.map((item) => <option value={item.valor} key={item.valor}>{item.valor} ({item.total})</option>)}</select></label>;
+const formatFilterLabel = (val) => {
+  if (!val) return '';
+  const s = String(val).trim();
+  if (s.startsWith('{') && (s.includes("'n':") || s.includes('"n":'))) {
+    const match = s.match(/['"]n['"]\s*:\s*['"]([^'"]+)['"]/);
+    if (match) return match[1].trim();
+  }
+  if (s.includes('[$$]')) {
+    const parts = s.split('[$$]').map((p) => p.trim()).filter(Boolean);
+    if (parts.length) return parts[parts.length - 1];
+  }
+  return s;
+};
+
+const FilterSelect = ({ label, value, onChange, items, allLabel }) => (
+  <label className="questions-filter">
+    <span>{label}</span>
+    <select value={value} onChange={(event) => onChange(event.target.value)}>
+      <option value="">{allLabel}</option>
+      {items.map((item) => (
+        <option value={item.valor} key={item.valor}>
+          {formatFilterLabel(item.valor)} ({item.total})
+        </option>
+      ))}
+    </select>
+  </label>
+);
 
 const FilterDatalist = ({ label, value, onChange, items, placeholder }) => {
   const listId = `question-filter-${label.toLowerCase().replace(/\W+/g, '-')}`;

@@ -74,6 +74,7 @@ const correction = {
 describe('QuestoesPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
     api.getQuestionMetadata.mockResolvedValue(metadata);
     api.getQuestionPerformance.mockResolvedValue({
       respondidas: 0,
@@ -124,7 +125,7 @@ describe('QuestoesPage', () => {
     expect(api.recordVisualChallengeAttempt).not.toHaveBeenCalled();
   });
 
-  it('envia um relato editorial sem alterar o resultado da questão', async () => {
+  it('não exibe o botão antigo de relatar problema e permite sinalizar erro pelo cabeçalho após responder', async () => {
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
     await screen.findByRole('heading', { name: 'Questões de provas' });
     fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
@@ -133,17 +134,26 @@ describe('QuestoesPage', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Confirmar resposta' }));
     await screen.findByText('RESPOSTA CORRETA');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Reportar problema' }));
-    fireEvent.change(screen.getByPlaceholderText(/Descreva o que precisa/), {
+    // Botão legado "Reportar problema" não deve existir
+    expect(screen.queryByRole('button', { name: 'Reportar problema' })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /(Próxima questão|Ver resultado)/i })).toBeInTheDocument();
+
+    // Sinalizar erro através do botão completo do cabeçalho
+    const flagBtn = screen.getByRole('button', { name: /Sinalizar erro/i });
+    expect(flagBtn).toBeInTheDocument();
+    fireEvent.click(flagBtn);
+
+    expect(screen.getByRole('heading', { name: /Revisar Questão #101/i })).toBeInTheDocument();
+    fireEvent.change(screen.getByPlaceholderText(/Ex: A resposta correta/), {
       target: { value: 'Revisar a atualização desta recomendação.' },
     });
-    fireEvent.click(screen.getByRole('button', { name: 'Enviar relato' }));
+    fireEvent.click(screen.getByRole('button', { name: /Confirmar Sinalização/i }));
 
     await waitFor(() => expect(api.reportQuestion).toHaveBeenCalledWith(101, {
       motivo: 'gabarito',
-      descricao: 'Revisar a atualização desta recomendação.',
+      descricao: '[FLAG TEMPORÁRIO] Revisar a atualização desta recomendação.',
     }));
-    expect(screen.getByText(/A questão será revisada pela equipe MedSync/)).toBeInTheDocument();
+    expect(screen.getByText(/Questão sinalizada com sucesso/i)).toBeInTheDocument();
   });
 
   it('não apresenta resumo genérico como explicação e permite tentar novamente', async () => {
@@ -179,5 +189,28 @@ describe('QuestoesPage', () => {
     expect(await screen.findByText(correction.explicacao.porque_correta)).toBeInTheDocument();
     expect(api.retryQuestionExplanation).toHaveBeenCalledWith(101);
     expect(screen.queryByText(/Ponto-chave para a prova/i)).not.toBeInTheDocument();
+  });
+
+  it('permite sinalizar erro diretamente no cabeçalho antes de responder', async () => {
+    render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
+    await screen.findByRole('heading', { name: 'Questões de provas' });
+    fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
+    await screen.findByText(question.enunciado);
+
+    const flagBtn = screen.getByRole('button', { name: /Sinalizar erro nesta questão/i });
+    expect(flagBtn).toBeInTheDocument();
+    fireEvent.click(flagBtn);
+
+    expect(screen.getByRole('heading', { name: /Revisar Questão #101/i })).toBeInTheDocument();
+    fireEvent.change(screen.getByPlaceholderText(/Ex: A resposta correta deveria ser C/), {
+      target: { value: 'Alternativa A tem erro de digitação' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /Confirmar Sinalização/i }));
+
+    await waitFor(() => expect(api.reportQuestion).toHaveBeenCalledWith(101, {
+      motivo: 'gabarito',
+      descricao: '[FLAG TEMPORÁRIO] Alternativa A tem erro de digitação',
+    }));
+    expect(screen.getByText(/Questão sinalizada com sucesso/i)).toBeInTheDocument();
   });
 });

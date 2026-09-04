@@ -153,4 +153,25 @@ describe('DesafiosPage', () => {
     ));
     expect(screen.getByText(/progresso da trilha atualizado/i)).toBeInTheDocument();
   });
+
+  it('permite sinalizar erro no desafio visual diretamente antes de responder', async () => {
+    const reportSpy = vi.spyOn(api, 'reportVisualChallenge').mockResolvedValue({ message: 'OK' });
+    render(<DesafiosPage />);
+
+    const flagBtn = screen.getByRole('button', { name: /Sinalizar erro neste desafio/i });
+    expect(flagBtn).toBeInTheDocument();
+    fireEvent.click(flagBtn);
+
+    expect(screen.getByRole('heading', { name: /Revisar Desafio desafio-visual-001/i })).toBeInTheDocument();
+    fireEvent.change(screen.getByPlaceholderText(/Ex: O ECG evidencia/i), {
+      target: { value: 'Diagnóstico parece invertido' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /Confirmar Sinalização/i }));
+
+    await waitFor(() => expect(reportSpy).toHaveBeenCalledWith('desafio-visual-001', {
+      motivo: 'gabarito',
+      descricao: '[FLAG DESAFIO] Diagnóstico parece invertido',
+    }));
+    expect(screen.getByText(/Desafio sinalizado com sucesso/i)).toBeInTheDocument();
+  });
 });

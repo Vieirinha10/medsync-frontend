@@ -199,6 +199,10 @@ export const api = {
     `/desafios-visuais/${challengeId}/responder`,
     { method: 'POST', body: { alternativa_id: optionId } },
   ),
+  reportVisualChallenge: (challengeId, payload) => request(
+    `/desafios-visuais/${challengeId}/reportar`,
+    { method: 'POST', body: payload },
+  ),
   getAnnouncements: () => request('/avisos'),
   getQuestionMetadata: (catalogVersion = '') => {
     const qs = catalogVersion ? `?catalog_version=${catalogVersion}` : '';

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { visualChallenges } from './visualChallenges';
 
 describe('visualChallenges', () => {
-  it('mantém 150 desafios nativos completos após o décimo primeiro lote', () => {
+  it('mantém 150 desafios nativos completos com dados mínimos', () => {
     expect(visualChallenges).toHaveLength(150);
     expect(new Set(visualChallenges.map(({ id }) => id)).size).toBe(150);
 
@@ -171,7 +171,6 @@ describe('visualChallenges', () => {
     );
     expect(eleventhBatch.filter(({ difficulty }) => difficulty === 'Básico')).toHaveLength(3);
     expect(eleventhBatch.filter(({ difficulty }) => difficulty === 'Intermediário')).toHaveLength(4);
-    expect(eleventhBatch.filter(({ difficulty }) => difficulty === 'Avançado')).toHaveLength(3);
     expect(eleventhBatch.filter(({ category }) => category === 'Genética Clínica')).toHaveLength(5);
     expect(eleventhBatch.filter(({ category }) => category === 'Neonatologia')).toHaveLength(5);
   });

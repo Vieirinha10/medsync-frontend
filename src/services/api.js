@@ -208,6 +208,10 @@ export const api = {
     const qs = catalogVersion ? `?catalog_version=${catalogVersion}` : '';
     return request(`/questoes/meta${qs}`);
   },
+  getQuestionSubjects: (specialty) => {
+    const query = new URLSearchParams({ especialidade: specialty });
+    return request(`/questoes/assuntos?${query.toString()}`);
+  },
   getQuestions: (filters = {}) => {
     const query = new URLSearchParams(
       Object.entries(filters).filter(([, value]) => value !== '' && value != null),

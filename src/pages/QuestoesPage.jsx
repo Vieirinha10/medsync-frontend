@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/questions.css';
 import {
@@ -50,6 +50,8 @@ const QuestoesPage = () => {
   const [metadata, setMetadata] = useState(null);
   const [performance, setPerformance] = useState(null);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [availableTopics, setAvailableTopics] = useState([]);
+  const [areTopicsLoading, setAreTopicsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedId, setSelectedId] = useState('');
@@ -106,11 +108,35 @@ const QuestoesPage = () => {
 
   useEffect(() => { loadOverview(); }, [loadOverview]);
 
+  useEffect(() => {
+    let active = true;
+    if (!filters.especialidade) {
+      setAvailableTopics([]);
+      setAreTopicsLoading(false);
+      return () => { active = false; };
+    }
+
+    setAreTopicsLoading(true);
+    api.getQuestionSubjects(filters.especialidade)
+      .then((subjects) => {
+        if (active) setAvailableTopics(subjects);
+      })
+      .catch((requestError) => {
+        if (active) {
+          setAvailableTopics([]);
+          setError(requestError.message);
+        }
+      })
+      .finally(() => {
+        if (active) setAreTopicsLoading(false);
+      });
+
+    return () => { active = false; };
+  }, [filters.especialidade]);
+
   const currentQuestion = questions[currentIndex] || null;
   const currentAnswer = currentQuestion ? answers[currentQuestion.id] : null;
   const correctCount = Object.values(answers).filter((answer) => answer.correta).length;
-  const availableTopics = useMemo(() => metadata?.assuntos || [], [metadata]);
-
   const startSession = async () => {
     setIsLoading(true);
     setError('');
@@ -288,8 +314,23 @@ const QuestoesPage = () => {
           <section className="questions-setup-card">
             <div className="questions-section-heading"><span><FiFilter /></span><div><small>MONTE SEU TREINO</small><h2>Escolha como deseja praticar</h2><p>As questões serão sorteadas dentro dos filtros selecionados.</p></div></div>
             <div className="questions-filter-grid">
-              <FilterSelect label="Especialidade" value={filters.especialidade} onChange={(value) => setFilters({ ...filters, especialidade: value })} items={metadata.especialidades} allLabel="Todas as especialidades" />
-              <FilterSelect label="Assunto" value={filters.assunto} onChange={(value) => setFilters({ ...filters, assunto: value })} items={availableTopics} allLabel="Todos os assuntos" />
+              <FilterSelect
+                label="Especialidade"
+                value={filters.especialidade}
+                onChange={(value) => setFilters({ ...filters, especialidade: value, assunto: '' })}
+                items={metadata.especialidades}
+                allLabel="Todas as especialidades"
+              />
+              <FilterSelect
+                label="Assunto"
+                value={filters.assunto}
+                onChange={(value) => setFilters({ ...filters, assunto: value })}
+                items={availableTopics}
+                allLabel={filters.especialidade
+                  ? (areTopicsLoading ? 'Carregando assuntos...' : 'Todos os assuntos')
+                  : 'Selecione uma especialidade primeiro'}
+                disabled={!filters.especialidade || areTopicsLoading}
+              />
               <FilterSelect label="Ano" value={filters.ano} onChange={(value) => setFilters({ ...filters, ano: value })} items={metadata.anos} allLabel="Todos os anos" />
               <FilterDatalist label="Instituição / banca" value={filters.instituicao} onChange={(value) => setFilters({ ...filters, instituicao: value })} items={metadata.instituicoes} placeholder="Todas ou pesquise pelo nome" />
             </div>
@@ -497,10 +538,14 @@ const formatFilterLabel = (val) => {
   return s;
 };
 
-const FilterSelect = ({ label, value, onChange, items, allLabel }) => (
+const FilterSelect = ({ label, value, onChange, items, allLabel, disabled = false }) => (
   <label className="questions-filter">
     <span>{label}</span>
-    <select value={value} onChange={(event) => onChange(event.target.value)}>
+    <select
+      value={value}
+      onChange={(event) => onChange(event.target.value)}
+      disabled={disabled}
+    >
       <option value="">{allLabel}</option>
       {items.map((item) => (
         <option value={item.valor} key={item.valor}>

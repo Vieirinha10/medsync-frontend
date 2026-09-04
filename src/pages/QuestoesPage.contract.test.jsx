@@ -8,7 +8,7 @@
  *   será validada em ambiente de Staging com API, frontend e PostgreSQL ativos).
  */
 
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -18,6 +18,7 @@ import QuestoesPage from './QuestoesPage';
 vi.mock('../services/api', () => ({
   api: {
     getQuestionMetadata: vi.fn(),
+    getQuestionSubjects: vi.fn(),
     getQuestionPerformance: vi.fn(),
     getQuestions: vi.fn(),
     answerQuestion: vi.fn(),
@@ -98,6 +99,9 @@ describe('QuestoesPage - Contrato Visual e Teste de Componente com Payload Canô
       respondidas_hoje: 0,
       restantes_hoje: null,
     });
+    api.getQuestionSubjects.mockResolvedValue([
+      { valor: 'Obstetrícia', total: 100 },
+    ]);
     api.getQuestionPerformance.mockResolvedValue({
       total_respondidas: 10,
       taxa_acerto: 80,

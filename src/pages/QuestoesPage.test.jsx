@@ -8,6 +8,7 @@ import QuestoesPage from './QuestoesPage';
 vi.mock('../services/api', () => ({
   api: {
     getQuestionMetadata: vi.fn(),
+    getQuestionSubjects: vi.fn(),
     getQuestionPerformance: vi.fn(),
     getQuestions: vi.fn(),
     answerQuestion: vi.fn(),
@@ -76,6 +77,7 @@ describe('QuestoesPage', () => {
     vi.clearAllMocks();
     localStorage.clear();
     api.getQuestionMetadata.mockResolvedValue(metadata);
+    api.getQuestionSubjects.mockResolvedValue(metadata.assuntos);
     api.getQuestionPerformance.mockResolvedValue({
       respondidas: 0,
       acertos: 0,
@@ -123,6 +125,33 @@ describe('QuestoesPage', () => {
     expect(api.getStudyErrors).not.toHaveBeenCalled();
     expect(api.submitSpacedReview).not.toHaveBeenCalled();
     expect(api.recordVisualChallengeAttempt).not.toHaveBeenCalled();
+  });
+
+  it('carrega somente os assuntos da especialidade Hematologia', async () => {
+    api.getQuestionMetadata.mockResolvedValueOnce({
+      ...metadata,
+      especialidades: [{ valor: 'Hematologia', total: 4840 }],
+      assuntos: [],
+    });
+    api.getQuestionSubjects.mockResolvedValueOnce([
+      { valor: 'Anemias', total: 1200 },
+      { valor: 'Leucemias', total: 730 },
+    ]);
+
+    render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
+    await screen.findByRole('heading', { name: 'Questões de provas' });
+
+    const subjectSelect = screen.getByLabelText('Assunto');
+    expect(subjectSelect).toBeDisabled();
+    fireEvent.change(screen.getByLabelText('Especialidade'), {
+      target: { value: 'Hematologia' },
+    });
+
+    await waitFor(() => expect(api.getQuestionSubjects).toHaveBeenCalledWith('Hematologia'));
+    expect(await screen.findByRole('option', { name: 'Anemias (1200)' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Leucemias (730)' })).toBeInTheDocument();
+    expect(screen.queryByRole('option', { name: /Cardiologia/ })).not.toBeInTheDocument();
+    expect(subjectSelect).not.toBeDisabled();
   });
 
   it('não exibe o botão antigo de relatar problema e permite sinalizar erro pelo cabeçalho após responder', async () => {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/questions.css';
 import {
@@ -71,6 +71,7 @@ const QuestoesPage = () => {
   const [quickFlagReason, setQuickFlagReason] = useState('gabarito');
   const [quickFlagNote, setQuickFlagNote] = useState('');
   const [quickFlagFeedback, setQuickFlagFeedback] = useState('');
+  const savedScrollRef = useRef(null);
 
   const toggleEliminate = (e, altId) => {
     e.stopPropagation();
@@ -141,25 +142,64 @@ const QuestoesPage = () => {
     }
   };
 
-  const submitAnswer = async () => {
+  const submitAnswer = async (event) => {
+    if (event && typeof event.preventDefault === 'function') {
+      event.preventDefault();
+    }
     if (!selectedId || !currentQuestion || currentAnswer) return;
     setIsAnswering(true);
     setError('');
     const seconds = startedAt ? Math.max(0, Math.round((Date.now() - startedAt) / 1000)) : null;
+
+    // Salva a posição exata de rolagem da tela antes de enviar a resposta
+    const currentScrollY = typeof window !== 'undefined'
+      ? (window.scrollY || document.documentElement.scrollTop || 0)
+      : 0;
+    savedScrollRef.current = currentScrollY;
+
     try {
       const correction = await api.answerQuestion(currentQuestion.id, selectedId, seconds);
+
+      // Desfoca o botão ativo antes de sua desmontagem no DOM para impedir
+      // que o navegador mova o foco para o <body> e cause salto para o topo da página (0, 0)
+      if (typeof document !== 'undefined' && document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+
       setAnswers((current) => ({ ...current, [currentQuestion.id]: { ...correction, selectedId } }));
       setMetadata((current) => current ? {
         ...current,
         respondidas_hoje: correction.respondidas_hoje,
         restantes_hoje: correction.restantes_hoje,
       } : current);
+
+      // Mantém a rolagem estritamente fixa onde o estudante estava
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: currentScrollY, behavior: 'instant' });
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: currentScrollY, behavior: 'instant' });
+        });
+        setTimeout(() => {
+          window.scrollTo({ top: currentScrollY, behavior: 'instant' });
+        }, 50);
+        setTimeout(() => {
+          window.scrollTo({ top: currentScrollY, behavior: 'instant' });
+        }, 150);
+      }
     } catch (requestError) {
       setError(requestError.message);
     } finally {
       setIsAnswering(false);
     }
   };
+
+  useLayoutEffect(() => {
+    if (currentAnswer && savedScrollRef.current != null && typeof window !== 'undefined') {
+      const targetY = savedScrollRef.current;
+      window.scrollTo({ top: targetY, behavior: 'instant' });
+      savedScrollRef.current = null;
+    }
+  }, [currentAnswer]);
 
   const nextQuestion = () => {
     if (currentIndex >= questions.length - 1) {

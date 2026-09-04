@@ -8,7 +8,7 @@ const API_URL = (import.meta.env.VITE_API_URL || DEFAULT_API_URL).replace(
 );
 
 const AUTH_TOKEN_KEY = 'authToken';
-const REQUEST_TIMEOUT_MS = 20_000;
+const REQUEST_TIMEOUT_MS = 45_000;
 const SYNAPSE_EVALUATION_TIMEOUT_MS = 60_000;
 const SYNAPSE_QUESTION_TIMEOUT_MS = 45_000;
 

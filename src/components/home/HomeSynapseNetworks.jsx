@@ -179,7 +179,7 @@ const HomeSynapseNetworks = () => {
               <span className="synapse-highlight-green">integradas em uma única experiência educacional.</span>
             </h2>
             <p className="synapse-networks-lead">
-              ChatGPT, Claude, Gemini, Grok e DeepSeek atuam em papéis complementares. A Synapse
+              ChatGPT, Grok, Gemini, Claude e DeepSeek atuam em papéis complementares. A Synapse
               organiza essas perspectivas em um feedback clínico claro e voltado para o seu aprendizado.
             </p>
           </header>

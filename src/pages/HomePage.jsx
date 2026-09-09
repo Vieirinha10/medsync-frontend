@@ -5,12 +5,11 @@ import MedSyncIntro from '../components/MedSyncIntro';
 import HomeHero from '../components/home/HomeHero';
 import HomeLowerSections from '../components/home/HomeLowerSections';
 import HomeSpecialtiesMarquee from '../components/home/HomeSpecialtiesMarquee';
-import HomeSynapseProcess from '../components/home/HomeSynapseProcess';
+import HomeSynapseNetworks from '../components/home/HomeSynapseNetworks';
 import {
   ACADEMIC_INSTITUTIONS,
   HERO_SIMULATION_STEPS,
   MEDICAL_SPECIALTIES,
-  SYNAPSE_PROCESS_STEPS,
   TRUST_PILLARS,
 } from '../components/home/homeContent';
 import '../styles/home-solid.css';
@@ -22,35 +21,6 @@ const HomePage = () => {
   const [isHeroPaused, setIsHeroPaused] = useState(false);
   const [isHeroInteracting, setIsHeroInteracting] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(() => document.visibilityState !== 'hidden');
-  const [activeSynapseStep, setActiveSynapseStep] = useState(0);
-  const synapseStepRefs = useRef([]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSynapseStep(Number(entry.target.dataset.synapseStep));
-          }
-        });
-      },
-      {
-        root: null,
-        rootMargin: '-25% 0px -35% 0px',
-        threshold: 0.15,
-      }
-    );
-
-    synapseStepRefs.current.forEach((el, index) => {
-      if (!el) return;
-      el.dataset.synapseStep = String(index);
-      observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
   const homeRef = useRef(null);
 
   useEffect(() => {
@@ -132,13 +102,8 @@ const HomePage = () => {
       {/* BLOCO 2: DIVISOR CONECTOR — ESTEIRA DE ESPECIALIDADES */}
       <HomeSpecialtiesMarquee specialties={MEDICAL_SPECIALTIES} />
 
-      {/* BLOCO 3: SYNAPSE IA · PROCESSO EDUCACIONAL E FEEDBACK */}
-      <HomeSynapseProcess
-        activeStep={activeSynapseStep}
-        setActiveStep={setActiveSynapseStep}
-        stepRefs={synapseStepRefs}
-        steps={SYNAPSE_PROCESS_STEPS}
-      />
+      {/* BLOCO 3: SYNAPSE IA · REDES NEURAIS & BANCA MÉDICA */}
+      <HomeSynapseNetworks />
 
       <HomeLowerSections
         formattedStudentCount={formattedStudentCount}

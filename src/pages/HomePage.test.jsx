@@ -36,40 +36,49 @@ describe('HomePage', () => {
     await waitFor(() => expect(within(stats).getByText('127 estudantes MedSync')).toBeInTheDocument());
   });
 
-  it('explica o processo educacional da Synapse sem apresentar individualmente as cinco redes', () => {
+  it('apresenta a seção das 5 redes neurais da Synapse com feixe verde e cards dedicados', () => {
     api.getPublicStats.mockResolvedValue({ estudantes_medsync: 127 });
 
     render(<MemoryRouter><HomePage /></MemoryRouter>);
 
-    expect(screen.getByRole('heading', { name: /Synapse IA, a inteligência educativa do MedSync/i })).toBeInTheDocument();
-    expect(screen.getByText('ARQUITETURA MULTI-LLM · O CONCEITO DA BANCA MÉDICA')).toBeInTheDocument();
-    expect(screen.queryByText(/DeepSeek-R1|Claude 3\.5|GPT-4o|Gemini 2\.0|Grok 2/)).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Imagine uma Inteligência Educativa na palma da sua mão/i })).toBeInTheDocument();
+    expect(screen.getByText(/Mais perspectivas\. Respostas mais completas\. Um raciocínio ainda mais confiável\./i)).toBeInTheDocument();
 
-    const terminal = document.querySelector('.synapse-process-terminal');
-    expect(terminal).not.toBeNull();
-    expect(within(terminal).getByLabelText('Processamento atual: RESPOSTA CLÍNICA')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'ChatGPT' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Grok' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Gemini' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Claude' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'DeepSeek' })).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('tab', { name: /RUBRICA CLÍNICA 2\.0/i }));
-    expect(within(terminal).getByLabelText('Processamento atual: RUBRICA CLÍNICA 2.0')).toBeInTheDocument();
-    expect(within(terminal).getByText('Critérios e pesos aplicados')).toBeInTheDocument();
+    expect(screen.getByText('OPENAI')).toBeInTheDocument();
+    expect(screen.getByText('xAI')).toBeInTheDocument();
+    expect(screen.getByText('GOOGLE')).toBeInTheDocument();
+    expect(screen.getByText('ANTHROPIC')).toBeInTheDocument();
+    expect(screen.getByText('DEEPSEEK')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('tab', { name: /SEGURANÇA DO PACIENTE/i }));
-    expect(within(terminal).getByText('Riscos e prioridades verificados')).toBeInTheDocument();
+    expect(screen.getByText('Raciocínio clínico e explicações claras.')).toBeInTheDocument();
+    expect(screen.getByText('Análises críticas e perspectivas únicas.')).toBeInTheDocument();
+    expect(screen.getByText('Síntese de informações e visão multimodal.')).toBeInTheDocument();
+    expect(screen.getByText('Respostas seguras e bem estruturadas.')).toBeInTheDocument();
+    expect(screen.getByText('Alta performance e raciocínio avançado.')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('tab', { name: /DEVOLUTIVA PERSONALIZADA/i }));
-    expect(within(terminal).getByText('Feedback personalizado pronto')).toBeInTheDocument();
+    // Explicações no verso dos cards (animação de virar 3D)
+    expect(screen.getByText('Transforma raciocínios complexos em explicações claras, estruturadas e fáceis de aplicar.')).toBeInTheDocument();
+    expect(screen.getByText('Desafia hipóteses, explora caminhos alternativos e reduz conclusões precipitadas.')).toBeInTheDocument();
+    expect(screen.getByText('Conecta dados, sinais, exames e contexto para formar uma visão mais completa do paciente.')).toBeInTheDocument();
+    expect(screen.getByText('Aprofunda o caso, identifica nuances e ajuda a construir uma avaliação clínica mais criteriosa.')).toBeInTheDocument();
+    expect(screen.getByText('Organiza possibilidades, compara condutas e busca o caminho mais objetivo para a decisão.')).toBeInTheDocument();
 
-    expect(document.querySelector('.home-feedback-system')).toBeNull();
-    const integratedResult = document.querySelector('.synapse-integrated-result');
-    expect(integratedResult).not.toBeNull();
-    expect(within(integratedResult).getByRole('heading', { name: 'É assim que suas decisões voltam para você.' })).toBeInTheDocument();
-    expect(within(integratedResult).getByLabelText('Nota geral 8,4 de 10')).toBeInTheDocument();
-    expect(within(integratedResult).getByText('O QUE VOCÊ FEZ BEM')).toBeInTheDocument();
-    expect(within(integratedResult).getByText('ONDE PODE EVOLUIR')).toBeInTheDocument();
-    expect(within(integratedResult).getByText('ANÁLISE DOS EXAMES')).toBeInTheDocument();
-    expect(within(integratedResult).getByText('SEGURANÇA DO PACIENTE')).toBeInTheDocument();
-    expect(within(integratedResult).getByText('PLANO RÁPIDO DE MELHORIA')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: 'Critérios visíveis em cada resultado.' })).toBeInTheDocument();
+    // Interação de flip (clique/touch)
+    const chatgptCard = document.querySelector('.card-chatgpt');
+    expect(chatgptCard).not.toHaveClass('is-flipped');
+    fireEvent.click(chatgptCard);
+    expect(chatgptCard).toHaveClass('is-flipped');
+    fireEvent.click(chatgptCard);
+    expect(chatgptCard).not.toHaveClass('is-flipped');
+
+    const beam = document.querySelector('.synapse-laser-beam');
+    expect(beam).not.toBeNull();
   });
 
   it('apresenta duas esteiras acadêmicas sem depoimentos ou sugestão de parceria institucional', () => {
@@ -151,12 +160,10 @@ describe('HomePage', () => {
     expect(examsTab).toHaveAttribute('aria-selected', 'true');
     expect(examsTab).toHaveFocus();
 
-    const responseTab = screen.getByRole('tab', { name: /RESPOSTA CLÍNICA/i });
-    const contextTab = screen.getByRole('tab', { name: /CONTEXTO DO CASO/i });
-    responseTab.focus();
-    fireEvent.keyDown(responseTab, { key: 'ArrowRight' });
-    expect(contextTab).toHaveAttribute('aria-selected', 'true');
-    expect(contextTab).toHaveFocus();
+    const hypothesisTab = screen.getByRole('tab', { name: '03 · Hipótese' });
+    fireEvent.keyDown(examsTab, { key: 'ArrowRight' });
+    expect(hypothesisTab).toHaveAttribute('aria-selected', 'true');
+    expect(hypothesisTab).toHaveFocus();
 
     const documentIds = [...document.querySelectorAll('[id]')].map(({ id }) => id);
     expect(new Set(documentIds).size).toBe(documentIds.length);

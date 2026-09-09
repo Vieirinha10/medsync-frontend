@@ -1,0 +1,689 @@
+/* ==============================================================================
+   SYNAPSE MULTI-LLM 5 NETWORKS SECTION — SCROLL-DRIVEN PINNED SHOWCASE
+   ============================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Lora:ital,wght@0,600;0,700;1,600&family=Orbitron:wght@700;800;900&family=Outfit:wght@600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
+
+.home-synapse-networks-section {
+  position: relative;
+  width: 100%;
+  min-height: 240vh; /* Espaço de rolagem para controlar o feixe e os cards */
+  background: radial-gradient(circle at 50% 30%, rgba(13, 27, 42, 0.4) 0%, rgba(5, 8, 14, 0.95) 75%);
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Fundo sutil de malha de pontos (matrix dots) */
+.home-synapse-networks-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Palco fixado (sticky) que segura a tela durante a rolagem */
+.synapse-sticky-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 30px 24px;
+}
+
+/* Glow central sutil no topo */
+.synapse-networks-glow {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 280px;
+  background: radial-gradient(ellipse, rgba(34, 197, 94, 0.09) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  filter: blur(60px);
+}
+
+.synapse-networks-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* -----------------------------------------------------------------------------
+   CABEÇALHO
+   ----------------------------------------------------------------------------- */
+.synapse-networks-header {
+  text-align: center;
+  max-width: 1120px;
+  margin: 0 auto 60px;
+  opacity: var(--header-opacity, 1);
+  transform: translateY(var(--header-y, 0px));
+  transition: opacity 0.12s ease-out, transform 0.12s ease-out;
+  will-change: opacity, transform;
+}
+
+.synapse-networks-eyebrow {
+  display: inline-block;
+  font-size: clamp(0.92rem, 1.2vw, 1.12rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  margin-bottom: 20px;
+}
+
+.synapse-networks-title {
+  font-size: clamp(2.25rem, 4.4vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.synapse-highlight-green {
+  color: #a7f34b;
+  text-shadow: 0 0 32px rgba(167, 243, 75, 0.45);
+  font-weight: 800;
+}
+
+/* -----------------------------------------------------------------------------
+   CONTAINER DOS CARDS & FEIXE VERDE
+   ----------------------------------------------------------------------------- */
+.synapse-beam-track-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 30px 0;
+}
+
+/* Feixe Verde Horizontal (Laser line) - Inicia antes do limite esquerdo e avança conforme o scroll */
+.synapse-laser-beam {
+  position: absolute;
+  top: 50%;
+  left: -12vw;
+  width: var(--laser-width, 0%);
+  height: 3.5px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.1) 0%, #22c55e 50%, #a7f34b 100%);
+  box-shadow: 0 0 16px #22c55e, 0 0 32px rgba(167, 243, 75, 0.8), 0 0 48px rgba(34, 197, 94, 0.4);
+  z-index: 1;
+  border-radius: 999px;
+  transition: width 0.08s linear;
+  will-change: width;
+}
+
+/* Ponta do laser com o Símbolo "S" da Synapse */
+.synapse-laser-symbol {
+  position: absolute;
+  right: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: var(--symbol-opacity, 0);
+  transition: opacity 0.15s ease;
+  will-change: opacity;
+  z-index: 3;
+}
+
+.synapse-symbol-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px #a7f34b) drop-shadow(0 0 14px #22c55e);
+  animation: synapseSymbolPulse 2.4s ease-in-out infinite alternate;
+}
+
+.synapse-symbol-glow-aura {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(167, 243, 75, 0.45) 0%, rgba(34, 197, 94, 0.25) 55%, transparent 75%);
+  filter: blur(6px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes synapseSymbolPulse {
+  0% {
+    filter: drop-shadow(0 0 5px #a7f34b) drop-shadow(0 0 10px #22c55e);
+    transform: scale(0.96);
+  }
+  100% {
+    filter: drop-shadow(0 0 9px #a7f34b) drop-shadow(0 0 18px #22c55e) drop-shadow(0 0 26px rgba(167, 243, 75, 0.6));
+    transform: scale(1.05);
+  }
+}
+
+/* Grid dos 5 Cards */
+.synapse-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* -----------------------------------------------------------------------------
+   CARD INDIVIDUAL DE CADA IA COM EFEITO FLIP 3D
+   ----------------------------------------------------------------------------- */
+.synapse-network-card {
+  position: relative;
+  height: 350px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  perspective: 1200px;
+  -webkit-perspective: 1200px;
+  opacity: var(--card-opacity, 1);
+  transform: translateY(var(--card-y, 0px)) scale(var(--card-scale, 1));
+  transition: transform 0.14s ease-out, opacity 0.14s ease-out;
+  will-change: opacity, transform;
+  outline: none;
+  border-radius: 20px;
+}
+
+.synapse-network-card:focus-visible {
+  outline: 2px solid #22c55e;
+  outline-offset: 4px;
+}
+
+/* Container interno que realiza a rotação 3D */
+.synapse-card-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.72s cubic-bezier(0.34, 1.25, 0.64, 1);
+  border-radius: 20px;
+}
+
+/* Acionamento do Flip: ao passar o mouse, focar pelo teclado ou tocar (mobile) */
+.synapse-network-card:hover .synapse-card-flip-inner,
+.synapse-network-card:focus-visible .synapse-card-flip-inner,
+.synapse-network-card.is-flipped .synapse-card-flip-inner {
+  transform: rotateY(180deg);
+}
+
+/* Elevação suave do card no hover */
+.synapse-network-card:hover {
+  transform: translateY(calc(var(--card-y, 0px) - 6px)) scale(calc(var(--card-scale, 1) * 1.02));
+}
+
+/* Faces do Card (Frontal e Traseira) */
+.synapse-card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: rgba(8, 14, 24, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid var(--card-border-color, rgba(255, 255, 255, 0.1));
+  box-shadow: 0 0 24px var(--card-brand-glow, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Destaque de borda e glow ao interagir */
+.synapse-network-card:hover .synapse-card-face,
+.synapse-network-card:focus-visible .synapse-card-face,
+.synapse-network-card.is-flipped .synapse-card-face {
+  border-color: var(--card-brand-color, #22c55e);
+  box-shadow: 0 16px 36px -8px var(--card-brand-glow, rgba(34, 197, 94, 0.35)), 0 0 28px var(--card-brand-glow, transparent);
+}
+
+/* Face Frontal */
+.synapse-card-front {
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+  z-index: 2;
+  padding: 30px 18px 22px;
+  justify-content: flex-start;
+}
+
+/* Face Traseira (Explicação Clínica) */
+.synapse-card-back {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  z-index: 1;
+  padding: 24px 18px 22px;
+  justify-content: space-between;
+  background: linear-gradient(180deg, rgba(12, 20, 36, 0.96) 0%, rgba(6, 11, 20, 0.98) 100%);
+}
+
+/* Reflexo e gradiente sutil no topo do card */
+.synapse-card-ambient-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52%;
+  background: var(--card-ambient-gradient, transparent);
+  pointer-events: none;
+  opacity: 0.9;
+  border-radius: 20px 20px 0 0;
+  z-index: 1;
+}
+
+/* Dica sutil para virar o card */
+.synapse-card-flip-hint {
+  position: absolute;
+  bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.65rem;
+  color: #64748b;
+  opacity: 0.75;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: opacity 0.25s ease, color 0.25s ease;
+  pointer-events: none;
+}
+
+.synapse-flip-hint-icon {
+  opacity: 0.8;
+}
+
+.synapse-network-card:hover .synapse-card-flip-hint {
+  opacity: 0;
+}
+
+/* Elementos da Face Traseira */
+.synapse-card-back-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.synapse-card-back-icon-mini {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 10px var(--card-brand-glow);
+  padding: 3px;
+}
+
+.synapse-card-ai-img-mini {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.synapse-card-back-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.synapse-card-back-body {
+  position: relative;
+  z-index: 2;
+  padding: 6px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.synapse-card-back-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 10px;
+}
+
+.synapse-card-back-explanation {
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #e2e8f0;
+  margin: 0;
+  font-weight: 450;
+  letter-spacing: -0.005em;
+  text-align: center;
+}
+
+.synapse-card-back-footer {
+  position: relative;
+  z-index: 2;
+  margin-top: 8px;
+}
+
+.synapse-card-back-role-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.70rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a7f34b;
+  background: rgba(167, 243, 75, 0.1);
+  border: 1px solid rgba(167, 243, 75, 0.35);
+  padding: 4px 14px;
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(167, 243, 75, 0.15);
+}
+
+/* Ícone original da IA dentro do squircle */
+.synapse-card-icon-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.synapse-network-card:hover .synapse-card-icon-wrapper {
+  transform: scale(1.1);
+}
+
+.synapse-card-ai-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 14px;
+  display: block;
+  box-shadow: 0 4px 18px var(--card-brand-glow);
+}
+
+/* Gemini squircle container para a estrela translúcida de alta resolução */
+.card-gemini .synapse-card-icon-wrapper {
+  background: rgba(10, 20, 44, 0.92);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 18px rgba(59, 130, 246, 0.35);
+  padding: 6px;
+}
+
+.card-gemini .synapse-card-ai-img {
+  box-shadow: none;
+  filter: drop-shadow(0 0 10px rgba(77, 162, 255, 0.65));
+}
+
+/* Nome de cada modelo com tipografia individual */
+.synapse-card-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.name-chatgpt {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.name-grok {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.name-gemini {
+  font-family: 'Outfit', 'Google Sans', 'Poppins', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.name-claude {
+  font-family: 'Lora', 'Bitter', serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+}
+
+.name-deepseek {
+  font-family: 'Orbitron', 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.18rem;
+  letter-spacing: -0.02em;
+}
+
+/* Descrição clínica */
+.synapse-card-desc {
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #94a3b8;
+  margin: 0 0 22px;
+  min-height: 44px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Tag inferior com o nome e fonte original de cada empresa */
+.synapse-card-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 18px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+/* 1. Tag OpenAI (ChatGPT) */
+.tag-openai {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #10a37f;
+  background: rgba(16, 163, 127, 0.12);
+  border: 1px solid rgba(16, 163, 127, 0.45);
+  box-shadow: 0 0 10px rgba(16, 163, 127, 0.16);
+}
+
+.synapse-network-card:hover .tag-openai {
+  background: rgba(16, 163, 127, 0.22);
+  border-color: rgba(16, 163, 127, 0.75);
+}
+
+/* 2. Tag xAI (Grok) */
+.tag-xai {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: none;
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.12);
+}
+
+.synapse-network-card:hover .tag-xai {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* 3. Tag Google (Gemini) */
+.tag-google {
+  font-family: 'Outfit', 'Google Sans', 'Poppins', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #4285f4;
+  background: rgba(37, 99, 235, 0.14);
+  border: 1px solid rgba(66, 133, 244, 0.48);
+  box-shadow: 0 0 12px rgba(66, 133, 244, 0.22);
+}
+
+.synapse-network-card:hover .tag-google {
+  background: rgba(37, 99, 235, 0.24);
+  border-color: rgba(66, 133, 244, 0.8);
+}
+
+/* 4. Tag Anthropic (Claude) */
+.tag-anthropic {
+  font-family: 'Lora', 'Bitter', 'Copernicus', serif;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #d97757;
+  background: rgba(217, 119, 87, 0.14);
+  border: 1px solid rgba(217, 119, 87, 0.48);
+  box-shadow: 0 0 12px rgba(217, 119, 87, 0.22);
+}
+
+.synapse-network-card:hover .tag-anthropic {
+  background: rgba(217, 119, 87, 0.24);
+  border-color: rgba(217, 119, 87, 0.8);
+}
+
+/* 5. Tag DeepSeek */
+.tag-deepseek {
+  font-family: 'Orbitron', 'Sora', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  background: rgba(30, 105, 255, 0.16);
+  border: 1px solid rgba(30, 105, 255, 0.52);
+  box-shadow: 0 0 14px rgba(30, 105, 255, 0.25);
+}
+
+.synapse-network-card:hover .tag-deepseek {
+  background: rgba(30, 105, 255, 0.28);
+  border-color: rgba(30, 105, 255, 0.85);
+}
+
+/* -----------------------------------------------------------------------------
+   PALETA PERSONALIZADA POR REDE NEURAL (Conforme a foto)
+   ----------------------------------------------------------------------------- */
+/* 1. ChatGPT (OpenAI) */
+.card-chatgpt {
+  --card-brand-color: #10a37f;
+  --card-brand-glow: rgba(16, 163, 127, 0.38);
+  --card-ambient-gradient: radial-gradient(ellipse at 50% 0%, rgba(16, 163, 127, 0.22) 0%, transparent 70%);
+  --card-border-color: rgba(16, 185, 129, 0.65);
+}
+
+/* 2. Grok (xAI) */
+.card-grok {
+  --card-brand-color: #cbd5e1;
+  --card-brand-glow: rgba(226, 232, 240, 0.28);
+  --card-ambient-gradient: radial-gradient(ellipse at 50% 0%, rgba(226, 232, 240, 0.16) 0%, transparent 70%);
+  --card-border-color: rgba(226, 232, 240, 0.52);
+}
+
+/* 3. Gemini (Google) */
+.card-gemini {
+  --card-brand-color: #3b82f6;
+  --card-brand-glow: rgba(59, 130, 246, 0.42);
+  --card-ambient-gradient: radial-gradient(ellipse at 50% 0%, rgba(37, 99, 235, 0.26) 0%, transparent 70%);
+  --card-border-color: rgba(59, 130, 246, 0.72);
+}
+
+/* 4. Claude (Anthropic) */
+.card-claude {
+  --card-brand-color: #d97757;
+  --card-brand-glow: rgba(217, 119, 87, 0.42);
+  --card-ambient-gradient: radial-gradient(ellipse at 50% 0%, rgba(217, 119, 87, 0.26) 0%, transparent 70%);
+  --card-border-color: rgba(217, 119, 87, 0.72);
+}
+
+/* 5. DeepSeek */
+.card-deepseek {
+  --card-brand-color: #1e69ff;
+  --card-brand-glow: rgba(30, 105, 255, 0.48);
+  --card-ambient-gradient: radial-gradient(ellipse at 50% 0%, rgba(30, 105, 255, 0.28) 0%, transparent 70%);
+  --card-border-color: rgba(30, 105, 255, 0.82);
+}
+
+/* -----------------------------------------------------------------------------
+   RESPONSIVIDADE (Telas menores / Mobile)
+   ----------------------------------------------------------------------------- */
+@media (max-width: 1080px) {
+  .home-synapse-networks-section {
+    min-height: auto;
+  }
+  .synapse-sticky-stage {
+    position: relative;
+    height: auto;
+    padding: 80px 18px 100px;
+  }
+  .synapse-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .synapse-laser-beam {
+    display: none;
+  }
+  .synapse-networks-header {
+    --header-opacity: 1 !important;
+    --header-y: 0px !important;
+  }
+  .synapse-network-card {
+    --card-opacity: 1 !important;
+    --card-y: 0px !important;
+    --card-scale: 1 !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .synapse-cards-grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin: 0 auto;
+    gap: 16px;
+  }
+  .synapse-network-card {
+    height: 330px;
+  }
+  .synapse-card-desc {
+    min-height: auto;
+    margin-bottom: 18px;
+  }
+}

@@ -1,18 +1,17 @@
 /* ==============================================================================
-   SYNAPSE MULTI-LLM 5 NETWORKS SECTION — SCROLL-DRIVEN PINNED SHOWCASE
+   SYNAPSE MULTI-LLM 5 NETWORKS SECTION
    ============================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Lora:ital,wght@0,600;0,700;1,600&family=Orbitron:wght@700;800;900&family=Outfit:wght@600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
 
 .home-synapse-networks-section {
   position: relative;
   width: 100%;
-  min-height: 240vh; /* Espaço de rolagem para controlar o feixe e os cards */
+  min-height: min(210vh, 1900px);
+  scroll-margin-top: 88px;
   background: radial-gradient(circle at 50% 30%, rgba(13, 27, 42, 0.4) 0%, rgba(5, 8, 14, 0.95) 75%);
   border-top: 1px solid rgba(255, 255, 255, 0.04);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-/* Fundo sutil de malha de pontos (matrix dots) */
 .home-synapse-networks-section::before {
   content: '';
   position: absolute;
@@ -23,21 +22,20 @@
   opacity: 0.6;
 }
 
-/* Palco fixado (sticky) que segura a tela durante a rolagem */
 .synapse-sticky-stage {
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: 76px;
+  height: calc(100vh - 76px);
+  height: calc(100svh - 76px);
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  padding: 30px 24px;
+  padding: clamp(18px, 2.8vh, 28px) 24px;
 }
 
-/* Glow central sutil no topo */
 .synapse-networks-glow {
   position: absolute;
   top: 8%;
@@ -63,8 +61,8 @@
    ----------------------------------------------------------------------------- */
 .synapse-networks-header {
   text-align: center;
-  max-width: 1120px;
-  margin: 0 auto 60px;
+  max-width: 1040px;
+  margin: 0 auto clamp(24px, 3.5vh, 38px);
   opacity: var(--header-opacity, 1);
   transform: translateY(var(--header-y, 0px));
   transition: opacity 0.12s ease-out, transform 0.12s ease-out;
@@ -73,20 +71,28 @@
 
 .synapse-networks-eyebrow {
   display: inline-block;
-  font-size: clamp(0.92rem, 1.2vw, 1.12rem);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: #94a3b8;
-  margin-bottom: 20px;
+  font-size: clamp(0.74rem, 0.9vw, 0.9rem);
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  color: #a7f34b;
+  margin-bottom: 14px;
 }
 
 .synapse-networks-title {
-  font-size: clamp(2.25rem, 4.4vw, 3.75rem);
+  font-size: clamp(2rem, 3.5vw, 3.2rem);
   font-weight: 800;
-  line-height: 1.18;
+  line-height: 1.12;
   letter-spacing: -0.03em;
   color: #ffffff;
   margin: 0;
+}
+
+.synapse-networks-lead {
+  max-width: 800px;
+  margin: 18px auto 0;
+  color: #a8b4c5;
+  font-size: clamp(0.94rem, 1.15vw, 1.06rem);
+  line-height: 1.6;
 }
 
 .synapse-highlight-green {
@@ -101,7 +107,7 @@
 .synapse-beam-track-wrapper {
   position: relative;
   width: 100%;
-  padding: 30px 0;
+  padding: 12px 0 0;
 }
 
 /* Feixe Verde Horizontal (Laser line) - Inicia antes do limite esquerdo e avança conforme o scroll */
@@ -181,7 +187,8 @@
    ----------------------------------------------------------------------------- */
 .synapse-network-card {
   position: relative;
-  height: 350px;
+  width: 100%;
+  height: clamp(280px, 33vh, 330px);
   background: transparent;
   border: none;
   box-shadow: none;
@@ -195,6 +202,10 @@
   will-change: opacity, transform;
   outline: none;
   border-radius: 20px;
+  color: inherit;
+  font: inherit;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .synapse-network-card:focus-visible {
@@ -213,16 +224,14 @@
   border-radius: 20px;
 }
 
-/* Acionamento do Flip: ao passar o mouse, focar pelo teclado ou tocar (mobile) */
-.synapse-network-card:hover .synapse-card-flip-inner,
-.synapse-network-card:focus-visible .synapse-card-flip-inner,
 .synapse-network-card.is-flipped .synapse-card-flip-inner {
   transform: rotateY(180deg);
 }
 
-/* Elevação suave do card no hover */
-.synapse-network-card:hover {
-  transform: translateY(calc(var(--card-y, 0px) - 6px)) scale(calc(var(--card-scale, 1) * 1.02));
+@media (hover: hover) and (pointer: fine) {
+  .synapse-network-card:hover {
+    transform: translateY(calc(var(--card-y, 0px) - 6px)) scale(calc(var(--card-scale, 1) * 1.02));
+  }
 }
 
 /* Faces do Card (Frontal e Traseira) */
@@ -260,7 +269,7 @@
   transform: rotateY(0deg);
   -webkit-transform: rotateY(0deg);
   z-index: 2;
-  padding: 30px 18px 22px;
+  padding: clamp(22px, 3vh, 28px) 18px 22px;
   justify-content: flex-start;
 }
 
@@ -269,7 +278,7 @@
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
   z-index: 1;
-  padding: 24px 18px 22px;
+  padding: 22px 18px 20px;
   justify-content: space-between;
   background: linear-gradient(180deg, rgba(12, 20, 36, 0.96) 0%, rgba(6, 11, 20, 0.98) 100%);
 }
@@ -642,6 +651,27 @@
   --card-border-color: rgba(30, 105, 255, 0.82);
 }
 
+.synapse-consensus-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  max-width: 940px;
+  margin: clamp(18px, 2.8vh, 28px) auto 0;
+  padding: 12px 18px;
+  border: 1px solid rgba(167, 243, 75, 0.18);
+  border-radius: 999px;
+  background: rgba(7, 13, 22, 0.72);
+  color: #94a3b8;
+  font-size: clamp(0.76rem, 0.9vw, 0.88rem);
+  text-align: center;
+}
+
+.synapse-consensus-strip strong {
+  color: #e8f8d8;
+  font-weight: 700;
+}
+
 /* -----------------------------------------------------------------------------
    RESPONSIVIDADE (Telas menores / Mobile)
    ----------------------------------------------------------------------------- */
@@ -651,8 +681,11 @@
   }
   .synapse-sticky-stage {
     position: relative;
+    top: auto;
     height: auto;
-    padding: 80px 18px 100px;
+    min-height: auto;
+    overflow: visible;
+    padding: 72px 18px 88px;
   }
   .synapse-cards-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -665,6 +698,10 @@
     --header-opacity: 1 !important;
     --header-y: 0px !important;
   }
+  .synapse-consensus-strip {
+    border-radius: 20px;
+    flex-wrap: wrap;
+  }
   .synapse-network-card {
     --card-opacity: 1 !important;
     --card-y: 0px !important;
@@ -673,6 +710,15 @@
 }
 
 @media (max-width: 720px) {
+  .synapse-networks-header {
+    margin-bottom: 26px;
+  }
+  .synapse-networks-title {
+    font-size: clamp(1.8rem, 9vw, 2.45rem);
+  }
+  .synapse-networks-lead {
+    font-size: 0.94rem;
+  }
   .synapse-cards-grid {
     grid-template-columns: 1fr;
     max-width: 380px;
@@ -685,5 +731,86 @@
   .synapse-card-desc {
     min-height: auto;
     margin-bottom: 18px;
+  }
+  .synapse-consensus-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    max-width: 380px;
+    border-radius: 20px;
+  }
+  .synapse-consensus-strip > [aria-hidden='true'] {
+    transform: rotate(90deg);
+  }
+}
+
+@media (min-width: 1081px) and (max-height: 820px) {
+  .synapse-sticky-stage {
+    padding-block: 14px;
+  }
+  .synapse-networks-header {
+    margin-bottom: 16px;
+  }
+  .synapse-networks-eyebrow {
+    margin-bottom: 8px;
+  }
+  .synapse-networks-title {
+    font-size: clamp(1.75rem, 3vw, 2.65rem);
+  }
+  .synapse-networks-lead {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+  .synapse-network-card {
+    height: 270px;
+  }
+  .synapse-card-front {
+    padding-top: 18px;
+  }
+  .synapse-card-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+  }
+  .synapse-card-desc {
+    margin-bottom: 12px;
+  }
+  .synapse-consensus-strip {
+    margin-top: 14px;
+    padding-block: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-synapse-networks-section {
+    min-height: auto;
+  }
+  .synapse-sticky-stage {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    padding: 72px 24px 88px;
+  }
+  .synapse-networks-header,
+  .synapse-network-card {
+    --header-opacity: 1 !important;
+    --header-y: 0px !important;
+    --card-opacity: 1 !important;
+    --card-y: 0px !important;
+    --card-scale: 1 !important;
+  }
+  .synapse-laser-beam {
+    display: none;
+  }
+  .synapse-symbol-img,
+  .synapse-card-flip-inner,
+  .synapse-network-card,
+  .synapse-card-face,
+  .synapse-card-icon-wrapper {
+    animation: none !important;
+    transition: none !important;
   }
 }

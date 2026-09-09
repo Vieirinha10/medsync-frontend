@@ -36,13 +36,18 @@ describe('HomePage', () => {
     await waitFor(() => expect(within(stats).getByText('127 estudantes MedSync')).toBeInTheDocument());
   });
 
-  it('apresenta a seção das 5 redes neurais da Synapse com feixe verde e cards dedicados', () => {
+  it('apresenta a seção das 5 IAs da Synapse com feixe verde e cards dedicados', () => {
     api.getPublicStats.mockResolvedValue({ estudantes_medsync: 127 });
 
     render(<MemoryRouter><HomePage /></MemoryRouter>);
 
-    expect(screen.getByRole('heading', { name: /Imagine uma Inteligência Educativa na palma da sua mão/i })).toBeInTheDocument();
-    expect(screen.getByText(/Mais perspectivas\. Respostas mais completas\. Um raciocínio ainda mais confiável\./i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Cinco das principais inteligências artificiais do mundo/i })).toBeInTheDocument();
+    expect(screen.getByText('CINCO IAs ATIVAS · UMA ÚNICA SYNAPSE')).toBeInTheDocument();
+    expect(screen.getByText(/A Synapse organiza essas perspectivas em um feedback clínico claro/i)).toBeInTheDocument();
+
+    const synapseLink = screen.getByRole('link', { name: 'Conhecer a Synapse IA' });
+    expect(synapseLink).toHaveAttribute('href', '#synapse-networks');
+    expect(document.querySelector('#synapse-networks')).not.toBeNull();
 
     expect(screen.getByRole('heading', { name: 'ChatGPT' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Grok' })).toBeInTheDocument();
@@ -56,26 +61,32 @@ describe('HomePage', () => {
     expect(screen.getByText('ANTHROPIC')).toBeInTheDocument();
     expect(screen.getByText('DEEPSEEK')).toBeInTheDocument();
 
-    expect(screen.getByText('Raciocínio clínico e explicações claras.')).toBeInTheDocument();
-    expect(screen.getByText('Análises críticas e perspectivas únicas.')).toBeInTheDocument();
-    expect(screen.getByText('Síntese de informações e visão multimodal.')).toBeInTheDocument();
-    expect(screen.getByText('Respostas seguras e bem estruturadas.')).toBeInTheDocument();
-    expect(screen.getByText('Alta performance e raciocínio avançado.')).toBeInTheDocument();
+    expect(screen.getByText('Estruturação do raciocínio e explicações claras.')).toBeInTheDocument();
+    expect(screen.getByText('Auditoria crítica e hipóteses alternativas.')).toBeInTheDocument();
+    expect(screen.getByText('Integração de dados e contexto multimodal.')).toBeInTheDocument();
+    expect(screen.getByText('Análise cuidadosa e síntese pedagógica.')).toBeInTheDocument();
+    expect(screen.getByText('Comparação lógica de hipóteses e condutas.')).toBeInTheDocument();
 
     // Explicações no verso dos cards (animação de virar 3D)
-    expect(screen.getByText('Transforma raciocínios complexos em explicações claras, estruturadas e fáceis de aplicar.')).toBeInTheDocument();
-    expect(screen.getByText('Desafia hipóteses, explora caminhos alternativos e reduz conclusões precipitadas.')).toBeInTheDocument();
-    expect(screen.getByText('Conecta dados, sinais, exames e contexto para formar uma visão mais completa do paciente.')).toBeInTheDocument();
-    expect(screen.getByText('Aprofunda o caso, identifica nuances e ajuda a construir uma avaliação clínica mais criteriosa.')).toBeInTheDocument();
-    expect(screen.getByText('Organiza possibilidades, compara condutas e busca o caminho mais objetivo para a decisão.')).toBeInTheDocument();
+    expect(screen.getByText('Organiza o raciocínio clínico e transforma pontos complexos em uma explicação direta.')).toBeInTheDocument();
+    expect(screen.getByText('Questiona hipóteses, procura contraindicações e amplia a análise dos diagnósticos diferenciais.')).toBeInTheDocument();
+    expect(screen.getByText('Conecta sinais, exames, contexto e informações multimodais em uma visão integrada do caso.')).toBeInTheDocument();
+    expect(screen.getByText('Aprofunda as nuances do caso e transforma a análise em uma síntese pedagógica e cuidadosa.')).toBeInTheDocument();
+    expect(screen.getByText('Compara hipóteses, relações de causa e efeito e possíveis condutas com raciocínio estruturado.')).toBeInTheDocument();
 
     // Interação de flip (clique/touch)
-    const chatgptCard = document.querySelector('.card-chatgpt');
+    const chatgptCard = screen.getByRole('button', { name: /ChatGPT\. Estruturação do raciocínio e explicações claras/i });
     expect(chatgptCard).not.toHaveClass('is-flipped');
+    expect(chatgptCard).toHaveAttribute('aria-expanded', 'false');
     fireEvent.click(chatgptCard);
     expect(chatgptCard).toHaveClass('is-flipped');
+    expect(chatgptCard).toHaveAttribute('aria-expanded', 'true');
+    expect(document.querySelector('#synapse-card-details-chatgpt')).toHaveAttribute('aria-hidden', 'false');
     fireEvent.click(chatgptCard);
     expect(chatgptCard).not.toHaveClass('is-flipped');
+    expect(chatgptCard).toHaveAttribute('aria-expanded', 'false');
+
+    expect(screen.getByText('1 consenso coordenado pela Synapse')).toBeInTheDocument();
 
     const beam = document.querySelector('.synapse-laser-beam');
     expect(beam).not.toBeNull();

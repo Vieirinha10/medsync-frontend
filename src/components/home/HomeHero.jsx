@@ -62,12 +62,12 @@ const HomeHero = ({
               Começar gratuitamente
               <FiArrowRight aria-hidden="true" />
             </Link>
-            <a href="#synapse-engine" className="solid-ghost-button">
+            <a href="#synapse-networks" className="solid-ghost-button">
               Conhecer a Synapse IA
             </a>
           </div>
           <div className="solid-hero-proof" aria-label="Garantias da plataforma">
-            <span><FiCpu aria-hidden="true" /> A capacidade das 5 maiores IAs do mercado em uma só</span>
+            <span><FiCpu aria-hidden="true" /> 5 das principais IAs do mundo, integradas pela Synapse</span>
             <span><FiLayers aria-hidden="true" /> 80 casos clínicos estruturados</span>
             <span><FiEye aria-hidden="true" /> 150 desafios visuais rápidos</span>
           </div>

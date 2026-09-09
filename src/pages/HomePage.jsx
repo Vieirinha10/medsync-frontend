@@ -13,6 +13,7 @@ import {
   TRUST_PILLARS,
 } from '../components/home/homeContent';
 import '../styles/home-solid.css';
+import '../styles/home-mobile.css';
 
 
 const HomePage = () => {

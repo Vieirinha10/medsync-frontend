@@ -23,6 +23,11 @@ Roteamento:
 - texto comercial, institucional, planos, hero ou CTA: use `copywriting`;
 - revisão de naturalidade de texto público: use `humanizer` por último.
 
+Em qualquer alteração de página, componente, estilo, navegação ou conteúdo
+visual, leia e cumpra `docs/ai/MOBILE_FRONTEND_GUIDELINES.md`. A tarefa só pode
+ser declarada pronta depois da validação mobile prevista no documento. Aprovação
+no desktop, testes unitários ou build isoladamente não substituem essa inspeção.
+
 Não use `frontend-design` para uma correção técnica sem decisão visual. Não
 use `humanizer` automaticamente em textos clínicos, jurídicos, contratuais ou
 regulatórios. Exemplos, percentuais e depoimentos presentes nas skills externas

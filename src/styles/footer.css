@@ -219,12 +219,17 @@
 
 @media (max-width: 620px) {
   .site-footer {
-    padding: 56px 20px 0;
+    padding: 44px 18px 0;
+  }
+
+  .site-footer-main {
+    gap: 30px;
+    padding-bottom: 38px;
   }
 
   .footer-navigation {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 35px;
+    gap: 24px 18px;
   }
 
   .site-footer-bottom {
@@ -236,7 +241,7 @@
 
 @media (max-width: 420px) {
   .footer-navigation {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

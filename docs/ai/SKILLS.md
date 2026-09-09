@@ -77,6 +77,10 @@ Use ao criar ou reformular página, componente, hierarquia visual, tipografia,
 responsividade, animação ou interação. O briefing e o design atual do MedSync
 prevalecem. Não acione para correções técnicas sem decisão visual.
 
+Toda alteração visual também deve seguir `docs/ai/MOBILE_FRONTEND_GUIDELINES.md`.
+O agente deve validar os breakpoints definidos no documento antes de declarar a
+interface pronta.
+
 ### Copywriting
 
 Use para homepage, planos, páginas institucionais, proposta de valor, hero,

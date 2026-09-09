@@ -1859,6 +1859,33 @@ body {
 }
 
 @media (max-width: 680px) {
+  .App-header {
+    padding-inline: 12px;
+  }
+
+  .App-nav {
+    height: 64px;
+  }
+
+  .logo-link {
+    width: 138px;
+    height: 40px;
+    padding: 5px 9px;
+    border-radius: 12px;
+  }
+
+  .nav-toggle {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+  }
+
+  .nav-links.is-open {
+    top: 60px;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
   .page-container {
     width: calc(100% - 24px);
   }

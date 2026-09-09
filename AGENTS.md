@@ -38,6 +38,11 @@ autorização de publicação.
 Antes de criar, editar, importar ou revisar desafios visuais, leia integralmente
 `docs/DIRETRIZ_DESAFIOS_VISUAIS.md`.
 
+Antes de criar ou alterar páginas, componentes, estilos, navegação ou conteúdo
+visual, leia integralmente `docs/ai/MOBILE_FRONTEND_GUIDELINES.md`. A validação
+mobile faz parte da definição de pronto: uma interface não deve ser considerada
+concluída apenas porque funciona no desktop.
+
 A diretriz `MEDSYNC-DV-001` é obrigatória para novos lotes. Em especial:
 
 - não altere os 150 desafios atuais sem solicitação expressa;

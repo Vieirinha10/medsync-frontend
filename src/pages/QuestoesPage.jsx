@@ -35,6 +35,34 @@ const INITIAL_FILTERS = {
   quantidade: 10,
 };
 
+const CATALOG_CACHE_KEY = 'medsync_question_catalog_filters_v1';
+const EMPTY_CATALOG = {
+  especialidades: [],
+  anos: [],
+  instituicoes: [],
+};
+
+const loadCachedCatalog = () => {
+  try {
+    const cached = JSON.parse(sessionStorage.getItem(CATALOG_CACHE_KEY) || 'null');
+    return cached && Array.isArray(cached.especialidades) ? cached : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveCachedCatalog = (metadata) => {
+  try {
+    sessionStorage.setItem(CATALOG_CACHE_KEY, JSON.stringify({
+      especialidades: metadata.especialidades,
+      anos: metadata.anos,
+      instituicoes: metadata.instituicoes,
+    }));
+  } catch {
+    // O cache é apenas uma otimização; a API continua sendo a fonte oficial.
+  }
+};
+
 const formatSeconds = (value) => {
   if (value == null) return '—';
   const minutes = Math.floor(value / 60);
@@ -49,6 +77,7 @@ const formatPercentage = (value) => {
 
 const QuestoesPage = () => {
   const [metadata, setMetadata] = useState(null);
+  const [cachedCatalog] = useState(loadCachedCatalog);
   const [performance, setPerformance] = useState(null);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [availableThemes, setAvailableThemes] = useState([]);
@@ -101,6 +130,7 @@ const QuestoesPage = () => {
     try {
       const meta = await api.getQuestionMetadata();
       setMetadata(meta);
+      saveCachedCatalog(meta);
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -175,7 +205,7 @@ const QuestoesPage = () => {
         especialidade: filters.especialidade || undefined,
         tema: filters.tema || undefined,
         assunto: filters.assunto || undefined,
-        ano: filters.ano ? Number(filters.ano) : undefined,
+        ano: filters.ano || undefined,
         instituicao: filters.instituicao || undefined,
       });
       if (!list.length) {
@@ -315,20 +345,8 @@ const QuestoesPage = () => {
     void loadOverview();
   };
 
-  if (isLoading && !metadata) {
-    return <div className="page-container questions-state"><FiRefreshCw /> Preparando o banco de questões...</div>;
-  }
-
-  if (!metadata) {
-    return (
-      <div className="page-container questions-state questions-state-error" role="alert">
-        <FiAlertCircle />
-        <strong>Não foi possível carregar o banco de questões.</strong>
-        <span>{error || 'Verifique sua conexão e tente novamente.'}</span>
-        <button type="button" onClick={loadOverview}><FiRefreshCw /> Tentar novamente</button>
-      </div>
-    );
-  }
+  const catalog = metadata || cachedCatalog || EMPTY_CATALOG;
+  const isCatalogReady = Boolean(metadata);
 
   return (
     <div className="page-container questions-page">
@@ -348,9 +366,14 @@ const QuestoesPage = () => {
         <div><span><FiFlag /></span><p><strong>Revisão colaborativa</strong><small>Encontrou algo duvidoso? Envie um relato diretamente à equipe editorial.</small></p></div>
       </section>
 
-      {error && <p className="questions-alert" role="alert"><FiAlertCircle /> {error}</p>}
+      {error && (
+        <p className="questions-alert" role="alert">
+          <FiAlertCircle /> {error}
+          {!metadata && <button type="button" onClick={loadOverview}><FiRefreshCw /> Tentar novamente</button>}
+        </p>
+      )}
 
-      {stage === 'setup' && metadata && (
+      {stage === 'setup' && (
         <div className="questions-home-grid">
           <section className="questions-setup-card">
             <div className="questions-section-heading"><span><FiFilter /></span><div><small>MONTE SEU TREINO</small><h2>Escolha como deseja praticar</h2><p>As questões serão sorteadas dentro dos filtros selecionados.</p></div></div>
@@ -359,8 +382,9 @@ const QuestoesPage = () => {
                 label="Especialidade"
                 value={filters.especialidade}
                 onChange={(value) => setFilters({ ...filters, especialidade: value, tema: '', assunto: '' })}
-                items={metadata.especialidades}
+                items={catalog.especialidades}
                 allLabel="Todas as especialidades"
+                disabled={!catalog.especialidades.length}
               />
               <FilterSelect
                 label="Tema"
@@ -382,15 +406,15 @@ const QuestoesPage = () => {
                   : 'Selecione um tema primeiro'}
                 disabled={!filters.tema || areSubjectsLoading}
               />
-              <FilterSelect label="Ano" value={filters.ano} onChange={(value) => setFilters({ ...filters, ano: value })} items={metadata.anos} allLabel="Todos os anos" />
-              <FilterDatalist label="Instituição / banca" value={filters.instituicao} onChange={(value) => setFilters({ ...filters, instituicao: value })} items={metadata.instituicoes} placeholder="Todas ou pesquise pelo nome" />
+              <FilterSelect label="Ano" value={filters.ano} onChange={(value) => setFilters({ ...filters, ano: value })} items={catalog.anos} allLabel="Todos os anos" disabled={!catalog.anos.length} />
+              <FilterDatalist label="Instituição / banca" value={filters.instituicao} onChange={(value) => setFilters({ ...filters, instituicao: value })} items={catalog.instituicoes} placeholder="Todas ou pesquise pelo nome" disabled={!catalog.instituicoes.length} />
             </div>
             <div className="questions-size-picker">
               <span>TAMANHO DA LISTA</span>
-              <div>{[10, 20, 30].map((size) => { const locked = !metadata.premium_ativo && size > 10; return <button type="button" key={size} disabled={locked} className={Number(filters.quantidade) === size ? 'is-active' : ''} onClick={() => setFilters({ ...filters, quantidade: size })}>{locked && <FiLock />}{size} questões</button>; })}</div>
+              <div>{[10, 20, 30].map((size) => { const locked = !metadata?.premium_ativo && size > 10; return <button type="button" key={size} disabled={locked} className={Number(filters.quantidade) === size ? 'is-active' : ''} onClick={() => setFilters({ ...filters, quantidade: size })}>{locked && <FiLock />}{size} questões</button>; })}</div>
             </div>
-            <button type="button" className="questions-start-button" onClick={startSession} disabled={isLoading || metadata.restantes_hoje === 0}><FiPlay /> {isLoading ? 'Montando lista...' : 'Iniciar lista aleatória'} <FiArrowRight /></button>
-            <p className="questions-access-note">{metadata.premium_ativo ? <><FiZap /> Premium ativo: listas ilimitadas de até 30 questões.</> : <><FiClock /> Plano gratuito: {metadata.restantes_hoje} de {metadata.limite_diario} questões disponíveis hoje.</>}</p>
+            <button type="button" className="questions-start-button" onClick={startSession} disabled={!isCatalogReady || isLoading || metadata?.restantes_hoje === 0}><FiPlay /> {!isCatalogReady ? 'Sincronizando catálogo...' : isLoading ? 'Montando lista...' : 'Iniciar lista aleatória'} <FiArrowRight /></button>
+            <p className="questions-access-note">{!isCatalogReady ? <><FiRefreshCw className="spinning" /> Carregando disponibilidade em segundo plano.</> : metadata.premium_ativo ? <><FiZap /> Premium ativo: listas ilimitadas de até 30 questões.</> : <><FiClock /> Plano gratuito: {metadata.restantes_hoje} de {metadata.limite_diario} questões disponíveis hoje.</>}</p>
           </section>
 
           <aside className="questions-performance-card">
@@ -607,9 +631,9 @@ const FilterSelect = ({ label, value, onChange, items, allLabel, disabled = fals
   </label>
 );
 
-const FilterDatalist = ({ label, value, onChange, items, placeholder }) => {
+const FilterDatalist = ({ label, value, onChange, items, placeholder, disabled = false }) => {
   const listId = `question-filter-${label.toLowerCase().replace(/\W+/g, '-')}`;
-  return <label className="questions-filter"><span>{label}</span><input list={listId} value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} /><datalist id={listId}>{items.map((item) => <option value={item.valor} key={item.valor}>{item.total} questão(ões)</option>)}</datalist></label>;
+  return <label className="questions-filter"><span>{label}</span><input list={listId} value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} disabled={disabled} /><datalist id={listId}>{items.map((item) => <option value={item.valor} key={item.valor}>{item.total} questão(ões)</option>)}</datalist></label>;
 };
 
 const QuestionFeedback = ({ answer, questionId }) => {

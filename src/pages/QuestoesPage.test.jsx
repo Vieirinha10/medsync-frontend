@@ -25,7 +25,7 @@ const metadata = {
   total_questoes: 2811,
   especialidades: [{ valor: 'Cirurgia', total: 2811 }],
   assuntos: [{ valor: 'Trauma e emergência', total: 1494 }],
-  anos: [{ valor: '2025', total: 320 }],
+  anos: [{ valor: '2025', total: 320 }, { valor: '2004–2020', total: 1800 }],
   instituicoes: [{ valor: 'USP', total: 45 }],
   premium_ativo: false,
   limite_diario: 10,
@@ -77,6 +77,7 @@ describe('QuestoesPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
+    sessionStorage.clear();
     api.getQuestionMetadata.mockResolvedValue(metadata);
     api.getQuestionThemes.mockResolvedValue([{ valor: 'Trauma', total: 1494 }]);
     api.getQuestionSubjects.mockResolvedValue(metadata.assuntos);
@@ -173,6 +174,37 @@ describe('QuestoesPage', () => {
 
     expect(await screen.findByRole('heading', { name: 'Questões de provas' })).toBeInTheDocument();
     expect(screen.getByLabelText('Especialidade')).toBeEnabled();
+    expect(screen.queryByText('Preparando o banco de questões...')).not.toBeInTheDocument();
+  });
+
+  it('envia a faixa histórica sem convertê-la em número', async () => {
+    render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
+    await screen.findByRole('heading', { name: 'Questões de provas' });
+
+    fireEvent.change(screen.getByLabelText('Ano'), {
+      target: { value: '2004–2020' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: /Iniciar lista aleatória/ }));
+
+    await waitFor(() => expect(api.getQuestions).toHaveBeenCalledWith(
+      expect.objectContaining({ ano: '2004–2020' }),
+    ));
+  });
+
+  it('mostra a página e os filtros públicos em cache enquanto a API sincroniza', () => {
+    sessionStorage.setItem('medsync_question_catalog_filters_v1', JSON.stringify({
+      especialidades: [{ valor: 'Hematologia', total: 4840 }],
+      anos: [{ valor: '2004–2020', total: 3100 }],
+      instituicoes: [{ valor: 'USP', total: 45 }],
+    }));
+    api.getQuestionMetadata.mockReturnValueOnce(new Promise(() => {}));
+
+    render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
+
+    expect(screen.getByRole('heading', { name: 'Questões de provas' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Hematologia (4840)' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: '2004–2020 (3100)' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Sincronizando catálogo/ })).toBeDisabled();
     expect(screen.queryByText('Preparando o banco de questões...')).not.toBeInTheDocument();
   });
 

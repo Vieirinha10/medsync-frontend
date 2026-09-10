@@ -18,6 +18,7 @@ import QuestoesPage from './QuestoesPage';
 vi.mock('../services/api', () => ({
   api: {
     getQuestionMetadata: vi.fn(),
+    getQuestionThemes: vi.fn(),
     getQuestionSubjects: vi.fn(),
     getQuestionPerformance: vi.fn(),
     getQuestions: vi.fn(),
@@ -99,6 +100,9 @@ describe('QuestoesPage - Contrato Visual e Teste de Componente com Payload Canô
       respondidas_hoje: 0,
       restantes_hoje: null,
     });
+    api.getQuestionThemes.mockResolvedValue([
+      { valor: 'Conteúdos gerais', total: 100 },
+    ]);
     api.getQuestionSubjects.mockResolvedValue([
       { valor: 'Obstetrícia', total: 100 },
     ]);

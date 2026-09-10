@@ -28,6 +28,7 @@ import { api } from '../services/api';
 
 const INITIAL_FILTERS = {
   especialidade: '',
+  tema: '',
   assunto: '',
   ano: '',
   instituicao: '',
@@ -50,8 +51,10 @@ const QuestoesPage = () => {
   const [metadata, setMetadata] = useState(null);
   const [performance, setPerformance] = useState(null);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
-  const [availableTopics, setAvailableTopics] = useState([]);
-  const [areTopicsLoading, setAreTopicsLoading] = useState(false);
+  const [availableThemes, setAvailableThemes] = useState([]);
+  const [availableSubjects, setAvailableSubjects] = useState([]);
+  const [areThemesLoading, setAreThemesLoading] = useState(false);
+  const [areSubjectsLoading, setAreSubjectsLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedId, setSelectedId] = useState('');
@@ -92,13 +95,12 @@ const QuestoesPage = () => {
   const loadOverview = useCallback(async () => {
     setIsLoading(true);
     setError('');
+    void api.getQuestionPerformance()
+      .then(setPerformance)
+      .catch(() => {});
     try {
-      const [meta, stats] = await Promise.all([
-        api.getQuestionMetadata(),
-        api.getQuestionPerformance(),
-      ]);
+      const meta = await api.getQuestionMetadata();
       setMetadata(meta);
-      setPerformance(stats);
     } catch (requestError) {
       setError(requestError.message);
     } finally {
@@ -111,28 +113,55 @@ const QuestoesPage = () => {
   useEffect(() => {
     let active = true;
     if (!filters.especialidade) {
-      setAvailableTopics([]);
-      setAreTopicsLoading(false);
+      setAvailableThemes([]);
+      setAvailableSubjects([]);
+      setAreThemesLoading(false);
       return () => { active = false; };
     }
 
-    setAreTopicsLoading(true);
-    api.getQuestionSubjects(filters.especialidade)
-      .then((subjects) => {
-        if (active) setAvailableTopics(subjects);
+    setAreThemesLoading(true);
+    api.getQuestionThemes(filters.especialidade)
+      .then((themes) => {
+        if (active) setAvailableThemes(themes);
       })
       .catch((requestError) => {
         if (active) {
-          setAvailableTopics([]);
+          setAvailableThemes([]);
           setError(requestError.message);
         }
       })
       .finally(() => {
-        if (active) setAreTopicsLoading(false);
+        if (active) setAreThemesLoading(false);
       });
 
     return () => { active = false; };
   }, [filters.especialidade]);
+
+  useEffect(() => {
+    let active = true;
+    if (!filters.especialidade || !filters.tema) {
+      setAvailableSubjects([]);
+      setAreSubjectsLoading(false);
+      return () => { active = false; };
+    }
+
+    setAreSubjectsLoading(true);
+    api.getQuestionSubjects(filters.especialidade, filters.tema)
+      .then((subjects) => {
+        if (active) setAvailableSubjects(subjects);
+      })
+      .catch((requestError) => {
+        if (active) {
+          setAvailableSubjects([]);
+          setError(requestError.message);
+        }
+      })
+      .finally(() => {
+        if (active) setAreSubjectsLoading(false);
+      });
+
+    return () => { active = false; };
+  }, [filters.especialidade, filters.tema]);
 
   const currentQuestion = questions[currentIndex] || null;
   const currentAnswer = currentQuestion ? answers[currentQuestion.id] : null;
@@ -144,6 +173,7 @@ const QuestoesPage = () => {
       const list = await api.getQuestions({
         quantidade: Number(filters.quantidade),
         especialidade: filters.especialidade || undefined,
+        tema: filters.tema || undefined,
         assunto: filters.assunto || undefined,
         ano: filters.ano ? Number(filters.ano) : undefined,
         instituicao: filters.instituicao || undefined,
@@ -289,6 +319,17 @@ const QuestoesPage = () => {
     return <div className="page-container questions-state"><FiRefreshCw /> Preparando o banco de questões...</div>;
   }
 
+  if (!metadata) {
+    return (
+      <div className="page-container questions-state questions-state-error" role="alert">
+        <FiAlertCircle />
+        <strong>Não foi possível carregar o banco de questões.</strong>
+        <span>{error || 'Verifique sua conexão e tente novamente.'}</span>
+        <button type="button" onClick={loadOverview}><FiRefreshCw /> Tentar novamente</button>
+      </div>
+    );
+  }
+
   return (
     <div className="page-container questions-page">
       <header className="questions-hero">
@@ -317,19 +358,29 @@ const QuestoesPage = () => {
               <FilterSelect
                 label="Especialidade"
                 value={filters.especialidade}
-                onChange={(value) => setFilters({ ...filters, especialidade: value, assunto: '' })}
+                onChange={(value) => setFilters({ ...filters, especialidade: value, tema: '', assunto: '' })}
                 items={metadata.especialidades}
                 allLabel="Todas as especialidades"
+              />
+              <FilterSelect
+                label="Tema"
+                value={filters.tema}
+                onChange={(value) => setFilters({ ...filters, tema: value, assunto: '' })}
+                items={availableThemes}
+                allLabel={filters.especialidade
+                  ? (areThemesLoading ? 'Carregando temas...' : 'Todos os temas')
+                  : 'Selecione uma especialidade primeiro'}
+                disabled={!filters.especialidade || areThemesLoading}
               />
               <FilterSelect
                 label="Assunto"
                 value={filters.assunto}
                 onChange={(value) => setFilters({ ...filters, assunto: value })}
-                items={availableTopics}
-                allLabel={filters.especialidade
-                  ? (areTopicsLoading ? 'Carregando assuntos...' : 'Todos os assuntos')
-                  : 'Selecione uma especialidade primeiro'}
-                disabled={!filters.especialidade || areTopicsLoading}
+                items={availableSubjects}
+                allLabel={filters.tema
+                  ? (areSubjectsLoading ? 'Carregando assuntos...' : 'Todos os assuntos')
+                  : 'Selecione um tema primeiro'}
+                disabled={!filters.tema || areSubjectsLoading}
               />
               <FilterSelect label="Ano" value={filters.ano} onChange={(value) => setFilters({ ...filters, ano: value })} items={metadata.anos} allLabel="Todos os anos" />
               <FilterDatalist label="Instituição / banca" value={filters.instituicao} onChange={(value) => setFilters({ ...filters, instituicao: value })} items={metadata.instituicoes} placeholder="Todas ou pesquise pelo nome" />
@@ -356,7 +407,7 @@ const QuestoesPage = () => {
           <div className="questions-session-topbar"><button type="button" onClick={resetSession}><FiArrowLeft /> Sair da lista</button><div><span>Questão {currentIndex + 1} de {questions.length}</span><i><em style={{ width: `${((currentIndex + (currentAnswer ? 1 : 0)) / questions.length) * 100}%` }} /></i></div><strong>{correctCount} acerto(s)</strong></div>
           <article className="questions-question-card">
             <header>
-              <div><span>{currentQuestion.especialidade}</span><span>{currentQuestion.assunto}</span></div>
+              <div><span>{currentQuestion.especialidade}</span>{currentQuestion.tema && <span>{currentQuestion.tema}</span>}<span>{currentQuestion.assunto}</span></div>
               <div className="questions-card-header-actions">
                 <p><strong>{currentQuestion.instituicao}</strong><small>{currentQuestion.ano}</small></p>
                 <button

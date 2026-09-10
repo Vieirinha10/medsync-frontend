@@ -8,6 +8,7 @@ import QuestoesPage from './QuestoesPage';
 vi.mock('../services/api', () => ({
   api: {
     getQuestionMetadata: vi.fn(),
+    getQuestionThemes: vi.fn(),
     getQuestionSubjects: vi.fn(),
     getQuestionPerformance: vi.fn(),
     getQuestions: vi.fn(),
@@ -74,6 +75,7 @@ describe('QuestoesPage - Catálogo Ativo (Piloto 100 v1.2)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     api.getQuestionMetadata.mockResolvedValue(metadataV2);
+    api.getQuestionThemes.mockResolvedValue([{ valor: 'Conteúdos gerais', total: 100 }]);
     api.getQuestionSubjects.mockResolvedValue(metadataV2.assuntos);
     api.getQuestionPerformance.mockResolvedValue({
       respondidas: 5,

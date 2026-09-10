@@ -8,6 +8,7 @@ import QuestoesPage from './QuestoesPage';
 vi.mock('../services/api', () => ({
   api: {
     getQuestionMetadata: vi.fn(),
+    getQuestionThemes: vi.fn(),
     getQuestionSubjects: vi.fn(),
     getQuestionPerformance: vi.fn(),
     getQuestions: vi.fn(),
@@ -77,6 +78,7 @@ describe('QuestoesPage', () => {
     vi.clearAllMocks();
     localStorage.clear();
     api.getQuestionMetadata.mockResolvedValue(metadata);
+    api.getQuestionThemes.mockResolvedValue([{ valor: 'Trauma', total: 1494 }]);
     api.getQuestionSubjects.mockResolvedValue(metadata.assuntos);
     api.getQuestionPerformance.mockResolvedValue({
       respondidas: 0,
@@ -127,31 +129,51 @@ describe('QuestoesPage', () => {
     expect(api.recordVisualChallengeAttempt).not.toHaveBeenCalled();
   });
 
-  it('carrega somente os assuntos da especialidade Hematologia', async () => {
+  it('carrega temas e assuntos dependentes da especialidade Hematologia', async () => {
     api.getQuestionMetadata.mockResolvedValueOnce({
       ...metadata,
       especialidades: [{ valor: 'Hematologia', total: 4840 }],
       assuntos: [],
     });
-    api.getQuestionSubjects.mockResolvedValueOnce([
+    api.getQuestionThemes.mockResolvedValueOnce([
       { valor: 'Anemias', total: 1200 },
-      { valor: 'Leucemias', total: 730 },
+      { valor: 'Neoplasias hematológicas', total: 730 },
+    ]);
+    api.getQuestionSubjects.mockResolvedValueOnce([
+      { valor: 'Anemias microcíticas', total: 420 },
+      { valor: 'Anemias macrocíticas', total: 294 },
     ]);
 
     render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
     await screen.findByRole('heading', { name: 'Questões de provas' });
 
+    const themeSelect = screen.getByLabelText('Tema');
     const subjectSelect = screen.getByLabelText('Assunto');
+    expect(themeSelect).toBeDisabled();
     expect(subjectSelect).toBeDisabled();
     fireEvent.change(screen.getByLabelText('Especialidade'), {
       target: { value: 'Hematologia' },
     });
 
-    await waitFor(() => expect(api.getQuestionSubjects).toHaveBeenCalledWith('Hematologia'));
+    await waitFor(() => expect(api.getQuestionThemes).toHaveBeenCalledWith('Hematologia'));
     expect(await screen.findByRole('option', { name: 'Anemias (1200)' })).toBeInTheDocument();
-    expect(screen.getByRole('option', { name: 'Leucemias (730)' })).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'Neoplasias hematológicas (730)' })).toBeInTheDocument();
     expect(screen.queryByRole('option', { name: /Cardiologia/ })).not.toBeInTheDocument();
+    expect(themeSelect).not.toBeDisabled();
+
+    fireEvent.change(themeSelect, { target: { value: 'Anemias' } });
+    await waitFor(() => expect(api.getQuestionSubjects).toHaveBeenCalledWith('Hematologia', 'Anemias'));
+    expect(await screen.findByRole('option', { name: 'Anemias microcíticas (420)' })).toBeInTheDocument();
     expect(subjectSelect).not.toBeDisabled();
+  });
+
+  it('libera os filtros mesmo quando o histórico de desempenho demora', async () => {
+    api.getQuestionPerformance.mockReturnValueOnce(new Promise(() => {}));
+    render(<MemoryRouter><QuestoesPage /></MemoryRouter>);
+
+    expect(await screen.findByRole('heading', { name: 'Questões de provas' })).toBeInTheDocument();
+    expect(screen.getByLabelText('Especialidade')).toBeEnabled();
+    expect(screen.queryByText('Preparando o banco de questões...')).not.toBeInTheDocument();
   });
 
   it('não exibe o botão antigo de relatar problema e permite sinalizar erro pelo cabeçalho após responder', async () => {

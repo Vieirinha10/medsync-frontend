@@ -208,8 +208,13 @@ export const api = {
     const qs = catalogVersion ? `?catalog_version=${catalogVersion}` : '';
     return request(`/questoes/meta${qs}`);
   },
-  getQuestionSubjects: (specialty) => {
+  getQuestionThemes: (specialty) => {
     const query = new URLSearchParams({ especialidade: specialty });
+    return request(`/questoes/temas?${query.toString()}`);
+  },
+  getQuestionSubjects: (specialty, theme = '') => {
+    const query = new URLSearchParams({ especialidade: specialty });
+    if (theme) query.set('tema', theme);
     return request(`/questoes/assuntos?${query.toString()}`);
   },
   getQuestions: (filters = {}) => {

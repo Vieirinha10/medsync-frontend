@@ -39,6 +39,16 @@ describe('HomePage', () => {
     await waitFor(() => expect(within(stats).getByText('127')).toBeInTheDocument());
   });
 
+  it('preserva os números do conteúdo quando a contagem de estudantes falha', async () => {
+    api.getPublicStats.mockRejectedValueOnce(new Error('indisponível'));
+    renderHome();
+    const stats = screen.getByLabelText('Números atuais do MedSync');
+    await waitFor(() => expect(api.getPublicStats).toHaveBeenCalledOnce());
+    expect(within(stats).queryByText('estudantes cadastrados')).not.toBeInTheDocument();
+    expect(within(stats).queryByText('—')).not.toBeInTheDocument();
+    expect(within(stats).getByText('226 mil+')).toBeInTheDocument();
+  });
+
   it('apresenta as cinco perspectivas da Synapse sem o feixe verde antigo', () => {
     renderHome();
 

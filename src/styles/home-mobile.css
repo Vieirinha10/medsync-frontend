@@ -1,4 +1,8 @@
 @media (max-width: 1180px) {
+  .preview-heading-composition.has-note { grid-template-columns: minmax(0, 1fr) 130px; gap: 16px; }
+  .preview-heading-composition.has-note .preview-section-heading { grid-column: 1; }
+  .preview-pen-note, .preview-pen-note.is-left { grid-column: 2; width: 120px; font-size: 1.55rem; }
+
   .preview-hero {
     min-height: 0;
   }
@@ -146,6 +150,15 @@
   }
 
   .preview-aurora { animation: none; }
+  .preview-heading-composition.has-note { display: flex; flex-direction: column; gap: 16px; }
+  .preview-pen-note, .preview-pen-note.is-left { width: 170px; font-size: 1.55rem; align-self: flex-end; margin-right: 8px; }
+  .preview-pen-note.is-left { align-self: flex-start; margin-left: 8px; }
+  .preview-pen-note svg { width: 52px; height: 34px; margin-top: 0; }
+  .preview-proof-strip.has-three-items { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .preview-proof-strip.has-three-items > div { border-bottom: 0; border-right: 1px solid var(--home-line); padding-inline: 6px; }
+  .preview-proof-strip.has-three-items > div:last-child { border-right: 0; }
+  .preview-proof-strip.has-three-items strong { font-size: 1.15rem; }
+
 
   .preview-feature-card > p { width: 66%; }
   .preview-feature-art { width: 32%; top: 38px; }

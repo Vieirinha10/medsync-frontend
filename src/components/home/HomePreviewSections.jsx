@@ -73,12 +73,24 @@ const FEATURES = [
   },
 ];
 
-const SectionHeading = ({ headingId, eyebrow, title, accent, description }) => (
+const PenNote = ({ children, side }) => (
+  <aside className={`preview-pen-note is-${side}`}>
+    <span>{children}</span>
+    <svg viewBox="0 0 100 65" fill="none" aria-hidden="true" focusable="false">
+      <path d="M86 8C83 37 61 52 18 46M31 34 16 46l18 8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  </aside>
+);
+
+const SectionHeading = ({ headingId, eyebrow, title, accent, description, note, noteSide = 'right' }) => (
+  <div className={`preview-heading-composition${note ? ' has-note' : ''}`}>
   <header className="preview-section-heading">
     <span className="preview-eyebrow">{eyebrow}</span>
     <h2 id={headingId}>{title} <em>{accent}</em></h2>
     {description && <p>{description}</p>}
   </header>
+  {note && <PenNote side={noteSide}>{note}</PenNote>}
+  </div>
 );
 
 const SynapseSection = () => {
@@ -88,6 +100,8 @@ const SynapseSection = () => {
     <SectionHeading
       headingId="synapse-title"
       eyebrow="Cinco IAs ativas · Uma única Synapse"
+      note="Cada decisão merece um novo olhar."
+      noteSide="left"
       title="Cinco perspectivas clínicas,"
       accent="organizadas em uma única experiência."
       description="ChatGPT, Grok, Gemini, Claude e DeepSeek atuam em papéis complementares. A Synapse reúne essas perspectivas em um feedback clínico claro e voltado para o seu aprendizado."
@@ -126,6 +140,7 @@ const CommunitySection = ({ formattedStudentCount }) => {
       <SectionHeading
         headingId="community-title"
         eyebrow="Comunidade acadêmica"
+        note="Essa história também pode ser sua."
         title="Estudantes de diferentes instituições"
         accent="já estudam com o MedSync."
         description="Uma comunidade em formação, reunida pelo mesmo objetivo: transformar estudo em decisões mais seguras."
@@ -165,11 +180,11 @@ const CommunitySection = ({ formattedStudentCount }) => {
         </article>
         <article className="preview-testimonial-card is-side" aria-hidden="true"><FiMessageCircle /></article>
       </div>
-      <div className="preview-proof-strip" aria-label="Números atuais do MedSync">
+      <div className={`preview-proof-strip${formattedStudentCount && formattedStudentCount !== '—' ? '' : ' has-three-items'}`} aria-label="Números atuais do MedSync">
         <div><strong>80</strong><span>casos clínicos</span></div>
         <div><strong>150</strong><span>desafios visuais</span></div>
         <div><strong>226 mil+</strong><span>questões no catálogo</span></div>
-        <div><strong>{formattedStudentCount}</strong><span>estudantes cadastrados</span></div>
+        {formattedStudentCount && formattedStudentCount !== '—' && <div><strong>{formattedStudentCount}</strong><span>estudantes cadastrados</span></div>}
       </div>
     </section>
   );
@@ -211,6 +226,7 @@ const FeaturesSection = () => {
     <SectionHeading
       headingId="features-title"
       eyebrow="Funcionalidades"
+      note="Mais que estudo. Uma jornada."
       title="Tudo o que você precisa para"
       accent="evoluir em um só lugar."
       description="Prática clínica, questões, revisão e trilhas reunidas em uma experiência contínua."
@@ -264,6 +280,8 @@ const PricingSection = () => {
       <SectionHeading
         headingId="pricing-title"
         eyebrow="Planos"
+        note="Um passo de cada vez, no seu ritmo."
+        noteSide="left"
         title="Escolha o acesso que acompanha"
         accent="o seu ritmo de estudo."
         description="Comece gratuitamente. Quando quiser avançar, escolha entre pagamento avulso, mensal ou trimestral."

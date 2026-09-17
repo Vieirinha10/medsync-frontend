@@ -151,7 +151,8 @@
 
   .preview-aurora { animation: none; }
   .preview-heading-composition.has-note { display: flex; flex-direction: column; gap: 16px; }
-  .preview-pen-note, .preview-pen-note.is-left { width: 170px; font-size: 1.55rem; align-self: flex-end; margin-right: 8px; }
+  .preview-heading-composition { margin-bottom: 24px; }
+  .preview-pen-note, .preview-pen-note.is-left { width: 148px; font-size: 1.38rem; align-self: flex-end; margin-right: 8px; }
   .preview-pen-note.is-left { align-self: flex-start; margin-left: 8px; }
   .preview-pen-note svg { width: 52px; height: 34px; margin-top: 0; }
   .preview-proof-strip.has-three-items { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -172,6 +173,7 @@
   .preview-topbar {
     min-height: 58px;
     justify-content: space-between;
+    gap: 8px;
   }
 
   .preview-brand img {
@@ -181,6 +183,7 @@
 
   .preview-topbar-actions {
     position: static;
+    flex: 0 1 auto;
     gap: 7px;
   }
 
@@ -190,6 +193,7 @@
     padding: 0 12px;
     border-radius: 12px;
     font-size: .72rem;
+    white-space: nowrap;
   }
 
   .preview-signup {
@@ -262,7 +266,8 @@
     gap: 4px;
     padding: 5px 3px;
     text-align: center;
-    font-size: .75rem;
+    font-size: .68rem;
+    line-height: 1.15;
   }
 
   .preview-case-steps button > span {
@@ -277,7 +282,7 @@
   }
 
   .preview-case-content {
-    min-height: 390px;
+    min-height: 350px;
   }
 
   .preview-case-content h3 {
@@ -352,6 +357,9 @@
     padding: 5px 16px 19px 1px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: 1px 16px;
+    overscroll-behavior-inline: contain;
+    touch-action: pan-x;
     scrollbar-width: none;
   }
 
@@ -365,7 +373,7 @@
   .preview-ai-card,
   .preview-ai-card:nth-child(4),
   .preview-ai-card:nth-child(5) {
-    min-width: min(78vw, 292px);
+    min-width: min(82vw, 306px);
     min-height: 292px;
     margin-left: 0;
     scroll-snap-align: center;
@@ -420,6 +428,9 @@
     width: calc(100% + 16px);
     margin-right: -16px;
     padding-right: 16px;
+    scroll-padding-inline: 1px 16px;
+    overscroll-behavior-inline: contain;
+    touch-action: pan-x;
   }
 
   .preview-institution-card {
@@ -440,22 +451,22 @@
   }
 
   .preview-testimonial-card.is-side {
-    min-width: 84px;
-    opacity: .44;
+    min-width: 72px;
+    opacity: .68;
   }
 
   .preview-feature-card,
   .preview-feature-card:nth-child(4),
   .preview-feature-card:nth-child(5),
   .preview-feature-card:last-child {
-    min-width: min(84vw, 330px);
-    min-height: 0;
+    min-width: min(86vw, 336px);
+    min-height: 290px;
     scroll-snap-align: center;
   }
 
   .preview-plan-card {
-    min-width: min(86vw, 345px);
-    min-height: 500px;
+    min-width: min(88vw, 348px);
+    min-height: 520px;
     scroll-snap-align: center;
   }
 
@@ -500,12 +511,12 @@
   }
 
   .preview-login {
-    padding-inline: 10px;
+    padding-inline: 9px;
   }
 
   .preview-signup {
-    max-width: 118px;
-    padding-inline: 10px;
+    max-width: 112px;
+    padding-inline: 9px;
     line-height: 1.15;
     text-align: center;
   }
@@ -516,6 +527,25 @@
 
   .preview-exam-option {
     padding-inline: 6px;
+    line-height: 1.22;
+  }
+
+  .preview-case-steps button {
+    font-size: .62rem;
+  }
+
+  .preview-section-heading h2,
+  .preview-testimonial-heading h2 {
+    font-size: clamp(1.9rem, 8.2vw, 2.2rem);
+  }
+
+  .preview-feature-art {
+    width: 34%;
+    right: -3px;
+  }
+
+  .preview-feature-card > p {
+    width: 63%;
   }
 
   .preview-feature-topline {
@@ -533,7 +563,7 @@
   }
 
   .preview-brand img {
-    width: 108px;
+    width: 96px;
   }
 
   .preview-login,
@@ -542,7 +572,12 @@
   }
 
   .preview-signup {
-    max-width: 108px;
+    max-width: 103px;
+    padding-inline: 7px;
+  }
+
+  .preview-login {
+    padding-inline: 7px;
   }
 
   .preview-hero-copy h1 {
@@ -553,8 +588,24 @@
     padding-inline: 12px;
   }
 
+  .preview-case-steps button {
+    font-size: .58rem;
+  }
+
+  .preview-case-steps button > span {
+    width: 23px;
+    height: 23px;
+    flex-basis: 23px;
+  }
+
   .preview-exam-option {
-    font-size: .75rem;
+    font-size: .7rem;
+  }
+
+  .preview-pen-note,
+  .preview-pen-note.is-left {
+    width: 132px;
+    font-size: 1.25rem;
   }
 
   .preview-benefit-strip strong,

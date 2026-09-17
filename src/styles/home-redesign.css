@@ -82,7 +82,7 @@ body.medsync-home-preview-active {
   width: 45px;
   height: 45px;
   object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgb(0 142 255 / 28%));
+  filter: brightness(0) saturate(100%) invert(73%) sepia(74%) saturate(1500%) hue-rotate(161deg) brightness(99%) contrast(88%) drop-shadow(0 8px 16px rgb(0 142 255 / 28%));
 }
 
 .preview-sidebar nav {

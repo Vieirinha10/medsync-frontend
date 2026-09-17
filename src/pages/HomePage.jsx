@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import MedSyncIntro from '../components/MedSyncIntro';
 import HomePreviewHero from '../components/home/HomePreviewHero';
-import HomePreviewSections, { HomePreviewSidebar } from '../components/home/HomePreviewSections';
+import HomePreviewSections from '../components/home/HomePreviewSections';
 import { api } from '../services/api';
 import '../styles/home-redesign.css';
 import '../styles/home-mobile.css';
 
-const SECTION_IDS = ['inicio', 'synapse', 'comunidade', 'funcionalidades', 'planos'];
 
 const HomePage = () => {
   const homeRef = useRef(null);
@@ -14,7 +12,6 @@ const HomePage = () => {
   const [activeStep, setActiveStep] = useState(1);
   const [isPaused, setIsPaused] = useState(false);
   const [isPageVisible, setIsPageVisible] = useState(() => document.visibilityState !== 'hidden');
-  const [activeSection, setActiveSection] = useState('inicio');
 
   useEffect(() => {
     const root = document.documentElement;
@@ -54,22 +51,6 @@ const HomePage = () => {
     return () => window.clearInterval(timer);
   }, [isPageVisible, isPaused]);
 
-  useEffect(() => {
-    const root = homeRef.current;
-    if (!root || !('IntersectionObserver' in window)) return undefined;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        setActiveSection(entry.target.id);
-      });
-    }, { rootMargin: '-35% 0px -52% 0px', threshold: 0 });
-
-    SECTION_IDS.forEach((id) => {
-      const section = root.querySelector(`#${id}`);
-      if (section) observer.observe(section);
-    });
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const root = homeRef.current;
@@ -96,9 +77,7 @@ const HomePage = () => {
 
   return (
     <div className="home-redesign" ref={homeRef}>
-      <MedSyncIntro />
-      <HomePreviewSidebar activeSection={activeSection} />
-      <main className="home-redesign-page">
+      <div className="home-redesign-page">
         <HomePreviewHero
           activeStep={activeStep}
           setActiveStep={setActiveStep}
@@ -106,7 +85,7 @@ const HomePage = () => {
           setIsPaused={setIsPaused}
         />
         <HomePreviewSections formattedStudentCount={formattedStudentCount} />
-      </main>
+      </div>
     </div>
   );
 };

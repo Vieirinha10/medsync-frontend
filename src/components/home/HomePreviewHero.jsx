@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiActivity,
@@ -31,6 +31,7 @@ const EXAMS = [
 ];
 
 const StepContent = ({ activeStep, onAdvance }) => {
+  const [selectedExams, setSelectedExams] = useState(['Eletrocardiograma', 'Troponina']);
   if (activeStep === 0) {
     return (
       <div className="preview-case-content preview-patient-step">
@@ -55,13 +56,14 @@ const StepContent = ({ activeStep, onAdvance }) => {
       <div className="preview-case-content preview-exams-step">
         <span className="preview-panel-kicker">Exames complementares</span>
         <h3>Quais exames você solicita neste momento?</h3>
-        <div className="preview-exam-search"><FiSearch aria-hidden="true" /> Buscar exame...</div>
+        <div className="preview-exam-search"><FiSearch aria-hidden="true" /> Demonstração interativa</div>
         <div className="preview-exam-grid">
-          {EXAMS.map(([exam, selected]) => (
-            <div className={`preview-exam-option${selected ? ' is-selected' : ''}`} key={exam}>
-              <span>{selected && <FiCheck aria-hidden="true" />}</span>
+          {EXAMS.map(([exam]) => (
+
+            <button type="button" aria-pressed={selectedExams.includes(exam)} onClick={() => setSelectedExams(current => current.includes(exam) ? current.filter(item => item !== exam) : [...current, exam])} className={`preview-exam-option${selectedExams.includes(exam) ? ' is-selected' : ''}`} key={exam}>
+              <span>{selectedExams.includes(exam) && <FiCheck aria-hidden="true" />}</span>
               {exam}
-            </div>
+            </button>
           ))}
         </div>
         <div className="preview-case-guidance">
@@ -144,6 +146,7 @@ const HomePreviewHero = ({ activeStep, setActiveStep, isPaused, setIsPaused }) =
         speed={0.24}
       />
       <div className="preview-hero-dots" aria-hidden="true" />
+      <div className="preview-aurora" aria-hidden="true" /><div className="preview-aurora is-second" aria-hidden="true" />
 
       <header className="preview-topbar">
         <Link to="/" className="preview-brand" aria-label="MedSync, página inicial">
@@ -165,7 +168,7 @@ const HomePreviewHero = ({ activeStep, setActiveStep, isPaused, setIsPaused }) =
 
       <div className="preview-case-layout">
         <div className="preview-case-shell">
-          <div className="preview-case-window">
+          <div className="preview-case-window" onPointerDown={() => setIsPaused(true)} onFocus={() => setIsPaused(true)}>
             <aside className="preview-case-sidebar">
               <div className="preview-case-title"><FiClipboard aria-hidden="true" /> Caso clínico <span>{activeStep + 1}/4</span></div>
               <div ref={tabListRef} className="preview-case-steps" role="tablist" aria-label="Etapas do caso clínico">
@@ -202,6 +205,7 @@ const HomePreviewHero = ({ activeStep, setActiveStep, isPaused, setIsPaused }) =
               tabIndex={0}
             >
               <StepContent
+                key={activeStep}
                 activeStep={activeStep}
                 onAdvance={() => selectStep((activeStep + 1) % CASE_STEPS.length)}
               />

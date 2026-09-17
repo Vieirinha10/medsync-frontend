@@ -47,7 +47,7 @@ body.medsync-home-preview-active {
 
 .home-redesign-page {
   min-width: 0;
-  margin-left: 88px;
+  margin-left: 0;
   overflow: clip;
   background: var(--home-off);
 }
@@ -153,7 +153,7 @@ body.medsync-home-preview-active {
 
 .preview-hero {
   position: relative;
-  min-height: 1000px;
+  min-height: 0;
   padding: 20px clamp(24px, 4vw, 72px) 150px;
   color: #fff;
   isolation: isolate;
@@ -1701,4 +1701,51 @@ body.medsync-home-preview-active {
     transition-duration: .01ms !important;
   }
   .preview-hero .home-chromatic-waves-canvas { opacity: .42; }
+}
+
+/* Motion follows interaction; content stays available throughout entry. */
+.preview-hero { padding-bottom: 100px; }
+.preview-topbar { animation: homeArrive 650ms both; }
+.preview-hero-copy { animation: homeArrive 850ms 100ms both; }
+.preview-case-layout { animation: homeArrive 950ms 180ms both; }
+.preview-aurora { position: absolute; z-index: -1; pointer-events: none; width: 70%; height: 60%; left: -20%; top: 8%; border-radius: 50%; background: radial-gradient(ellipse, rgb(8 125 241 / 23%), transparent 68%); animation: homeAurora 16s ease-in-out infinite alternate; }
+.preview-aurora.is-second { left: 55%; top: 35%; background: radial-gradient(ellipse, rgb(111 99 246 / 18%), transparent 68%); animation-delay: -8s; }
+.preview-case-content { animation: homeArrive 420ms both; }
+.preview-conduct-list > span { animation: homeArrive 450ms both; }
+.preview-conduct-list > span:nth-child(2) { animation-delay: 90ms; }
+.preview-conduct-list > span:nth-child(3) { animation-delay: 180ms; }
+.preview-exam-option { text-align: left; cursor: pointer; transition: background 180ms, border-color 180ms, transform 180ms; }
+.preview-exam-option:active { transform: scale(.98); }
+.preview-disclosure { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 44px; padding: 10px 0; border: 0; background: transparent; color: #1758df; cursor: pointer; text-align: left; font-weight: 700; }
+.preview-disclosure svg { flex-shrink: 0; transition: transform 300ms; }
+.preview-disclosure[aria-expanded="true"] svg { transform: rotate(90deg); }
+.preview-expand { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 400ms cubic-bezier(.2,.8,.2,1), opacity 250ms; }
+.preview-expand.is-open { grid-template-rows: 1fr; opacity: 1; }
+.preview-expand > div { overflow: hidden; min-height: 0; }
+.preview-expand p { margin: 8px 0 16px; line-height: 1.65; }
+.preview-feature-card { min-height: 0; align-self: start; }
+.preview-ai-card { min-height: 250px; align-self: start; }
+.preview-synapse-hub { position: relative; display: flex; gap: 10px; justify-content: center; align-items: center; width: 180px; min-height: 56px; margin: 0 auto 56px; background: #e8f2ff; color: #1758df; border: 1px solid #b8d7ff; border-radius: 18px; font-weight: 800; }
+.preview-synapse-hub span { position: absolute; top: 100%; left: 50%; width: 1px; height: 48px; background: linear-gradient(#087df1, #b8d7ff); transform-origin: top; transform: rotate(var(--angle)); }
+.preview-synapse-hub span:nth-of-type(1) { --angle: 65deg; }
+.preview-synapse-hub span:nth-of-type(2) { --angle: 35deg; }
+.preview-synapse-hub span:nth-of-type(3) { --angle: 0deg; }
+.preview-synapse-hub span:nth-of-type(4) { --angle: -35deg; }
+.preview-synapse-hub span:nth-of-type(5) { --angle: -65deg; }
+.is-visible .preview-synapse-hub span { animation: homeConnect 900ms both; }
+.is-visible .preview-ai-card { animation: homeArrive 650ms both; }
+.is-visible .preview-ai-card:nth-child(2) { animation-delay: 80ms; }
+.is-visible .preview-ai-card:nth-child(3) { animation-delay: 160ms; }
+.is-visible .preview-ai-card:nth-child(4) { animation-delay: 240ms; }
+.is-visible .preview-ai-card:nth-child(5) { animation-delay: 320ms; }
+.preview-plan-card header { min-height: 100px; }
+.preview-plan-card { transition: box-shadow 250ms, border-color 250ms; }
+.preview-plan-card:focus-within, .preview-plan-card:hover { box-shadow: 0 18px 44px rgb(31 91 137 / 14%); }
+.home-redesign.has-scroll-reveal [data-home-reveal] { opacity: 1; transform: none; }
+.home-redesign.has-scroll-reveal [data-home-reveal].is-visible > .preview-section-heading { animation: homeArrive 650ms both; }
+@keyframes homeArrive { from { opacity: .3; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes homeAurora { to { transform: translate(18%, -8%) scale(1.15); } }
+@keyframes homeConnect { from { opacity: 0; scale: 1 0; } to { opacity: 1; scale: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .home-redesign *, .home-redesign *::before, .home-redesign *::after { animation: none !important; transition: none !important; }
 }

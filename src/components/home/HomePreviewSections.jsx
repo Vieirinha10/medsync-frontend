@@ -1,4 +1,4 @@
-import { createElement, useRef } from 'react';
+import { createElement, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiActivity,
@@ -10,7 +10,6 @@ import {
   FiClipboard,
   FiCreditCard,
   FiFileText,
-  FiHome,
   FiImage,
   FiLayers,
   FiLock,
@@ -19,8 +18,6 @@ import {
   FiRefreshCw,
   FiShield,
   FiTarget,
-  FiUser,
-  FiUsers,
 } from 'react-icons/fi';
 import { FaInstagram, FaTiktok, FaWhatsapp } from 'react-icons/fa';
 import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../../config/pricing';
@@ -77,32 +74,6 @@ const FEATURES = [
   },
 ];
 
-const NAV_ITEMS = [
-  { id: 'inicio', label: 'Início', icon: FiHome },
-  { id: 'synapse', label: 'Synapse', icon: FiActivity },
-  { id: 'comunidade', label: 'Comunidade', icon: FiUsers },
-  { id: 'funcionalidades', label: 'Funcionalidades', icon: FiLayers },
-  { id: 'planos', label: 'Planos', icon: FiCreditCard },
-];
-
-export const HomePreviewSidebar = ({ activeSection }) => (
-  <aside className="preview-sidebar" aria-label="Navegação da página inicial">
-    <a className="preview-sidebar-logo" href="#inicio" aria-label="Voltar ao início">
-      <img src="/images/synapse-s-symbol.png" alt="" />
-    </a>
-    <nav aria-label="Navegação da página inicial">
-      {NAV_ITEMS.map(({ id, label, icon: Icon }) => (
-        <a key={id} href={`#${id}`} className={activeSection === id ? 'is-active' : ''}>
-          {createElement(Icon, { 'aria-hidden': true })}<span>{label}</span>
-        </a>
-      ))}
-    </nav>
-    <Link className="preview-sidebar-account" to="/login">
-      <FiUser aria-hidden="true" /><span>Entrar</span>
-    </Link>
-  </aside>
-);
-
 const SectionHeading = ({ headingId, eyebrow, title, accent, description }) => (
   <header className="preview-section-heading">
     <span className="preview-eyebrow">{eyebrow}</span>
@@ -111,7 +82,9 @@ const SectionHeading = ({ headingId, eyebrow, title, accent, description }) => (
   </header>
 );
 
-const SynapseSection = () => (
+const SynapseSection = () => {
+  const [activeNetwork, setActiveNetwork] = useState(null);
+  return (
   <section id="synapse" className="preview-light-section preview-synapse-section" data-home-reveal aria-labelledby="synapse-title">
     <div className="preview-section-orbit preview-section-orbit-left" aria-hidden="true" />
     <SectionHeading
@@ -121,14 +94,16 @@ const SynapseSection = () => (
       accent="organizadas em uma única experiência."
       description="ChatGPT, Grok, Gemini, Claude e DeepSeek atuam em papéis complementares. A Synapse reúne essas perspectivas em um feedback clínico claro e voltado para o seu aprendizado."
     />
+    <div className="preview-synapse-hub" aria-hidden="true"><FiActivity /> Synapse<span /><span /><span /><span /><span /></div>
     <div className="preview-ai-grid" role="list" aria-label="Perspectivas da Synapse">
       {AI_NETWORKS.map((network) => (
         <article className={`preview-ai-card is-${network.id}`} role="listitem" key={network.id}>
           <div className="preview-ai-icon"><img src={network.icon} alt="" width="58" height="58" loading="lazy" /></div>
           <h3>{network.name}</h3>
-          <p>{network.text}</p>
+          <button className="preview-disclosure" type="button" aria-expanded={activeNetwork === network.id} aria-controls={`ai-detail-${network.id}`} onClick={() => setActiveNetwork(activeNetwork === network.id ? null : network.id)}>Entender seu papel <FiArrowRight aria-hidden="true" /></button>
+          <div id={`ai-detail-${network.id}`} className={`preview-expand${activeNetwork === network.id ? ' is-open' : ''}`} inert={activeNetwork === network.id ? undefined : ''}><div><p>{network.text}</p></div></div>
           <span>{network.provider}</span>
-          <small>Entender seu papel <FiArrowRight aria-hidden="true" /></small>
+
         </article>
       ))}
     </div>
@@ -143,7 +118,8 @@ const SynapseSection = () => (
       <cite>MedSync</cite>
     </blockquote>
   </section>
-);
+  );
+};
 
 const CommunitySection = ({ formattedStudentCount }) => {
   const trackRef = useRef(null);
@@ -203,7 +179,9 @@ const CommunitySection = ({ formattedStudentCount }) => {
   );
 };
 
-const FeaturesSection = () => (
+const FeaturesSection = () => {
+  const [expanded, setExpanded] = useState(null);
+  return (
   <section id="funcionalidades" className="preview-light-section preview-features-section" data-home-reveal aria-labelledby="features-title">
     <SectionHeading
       headingId="features-title"
@@ -219,14 +197,16 @@ const FeaturesSection = () => (
             <span className="preview-feature-icon">{createElement(Icon, { 'aria-hidden': true })}</span>
             <div><small>MedSync</small><h3>{title}</h3></div>
           </div>
-          <p>{text}</p>
+          <button className="preview-disclosure" type="button" aria-expanded={expanded === id} aria-controls={`feature-detail-${id}`} onClick={() => setExpanded(expanded === id ? null : id)}>{title} <FiArrowRight aria-hidden="true" /></button>
+          <div id={`feature-detail-${id}`} className={`preview-expand${expanded === id ? ' is-open' : ''}`} inert={expanded === id ? undefined : ''}><div><p>{text}</p></div></div>
           <div className="preview-feature-tags">{tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
           <Link to={to}>{action} <FiArrowRight aria-hidden="true" /></Link>
         </article>
       ))}
     </div>
   </section>
-);
+  );
+};
 
 const PLAN_ICON = {
   gratuito: FiLayers,

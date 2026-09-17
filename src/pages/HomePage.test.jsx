@@ -30,7 +30,7 @@ describe('HomePage', () => {
 
     expect(screen.getByRole('heading', { name: /Treine decisões\. Não apenas respostas\./i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Criar conta grátis/i })).toHaveAttribute('href', '/cadastro');
-    expect(screen.getByRole('navigation', { name: 'Navegação da página inicial' })).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'Navegação da página inicial' })).not.toBeInTheDocument();
 
     const stats = screen.getByLabelText('Números atuais do MedSync');
     expect(within(stats).getByText('80')).toBeInTheDocument();

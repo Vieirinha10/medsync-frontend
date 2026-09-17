@@ -30,7 +30,7 @@
   }
 
   .preview-plan-card {
-    min-height: 540px;
+    min-height: 490px;
   }
 }
 
@@ -147,6 +147,10 @@
 
   .preview-aurora { animation: none; }
 
+  .preview-feature-card > p { width: 66%; }
+  .preview-feature-art { width: 32%; top: 38px; }
+  .preview-feature-topline { width: 73%; }
+
   .preview-hero {
     min-height: auto;
     padding: 14px 16px 118px;
@@ -184,7 +188,7 @@
   }
 
   .preview-hero-copy {
-    margin: 34px auto 22px;
+    margin: 18px auto 22px;
   }
 
   .preview-eyebrow {
@@ -294,11 +298,11 @@
 
   .preview-purpose-section,
   .preview-light-section {
-    padding: 64px 16px;
+    padding: 48px 16px;
   }
 
   .preview-purpose-section {
-    min-height: 280px;
+    min-height: 220px;
     padding-top: 44px;
   }
 
@@ -349,7 +353,7 @@
   .preview-ai-card:nth-child(4),
   .preview-ai-card:nth-child(5) {
     min-width: min(78vw, 292px);
-    min-height: 250px;
+    min-height: 292px;
     margin-left: 0;
     scroll-snap-align: center;
   }
@@ -388,7 +392,7 @@
   }
 
   .preview-community-section {
-    padding-top: 72px;
+    padding-top: 48px;
   }
 
   .preview-carousel-shell {
@@ -411,7 +415,7 @@
   }
 
   .preview-testimonial-heading {
-    margin-top: 62px;
+    margin-top: 40px;
   }
 
   .preview-testimonial-card,
@@ -438,7 +442,7 @@
 
   .preview-plan-card {
     min-width: min(86vw, 345px);
-    min-height: 570px;
+    min-height: 500px;
     scroll-snap-align: center;
   }
 

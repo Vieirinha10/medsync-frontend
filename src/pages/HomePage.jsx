@@ -1,73 +1,85 @@
 import { useEffect, useRef, useState } from 'react';
-import { api } from '../services/api';
-import ChromaticWavesBackground from '../components/ChromaticWavesBackground';
 import MedSyncIntro from '../components/MedSyncIntro';
-import HomeHero from '../components/home/HomeHero';
-import HomeLowerSections from '../components/home/HomeLowerSections';
-import HomeSpecialtiesMarquee from '../components/home/HomeSpecialtiesMarquee';
-import HomeSynapseNetworks from '../components/home/HomeSynapseNetworks';
-import {
-  ACADEMIC_INSTITUTIONS,
-  HERO_SIMULATION_STEPS,
-  MEDICAL_SPECIALTIES,
-  TRUST_PILLARS,
-} from '../components/home/homeContent';
-import '../styles/home-solid.css';
+import HomePreviewHero from '../components/home/HomePreviewHero';
+import HomePreviewSections, { HomePreviewSidebar } from '../components/home/HomePreviewSections';
+import { api } from '../services/api';
+import '../styles/home-redesign.css';
 import '../styles/home-mobile.css';
 
+const SECTION_IDS = ['inicio', 'synapse', 'comunidade', 'funcionalidades', 'planos'];
 
 const HomePage = () => {
-  const [studentCount, setStudentCount] = useState(null);
-  const [activeHeroStep, setActiveHeroStep] = useState(0);
-  const [isHeroPaused, setIsHeroPaused] = useState(false);
-  const [isHeroInteracting, setIsHeroInteracting] = useState(false);
-  const [isPageVisible, setIsPageVisible] = useState(() => document.visibilityState !== 'hidden');
   const homeRef = useRef(null);
+  const [studentCount, setStudentCount] = useState(null);
+  const [activeStep, setActiveStep] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isPageVisible, setIsPageVisible] = useState(() => document.visibilityState !== 'hidden');
+  const [activeSection, setActiveSection] = useState('inicio');
 
   useEffect(() => {
-    let isMounted = true;
-
-    api.getPublicStats()
-      .then(({ estudantes_medsync: count }) => {
-        if (isMounted && Number.isInteger(count) && count >= 0) {
-          setStudentCount(count);
-        }
-      })
-      .catch(() => undefined);
+    const root = document.documentElement;
+    const previousTheme = root.dataset.theme;
+    const previousColorScheme = root.style.colorScheme;
+    root.dataset.theme = 'light';
+    root.style.colorScheme = 'light';
+    document.body.classList.add('medsync-home-preview-active');
 
     return () => {
-      isMounted = false;
+      root.dataset.theme = previousTheme || 'dark';
+      root.style.colorScheme = previousColorScheme || 'dark';
+      document.body.classList.remove('medsync-home-preview-active');
     };
   }, []);
 
   useEffect(() => {
-    const handleVisibilityChange = () => setIsPageVisible(document.visibilityState !== 'hidden');
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    let isMounted = true;
+    api.getPublicStats()
+      .then(({ estudantes_medsync: count }) => {
+        if (isMounted && Number.isInteger(count) && count >= 0) setStudentCount(count);
+      })
+      .catch(() => undefined);
+    return () => { isMounted = false; };
   }, []);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-    if (isHeroPaused || isHeroInteracting || !isPageVisible || prefersReducedMotion) return undefined;
+    const handleVisibility = () => setIsPageVisible(document.visibilityState !== 'hidden');
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, []);
 
-    const timer = setInterval(() => {
-      setActiveHeroStep((prev) => (prev + 1) % HERO_SIMULATION_STEPS.length);
-    }, 5000);
+  useEffect(() => {
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (isPaused || !isPageVisible || reducedMotion) return undefined;
+    const timer = window.setInterval(() => setActiveStep((current) => (current + 1) % 4), 5600);
+    return () => window.clearInterval(timer);
+  }, [isPageVisible, isPaused]);
 
-    return () => clearInterval(timer);
-  }, [activeHeroStep, isHeroInteracting, isHeroPaused, isPageVisible]);
+  useEffect(() => {
+    const root = homeRef.current;
+    if (!root || !('IntersectionObserver' in window)) return undefined;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        setActiveSection(entry.target.id);
+      });
+    }, { rootMargin: '-35% 0px -52% 0px', threshold: 0 });
+
+    SECTION_IDS.forEach((id) => {
+      const section = root.querySelector(`#${id}`);
+      if (section) observer.observe(section);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const root = homeRef.current;
     if (!root) return undefined;
-
     const sections = [...root.querySelectorAll('[data-home-reveal]')];
-    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    if (reducedMotion || !('IntersectionObserver' in window)) {
       sections.forEach((section) => section.classList.add('is-visible'));
       return undefined;
     }
-
     root.classList.add('has-scroll-reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -75,43 +87,26 @@ const HomePage = () => {
         entry.target.classList.add('is-visible');
         observer.unobserve(entry.target);
       });
-    }, { threshold: 0.12 });
-
+    }, { threshold: 0.08 });
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, []);
 
-  const formattedStudentCount = studentCount === null
-    ? '—'
-    : studentCount.toLocaleString('pt-BR');
+  const formattedStudentCount = studentCount === null ? '—' : studentCount.toLocaleString('pt-BR');
 
   return (
-    <div className="home-container home-solid" ref={homeRef}>
+    <div className="home-redesign" ref={homeRef}>
       <MedSyncIntro />
-      <ChromaticWavesBackground />
-
-      {/* BLOCO 1: HERO (IMPACTO & PROVOCAÇÃO COM SIMULADOR REALISTA EM 5 FASES) */}
-      <HomeHero
-        activeHeroStep={activeHeroStep}
-        setActiveHeroStep={setActiveHeroStep}
-        isHeroPaused={isHeroPaused}
-        setIsHeroPaused={setIsHeroPaused}
-        setIsHeroInteracting={setIsHeroInteracting}
-        HERO_SIMULATION_STEPS={HERO_SIMULATION_STEPS}
-      />
-
-      {/* BLOCO 2: DIVISOR CONECTOR — ESTEIRA DE ESPECIALIDADES */}
-      <HomeSpecialtiesMarquee specialties={MEDICAL_SPECIALTIES} />
-
-      {/* BLOCO 3: SYNAPSE IA · REDES NEURAIS & BANCA MÉDICA */}
-      <HomeSynapseNetworks />
-
-      <HomeLowerSections
-        formattedStudentCount={formattedStudentCount}
-        medicalSpecialtyCount={MEDICAL_SPECIALTIES.length}
-        ACADEMIC_INSTITUTIONS={ACADEMIC_INSTITUTIONS}
-        TRUST_PILLARS={TRUST_PILLARS}
-      />
+      <HomePreviewSidebar activeSection={activeSection} />
+      <main className="home-redesign-page">
+        <HomePreviewHero
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
+          isPaused={isPaused}
+          setIsPaused={setIsPaused}
+        />
+        <HomePreviewSections formattedStudentCount={formattedStudentCount} />
+      </main>
     </div>
   );
 };

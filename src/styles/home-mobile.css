@@ -1,523 +1,559 @@
-/*
- * Home mobile: fonte única de verdade para a composição abaixo de 760px.
- * Este arquivo deve permanecer importado depois de home-solid.css. As poucas
- * declarações com !important existem apenas para superar regras legadas que já
- * usam !important; novas regras não devem ampliar essa dependência.
- */
-
-@media (max-width: 760px) {
-  .home-solid {
-    overflow-x: clip;
+@media (max-width: 1180px) {
+  .preview-hero {
+    min-height: 1050px;
   }
 
-  .home-solid .home-chromatic-waves {
-    inset-block-start: 64px;
-    height: calc(100svh - 64px);
-    opacity: 0.76;
+  .preview-case-layout {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .home-solid .medsync-intro-logo img {
-    width: min(70vw, 260px);
-  }
-
-  .home-solid .medsync-intro-messages {
-    bottom: 48px;
-    padding-inline: 16px;
-    font-size: 0.62rem;
-  }
-
-  .home-solid .solid-hero-glow-one,
-  .home-solid .solid-hero-glow-two {
-    width: 360px;
-    height: 360px;
-    animation: none;
-  }
-
-  .home-solid :where(h1, h2, h3, p, span, strong, small, a, button) {
-    overflow-wrap: break-word;
-  }
-
-  /* Hero */
-  .home-solid .solid-hero {
-    min-height: 0;
-    margin: 6px !important;
-    padding: 34px 14px 42px !important;
-    gap: 26px !important;
-    border-radius: 20px !important;
-  }
-
-  .home-solid .solid-hero h1 {
-    max-width: 520px;
-    font-size: clamp(2rem, 9.5vw, 2.65rem) !important;
-    line-height: 1.04 !important;
-    letter-spacing: -0.055em;
-  }
-
-  .home-solid .solid-hero-copy > p.hero-lead-text {
-    margin: 16px 0 20px !important;
-    font-size: 0.92rem !important;
-    line-height: 1.55 !important;
-  }
-
-  .home-solid .solid-hero-actions {
-    gap: 9px;
-  }
-
-  .home-solid .solid-primary-button,
-  .home-solid .solid-ghost-button {
-    min-height: 48px;
-    padding-inline: 16px;
-    font-size: 0.86rem;
-  }
-
-  .home-solid .solid-hero-proof {
-    display: grid;
-    gap: 7px;
-    margin-top: 16px;
-    font-size: 0.68rem;
-  }
-
-  .home-solid .solid-hero-proof span {
-    gap: 6px;
-    width: fit-content;
-    padding: 6px 9px;
-    border: 1px solid rgba(162, 209, 231, 0.12);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.045);
-  }
-
-  /* Demonstração clínica */
-  .home-solid .solid-hero-stage {
-    width: 100%;
-    margin-top: 0;
-  }
-
-  .home-solid .hero-real-case-window {
-    min-height: 0;
-    padding: 12px !important;
-    gap: 10px !important;
-    border-radius: 16px !important;
-  }
-
-  .home-solid .real-case-tabs-bar {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 3px;
-    padding-bottom: 8px;
-    overflow: visible;
-  }
-
-  .home-solid .real-case-step-btn {
-    min-width: 0;
-    min-height: 44px;
-    padding: 7px 2px;
-  }
-
-  .home-solid .step-btn-title {
-    max-width: 100%;
-    overflow: hidden;
-    font-size: 0.56rem !important;
-    text-overflow: ellipsis;
-  }
-
-  .home-solid .real-case-subhead {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 6px;
-  }
-
-  .home-solid .case-title-line {
-    grid-row: 2;
-    grid-column: 1 / -1;
-    font-size: 0.72rem;
-    line-height: 1.35;
-  }
-
-  .home-solid .case-specialty-badge,
-  .home-solid .case-step-counter {
-    font-size: 0.58rem;
-  }
-
-  .home-solid .case-playback-toggle {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    min-height: 38px;
-  }
-
-  .home-solid .case-screen-view {
-    gap: 9px;
-  }
-
-  .home-solid .screen-section-header h3 {
-    font-size: 1.02rem;
-    line-height: 1.28;
-  }
-
-  .home-solid .screen-section-header p,
-  .home-solid .patient-dual-card p {
-    font-size: 0.72rem;
-    line-height: 1.4;
-  }
-
-  .home-solid .patient-dual-card,
-  .home-solid .exam-option-card,
-  .home-solid .vital-mini-card {
-    padding: 8px 9px;
-  }
-
-  .home-solid .screen-footer-actions {
-    gap: 8px;
-  }
-
-  .home-solid .screen-btn-primary {
-    min-height: 44px;
-  }
-
-  /* Esteira de especialidades */
-  .home-solid .specialty-marquee-section {
-    padding-block: 11px;
-    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
-  }
-
-  .home-solid .specialty-marquee-track,
-  .home-solid .specialty-marquee-item {
-    gap: 18px;
-  }
-
-  .home-solid .specialty-marquee-item {
-    font-size: 0.66rem;
-    letter-spacing: 0.09em;
-  }
-
-  /* Cinco IAs: carrossel por gesto, sem cinco cards gigantes empilhados */
-  .home-solid .synapse-sticky-stage {
-    padding: 48px 0 56px;
-  }
-
-  .home-solid .synapse-networks-header {
-    padding-inline: 16px;
-    margin-bottom: 24px;
-  }
-
-  .home-solid .synapse-networks-eyebrow {
-    margin-bottom: 10px;
-    font-size: 0.64rem;
-    line-height: 1.35;
-  }
-
-  .home-solid .synapse-networks-title {
-    font-size: clamp(1.8rem, 8.2vw, 2.25rem);
-    line-height: 1.08;
-  }
-
-  .home-solid .synapse-networks-lead {
-    margin-top: 13px;
-    font-size: 0.86rem;
-    line-height: 1.5;
-  }
-
-  .home-solid .synapse-cards-grid {
-    display: grid;
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: min(82vw, 292px);
-    gap: 12px;
-    max-width: none;
-    margin: 0;
-    padding: 4px 16px 12px;
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scroll-padding-inline: 16px;
-    scroll-snap-type: inline mandatory;
-    scrollbar-width: none;
-  }
-
-  .home-solid .synapse-cards-grid::-webkit-scrollbar {
+  .preview-case-promise {
     display: none;
   }
 
-  .home-solid .synapse-cards-grid > article {
-    min-width: 0;
-    scroll-snap-align: center;
+  .preview-ai-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .home-solid .synapse-network-card {
-    height: 252px;
+  .preview-ai-card:nth-child(4) {
+    grid-column: 1 / span 1;
+    margin-left: 50%;
   }
 
-  .home-solid .synapse-card-front,
-  .home-solid .synapse-card-back {
-    padding: 18px 16px;
+  .preview-ai-card:nth-child(5) {
+    grid-column: 2 / span 1;
+    margin-left: 50%;
   }
 
-  .home-solid .synapse-card-icon-wrapper {
-    width: 46px;
-    height: 46px;
-    margin-bottom: 11px;
+  .preview-pricing-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .home-solid .synapse-card-name {
-    margin-bottom: 6px;
-    font-size: 1.12rem;
+  .preview-plan-card {
+    min-height: 540px;
+  }
+}
+
+@media (max-width: 900px) {
+  .home-redesign-page {
+    margin-left: 74px;
   }
 
-  .home-solid .synapse-card-desc,
-  .home-solid .synapse-card-back-explanation {
-    font-size: 0.78rem;
+  .preview-sidebar {
+    width: 74px;
   }
 
-  .home-solid .synapse-card-tag {
-    padding: 4px 14px;
-    font-size: 0.64rem;
+  .preview-sidebar nav a,
+  .preview-sidebar-account {
+    font-size: .61rem;
   }
 
-  .home-solid .synapse-consensus-strip {
-    max-width: calc(100% - 32px);
-    margin-top: 14px;
-    padding: 11px 14px;
-    gap: 6px;
-    font-size: 0.72rem;
+  .preview-sidebar-logo img {
+    width: 39px;
+    height: 39px;
   }
 
-  /* Números e comunidade */
-  .home-solid .solid-proof-morph {
-    min-height: 132px;
-    padding: 18px 16px;
+  .preview-hero {
+    min-height: 990px;
+    padding-inline: 24px;
   }
 
-  .home-solid .stat-morph {
-    height: 92px;
+  .preview-case-window {
+    grid-template-columns: 205px minmax(0, 1fr);
   }
 
-  .home-solid .stat-morph-word {
-    gap: 8px;
-    width: min(100%, 340px);
-    justify-content: center;
-    white-space: normal;
-    text-align: center;
+  .preview-vitals-panel {
+    display: none;
   }
 
-  .home-solid .stat-morph-word strong {
-    flex: 0 0 auto;
-    font-size: clamp(2rem, 10vw, 2.6rem);
+  .preview-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .home-solid .stat-morph-word span {
-    max-width: 230px;
-    font-size: clamp(0.8rem, 4vw, 1rem);
-    line-height: 1.15;
+  .preview-feature-card,
+  .preview-feature-card:nth-child(4),
+  .preview-feature-card:nth-child(5) {
+    grid-column: auto;
   }
 
-  .home-solid .home-academic-network {
-    padding-block: 52px 48px;
+  .preview-feature-card:last-child {
+    grid-column: 1 / -1;
   }
 
-  .home-solid .academic-network-heading {
-    gap: 12px;
-    margin-bottom: 26px;
-    padding-inline: 16px;
+  .preview-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+}
+
+@media (max-width: 760px) {
+  body.medsync-home-preview-active {
+    padding-bottom: 70px;
   }
 
-  .home-solid .academic-network-heading h2 {
-    font-size: clamp(1.9rem, 8.8vw, 2.35rem);
-    line-height: 1.08;
-    letter-spacing: -0.05em;
+  .home-redesign-page {
+    margin-left: 0;
   }
 
-  .home-solid .academic-network-heading > p {
-    font-size: 0.86rem;
-    line-height: 1.5;
+  .preview-sidebar {
+    inset: auto 0 0;
+    width: 100%;
+    height: 70px;
+    flex-direction: row;
+    padding: 7px 9px max(7px, env(safe-area-inset-bottom));
+    border-top: 1px solid rgb(93 177 229 / 22%);
+    border-right: 0;
+    box-shadow: 0 -12px 30px rgb(2 24 41 / 14%);
   }
 
-  .home-solid .academic-network-stage {
-    gap: 10px;
+  .preview-sidebar-logo,
+  .preview-sidebar-account {
+    display: none;
   }
 
-  .home-solid .academic-institution-card {
-    grid-template-columns: 48px minmax(125px, 1fr);
-    gap: 10px;
-    width: 224px;
-    min-height: 78px;
-    padding: 10px;
+  .preview-sidebar nav {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 2px;
+  }
+
+  .preview-sidebar nav a {
+    width: 20%;
+    min-height: 54px;
+    gap: 3px;
+    border-radius: 12px;
+    font-size: .58rem;
+  }
+
+  .preview-sidebar nav a svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .preview-sidebar nav a::before {
+    top: -7px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    border-radius: 0 0 99px 99px;
+    transform: translateX(-50%);
+    transition: width 180ms ease;
+  }
+
+  .preview-sidebar nav a.is-active::before {
+    width: 34px;
+    height: 3px;
+  }
+
+  .preview-hero {
+    min-height: auto;
+    padding: 14px 16px 118px;
+  }
+
+  .preview-topbar {
+    min-height: 58px;
+    justify-content: space-between;
+  }
+
+  .preview-brand img {
+    width: 122px;
+    height: 43px;
+  }
+
+  .preview-topbar-actions {
+    position: static;
+    gap: 7px;
+  }
+
+  .preview-login,
+  .preview-signup {
+    min-height: 44px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: .72rem;
+  }
+
+  .preview-signup {
+    max-width: 132px;
+  }
+
+  .preview-signup svg {
+    display: none;
+  }
+
+  .preview-hero-copy {
+    margin: 34px auto 22px;
+  }
+
+  .preview-eyebrow {
+    min-height: 30px;
+    padding: 6px 12px;
+    font-size: .6rem;
+    letter-spacing: .11em;
+  }
+
+  .preview-hero-copy h1 {
+    margin-top: 16px;
+    font-size: clamp(2.2rem, 10vw, 2.75rem);
+    line-height: 1.03;
+    letter-spacing: -.055em;
+  }
+
+  .preview-hero-copy > p {
+    font-size: .94rem;
+    line-height: 1.52;
+  }
+
+  .preview-case-shell {
+    padding: 7px;
+    border-radius: 20px;
+  }
+
+  .preview-case-window {
+    min-height: 510px;
+    grid-template-columns: minmax(0, 1fr);
     border-radius: 15px;
   }
 
-  .home-solid .academic-institution-logo {
-    width: 48px;
-    height: 48px;
-    border-radius: 11px;
+  .preview-case-sidebar {
+    padding: 12px;
+    border-right: 0;
+    border-bottom: 1px solid #dfe9ef;
   }
 
-  .home-solid .academic-institution-copy strong {
-    font-size: 0.75rem;
+  .preview-case-title,
+  .preview-patient-card {
+    display: none;
   }
 
-  .home-solid .academic-institution-copy small {
-    min-height: 0;
-    font-size: 0.55rem;
+  .preview-case-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    margin: 0;
   }
 
-  .home-solid .academic-network-disclaimer {
-    margin-top: 24px;
-    padding-inline: 18px;
-    font-size: 0.62rem;
+  .preview-case-steps::before {
+    display: none;
   }
 
-  /* Recursos, confiança e planos */
-  .home-solid .solid-features,
-  .home-solid .solid-value-section {
-    padding: 54px 16px;
+  .preview-case-steps button {
+    min-height: 55px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 5px 3px;
+    text-align: center;
+    font-size: .56rem;
   }
 
-  .home-solid .solid-section-heading {
-    gap: 12px;
-    margin-bottom: 26px;
+  .preview-case-steps button > span {
+    width: 25px;
+    height: 25px;
+    flex-basis: 25px;
+    font-size: .61rem;
   }
 
-  .home-solid .solid-section-heading h2 {
-    font-size: clamp(1.9rem, 8.5vw, 2.3rem);
-    line-height: 1.08;
-    letter-spacing: -0.05em;
+  .preview-case-main {
+    padding: 17px 15px 18px;
   }
 
-  .home-solid .solid-section-heading > p {
-    font-size: 0.86rem;
-    line-height: 1.5;
+  .preview-case-content {
+    min-height: 390px;
   }
 
-  .home-solid .solid-feature-grid,
-  .home-solid .solid-plan-grid {
-    gap: 11px;
+  .preview-case-content h3 {
+    font-size: .94rem;
   }
 
-  .home-solid .solid-feature-card,
-  .home-solid .solid-feature-card.is-wide,
-  .home-solid .solid-plan-card {
-    min-height: 0;
-    padding: 20px 18px;
-    border-radius: 18px;
+  .preview-exam-option {
+    min-height: 40px;
+    font-size: .6rem;
   }
 
-  .home-solid .solid-feature-icon {
-    width: 42px;
-    height: 42px;
-    margin-bottom: 17px;
-    border-radius: 12px;
-    font-size: 1.08rem;
-  }
-
-  .home-solid .solid-feature-card > small {
-    margin-bottom: 8px;
-    font-size: 0.58rem;
-  }
-
-  .home-solid .solid-feature-card h3,
-  .home-solid .solid-feature-card.is-light h3 {
-    font-size: 1.3rem;
-    line-height: 1.12;
-  }
-
-  .home-solid .solid-feature-card p {
-    margin-top: 11px;
-    font-size: 0.84rem;
-    line-height: 1.5;
-  }
-
-  .home-solid .solid-feature-card > a {
-    margin-top: 17px;
-    font-size: 0.82rem;
-  }
-
-  .home-solid .ecosystem-trust-strip {
-    gap: 20px;
-    padding: 20px 18px;
-    border-radius: 18px;
-  }
-
-  .home-solid .ecosystem-trust-strip > header > span {
-    width: 40px;
-    height: 40px;
-    flex-basis: 40px;
-  }
-
-  .home-solid .ecosystem-trust-strip h3 {
-    font-size: 1.12rem;
-  }
-
-  .home-solid .ecosystem-trust-strip > div {
-    gap: 13px;
-  }
-
-  .home-solid .solid-plan-card h3 {
-    margin: 14px 0 6px;
-    font-size: 1.35rem;
-  }
-
-  .home-solid .solid-price {
-    min-height: 0;
-    font-size: 2.25rem;
-  }
-
-  .home-solid .solid-plan-card > p {
-    min-height: 0;
-    margin: 12px 0;
-    font-size: 0.78rem;
-  }
-
-  .home-solid .solid-plan-card ul {
-    gap: 8px;
-    padding: 15px 0 18px;
-  }
-
-  .home-solid .solid-plan-card li {
-    font-size: 0.74rem;
-  }
-
-  .home-solid .solid-plan-card > a {
+  .preview-case-next {
     min-height: 44px;
-    padding: 11px 14px;
+    width: 86%;
   }
 
-  .home-solid .solid-trust {
+  .preview-playback {
+    right: 13px;
+    bottom: 13px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .preview-scroll-cue {
+    margin-top: 19px;
+  }
+
+  .preview-hero-bridge {
+    height: 66px;
+  }
+
+  .preview-purpose-section,
+  .preview-light-section {
     padding: 64px 16px;
   }
 
-  .home-solid .solid-trust h2 {
-    margin: 18px 0 15px;
-    font-size: clamp(2rem, 9.5vw, 2.6rem);
-    line-height: 1.05;
-    letter-spacing: -0.055em;
+  .preview-purpose-section {
+    min-height: 280px;
+    padding-top: 44px;
   }
 
-  .home-solid .solid-trust > p {
-    margin-bottom: 22px;
-    font-size: 0.9rem;
-    line-height: 1.5;
+  .preview-purpose-section h2 {
+    font-size: clamp(1.85rem, 8vw, 2.35rem);
+  }
+
+  .preview-purpose-section p,
+  .preview-section-heading p,
+  .preview-testimonial-heading p {
+    font-size: .91rem;
+    line-height: 1.55;
+  }
+
+  .preview-section-heading {
+    margin-bottom: 28px;
+  }
+
+  .preview-section-heading h2,
+  .preview-testimonial-heading h2 {
+    margin-top: 13px;
+    font-size: clamp(2rem, 8.7vw, 2.6rem);
+    letter-spacing: -.055em;
+  }
+
+  .preview-ai-grid,
+  .preview-feature-grid,
+  .preview-pricing-grid,
+  .preview-testimonial-track {
+    width: calc(100% + 16px);
+    display: flex;
+    gap: 13px;
+    margin-right: -16px;
+    padding: 5px 16px 19px 1px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .preview-ai-grid::-webkit-scrollbar,
+  .preview-feature-grid::-webkit-scrollbar,
+  .preview-pricing-grid::-webkit-scrollbar,
+  .preview-testimonial-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .preview-ai-card,
+  .preview-ai-card:nth-child(4),
+  .preview-ai-card:nth-child(5) {
+    min-width: min(78vw, 292px);
+    min-height: 315px;
+    margin-left: 0;
+    scroll-snap-align: center;
+  }
+
+  .preview-benefit-strip,
+  .preview-proof-strip,
+  .preview-trust-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 22px;
+  }
+
+  .preview-benefit-strip > div,
+  .preview-proof-strip > div,
+  .preview-trust-strip > div {
+    min-height: 112px;
+    padding: 13px 8px;
+    border-right: 0;
+    border-bottom: 1px solid var(--home-line);
+  }
+
+  .preview-benefit-strip > div:nth-child(odd),
+  .preview-proof-strip > div:nth-child(odd),
+  .preview-trust-strip > div:nth-child(odd) {
+    border-right: 1px solid var(--home-line);
+  }
+
+  .preview-benefit-strip > div:nth-last-child(-n + 2),
+  .preview-proof-strip > div:nth-last-child(-n + 2),
+  .preview-trust-strip > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
+  }
+
+  .preview-section-quote {
+    margin-top: 24px;
+    font-size: .9rem;
+  }
+
+  .preview-community-section {
+    padding-top: 72px;
+  }
+
+  .preview-carousel-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .preview-carousel-shell > button {
+    display: none;
+  }
+
+  .preview-institution-track {
+    width: calc(100% + 16px);
+    margin-right: -16px;
+    padding-right: 16px;
+  }
+
+  .preview-institution-card {
+    min-width: 158px;
+    min-height: 176px;
+  }
+
+  .preview-testimonial-heading {
+    margin-top: 62px;
+  }
+
+  .preview-testimonial-card,
+  .preview-testimonial-card.is-side {
+    min-width: min(80vw, 310px);
+    min-height: 300px;
+    opacity: 1;
+    scroll-snap-align: center;
+  }
+
+  .preview-testimonial-card.is-side {
+    min-width: 84px;
+    opacity: .44;
+  }
+
+  .preview-feature-card,
+  .preview-feature-card:nth-child(4),
+  .preview-feature-card:nth-child(5),
+  .preview-feature-card:last-child {
+    min-width: min(84vw, 330px);
+    min-height: 350px;
+    scroll-snap-align: center;
+  }
+
+  .preview-plan-card {
+    min-width: min(86vw, 345px);
+    min-height: 570px;
+    scroll-snap-align: center;
+  }
+
+  .preview-plan-badge {
+    top: 10px;
+    left: auto;
+    right: 16px;
+    min-width: 0;
+    transform: none;
+  }
+
+  .preview-footer {
+    padding: 88px 18px 110px;
+  }
+
+  .preview-footer-grid {
+    gap: 28px;
+  }
+
+  .preview-footer-grid > section > img {
+    width: 196px;
+  }
+
+  .preview-footer-grid > nav {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .preview-footer-grid nav > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .preview-footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }
 
-@media (max-width: 380px) {
-  .home-solid .solid-hero h1 {
-    font-size: 1.92rem !important;
+@media (max-width: 430px) {
+  .preview-hero-copy h1 {
+    font-size: 2.38rem;
   }
 
-  .home-solid .step-btn-title {
-    font-size: 0.5rem !important;
+  .preview-login {
+    padding-inline: 10px;
   }
 
-  .home-solid .synapse-cards-grid {
-    grid-auto-columns: 86vw;
+  .preview-signup {
+    max-width: 118px;
+    padding-inline: 10px;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .preview-exam-grid {
+    gap: 5px;
+  }
+
+  .preview-exam-option {
+    padding-inline: 6px;
+  }
+
+  .preview-feature-topline {
+    align-items: flex-start;
+  }
+
+  .preview-footer-socials {
+    display: grid;
+  }
+}
+
+@media (max-width: 360px) {
+  .preview-hero {
+    padding-inline: 14px;
+  }
+
+  .preview-brand img {
+    width: 108px;
+  }
+
+  .preview-login,
+  .preview-signup {
+    font-size: .66rem;
+  }
+
+  .preview-signup {
+    max-width: 108px;
+  }
+
+  .preview-hero-copy h1 {
+    font-size: 2.18rem;
+  }
+
+  .preview-case-main {
     padding-inline: 12px;
-    scroll-padding-inline: 12px;
   }
 
-  .home-solid .synapse-consensus-strip {
-    max-width: calc(100% - 24px);
+  .preview-exam-option {
+    font-size: .55rem;
   }
-}
 
-@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
-  .home-solid .synapse-cards-grid {
-    scroll-behavior: auto;
-    scroll-snap-type: none;
+  .preview-benefit-strip strong,
+  .preview-trust-strip strong {
+    font-size: .73rem;
+  }
+
+  .preview-benefit-strip span,
+  .preview-trust-strip span,
+  .preview-proof-strip span {
+    font-size: .65rem;
+  }
+
+  .preview-footer-grid > nav {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-footer-grid nav > div:last-child {
+    grid-column: auto;
   }
 }

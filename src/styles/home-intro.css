@@ -13,7 +13,7 @@ html.medsync-intro-lock .announcement-banner {
   --intro-deep: #031722;
   --intro-blue: #087fe0;
   --intro-cyan: #22c7ec;
-  --intro-lime: #a7f34b;
+  --intro-violet: #8d7cf6;
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -101,7 +101,7 @@ html.medsync-intro-lock .announcement-banner {
   width: 100%;
   height: 100%;
   transform-origin: left;
-  background: linear-gradient(90deg, var(--intro-blue), var(--intro-cyan), var(--intro-lime));
+  background: linear-gradient(90deg, var(--intro-blue), var(--intro-cyan), var(--intro-violet));
   animation: medsync-intro-progress 2.8s cubic-bezier(.65, .01, .05, .99) both;
 }
 

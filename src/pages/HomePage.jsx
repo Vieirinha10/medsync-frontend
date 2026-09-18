@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import MedSyncIntro from '../components/MedSyncIntro';
 import HomePreviewHero from '../components/home/HomePreviewHero';
 import HomePreviewSections from '../components/home/HomePreviewSections';
 import { api } from '../services/api';
@@ -95,6 +96,7 @@ const HomePage = () => {
 
   return (
     <div className="home-redesign" ref={homeRef}>
+      <MedSyncIntro />
       <div className="home-redesign-page">
         <HomePreviewHero
           activeStep={activeStep}

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedSync · Prévia mobile</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { min-height: 100%; margin: 0; }
+      body {
+        display: grid;
+        place-items: center;
+        padding: 42px;
+        background: #031b2d;
+        font-family: system-ui, sans-serif;
+      }
+      iframe {
+        width: 390px;
+        height: 844px;
+        border: 8px solid #0b2d43;
+        border-radius: 34px;
+        background: #f7fbff;
+        box-shadow: 0 30px 90px rgb(0 0 0 / 42%);
+      }
+      @media (max-width: 500px) {
+        body { display: block; padding: 0; }
+        iframe { width: 100%; height: 100vh; border: 0; border-radius: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <iframe src="/" title="Prévia mobile do MedSync"></iframe>
+  </body>
+</html>

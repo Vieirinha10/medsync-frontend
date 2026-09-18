@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AnimatePresence, m as Motion, useReducedMotion } from 'motion/react';
 import {
   FiActivity,
   FiArrowRight,
@@ -11,6 +12,7 @@ import {
   FiUser,
 } from 'react-icons/fi';
 import ChromaticWavesBackground from '../ChromaticWavesBackground';
+import useMediaQuery from '../../hooks/useMediaQuery';
 
 const CASE_STEPS = [
   { id: 0, label: 'Dados iniciais' },
@@ -117,6 +119,8 @@ const StepContent = ({ activeStep, onAdvance }) => {
 
 const HomePreviewHero = ({ activeStep, setActiveStep, isPaused, setIsPaused }) => {
   const tabListRef = useRef(null);
+  const isMobile = useMediaQuery('(max-width: 760px)');
+  const reduceMotion = useReducedMotion();
 
   const selectStep = (index) => setActiveStep(Math.max(0, Math.min(CASE_STEPS.length - 1, index)));
 
@@ -210,11 +214,21 @@ const HomePreviewHero = ({ activeStep, setActiveStep, isPaused, setIsPaused }) =
               aria-labelledby={`preview-case-tab-${activeStep}`}
               tabIndex={0}
             >
-              <StepContent
-                key={activeStep}
-                activeStep={activeStep}
-                onAdvance={() => selectStep((activeStep + 1) % CASE_STEPS.length)}
-              />
+              <AnimatePresence mode="wait" initial={false}>
+                <Motion.div
+                  key={activeStep}
+                  className="preview-case-motion-panel"
+                  initial={isMobile && !reduceMotion ? { opacity: 0, x: 18 } : false}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={isMobile && !reduceMotion ? { opacity: 0, x: -10 } : { opacity: 1 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.36, ease: [0.2, 0.8, 0.2, 1] }}
+                >
+                  <StepContent
+                    activeStep={activeStep}
+                    onAdvance={() => selectStep((activeStep + 1) % CASE_STEPS.length)}
+                  />
+                </Motion.div>
+              </AnimatePresence>
             </div>
 
             <aside className="preview-vitals-panel" aria-label="Sinais vitais e exame físico">

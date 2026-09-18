@@ -1,5 +1,8 @@
-import { createElement } from 'react';
+import { createElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useEmblaCarousel from 'embla-carousel-react';
+import AutoScroll from 'embla-carousel-auto-scroll';
+import { useReducedMotion } from 'motion/react';
 import {
   FiArrowRight,
   FiBarChart2,
@@ -20,6 +23,53 @@ import {
 import { FaInstagram, FaTiktok, FaWhatsapp } from 'react-icons/fa';
 import { FREE_PLAN, PREMIUM_BILLING_OPTIONS } from '../../config/pricing';
 import { ACADEMIC_INSTITUTIONS } from './homeContent';
+
+const MOBILE_CAROUSEL_OPTIONS = {
+  active: false,
+  align: 'center',
+  containScroll: 'trimSnaps',
+  breakpoints: { '(max-width: 760px)': { active: true } },
+};
+
+const useMobileCarousel = () => {
+  const [viewportRef, emblaApi] = useEmblaCarousel(MOBILE_CAROUSEL_OPTIONS);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [snapCount, setSnapCount] = useState(0);
+
+  const updateSelection = useCallback((api) => {
+    setSelectedIndex(api.selectedScrollSnap());
+    setSnapCount(api.scrollSnapList().length);
+  }, []);
+
+  useEffect(() => {
+    if (!emblaApi) return undefined;
+    updateSelection(emblaApi);
+    emblaApi.on('select', updateSelection).on('reInit', updateSelection);
+    return () => {
+      emblaApi.off('select', updateSelection).off('reInit', updateSelection);
+    };
+  }, [emblaApi, updateSelection]);
+
+  return { viewportRef, emblaApi, selectedIndex, snapCount };
+};
+
+const CarouselProgress = ({ count, selectedIndex, onSelect, label }) => {
+  if (count < 2) return null;
+  return (
+    <div className="preview-carousel-progress" aria-label={label}>
+      {Array.from({ length: count }, (_, index) => (
+        <button
+          type="button"
+          key={index}
+          className={selectedIndex === index ? 'is-active' : ''}
+          aria-label={`Ir para o item ${index + 1}`}
+          aria-current={selectedIndex === index ? 'true' : undefined}
+          onClick={() => onSelect(index)}
+        />
+      ))}
+    </div>
+  );
+};
 
 const AI_NETWORKS = [
   {
@@ -93,6 +143,7 @@ const SectionHeading = ({ headingId, eyebrow, title, accent, description, note, 
 );
 
 const SynapseSection = () => {
+  const { viewportRef, emblaApi, selectedIndex, snapCount } = useMobileCarousel();
   return (
   <section id="synapse" className="preview-light-section preview-synapse-section" data-home-reveal aria-labelledby="synapse-title">
     <div className="preview-section-orbit preview-section-orbit-left" aria-hidden="true" />
@@ -105,10 +156,11 @@ const SynapseSection = () => {
       accent="organizadas em uma única experiência."
       description="ChatGPT, Grok, Gemini, Claude e DeepSeek atuam em papéis complementares. A Synapse reúne essas perspectivas em um feedback clínico claro e voltado para o seu aprendizado."
     />
+    <div className="preview-carousel-viewport preview-ai-viewport" ref={viewportRef}>
     <div className="preview-ai-grid" role="list" aria-label="Perspectivas da Synapse">
       {AI_NETWORKS.map((network, index) => (
         <article
-          className={`preview-ai-card is-${network.id}`}
+          className={`preview-ai-card is-${network.id}${selectedIndex === index ? ' is-carousel-active' : ''}`}
           role="listitem"
           key={network.id}
           data-motion-card
@@ -123,6 +175,13 @@ const SynapseSection = () => {
         </article>
       ))}
     </div>
+    </div>
+    <CarouselProgress
+      count={snapCount}
+      selectedIndex={selectedIndex}
+      onSelect={(index) => emblaApi?.scrollTo(index)}
+      label="Posição no carrossel de inteligências"
+    />
       <div className="preview-benefit-strip" data-motion-reveal aria-label="Benefícios da Synapse">
       <div><FiLayers /><strong>Perspectivas complementares</strong><span>Mais profundidade na análise</span></div>
       <div><FiTarget /><strong>Feedback clínico integrado</strong><span>Uma leitura organizada do caso</span></div>
@@ -139,6 +198,34 @@ const SynapseSection = () => {
 
 const CommunitySection = ({ formattedStudentCount }) => {
   const institutionLoop = [...ACADEMIC_INSTITUTIONS, ...ACADEMIC_INSTITUTIONS];
+  const reduceMotion = useReducedMotion();
+  const autoScroll = useMemo(() => AutoScroll({
+    speed: 0.72,
+    startDelay: 900,
+    playOnInit: true,
+    stopOnFocusIn: true,
+    stopOnInteraction: true,
+    stopOnMouseEnter: true,
+  }), []);
+  const [institutionRef, institutionApi] = useEmblaCarousel({
+    active: false,
+    loop: true,
+    dragFree: true,
+    containScroll: false,
+    breakpoints: { '(max-width: 760px)': { active: !reduceMotion } },
+  }, [autoScroll]);
+
+  useEffect(() => {
+    if (!institutionApi) return undefined;
+    const updatePlayback = () => {
+      const controller = institutionApi.plugins()?.autoScroll;
+      if (document.visibilityState === 'hidden' || reduceMotion) controller?.stop();
+      else controller?.play();
+    };
+    document.addEventListener('visibilitychange', updatePlayback);
+    updatePlayback();
+    return () => document.removeEventListener('visibilitychange', updatePlayback);
+  }, [institutionApi, reduceMotion]);
 
   return (
     <section id="comunidade" className="preview-light-section preview-community-section" data-home-reveal aria-labelledby="community-title">
@@ -152,6 +239,7 @@ const CommunitySection = ({ formattedStudentCount }) => {
       />
       <div
         className="preview-institution-marquee"
+        ref={institutionRef}
         role="region"
         tabIndex={0}
         aria-label="Instituições presentes na comunidade MedSync"
@@ -278,6 +366,7 @@ const PLAN_ICON = {
 };
 
 const PricingSection = () => {
+  const { viewportRef, emblaApi, selectedIndex, snapCount } = useMobileCarousel();
   const plans = [
     {
       ...FREE_PLAN,
@@ -307,12 +396,13 @@ const PricingSection = () => {
         accent="o seu ritmo de estudo."
         description="Comece gratuitamente. Quando quiser avançar, escolha entre pagamento avulso, mensal ou trimestral."
       />
+      <div className="preview-carousel-viewport preview-pricing-viewport" ref={viewportRef}>
       <div className="preview-pricing-grid">
         {plans.map((plan, index) => {
           const Icon = PLAN_ICON[plan.id] || FiCreditCard;
           return (
             <article
-              className={`preview-plan-card${plan.featured ? ' is-featured' : ''}`}
+              className={`preview-plan-card${plan.featured ? ' is-featured' : ''}${selectedIndex === index ? ' is-carousel-active' : ''}`}
               key={plan.id}
               data-motion-card
               data-motion-reveal
@@ -328,6 +418,13 @@ const PricingSection = () => {
           );
         })}
       </div>
+      </div>
+      <CarouselProgress
+        count={snapCount}
+        selectedIndex={selectedIndex}
+        onSelect={(index) => emblaApi?.scrollTo(index)}
+        label="Posição no carrossel de planos"
+      />
       <div className="preview-trust-strip" data-motion-reveal>
         <div><FiLock /><strong>Ambiente seguro</strong><span>Seus dados protegidos</span></div>
         <div><FiMonitor /><strong>Acesse de qualquer lugar</strong><span>Web, tablet e celular</span></div>

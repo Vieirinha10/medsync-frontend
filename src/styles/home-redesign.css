@@ -45,6 +45,15 @@ body.medsync-home-preview-active {
   font: inherit;
 }
 
+.preview-carousel-viewport {
+  width: 100%;
+  overflow: visible;
+}
+
+.preview-carousel-progress {
+  display: none;
+}
+
 .home-redesign-page {
   min-width: 0;
   margin-left: 0;
@@ -478,6 +487,11 @@ body.medsync-home-preview-active {
   padding: 19px 22px;
   background: #fff;
   outline: none;
+}
+
+.preview-case-motion-panel {
+  height: 100%;
+  min-width: 0;
 }
 
 .preview-case-content {

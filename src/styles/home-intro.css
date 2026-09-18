@@ -127,32 +127,8 @@ html.medsync-intro-lock .announcement-banner {
   filter: drop-shadow(0 18px 34px rgba(0, 0, 0, .24));
 }
 
-.medsync-intro-pulse {
-  width: min(70vw, 320px);
-  height: auto;
-  margin-top: 24px;
-  overflow: visible;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.medsync-intro-pulse-rail {
-  stroke: rgba(255, 255, 255, .1);
-  stroke-width: 1;
-}
-
-.medsync-intro-pulse-line {
-  stroke: var(--intro-cyan);
-  stroke-width: 2;
-  stroke-dasharray: 345;
-  stroke-dashoffset: 345;
-  filter: drop-shadow(0 0 5px rgba(36, 188, 233, .42));
-  animation: medsync-intro-draw 900ms 380ms cubic-bezier(.22, .75, .26, 1) forwards;
-}
-
 .medsync-intro-message {
-  margin: 18px 0 0;
+  margin: 26px 0 0;
   color: rgba(226, 240, 250, .78);
   font: 500 clamp(.78rem, 1.6vw, .9rem)/1.5 'Manrope', sans-serif;
   letter-spacing: .01em;
@@ -165,20 +141,20 @@ html.medsync-intro-lock .announcement-banner {
 }
 
 .medsync-intro-progress {
-  width: 92px;
-  height: 2px;
-  margin-top: 26px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
   overflow: hidden;
-  border-radius: 999px;
   background: rgba(255, 255, 255, .12);
-  animation: medsync-intro-copy-arrive 480ms 780ms ease-out both;
 }
 
 .medsync-intro-progress span {
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: inherit;
   transform-origin: left;
   background: linear-gradient(90deg, var(--intro-blue), var(--intro-cyan));
   animation: medsync-intro-progress 1900ms 80ms cubic-bezier(.35, 0, .2, 1) both;
@@ -214,10 +190,6 @@ html.medsync-intro-lock .announcement-banner {
   }
 }
 
-@keyframes medsync-intro-draw {
-  to { stroke-dashoffset: 0; }
-}
-
 @keyframes medsync-intro-copy-arrive {
   from {
     opacity: 0;
@@ -244,19 +216,14 @@ html.medsync-intro-lock .announcement-banner {
     width: min(74vw, 270px);
   }
 
-  .medsync-intro-pulse {
-    width: min(76vw, 280px);
-    margin-top: 20px;
-  }
-
   .medsync-intro-message {
     max-width: 300px;
-    margin-top: 15px;
+    margin-top: 22px;
     font-size: .78rem;
   }
 
   .medsync-intro-progress {
-    margin-top: 22px;
+    height: 4px;
   }
 }
 

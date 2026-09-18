@@ -1068,48 +1068,39 @@ body.medsync-home-preview-active {
   padding-top: 58px;
 }
 
-.preview-carousel-shell {
+.preview-institution-marquee {
   position: relative;
   z-index: 2;
   width: min(1340px, 100%);
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) 48px;
-  gap: 12px;
-  align-items: center;
   margin: 0 auto;
+  overflow: hidden;
+  outline: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 
-.preview-carousel-shell > button {
-  width: 45px;
-  height: 45px;
-  display: grid;
-  place-items: center;
-  color: #315b80;
-  background: #fff;
-  border: 1px solid var(--home-line);
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 10px 24px rgb(30 89 132 / 9%);
+.preview-institution-marquee:focus-visible {
+  border-radius: 20px;
+  box-shadow: 0 0 0 3px rgb(8 125 241 / 22%);
 }
 
 .preview-institution-track {
-  min-width: 0;
+  width: max-content;
   display: flex;
   gap: 12px;
   padding: 5px 2px 10px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+  animation: previewInstitutionMarquee 42s linear infinite;
 }
 
-.preview-institution-track::-webkit-scrollbar {
-  display: none;
+.preview-institution-marquee:hover .preview-institution-track,
+.preview-institution-marquee:focus-within .preview-institution-track {
+  animation-play-state: paused;
 }
 
 .preview-institution-card {
   position: relative;
-  min-width: 175px;
+  width: 175px;
+  flex: 0 0 175px;
   min-height: 185px;
   display: flex;
   flex-direction: column;
@@ -1120,7 +1111,6 @@ body.medsync-home-preview-active {
   border: 1px solid var(--home-line);
   border-radius: 18px;
   box-shadow: 0 12px 28px rgb(38 89 124 / 6%);
-  scroll-snap-align: start;
   text-align: center;
 }
 
@@ -1287,11 +1277,6 @@ body.medsync-home-preview-active {
 
 .preview-feature-card:nth-child(4) { grid-column: 2 / span 2; }
 .preview-feature-card:nth-child(5) { grid-column: 4 / span 2; }
-
-.preview-feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 30px rgb(31 91 137 / 11%);
-}
 
 .preview-feature-card.is-blue { background: linear-gradient(145deg, #e7f3ff, #fbfdff); border-color: #a9d4f8; }
 .preview-feature-card.is-cyan { background: linear-gradient(145deg, #e1f9ff, #fbfeff); border-color: #9ddff2; }
@@ -1794,8 +1779,8 @@ body.medsync-home-preview-active {
 .preview-heading-composition .preview-section-heading { margin-bottom: 0; }
 .preview-heading-composition.has-note { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(0, 800px) minmax(120px, 1fr); gap: 18px; align-items: center; }
 .preview-heading-composition.has-note .preview-section-heading { grid-column: 2; grid-row: 1; }
-.preview-pen-note { grid-column: 3; grid-row: 1; justify-self: center; width: 150px; margin: 0; color: #2376de; font-family: 'Caveat', 'Segoe Print', cursive; font-size: 1.8rem; font-weight: 600; line-height: 1.08; letter-spacing: .015em; transform: rotate(-8deg); text-align: center; }
-.preview-pen-note.is-left { grid-column: 1; transform: rotate(7deg); }
+.preview-pen-note { grid-column: 3; grid-row: 1; justify-self: center; width: 166px; margin: 0; color: #1856bd; font-family: 'Permanent Marker', 'Segoe Print', cursive; font-size: 1.44rem; font-weight: 400; line-height: 1.16; letter-spacing: .025em; transform: rotate(-5deg); text-align: center; text-shadow: .4px .5px 0 rgb(17 57 139 / 22%); }
+.preview-pen-note.is-left { grid-column: 1; transform: rotate(4deg); }
 .preview-pen-note svg { display: block; width: 76px; height: 50px; margin: 6px 0 0; }
 .preview-pen-note.is-left svg { margin-left: auto; transform: scaleX(-1); }
 .preview-feature-card { --card-accent: #096fc9; }
@@ -1901,24 +1886,6 @@ body.medsync-home-preview-active {
   transform: translateX(4px);
 }
 
-.preview-ai-icon,
-.preview-feature-icon,
-.preview-plan-card header > svg,
-.preview-institution-card > span {
-  transition: transform 420ms cubic-bezier(.2, .8, .2, 1), box-shadow 420ms ease;
-}
-
-.preview-ai-card:hover .preview-ai-icon,
-.preview-ai-card:focus-within .preview-ai-icon,
-.preview-feature-card:hover .preview-feature-icon,
-.preview-feature-card:focus-within .preview-feature-icon,
-.preview-plan-card:hover header > svg,
-.preview-plan-card:focus-within header > svg,
-.preview-institution-card:hover > span {
-  transform: translateY(-3px) rotate(-2deg) scale(1.035);
-  box-shadow: 0 16px 28px rgb(38 94 139 / 16%);
-}
-
 [data-motion-card] {
   --pointer-x: 50%;
   --pointer-y: 50%;
@@ -2002,10 +1969,8 @@ body.medsync-home-preview-active {
   .preview-ai-card,
   .preview-feature-card,
   .preview-plan-card,
-  .preview-institution-card,
   .preview-testimonial-card.is-main {
     transition:
-      transform 360ms cubic-bezier(.2, .8, .2, 1),
       box-shadow 360ms ease,
       border-color 360ms ease;
   }
@@ -2013,18 +1978,9 @@ body.medsync-home-preview-active {
   .preview-ai-card:hover,
   .preview-feature-card:hover,
   .preview-plan-card:hover,
-  .preview-institution-card:hover,
   .preview-testimonial-card.is-main:hover {
-    transform: translateY(-7px);
+    box-shadow: 0 18px 44px rgb(31 91 137 / 14%);
   }
-
-  .preview-feature-card:hover .preview-feature-art {
-    transform: translate3d(-4px, -4px, 0) rotate(-1.5deg);
-  }
-}
-
-.preview-feature-art {
-  transition: transform 520ms cubic-bezier(.2, .8, .2, 1), filter 520ms ease;
 }
 
 @property --case-beam {
@@ -2053,6 +2009,27 @@ body.medsync-home-preview-active {
 
 @keyframes previewInkLine {
   to { stroke-dashoffset: 0; }
+}
+
+@keyframes previewInstitutionMarquee {
+  to { transform: translateX(calc(-50% - 6px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview-institution-marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+    scrollbar-width: thin;
+  }
+
+  .preview-institution-track {
+    animation: none;
+  }
+
+  .preview-institution-card.is-clone {
+    display: none;
+  }
 }
 
 @keyframes previewScrollCue {

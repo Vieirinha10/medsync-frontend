@@ -1,7 +1,6 @@
-import { createElement, useRef } from 'react';
+import { createElement } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  FiArrowLeft,
   FiArrowRight,
   FiBarChart2,
   FiCalendar,
@@ -77,7 +76,7 @@ const PenNote = ({ children, side }) => (
   <aside className={`preview-pen-note is-${side}`}>
     <span>{children}</span>
     <svg viewBox="0 0 100 65" fill="none" aria-hidden="true" focusable="false">
-      <path d="M86 8C83 37 61 52 18 46M31 34 16 46l18 8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M86 8C83 37 61 52 18 46M31 34 16 46l18 8" stroke="currentColor" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   </aside>
 );
@@ -139,8 +138,7 @@ const SynapseSection = () => {
 };
 
 const CommunitySection = ({ formattedStudentCount }) => {
-  const trackRef = useRef(null);
-  const moveTrack = (direction) => trackRef.current?.scrollBy({ left: direction * 360, behavior: 'smooth' });
+  const institutionLoop = [...ACADEMIC_INSTITUTIONS, ...ACADEMIC_INSTITUTIONS];
 
   return (
     <section id="comunidade" className="preview-light-section preview-community-section" data-home-reveal aria-labelledby="community-title">
@@ -152,29 +150,33 @@ const CommunitySection = ({ formattedStudentCount }) => {
         accent="já estudam com o MedSync."
         description="Uma comunidade em formação, reunida pelo mesmo objetivo: transformar estudo em decisões mais seguras."
       />
-      <div className="preview-carousel-shell">
-        <button type="button" onClick={() => moveTrack(-1)} aria-label="Ver instituições anteriores"><FiArrowLeft /></button>
-        <div className="preview-institution-track" ref={trackRef} tabIndex={0} aria-label="Instituições presentes na comunidade MedSync">
-          {ACADEMIC_INSTITUTIONS.map((institution, index) => (
-            <article
-              className="preview-institution-card"
-              key={institution.acronym}
-              data-motion-card
-              data-motion-reveal
-              style={{ '--motion-delay': `${index * 55}ms` }}
-            >
-              <span>
-                {institution.logo
-                  ? <img src={institution.logo} alt="" width="58" height="58" loading="lazy" />
-                  : institution.acronym}
-              </span>
-              <strong>{institution.acronym}</strong>
-              <small>{institution.name}</small>
-              <b>{institution.state}</b>
-            </article>
-          ))}
+      <div
+        className="preview-institution-marquee"
+        role="region"
+        tabIndex={0}
+        aria-label="Instituições presentes na comunidade MedSync"
+      >
+        <div className="preview-institution-track">
+          {institutionLoop.map((institution, index) => {
+            const isClone = index >= ACADEMIC_INSTITUTIONS.length;
+            return (
+              <article
+                className={`preview-institution-card${isClone ? ' is-clone' : ''}`}
+                key={`${institution.acronym}-${index}`}
+                aria-hidden={isClone || undefined}
+              >
+                <span>
+                  {institution.logo
+                    ? <img src={institution.logo} alt="" width="58" height="58" loading="lazy" />
+                    : institution.acronym}
+                </span>
+                <strong>{institution.acronym}</strong>
+                <small>{institution.name}</small>
+                <b>{institution.state}</b>
+              </article>
+            );
+          })}
         </div>
-        <button type="button" onClick={() => moveTrack(1)} aria-label="Ver próximas instituições"><FiArrowRight /></button>
       </div>
       <p className="preview-institution-note">A presença de estudantes não representa vínculo ou parceria institucional.</p>
 

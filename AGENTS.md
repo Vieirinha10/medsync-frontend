@@ -11,10 +11,13 @@ em uma atualização curta, quais skills serão usadas e por quê.
 - Use `graphify` antes de mudanças arquiteturais, fluxos que atravessam vários
   arquivos ou integrações entre frontend e API. Não o exija para correções
   pequenas e já localizadas.
-- Use `frontend-design` para criar ou reformular páginas, componentes,
-  hierarquia visual, tipografia, responsividade ou movimento. Essa skill é
-  instalada localmente pelo script documentado e não é redistribuída neste
-  repositório.
+- Use `medsync-design-system` para criar, reformular ou revisar páginas,
+  componentes, hierarquia visual, tipografia, responsividade ou movimento. A
+  skill própria do projeto está em `.agents/skills/medsync-design-system/` e
+  toma a homepage e as referências aprovadas como fonte visual de verdade.
+- Use `frontend-design` somente como apoio em exploração explicitamente
+  solicitada ou quando ainda não houver referência aprovada. Ela nunca deve
+  substituir as regras do `medsync-design-system`.
 - Use `copywriting` para criar ou revisar textos de marketing, páginas
   institucionais, planos, propostas de valor e chamadas para ação.
 - Use `humanizer` como revisão final de textos destinados ao público, depois

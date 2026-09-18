@@ -19,7 +19,9 @@ Roteamento:
 
 - arquitetura, impacto entre arquivos, autenticação, pagamentos, Synapse ou
   integração frontend/API: consulte `graphify` primeiro;
-- criação ou reformulação visual: use `frontend-design`;
+- criação, reformulação ou revisão visual: use `medsync-design-system`;
+- exploração visual sem referência aprovada: `frontend-design` pode ser usada
+  como apoio, sem prevalecer sobre a skill própria;
 - texto comercial, institucional, planos, hero ou CTA: use `copywriting`;
 - revisão de naturalidade de texto público: use `humanizer` por último.
 
@@ -28,10 +30,10 @@ visual, leia e cumpra `docs/ai/MOBILE_FRONTEND_GUIDELINES.md`. A tarefa só pode
 ser declarada pronta depois da validação mobile prevista no documento. Aprovação
 no desktop, testes unitários ou build isoladamente não substituem essa inspeção.
 
-Não use `frontend-design` para uma correção técnica sem decisão visual. Não
-use `humanizer` automaticamente em textos clínicos, jurídicos, contratuais ou
-regulatórios. Exemplos, percentuais e depoimentos presentes nas skills externas
-nunca são evidências sobre o MedSync.
+Não use `medsync-design-system` nem `frontend-design` para uma correção técnica
+sem decisão visual. Não use `humanizer` automaticamente em textos clínicos,
+jurídicos, contratuais ou regulatórios. Exemplos, percentuais e depoimentos
+presentes nas skills externas nunca são evidências sobre o MedSync.
 
 As versões externas são imutáveis e estão registradas em
 `docs/ai/skills-lock.json`. Preferências do MedSync pertencem aos arquivos de

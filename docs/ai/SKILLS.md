@@ -9,7 +9,8 @@ as skills adotadas pelo MedSync. As versões oficiais estão fixadas em
 | Skill | Local | Função |
 | --- | --- | --- |
 | Graphify | Repositório + CLI local | Mapa arquitetural e análise de impacto |
-| Frontend Design | Local, não versionada | Direção visual e construção de interface |
+| MedSync Design System | Repositório | Identidade, fidelidade, componentes, páginas e movimento |
+| Frontend Design | Local, não versionada | Apoio opcional para exploração sem referência aprovada |
 | Copywriting | Repositório | Texto comercial, institucional e de conversão |
 | Humanizer | Repositório | Revisão final de naturalidade |
 
@@ -71,11 +72,23 @@ versionados `graph.json`, `GRAPH_REPORT.md`, `manifest.json` e os metadados
 de análise e agrupamento.
 Cache, custos, caminhos absolutos e memórias locais não entram no Git.
 
+### MedSync Design System
+
+Use em toda criação, reformulação ou revisão visual do MedSync. A skill própria
+está em `.agents/skills/medsync-design-system/` e define modo fidelidade como
+padrão, fundamentos visuais, componentes, arquétipos de página, movimento,
+composição mobile e critérios de qualidade.
+
+A homepage atual e as referências aprovadas pelo usuário prevalecem. Áreas
+funcionais devem compartilhar identidade e componentes, mas adaptar densidade
+ao trabalho realizado.
+
 ### Frontend Design
 
-Use ao criar ou reformular página, componente, hierarquia visual, tipografia,
-responsividade, animação ou interação. O briefing e o design atual do MedSync
-prevalecem. Não acione para correções técnicas sem decisão visual.
+Use somente como apoio quando o usuário solicitar exploração ou quando ainda
+não existir referência aprovada. Suas recomendações não podem substituir a
+`medsync-design-system`, o briefing ou decisões visuais já aprovadas. Não acione
+para correções técnicas sem decisão visual.
 
 Toda alteração visual também deve seguir `docs/ai/MOBILE_FRONTEND_GUIDELINES.md`.
 O agente deve validar os breakpoints definidos no documento antes de declarar a
@@ -97,7 +110,8 @@ automaticamente a textos clínicos, jurídicos, contratuais ou regulatórios.
 
 ```text
 Graphify, se houver impacto arquitetural
-→ Frontend Design
+→ MedSync Design System
+→ Frontend Design, apenas se exploração for necessária
 → Copywriting
 → Humanizer
 → testes, lint e build
@@ -105,8 +119,9 @@ Graphify, se houver impacto arquitetural
 
 A IA deve anunciar ao usuário quais skills serão utilizadas. O usuário pode
 forçar uma skill mencionando seu nome; no Codex, também pode usar
-`$graphify`, `$frontend-design`, `$copywriting` ou `$humanizer`. No
-Antigravity, Graphify também está disponível pelo workflow `/graphify`.
+`$graphify`, `$medsync-design-system`, `$frontend-design`, `$copywriting` ou
+`$humanizer`. No Antigravity, Graphify também está disponível pelo workflow
+`/graphify`.
 
 ## Antigravity
 
@@ -129,7 +144,7 @@ pessoais no repositório.
 
 | Repositório | Configuração |
 | --- | --- |
-| `medsync-frontend` | Quatro skills; Frontend Design local |
+| `medsync-frontend` | Cinco skills; MedSync Design System versionada e Frontend Design local |
 | `medsync-api` | Graphify compartilhado e CLI local |
 
 Ao trabalhar nos dois repositórios, consulte o grafo correspondente antes de

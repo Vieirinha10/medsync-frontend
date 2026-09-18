@@ -66,6 +66,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [openNavMenu, setOpenNavMenu] = useState(null);
   const isAuthenticated = Boolean(getAuthToken());
+  const isHomeRoute = location.pathname === '/';
   const isMoreActive = ['/trilhas', '/caderno-erros'].some((path) => location.pathname.startsWith(path));
   const isAccountActive = location.pathname.startsWith('/dashboard');
 
@@ -106,7 +107,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      {!isHomeRoute && <header className="App-header">
         <nav className="App-nav">
           <Link to="/" className="logo-link">
             <img src="/logo-medsync.png" alt="MedSync" className="logo-image" />
@@ -202,11 +203,11 @@ function App() {
             </div>
           </div>
         </nav>
-      </header>
+      </header>}
 
-      <AnnouncementBanner />
+      {!isHomeRoute && <AnnouncementBanner />}
 
-      <main className="App-main">
+      <main className={`App-main${isHomeRoute ? ' is-home' : ''}`}>
         <Suspense fallback={(
           <div className="route-loading" role="status" aria-live="polite">
             <img src="/logo-medsync.png" alt="" />
@@ -247,7 +248,7 @@ function App() {
         </Suspense>
       </main>
 
-      <SiteFooter />
+      {!isHomeRoute && <SiteFooter />}
     </div>
   );
 }

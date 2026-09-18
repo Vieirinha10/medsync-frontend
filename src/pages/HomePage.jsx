@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { LazyMotion, domAnimation } from 'motion/react';
 import MedSyncIntro from '../components/MedSyncIntro';
 import HomePreviewHero from '../components/home/HomePreviewHero';
 import HomePreviewSections from '../components/home/HomePreviewSections';
@@ -95,18 +96,20 @@ const HomePage = () => {
   const formattedStudentCount = studentCount === null ? '—' : studentCount.toLocaleString('pt-BR');
 
   return (
-    <div className="home-redesign" ref={homeRef}>
-      <MedSyncIntro />
-      <div className="home-redesign-page">
-        <HomePreviewHero
-          activeStep={activeStep}
-          setActiveStep={setActiveStep}
-          isPaused={isPaused}
-          setIsPaused={setIsPaused}
-        />
-        <HomePreviewSections formattedStudentCount={formattedStudentCount} />
+    <LazyMotion features={domAnimation}>
+      <div className="home-redesign" ref={homeRef}>
+        <MedSyncIntro />
+        <div className="home-redesign-page">
+          <HomePreviewHero
+            activeStep={activeStep}
+            setActiveStep={setActiveStep}
+            isPaused={isPaused}
+            setIsPaused={setIsPaused}
+          />
+          <HomePreviewSections formattedStudentCount={formattedStudentCount} />
+        </div>
       </div>
-    </div>
+    </LazyMotion>
   );
 };
 

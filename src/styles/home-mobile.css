@@ -351,26 +351,83 @@
     letter-spacing: -.055em;
   }
 
+  .preview-carousel-viewport,
+  .preview-testimonial-track {
+    width: calc(100% + 16px);
+    margin-right: -16px;
+    overflow: hidden;
+    overscroll-behavior-inline: contain;
+    touch-action: pan-y pinch-zoom;
+  }
+
   .preview-ai-grid,
   .preview-pricing-grid,
   .preview-testimonial-track {
-    width: calc(100% + 16px);
     display: flex;
     gap: 13px;
-    margin-right: -16px;
     padding: 5px 16px 19px 1px;
+  }
+
+  .preview-testimonial-track {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-padding-inline: 1px 16px;
-    overscroll-behavior-inline: contain;
     touch-action: pan-x;
     scrollbar-width: none;
   }
 
-  .preview-ai-grid::-webkit-scrollbar,
-  .preview-pricing-grid::-webkit-scrollbar,
   .preview-testimonial-track::-webkit-scrollbar {
     display: none;
+  }
+
+  .preview-ai-card,
+  .preview-plan-card {
+    opacity: .82;
+    transform: scale(.965);
+    transform-origin: center;
+    transition: opacity 320ms ease, transform 420ms cubic-bezier(.2, .8, .2, 1), box-shadow 320ms ease;
+  }
+
+  .preview-ai-card.is-carousel-active,
+  .preview-plan-card.is-carousel-active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .preview-carousel-progress {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: -5px auto 13px;
+  }
+
+  .preview-carousel-progress button {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .preview-carousel-progress button::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 7px;
+    height: 7px;
+    content: '';
+    border-radius: 999px;
+    background: #bfd5e5;
+    transform: translate(-50%, -50%);
+    transition: width 280ms cubic-bezier(.2, .8, .2, 1), background 200ms ease;
+  }
+
+  .preview-carousel-progress button.is-active::before {
+    width: 27px;
+    background: linear-gradient(90deg, var(--home-blue), var(--home-cyan));
   }
 
   .preview-ai-card,
@@ -427,7 +484,8 @@
   }
 
   .preview-institution-track {
-    animation-duration: 38s;
+    animation: none;
+    touch-action: pan-y pinch-zoom;
   }
 
   .preview-institution-card {
@@ -551,6 +609,7 @@
     min-height: 520px;
     scroll-snap-align: center;
   }
+
 
   .preview-plan-badge {
     top: 10px;

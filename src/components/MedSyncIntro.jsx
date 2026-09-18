@@ -74,23 +74,13 @@ const MedSyncIntro = () => {
           <img src="/logo-medsync.png" alt="MedSync" />
         </div>
 
-        <svg
-          className="medsync-intro-pulse"
-          viewBox="0 0 320 32"
-          role="presentation"
-          aria-hidden="true"
-        >
-          <path className="medsync-intro-pulse-rail" d="M2 17h104l10-1 8-10 9 20 10-14 8 5h167" />
-          <path className="medsync-intro-pulse-line" d="M2 17h104l10-1 8-10 9 20 10-14 8 5h167" />
-        </svg>
-
         <p className="medsync-intro-message">
           Mais preparo. Mais clareza. <strong>Melhores decisões.</strong>
         </p>
+      </div>
 
-        <div className="medsync-intro-progress" aria-hidden="true">
-          <span />
-        </div>
+      <div className="medsync-intro-progress" aria-hidden="true">
+        <span />
       </div>
     </div>
   );

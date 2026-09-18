@@ -107,8 +107,15 @@ const SynapseSection = () => {
       description="ChatGPT, Grok, Gemini, Claude e DeepSeek atuam em papéis complementares. A Synapse reúne essas perspectivas em um feedback clínico claro e voltado para o seu aprendizado."
     />
     <div className="preview-ai-grid" role="list" aria-label="Perspectivas da Synapse">
-      {AI_NETWORKS.map((network) => (
-        <article className={`preview-ai-card is-${network.id}`} role="listitem" key={network.id}>
+      {AI_NETWORKS.map((network, index) => (
+        <article
+          className={`preview-ai-card is-${network.id}`}
+          role="listitem"
+          key={network.id}
+          data-motion-card
+          data-motion-reveal
+          style={{ '--motion-delay': `${index * 70}ms` }}
+        >
           <div className="preview-ai-icon"><img src={network.icon} alt="" width="58" height="58" loading="lazy" /></div>
           <h3>{network.name}</h3>
           <p>{network.text}</p>
@@ -117,7 +124,7 @@ const SynapseSection = () => {
         </article>
       ))}
     </div>
-    <div className="preview-benefit-strip" aria-label="Benefícios da Synapse">
+      <div className="preview-benefit-strip" data-motion-reveal aria-label="Benefícios da Synapse">
       <div><FiLayers /><strong>Perspectivas complementares</strong><span>Mais profundidade na análise</span></div>
       <div><FiTarget /><strong>Feedback clínico integrado</strong><span>Uma leitura organizada do caso</span></div>
       <div><FiShield /><strong>Segurança em destaque</strong><span>Riscos e prioridades visíveis</span></div>
@@ -148,8 +155,14 @@ const CommunitySection = ({ formattedStudentCount }) => {
       <div className="preview-carousel-shell">
         <button type="button" onClick={() => moveTrack(-1)} aria-label="Ver instituições anteriores"><FiArrowLeft /></button>
         <div className="preview-institution-track" ref={trackRef} tabIndex={0} aria-label="Instituições presentes na comunidade MedSync">
-          {ACADEMIC_INSTITUTIONS.map((institution) => (
-            <article className="preview-institution-card" key={institution.acronym}>
+          {ACADEMIC_INSTITUTIONS.map((institution, index) => (
+            <article
+              className="preview-institution-card"
+              key={institution.acronym}
+              data-motion-card
+              data-motion-reveal
+              style={{ '--motion-delay': `${index * 55}ms` }}
+            >
               <span>
                 {institution.logo
                   ? <img src={institution.logo} alt="" width="58" height="58" loading="lazy" />
@@ -171,16 +184,16 @@ const CommunitySection = ({ formattedStudentCount }) => {
         <p>Os depoimentos serão publicados apenas com autorização de estudantes reais.</p>
       </div>
       <div className="preview-testimonial-track" aria-label="Espaço para futuros depoimentos">
-        <article className="preview-testimonial-card is-side" aria-hidden="true"><FiMessageCircle /></article>
-        <article className="preview-testimonial-card is-main">
+        <article className="preview-testimonial-card is-side" data-motion-reveal aria-hidden="true"><FiMessageCircle /></article>
+        <article className="preview-testimonial-card is-main" data-motion-card data-motion-reveal>
           <FiMessageCircle aria-hidden="true" />
           <h3>Experimente o MedSync e conte como foi.</h3>
           <p>Seu relato pode ajudar outros estudantes e fazer parte da construção da plataforma.</p>
           <Link to="/cadastro">Começar gratuitamente <FiArrowRight aria-hidden="true" /></Link>
         </article>
-        <article className="preview-testimonial-card is-side" aria-hidden="true"><FiMessageCircle /></article>
+        <article className="preview-testimonial-card is-side" data-motion-reveal aria-hidden="true"><FiMessageCircle /></article>
       </div>
-      <div className={`preview-proof-strip${formattedStudentCount && formattedStudentCount !== '—' ? '' : ' has-three-items'}`} aria-label="Números atuais do MedSync">
+      <div className={`preview-proof-strip${formattedStudentCount && formattedStudentCount !== '—' ? '' : ' has-three-items'}`} data-motion-reveal aria-label="Números atuais do MedSync">
         <div><strong>80</strong><span>casos clínicos</span></div>
         <div><strong>150</strong><span>desafios visuais</span></div>
         <div><strong>226 mil+</strong><span>questões no catálogo</span></div>
@@ -232,8 +245,14 @@ const FeaturesSection = () => {
       description="Prática clínica, questões, revisão e trilhas reunidas em uma experiência contínua."
     />
     <div className="preview-feature-grid">
-      {FEATURES.map(({ id, title, icon: Icon, tone, to, action, text, tags }) => (
-        <article className={`preview-feature-card is-${tone}`} key={id}>
+      {FEATURES.map(({ id, title, icon: Icon, tone, to, action, text, tags }, index) => (
+        <article
+          className={`preview-feature-card is-${tone}`}
+          key={id}
+          data-motion-card
+          data-motion-reveal
+          style={{ '--motion-delay': `${index * 70}ms` }}
+        >
           <FeatureIllustration kind={id} />
           <div className="preview-feature-topline">
             <span className="preview-feature-icon">{createElement(Icon, { 'aria-hidden': true })}</span>
@@ -287,10 +306,16 @@ const PricingSection = () => {
         description="Comece gratuitamente. Quando quiser avançar, escolha entre pagamento avulso, mensal ou trimestral."
       />
       <div className="preview-pricing-grid">
-        {plans.map((plan) => {
+        {plans.map((plan, index) => {
           const Icon = PLAN_ICON[plan.id] || FiCreditCard;
           return (
-            <article className={`preview-plan-card${plan.featured ? ' is-featured' : ''}`} key={plan.id}>
+            <article
+              className={`preview-plan-card${plan.featured ? ' is-featured' : ''}`}
+              key={plan.id}
+              data-motion-card
+              data-motion-reveal
+              style={{ '--motion-delay': `${index * 70}ms` }}
+            >
               {plan.featured && <span className="preview-plan-badge">Mais escolhido</span>}
               <header><div><small>{plan.label}</small><h3>{plan.name}</h3></div><Icon aria-hidden="true" /></header>
               <div className="preview-plan-price">{plan.price}<small>{plan.billingLabel}</small></div>
@@ -301,7 +326,7 @@ const PricingSection = () => {
           );
         })}
       </div>
-      <div className="preview-trust-strip">
+      <div className="preview-trust-strip" data-motion-reveal>
         <div><FiLock /><strong>Ambiente seguro</strong><span>Seus dados protegidos</span></div>
         <div><FiMonitor /><strong>Acesse de qualquer lugar</strong><span>Web, tablet e celular</span></div>
         <div><FiMessageCircle /><strong>Suporte humanizado</strong><span>Via WhatsApp</span></div>

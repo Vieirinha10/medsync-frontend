@@ -171,7 +171,13 @@ const HomePreviewHero = ({ activeStep, setActiveStep, isPaused, setIsPaused }) =
           <div className="preview-case-window" onPointerDown={() => setIsPaused(true)} onFocus={() => setIsPaused(true)}>
             <aside className="preview-case-sidebar">
               <div className="preview-case-title"><FiClipboard aria-hidden="true" /> Caso clínico <span>{activeStep + 1}/4</span></div>
-              <div ref={tabListRef} className="preview-case-steps" role="tablist" aria-label="Etapas do caso clínico">
+              <div
+                ref={tabListRef}
+                className="preview-case-steps"
+                role="tablist"
+                aria-label="Etapas do caso clínico"
+                style={{ '--case-progress': `${(activeStep / (CASE_STEPS.length - 1)) * 100}%` }}
+              >
                 {CASE_STEPS.map((step, index) => (
                   <button
                     type="button"
@@ -238,7 +244,7 @@ const HomePreviewHero = ({ activeStep, setActiveStep, isPaused, setIsPaused }) =
           </button>
         </div>
 
-        <aside className="preview-case-promise">
+        <aside className="preview-case-promise" data-motion-card>
           <FiActivity aria-hidden="true" />
           <h2>Mais que casos.<br />Uma experiência real de raciocínio clínico.</h2>
           <ul>

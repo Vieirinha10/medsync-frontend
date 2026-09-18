@@ -73,6 +73,24 @@ const HomePage = () => {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const root = homeRef.current;
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    const precisePointer = window.matchMedia?.('(hover: hover) and (pointer: fine)')?.matches;
+    if (!root || reducedMotion || !precisePointer) return undefined;
+
+    const updateSpotlight = (event) => {
+      const card = event.target.closest('[data-motion-card]');
+      if (!card || !root.contains(card)) return;
+      const bounds = card.getBoundingClientRect();
+      card.style.setProperty('--pointer-x', `${event.clientX - bounds.left}px`);
+      card.style.setProperty('--pointer-y', `${event.clientY - bounds.top}px`);
+    };
+
+    root.addEventListener('pointermove', updateSpotlight, { passive: true });
+    return () => root.removeEventListener('pointermove', updateSpotlight);
+  }, []);
+
   const formattedStudentCount = studentCount === null ? '—' : studentCount.toLocaleString('pt-BR');
 
   return (

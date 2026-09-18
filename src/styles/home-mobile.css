@@ -150,6 +150,11 @@
   }
 
   .preview-aurora { animation: none; }
+  .preview-case-shell::before { opacity: .48; animation: none; }
+  .preview-case-steps::after { display: none; }
+  .preview-scroll-cue { animation: none; }
+  [data-motion-card]::after { display: none; }
+  .home-redesign.has-scroll-reveal [data-home-reveal].is-visible [data-motion-reveal] { animation-delay: calc(50ms + var(--motion-delay, 0ms)); }
   .preview-heading-composition.has-note { display: flex; flex-direction: column; gap: 16px; }
   .preview-heading-composition { margin-bottom: 24px; }
   .preview-pen-note, .preview-pen-note.is-left { width: 148px; font-size: 1.38rem; align-self: flex-end; margin-right: 8px; }
